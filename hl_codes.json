@@ -1,0 +1,158 @@
+[
+  {
+    "hl_code": "HL01",
+    "stars_measure": "Breast Cancer Screening"
+  },
+  {
+    "hl_code": "HL02",
+    "stars_measure": "Colorectal Cancer Screening"
+  },
+  {
+    "hl_code": "HL03",
+    "stars_measure": "Annual Flu Vaccine"
+  },
+  {
+    "hl_code": "HL06",
+    "stars_measure": "Monitoring Physical Activity"
+  },
+  {
+    "hl_code": "HL08",
+    "stars_measure": "SNP Care Management"
+  },
+  {
+    "hl_code": "HL09",
+    "stars_measure": "COA - Medication Review"
+  },
+  {
+    "hl_code": "HL11",
+    "stars_measure": "COA - Pain Assessment"
+  },
+  {
+    "hl_code": "HL12",
+    "stars_measure": "Osteo Mgmt in Women W Fracture"
+  },
+  {
+    "hl_code": "HL13",
+    "stars_measure": "Diabetes Care - Eye Exam"
+  },
+  {
+    "hl_code": "HL15",
+    "stars_measure": "Diabetes Care - BSC"
+  },
+  {
+    "hl_code": "HL18",
+    "stars_measure": "Reducing the Risk of Falling"
+  },
+  {
+    "hl_code": "HL37",
+    "stars_measure": "Improving Bladder Control"
+  },
+  {
+    "hl_code": "HL57",
+    "stars_measure": "Med Rec Post-Discharge"
+  },
+  {
+    "hl_code": "HL19",
+    "stars_measure": "Plan All Cause Readmissions"
+  },
+  {
+    "hl_code": "HL58",
+    "stars_measure": "Statin Therapy-Patients with CVD"
+  },
+  {
+    "hl_code": "HL20",
+    "stars_measure": "Getting Needed Care"
+  },
+  {
+    "hl_code": "HL21",
+    "stars_measure": "Getting Appts and Care Quickly"
+  },
+  {
+    "hl_code": "HL22",
+    "stars_measure": "Customer Service"
+  },
+  {
+    "hl_code": "HL23",
+    "stars_measure": "Rating of Health Care Quality"
+  },
+  {
+    "hl_code": "HL24",
+    "stars_measure": "Rating of Health Plan"
+  },
+  {
+    "hl_code": "HL25",
+    "stars_measure": "Care Coordination"
+  },
+  {
+    "hl_code": "HL26",
+    "stars_measure": "Complaints about the Health Plan"
+  },
+  {
+    "hl_code": "HL27",
+    "stars_measure": "Members Choosing to Leave"
+  },
+  {
+    "hl_code": "HL30",
+    "stars_measure": "Plan Makes Timely Decs - Appeals"
+  },
+  {
+    "hl_code": "HL31",
+    "stars_measure": "Reviewing Appeals Decisions"
+  },
+  {
+    "hl_code": "HL32",
+    "stars_measure": "Call Center - FFI / TTY (Part C)"
+  },
+  {
+    "hl_code": "HL16",
+    "stars_measure": "Controlling Blood Pressure"
+  },
+  {
+    "hl_code": "HL38",
+    "stars_measure": "Call Center - FFI / TTY (Part D)"
+  },
+  {
+    "hl_code": "HL41",
+    "stars_measure": "Complaints about the Drug Plan"
+  },
+  {
+    "hl_code": "HL45",
+    "stars_measure": "Rating of Drug Plan"
+  },
+  {
+    "hl_code": "HL46",
+    "stars_measure": "Getting Needed RX Drugs"
+  },
+  {
+    "hl_code": "HL47",
+    "stars_measure": "MPF Price Accuracy"
+  },
+  {
+    "hl_code": "HL50",
+    "stars_measure": "Med Adh for Diabetes Meds"
+  },
+  {
+    "hl_code": "HL51",
+    "stars_measure": "Med Adh for Hypertension"
+  },
+  {
+    "hl_code": "HL52",
+    "stars_measure": "Med Adh for Cholesterol"
+  },
+  {
+    "hl_code": "HL53",
+    "stars_measure": "MTM Program Comp Rate-CMR"
+  },
+  {
+    "hl_code": "HL59",
+    "stars_measure": "Statin Use with Diabetes (Part D)"
+  },
+  {
+    "hl_code": "HL60",
+    "stars_measure": "Transitions of Care"
+  },
+  {
+    "hl_code": "HL61",
+    "stars_measure": "Follow-up after Emergency Department Visit for Patients with Multiple Chronic Conditions (FMC)"
+  }
+]

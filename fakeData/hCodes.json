@@ -1,0 +1,311 @@
+[
+  {
+    "hl_code": "HL01",
+    "measure_id": "C01",
+    "measure_name": "Breast Cancer Screening",
+    "definition": "Percent of female plan members aged 52-74 who had a mammogram during the past two years.",
+    "bottom_third_lower_value": 0,
+    "bottom_third_upper_value": 66.4926,
+    "middle_third_lower_value": 66.4927,
+    "middle_third_upper_value": 72.4913,
+    "top_third_lower_value": 72.4914,
+    "top_third_upper_value": 100
+  },
+  {
+    "hl_code": "HL02",
+    "measure_id": "C02",
+    "measure_name": "Colorectal Cancer Screening",
+    "definition": "Percent of plan members aged 50-75 who had appropriate screening for colon cancer.",
+    "bottom_third_lower_value": 0,
+    "bottom_third_upper_value": 66.7735,
+    "middle_third_lower_value": 66.7736,
+    "middle_third_upper_value": 74.0165,
+    "top_third_lower_value": 74.0166,
+    "top_third_upper_value": 100
+  },
+  {
+    "hl_code": "HL03",
+    "measure_id": "C03",
+    "measure_name": "Annual Flu Vaccine",
+    "definition": "Percent of plan members who got a vaccine (flu shot).",
+    "bottom_third_lower_value": 0,
+    "bottom_third_upper_value": 66.9661,
+    "middle_third_lower_value": 66.9662,
+    "middle_third_upper_value": 72.6882,
+    "top_third_lower_value": 72.6883,
+    "top_third_upper_value": 100
+  },
+  {
+    "hl_code": "HL06",
+    "measure_id": "C04",
+    "measure_name": "Monitoring Physical Activity",
+    "definition": "Percent of senior plan members who discussed exercise with their doctor and were advised to start, increase, or maintain their physical activity during the year.",
+
+    "bottom_third_lower_value": 0,
+    "bottom_third_upper_value": 46.6695,
+    "middle_third_lower_value": 46.6696,
+    "middle_third_upper_value": 51.759,
+    "top_third_lower_value": 51.7591,
+    "top_third_upper_value": 100
+  },
+  {
+    "hl_code": "HL12",
+    "measure_id": "C08",
+    "measure_name": "Osteoporosis Management in Women who had a Fracture",
+    "definition": "Percent of female plan members who broke a bone and got screening or treatment for osteoporosis within 6 months.",
+
+    "bottom_third_lower_value": 0,
+    "bottom_third_upper_value": 32.1451,
+    "middle_third_lower_value": 32.1452,
+    "middle_third_upper_value": 46.2932,
+    "top_third_lower_value": 46.2933,
+    "top_third_upper_value": 100
+  },
+  {
+    "hl_code": "HL13",
+    "measure_id": "C09",
+    "measure_name": "Diabetes Care D Eye Exam",
+    "definition": "Percent of plan members with diabetes who had an eye exam to check for damage from diabetes during the year.",
+
+    "bottom_third_lower_value": 0,
+    "bottom_third_upper_value": 66.4886,
+    "middle_third_lower_value": 66.4887,
+    "middle_third_upper_value": 75.0258,
+    "top_third_lower_value": 75.0259,
+    "top_third_upper_value": 100
+  },
+  {
+    "hl_code": "HL15",
+    "measure_id": "C10",
+    "measure_name": "Diabetes Care D Blood Sugar Controlled",
+    "definition": "Percent of plan members with diabetes who had an A1C lab test during the year that showed their average blood sugar is under control.",
+
+    "bottom_third_lower_value": 0,
+    "bottom_third_upper_value": 76.2588,
+    "middle_third_lower_value": 76.2589,
+    "middle_third_upper_value": 82.0915,
+    "top_third_lower_value": 82.0916,
+    "top_third_upper_value": 100
+  },
+  {
+    "hl_code": "HL16",
+    "measure_id": "C11",
+    "measure_name": "Controlling Blood Pressure",
+    "definition": "Percent of plan members with high blood pressure who got treatment and were able to maintain a healthy pressure.",
+
+    "bottom_third_lower_value": 0,
+    "bottom_third_upper_value": 70.4812,
+    "middle_third_lower_value": 70.4813,
+    "middle_third_upper_value": 76.8393,
+    "top_third_lower_value": 76.8394,
+    "top_third_upper_value": 100
+  },
+  {
+    "hl_code": "HL18",
+    "measure_id": "C12",
+    "measure_name": "Reducing the Risk of Falling",
+    "definition": "Percent of plan members with a problem falling, walking, or balancing who discussed it with their doctor and received a recommendation for how to prevent falls during the year.",
+
+    "bottom_third_lower_value": 0,
+    "bottom_third_upper_value": 62.5227,
+    "middle_third_lower_value": 62.5228,
+    "middle_third_upper_value": 67.5706,
+    "top_third_lower_value": 67.5707,
+    "top_third_upper_value": 100
+  },
+  {
+    "hl_code": "HL57",
+    "measure_id": "C14",
+    "measure_name": "Medication Reconciliation Post- Discharge",
+    "definition": "This shows the percent of plan members whose medication records were updated within 30 days after leaving the hospital. To update the record, a doctor or other health care professional looks at the new medications prescribed in the hospital and compares them with the other medications the patient takes. Updating medication records can help to prevent errors that can occur when medications are changed.",
+
+    "bottom_third_lower_value": 0,
+    "bottom_third_upper_value": 54.4553,
+    "middle_third_lower_value": 54.4554,
+    "middle_third_upper_value": 73.1535,
+    "top_third_lower_value": 73.1536,
+    "top_third_upper_value": 100
+  },
+  {
+    "hl_code": "HL58",
+    "measure_id": "C16",
+    "measure_name": "Statin Therapy for Patients with Cardiovascular Disease",
+    "definition": "This rating is based on the percent of plan members with heart disease who get the right type of cholesterol-lowering drugs. Health plans can help make sure their members are prescribed medications that are more effective for them.",
+
+    "bottom_third_lower_value": 0,
+    "bottom_third_upper_value": 83.5419,
+    "middle_third_lower_value": 83.542,
+    "middle_third_upper_value": 86.2102,
+    "top_third_lower_value": 86.2103,
+    "top_third_upper_value": 100
+  },
+  {
+    "hl_code": "HL20",
+    "measure_id": "C19",
+    "measure_name": "Getting Needed Care",
+    "definition": "Percent of the best possible score the plan earned on how easy it is for members to get needed care, including care from specialists.",
+
+    "bottom_third_lower_value": 0,
+    "bottom_third_upper_value": 78.2864,
+    "middle_third_lower_value": 78.2865,
+    "middle_third_upper_value": 81.047,
+    "top_third_lower_value": 81.0471,
+    "top_third_upper_value": 100
+  },
+  {
+    "hl_code": "HL21",
+    "measure_id": "C20",
+    "measure_name": "Getting Appointments and Care Quickly",
+    "definition": "Percent of the best possible score the plan earned on how quickly members get appointments and care.",
+
+    "bottom_third_lower_value": 0,
+    "bottom_third_upper_value": 74.6196,
+    "middle_third_lower_value": 74.6197,
+    "middle_third_upper_value": 76.9325,
+    "top_third_lower_value": 76.9326,
+    "top_third_upper_value": 100
+  },
+  {
+    "hl_code": "HL22",
+    "measure_id": "C21",
+    "measure_name": "Customer Service",
+    "definition": "Percent of the best possible score the plan earned on how easy it is for members to get information and help from the plan when needed.",
+
+    "bottom_third_lower_value": 0,
+    "bottom_third_upper_value": 88.5291,
+    "middle_third_lower_value": 88.5292,
+    "middle_third_upper_value": 90.4,
+    "top_third_lower_value": 90.4001,
+    "top_third_upper_value": 100
+  },
+  {
+    "hl_code": "HL23",
+    "measure_id": "C22",
+    "measure_name": "Rating of Health Care Quality",
+    "definition": "Percent of the best possible score the plan earned from members who rated the quality of the health care they received.",
+
+    "bottom_third_lower_value": 0,
+    "bottom_third_upper_value": 84.0703,
+    "middle_third_lower_value": 84.0704,
+    "middle_third_upper_value": 85.4492,
+    "top_third_lower_value": 85.4493,
+    "top_third_upper_value": 100
+  },
+  {
+    "hl_code": "HL24",
+    "measure_id": "C23",
+    "measure_name": "Rating of Health Plan",
+    "definition": "Percent of the best possible score the plan earned from members who rated the health plan.",
+
+    "bottom_third_lower_value": 0,
+    "bottom_third_upper_value": 85.4601,
+    "middle_third_lower_value": 85.4602,
+    "middle_third_upper_value": 87.7845,
+    "top_third_lower_value": 87.7846,
+    "top_third_upper_value": 100
+  },
+  {
+    "hl_code": "HL25",
+    "measure_id": "C24",
+    "measure_name": "Care Coordination",
+    "definition": "Percent of the best possible score the plan earned on how well the plan coordinates members' care.",
+
+    "bottom_third_lower_value": 0,
+    "bottom_third_upper_value": 84.3054,
+    "middle_third_lower_value": 84.3055,
+    "middle_third_upper_value": 85.9606,
+    "top_third_lower_value": 85.9607,
+    "top_third_upper_value": 100
+  },
+  {
+    "hl_code": "HL46",
+    "measure_id": "D06",
+    "measure_name": "Getting Needed Prescription Drugs",
+    "definition": "Percent of the best possible score the plan earned on how easy it is for members to get the prescription drugs they need using the plan.",
+
+    "bottom_third_lower_value": 0,
+    "bottom_third_upper_value": 88.7414,
+    "middle_third_lower_value": 88.7415,
+    "middle_third_upper_value": 90.2835,
+    "top_third_lower_value": 90.2836,
+    "top_third_upper_value": 100
+  },
+  {
+    "hl_code": "HL50",
+    "measure_id": "D08",
+    "measure_name": "Medication Adherence for Diabetes Medications",
+    "definition": "Percent of plan members with a prescription for diabetes medication who fill their prescription often enough to cover 80% or more of the time they are supposed to be taking the medication",
+
+    "bottom_third_lower_value": 0,
+    "bottom_third_upper_value": 84.2889,
+    "middle_third_lower_value": 84.289,
+    "middle_third_upper_value": 86.8014,
+    "top_third_lower_value": 86.8015,
+    "top_third_upper_value": 100
+  },
+  {
+    "hl_code": "HL53",
+    "measure_id": "D11",
+    "measure_name": "MTM Program Completion Rate for CMR",
+    "definition": "Some plan members are in a program (called a Medication Therapy Management program) to help them manage their drugs. The measure shows how many members in the program had an assessment of their medications from the plan. ",
+
+    "bottom_third_lower_value": 0,
+    "bottom_third_upper_value": 82.5698,
+    "middle_third_lower_value": 82.5699,
+    "middle_third_upper_value": 87.4738,
+    "top_third_lower_value": 87.4739,
+    "top_third_upper_value": 100
+  },
+  {
+    "hl_code": "HL43",
+    "measure_id": "D05",
+    "measure_name": "Rating of Drug Plan",
+    "definition": "Percent of the best possible score the plan earned from members who rated the prescription drug plan.",
+
+    "bottom_third_lower_value": 0,
+    "bottom_third_upper_value": 81.6756,
+    "middle_third_lower_value": 81.6757,
+    "middle_third_upper_value": 83.6302,
+    "top_third_lower_value": 83.6303,
+    "top_third_upper_value": 100
+  },
+  {
+    "hl_code": "HL51",
+    "measure_id": "D09",
+    "measure_name": "Medication Adherence for Hypertension (RAS antagonists)",
+    "definition": "Percent of plan members with a prescription for a blood pressure medication who fill their prescription often enough to cover 80% or more of the time they are supposed to be taking the medication.",
+
+    "bottom_third_lower_value": 0,
+    "bottom_third_upper_value": 85.0633,
+    "middle_third_lower_value": 85.0634,
+    "middle_third_upper_value": 86.4865,
+    "top_third_lower_value": 86.4866,
+    "top_third_upper_value": 100
+  },
+  {
+    "hl_code": "HL52",
+    "measure_id": "D10",
+    "measure_name": "Medication Adherence for Cholesterol (Statins)",
+    "definition": "Percent of plan members with a prescription for a cholesterol medication (a statin drug) who fill their prescription often enough to cover 80% or more of the time they are supposed to be taking the medication.",
+
+    "bottom_third_lower_value": 0,
+    "bottom_third_upper_value": 84.4436,
+    "middle_third_lower_value": 84.4437,
+    "middle_third_upper_value": 86.5928,
+    "top_third_lower_value": 86.5929,
+    "top_third_upper_value": ""
+  },
+  {
+    "hl_code": "HL59",
+    "measure_id": "D12",
+    "measure_name": "Statin Use in Persons with Diabetes (SUPD)",
+    "definition": "To lower their risk of developing heart disease, most people with diabetes should take cholesterol medication. This rating is based on the percent of plan members with diabetes who take the most effective cholesterol-lowering drugs. Plans can help make sure their members get these prescriptions filled. ",
+
+    "bottom_third_lower_value": 0,
+    "bottom_third_upper_value": 80.1057,
+    "middle_third_lower_value": 80.1058,
+    "middle_third_upper_value": 80.7282,
+    "top_third_lower_value": 80.7283,
+    "top_third_upper_value": 100
+  }
+]
