@@ -19,7 +19,6 @@ const SrfRenderer = (params) => {
 };
 
 const LinkRenderer = (params) => {
-  console.log(params);
   return (
     <Link to={`/members/${params.data.id}`} style={{ textDecoration: 'none', color: '#4d9fda' }}>
       {params.value}
@@ -31,7 +30,6 @@ export default function ProviderPage() {
   const params = useParams();
   const name = decodeURI(params.name);
   const { data } = useMembers();
-  console.log(name);
 
   const members = data
     .filter((member) => member['Contract Entity Name'] === name)
@@ -48,7 +46,7 @@ export default function ProviderPage() {
     { field: 'name', filter: true, chartDataType: 'category', maxWidth: 230, cellRenderer: LinkRenderer },
     {
       field: 'srf',
-      headerName: 'SRF Score',
+      headerName: 'SRF',
       type: 'numericColumn',
       maxWidth: 120,
       chartDataType: 'series',
@@ -57,7 +55,7 @@ export default function ProviderPage() {
     },
     {
       field: 'numberOfGaps',
-      headerName: 'Number of Gaps',
+      headerName: 'Gaps',
       type: 'numericColumn',
       maxWidth: 160,
       chartDataType: 'series',
@@ -74,7 +72,6 @@ export default function ProviderPage() {
     }
   ];
 
-  console.log(members);
   return (
     <Container maxWidth="lg">
       <Typography variant="h3">{name}</Typography>

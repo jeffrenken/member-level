@@ -6,6 +6,8 @@ import { SignedIn, SignedOut, UserButton } from '@clerk/clerk-react';
 import { IconMenu2, IconMoon, IconSun } from '@tabler/icons-react';
 import { useContext } from 'react';
 import { Link, useLocation } from 'react-router-dom';
+import logoWhite from '@/assets/images/logoWhite.png';
+import logoDark from '@/assets/images/logoDark.png';
 
 const Header = ({ handleLeftDrawerToggle }) => {
   const theme = useTheme();
@@ -33,9 +35,6 @@ const Header = ({ handleLeftDrawerToggle }) => {
             <IconButton onClick={handleLeftDrawerToggle}>
               <IconMenu2 />
             </IconButton>
-            <Box component="span" sx={{ display: { xs: 'block', md: 'block' }, flexGrow: 1 }}>
-              LOGO
-            </Box>
             {/*       <SearchSection />
              */}{' '}
           </Stack>
@@ -65,6 +64,13 @@ const Header = ({ handleLeftDrawerToggle }) => {
         </Stack>
         <Stack direction="row" spacing={2} alignItems="center">
           <IconButton onClick={switchColorMode}>{isDarkMode ? <IconSun /> : <IconMoon />}</IconButton>
+          <Box
+            component="img"
+            alt="logo"
+            src={isDarkMode ? logoWhite : logoDark}
+            height={30}
+            sx={{ display: { xs: 'block', md: 'block' }, flexGrow: 1, objectFit: 'contain' }}
+          />
           {/* <SignedIn>
             <UserButton afterSignOutUrl="/sign-in" />
           </SignedIn>

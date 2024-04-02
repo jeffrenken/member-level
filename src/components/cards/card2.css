@@ -5,7 +5,7 @@
     Tutorial: https://youtu.be/nPcEatO4wco
     */
 :root {
-  --card-height: 170px;
+  --card-height: 180px;
   --card-width: calc(var(--card-height) / 1);
   --bg: 25 28 41;
   --color: 88 199 250;

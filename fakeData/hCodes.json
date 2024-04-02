@@ -3,6 +3,7 @@
     "hl_code": "HL01",
     "measure_id": "C01",
     "measure_name": "Breast Cancer Screening",
+    "abbreviation": "BCS",
     "definition": "Percent of female plan members aged 52-74 who had a mammogram during the past two years.",
     "bottom_third_lower_value": 0,
     "bottom_third_upper_value": 66.4926,
@@ -15,6 +16,7 @@
     "hl_code": "HL02",
     "measure_id": "C02",
     "measure_name": "Colorectal Cancer Screening",
+    "abbreviation": "CCS",
     "definition": "Percent of plan members aged 50-75 who had appropriate screening for colon cancer.",
     "bottom_third_lower_value": 0,
     "bottom_third_upper_value": 66.7735,
@@ -27,6 +29,7 @@
     "hl_code": "HL03",
     "measure_id": "C03",
     "measure_name": "Annual Flu Vaccine",
+    "abbreviation": "AFV",
     "definition": "Percent of plan members who got a vaccine (flu shot).",
     "bottom_third_lower_value": 0,
     "bottom_third_upper_value": 66.9661,
@@ -39,6 +42,7 @@
     "hl_code": "HL06",
     "measure_id": "C04",
     "measure_name": "Monitoring Physical Activity",
+    "abbreviation": "MPA",
     "definition": "Percent of senior plan members who discussed exercise with their doctor and were advised to start, increase, or maintain their physical activity during the year.",
 
     "bottom_third_lower_value": 0,
@@ -52,6 +56,7 @@
     "hl_code": "HL12",
     "measure_id": "C08",
     "measure_name": "Osteoporosis Management in Women who had a Fracture",
+    "abbreviation": "OMF",
     "definition": "Percent of female plan members who broke a bone and got screening or treatment for osteoporosis within 6 months.",
 
     "bottom_third_lower_value": 0,
@@ -65,6 +70,7 @@
     "hl_code": "HL13",
     "measure_id": "C09",
     "measure_name": "Diabetes Care D Eye Exam",
+    "abbreviation": "DEE",
     "definition": "Percent of plan members with diabetes who had an eye exam to check for damage from diabetes during the year.",
 
     "bottom_third_lower_value": 0,
@@ -78,6 +84,7 @@
     "hl_code": "HL15",
     "measure_id": "C10",
     "measure_name": "Diabetes Care D Blood Sugar Controlled",
+    "abbreviation": "DBC",
     "definition": "Percent of plan members with diabetes who had an A1C lab test during the year that showed their average blood sugar is under control.",
 
     "bottom_third_lower_value": 0,
@@ -91,6 +98,7 @@
     "hl_code": "HL16",
     "measure_id": "C11",
     "measure_name": "Controlling Blood Pressure",
+    "abbreviation": "CBP",
     "definition": "Percent of plan members with high blood pressure who got treatment and were able to maintain a healthy pressure.",
 
     "bottom_third_lower_value": 0,
@@ -104,6 +112,7 @@
     "hl_code": "HL18",
     "measure_id": "C12",
     "measure_name": "Reducing the Risk of Falling",
+    "abbreviation": "RFR",
     "definition": "Percent of plan members with a problem falling, walking, or balancing who discussed it with their doctor and received a recommendation for how to prevent falls during the year.",
 
     "bottom_third_lower_value": 0,
@@ -117,6 +126,7 @@
     "hl_code": "HL57",
     "measure_id": "C14",
     "measure_name": "Medication Reconciliation Post- Discharge",
+    "abbreviation": "MRP",
     "definition": "This shows the percent of plan members whose medication records were updated within 30 days after leaving the hospital. To update the record, a doctor or other health care professional looks at the new medications prescribed in the hospital and compares them with the other medications the patient takes. Updating medication records can help to prevent errors that can occur when medications are changed.",
 
     "bottom_third_lower_value": 0,
@@ -130,6 +140,7 @@
     "hl_code": "HL58",
     "measure_id": "C16",
     "measure_name": "Statin Therapy for Patients with Cardiovascular Disease",
+    "abbreviation": "SCT",
     "definition": "This rating is based on the percent of plan members with heart disease who get the right type of cholesterol-lowering drugs. Health plans can help make sure their members are prescribed medications that are more effective for them.",
 
     "bottom_third_lower_value": 0,
@@ -143,6 +154,7 @@
     "hl_code": "HL20",
     "measure_id": "C19",
     "measure_name": "Getting Needed Care",
+    "abbreviation": "GNC",
     "definition": "Percent of the best possible score the plan earned on how easy it is for members to get needed care, including care from specialists.",
 
     "bottom_third_lower_value": 0,
@@ -156,6 +168,7 @@
     "hl_code": "HL21",
     "measure_id": "C20",
     "measure_name": "Getting Appointments and Care Quickly",
+    "abbreviation": "GAC",
     "definition": "Percent of the best possible score the plan earned on how quickly members get appointments and care.",
 
     "bottom_third_lower_value": 0,
@@ -169,6 +182,7 @@
     "hl_code": "HL22",
     "measure_id": "C21",
     "measure_name": "Customer Service",
+    "abbreviation": "CS",
     "definition": "Percent of the best possible score the plan earned on how easy it is for members to get information and help from the plan when needed.",
 
     "bottom_third_lower_value": 0,
@@ -182,6 +196,7 @@
     "hl_code": "HL23",
     "measure_id": "C22",
     "measure_name": "Rating of Health Care Quality",
+    "abbreviation": "RHQ",
     "definition": "Percent of the best possible score the plan earned from members who rated the quality of the health care they received.",
 
     "bottom_third_lower_value": 0,
@@ -195,6 +210,7 @@
     "hl_code": "HL24",
     "measure_id": "C23",
     "measure_name": "Rating of Health Plan",
+    "abbreviation": "RHP",
     "definition": "Percent of the best possible score the plan earned from members who rated the health plan.",
 
     "bottom_third_lower_value": 0,
@@ -208,6 +224,7 @@
     "hl_code": "HL25",
     "measure_id": "C24",
     "measure_name": "Care Coordination",
+    "abbreviation": "CC",
     "definition": "Percent of the best possible score the plan earned on how well the plan coordinates members' care.",
 
     "bottom_third_lower_value": 0,
@@ -221,6 +238,7 @@
     "hl_code": "HL46",
     "measure_id": "D06",
     "measure_name": "Getting Needed Prescription Drugs",
+    "abbreviation": "GNDP",
     "definition": "Percent of the best possible score the plan earned on how easy it is for members to get the prescription drugs they need using the plan.",
 
     "bottom_third_lower_value": 0,
@@ -234,6 +252,7 @@
     "hl_code": "HL50",
     "measure_id": "D08",
     "measure_name": "Medication Adherence for Diabetes Medications",
+    "abbreviation": "MAD",
     "definition": "Percent of plan members with a prescription for diabetes medication who fill their prescription often enough to cover 80% or more of the time they are supposed to be taking the medication",
 
     "bottom_third_lower_value": 0,
@@ -247,6 +266,7 @@
     "hl_code": "HL53",
     "measure_id": "D11",
     "measure_name": "MTM Program Completion Rate for CMR",
+    "abbreviation": "CMR",
     "definition": "Some plan members are in a program (called a Medication Therapy Management program) to help them manage their drugs. The measure shows how many members in the program had an assessment of their medications from the plan. ",
 
     "bottom_third_lower_value": 0,
@@ -260,8 +280,8 @@
     "hl_code": "HL43",
     "measure_id": "D05",
     "measure_name": "Rating of Drug Plan",
+    "abbreviation": "RDP",
     "definition": "Percent of the best possible score the plan earned from members who rated the prescription drug plan.",
-
     "bottom_third_lower_value": 0,
     "bottom_third_upper_value": 81.6756,
     "middle_third_lower_value": 81.6757,
@@ -272,9 +292,9 @@
   {
     "hl_code": "HL51",
     "measure_id": "D09",
-    "measure_name": "Medication Adherence for Hypertension (RAS antagonists)",
+    "measure_name": "Medication Adherence - Hypertension",
+    "abbreviation": "MAH",
     "definition": "Percent of plan members with a prescription for a blood pressure medication who fill their prescription often enough to cover 80% or more of the time they are supposed to be taking the medication.",
-
     "bottom_third_lower_value": 0,
     "bottom_third_upper_value": 85.0633,
     "middle_third_lower_value": 85.0634,
@@ -286,6 +306,7 @@
     "hl_code": "HL52",
     "measure_id": "D10",
     "measure_name": "Medication Adherence for Cholesterol (Statins)",
+    "abbreviation": "MAC",
     "definition": "Percent of plan members with a prescription for a cholesterol medication (a statin drug) who fill their prescription often enough to cover 80% or more of the time they are supposed to be taking the medication.",
 
     "bottom_third_lower_value": 0,
@@ -298,7 +319,8 @@
   {
     "hl_code": "HL59",
     "measure_id": "D12",
-    "measure_name": "Statin Use in Persons with Diabetes (SUPD)",
+    "measure_name": "Statin Use in Persons with Diabetes",
+    "abbreviation": "SUPD",
     "definition": "To lower their risk of developing heart disease, most people with diabetes should take cholesterol medication. This rating is based on the percent of plan members with diabetes who take the most effective cholesterol-lowering drugs. Plans can help make sure their members get these prescriptions filled. ",
 
     "bottom_third_lower_value": 0,

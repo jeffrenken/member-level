@@ -18,7 +18,6 @@ const SrfRenderer = (params) => {
 };
 
 const LinkRenderer = (params) => {
-  console.log(params);
   return (
     <Link to={`/members/${params.data.id}`} style={{ textDecoration: 'none', color: '#4d9fda' }}>
       {params.value}
@@ -44,7 +43,7 @@ export default function MembersTable({ rows, csvDownload }) {
     { field: 'name', filter: true, chartDataType: 'category', maxWidth: 230, cellRenderer: LinkRenderer },
     {
       field: 'srf',
-      headerName: 'SRF Score',
+      headerName: 'SRF',
       type: 'numericColumn',
       maxWidth: 120,
       chartDataType: 'series',
@@ -53,7 +52,7 @@ export default function MembersTable({ rows, csvDownload }) {
     },
     {
       field: 'numberOfGaps',
-      headerName: 'Number of Gaps',
+      headerName: 'Gaps',
       type: 'numericColumn',
       maxWidth: 160,
       chartDataType: 'series',

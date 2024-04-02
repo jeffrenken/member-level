@@ -12,6 +12,7 @@ import { Link } from 'react-router-dom';
 import { useRecoilState } from 'recoil';
 import MeasureCard from '@/components/cards/MeasureCard';
 import Card2 from '@/components/cards/Card2';
+import useMembers from '@/api/useMembers';
 
 const reds = ['#f5a3a3', '#dc4242', '#fb2222'];
 
@@ -39,7 +40,18 @@ function selectRandomColor() {
 }
 const Dashboard = () => {
   const [favorites, setFavorites] = useRecoilState(favoritesState);
-  const { data: measures } = useMeasures();
+  const { data } = useMeasures();
+  const { data: members } = useMembers();
+
+  const measures = data.map((measure) => {
+    return {
+      ...measure,
+      numerator: members.filter((member) => member[measure.measure_name] === 'TRUE').length,
+      denominator: members.filter((member) => member[measure.measure_name] === 'FALSE').length,
+      forecast: 'N/A'
+    };
+  });
+
   return (
     <Box p={4}>
       <Container maxWidth="xl">

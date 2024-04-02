@@ -17,7 +17,6 @@ const SrfRenderer = (params) => {
 };
 
 const LinkRenderer = (params) => {
-  console.log(params);
   return (
     <Link to={`/members/${params.data.id}`} style={{ textDecoration: 'none', color: '#4d9fda' }}>
       {params.value}
@@ -27,7 +26,6 @@ const LinkRenderer = (params) => {
 
 export default function MembersPage() {
   const { data } = useMembers();
-  console.log(data);
 
   const members = data.map((member) => {
     return {
@@ -51,7 +49,7 @@ export default function MembersPage() {
     },
     {
       field: 'srf',
-      headerName: 'SRF Score',
+      headerName: 'SRF',
       type: 'numericColumn',
       maxWidth: 180,
       chartDataType: 'series',
@@ -60,7 +58,7 @@ export default function MembersPage() {
     },
     {
       field: 'numberOfGaps',
-      headerName: 'Number of Gaps',
+      headerName: 'Gaps',
       type: 'numericColumn',
       maxWidth: 180,
       chartDataType: 'series',

@@ -123,7 +123,7 @@ export const Article = styled.article`
 
   aspect-ratio: 4 / 4;
   border-radius: calc(var(--radius) * 1px);
-  width: 170px;
+  width: 180px;
   position: relative;
   grid-template-rows: 1fr auto;
   box-shadow: 0 1rem 2rem -1rem black;
@@ -248,8 +248,6 @@ const CardGlow = ({ measure, shadow, colors }) => {
   const setGlow = useGlowPointer();
   const theme = useTheme();
   const isDarkMode = theme.palette.mode === 'dark';
-  console.log(setGlow);
-
   return (
     <>
       <StyledDiv colors={colors} shadow={shadow}>
@@ -260,11 +258,12 @@ const CardGlow = ({ measure, shadow, colors }) => {
               to={`/measures/${measure.id}`}
               sx={(theme) => ({
                 bgcolor: isDarkMode ? '#111' : '#fff',
-                color: isDarkMode ? '#bbb' : '#111',
+                color: theme.palette.text.primary,
                 textDecoration: 'none',
                 p: 0,
                 borderRadius: '10px',
-                zIndex: 1
+                zIndex: 1,
+                overflow: 'hidden'
 
                 //boxShadow: 'inset 5px 5px 9px rgba(94,104,121,0.3), -5px -5px 9px rgba(88,88,88,0.45)'
                 //background: 'linear-gradient(to right, rgba(255, 255, 255, 0), rgba(255, 255, 255, 1))'
@@ -272,9 +271,18 @@ const CardGlow = ({ measure, shadow, colors }) => {
             >
               {/* <CardContainer color1={colors[0]} color2={colors[1]} color3={colors[2]}>
               <div className="card"> */}
-              <Stack direction="column" justifyContent="center" alignItems="center" height="100%" p={2}>
-                <Typography align="center" sx={{ fontSize: '1rem' }}>
+              <Stack direction="column" height="100%" py={2} px={1}>
+                <Typography align="center" sx={{ fontSize: '3rem', fontWeight: 600, lineHeight: 0.9, letterSpacing: '2px' }} mt={2}>
+                  {measure.abbreviation}
+                </Typography>
+                <Typography align="center" sx={{ fontSize: '0.7rem' }}>
                   {measure.label}
+                </Typography>
+                <Typography align="center" sx={{ fontSize: '0.9rem' }} mt={1.5}>
+                  {measure.numerator}/{measure.denominator}
+                </Typography>
+                <Typography align="center" sx={{ fontSize: '0.9rem' }} mt={0}>
+                  Forecast: {measure.forecast}
                 </Typography>
               </Stack>{' '}
               {/*  </div>

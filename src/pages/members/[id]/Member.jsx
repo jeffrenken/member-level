@@ -4,6 +4,7 @@ import useMembers from '@/api/useMembers';
 import memberMeasures from '@/../fakeData/member_measures.json';
 import AgGrid from '@/components/tables/AgGrid';
 import { Box, Container, Typography, Rating } from '@mui/material';
+import { IconCheckbox, IconX } from '@tabler/icons-react';
 
 //for deciding srf, not implemented yet
 /*  "DUAL ELIGIBLE": "TRUE", if true = srf
@@ -33,12 +34,19 @@ const SrfRenderer = (params) => {
 };
 
 const LinkRenderer = (params) => {
-  console.log(params);
   return (
     <Link to={`/members/${params.data.id}`} style={{ textDecoration: 'none', color: '#4d9fda' }}>
       {params.value}
     </Link>
   );
+};
+
+const BooleanRenderer = (params) => {
+  if (params.value) {
+    return <IconCheckbox color="#4caf50" />;
+  } else {
+    return <IconX color="#f44336" />;
+  }
 };
 
 export default function Member() {
@@ -50,7 +58,6 @@ export default function Member() {
   const rows = memberMeasures
     .filter((row) => member?.[row])
     .map((row) => {
-      console.log(row);
       return {
         label: row,
         value: getValue(member[row])
@@ -66,11 +73,10 @@ export default function Member() {
       maxWidth: 300,
       chartDataType: 'series',
       cellDataType: 'text',
-      filter: true
+      filter: true,
+      cellRenderer: BooleanRenderer
     }
   ];
-
-  console.log(rows);
 
   if (!member || !rows.length) {
     return <div>Member not found</div>;

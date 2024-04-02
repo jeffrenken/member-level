@@ -107,8 +107,6 @@ export default function Map() {
   const [clickedCounty, setClickedCounty] = useState(null);
   const { data: srfScores } = useSrfScores({ measure: selectedMeasureOption?.hl_code, limit: selectedSrfOption });
 
-  console.log(srfScores);
-
   /*   useEffect(() => {
     const entries = Object.fromEntries([...searchParams]);
     const searchAsObject = Object.fromEntries(searchParams);
@@ -133,7 +131,6 @@ export default function Map() {
     //setMeasure(value);
     //const selectedMeasure = allMeasures.find((item) => item.hl_code === selectedMeasureOption.hl_code);
     const selectedMeasure = selectedMeasureOption;
-    console.log(selectedMeasure);
 
     setMeasureName(selectedMeasure.measure_name);
     const measureStepArray = [
@@ -156,7 +153,6 @@ export default function Map() {
         itemCopy.properties = itemProperties;
         return itemCopy;
       }
-      console.log('MEMBERS DENOM', membersInCountyDenom);
       let countInCountyDenom = membersInCountyDenom.length;
       let countTotalInCounty = memberData.filter((d) => d.COUNTY === item.properties.NAME).length;
       let percent = (countInCountyDenom / countTotalInCounty) * 100;
