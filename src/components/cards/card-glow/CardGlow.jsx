@@ -1,13 +1,15 @@
 /* import { GUI } from 'https://cdn.skypack.dev/dat.gui';
 import Color from 'https://cdn.skypack.dev/color';
 import gsap from 'https://cdn.skypack.dev/gsap'; */
-import React from 'react';
+import React, { useEffect } from 'react';
 import './card-glow.css';
 import { CardContainer } from '../Card2.jsx';
 
 import styled, { keyframes } from 'styled-components';
-import { Box, Stack, Typography, useTheme } from '@mui/material';
-import { Link } from 'react-router-dom';
+import { Box, ButtonBase, Stack, Typography, useTheme } from '@mui/material';
+import { Link, useNavigate } from 'react-router-dom';
+import { useRecoilState } from 'recoil';
+import { measureFilterState } from '@/state/measureFilterState.js';
 
 function hexToHue(hex) {
   // Remove the # if present
@@ -123,7 +125,7 @@ export const Article = styled.article`
 
   aspect-ratio: 4 / 4;
   border-radius: calc(var(--radius) * 1px);
-  width: 180px;
+  width: 170px;
   position: relative;
   grid-template-rows: 1fr auto;
   box-shadow: 0 1rem 2rem -1rem black;
@@ -244,18 +246,28 @@ const useGlowPointer = () => {
   return null;
 };
 
-const CardGlow = ({ measure, shadow, colors }) => {
+const CardGlow = ({ measure, shadow, colors, disabled }) => {
   const setGlow = useGlowPointer();
   const theme = useTheme();
+  const navigate = useNavigate();
+  const [measureState, setMeasureState] = useRecoilState(measureFilterState);
   const isDarkMode = theme.palette.mode === 'dark';
+
+  const handleClick = () => {
+    if (!disabled) {
+      navigate(`/measures?measureFilterState=${measure.id}`);
+      setMeasureState(measure.id);
+    }
+  };
   return (
     <>
       <StyledDiv colors={colors} shadow={shadow}>
         <Wrapper>
           <Article data-glow>
             <Box
-              component={Link}
-              to={`/measures/${measure.id}`}
+              component={!disabled ? Link : 'div'}
+              onClick={handleClick}
+              //to={`/measures/${measure.id}`}
               sx={(theme) => ({
                 bgcolor: isDarkMode ? '#111' : '#fff',
                 color: theme.palette.text.primary,
@@ -271,8 +283,8 @@ const CardGlow = ({ measure, shadow, colors }) => {
             >
               {/* <CardContainer color1={colors[0]} color2={colors[1]} color3={colors[2]}>
               <div className="card"> */}
-              <Stack direction="column" height="100%" py={2} px={1}>
-                <Typography align="center" sx={{ fontSize: '3rem', fontWeight: 600, lineHeight: 0.9, letterSpacing: '2px' }} mt={2}>
+              <Stack direction="column" height="100%" py={1} px={1}>
+                <Typography align="center" sx={{ fontSize: '2.6rem', fontWeight: 600, lineHeight: 0.9, letterSpacing: '2px' }} mt={2}>
                   {measure.abbreviation}
                 </Typography>
                 <Typography align="center" sx={{ fontSize: '0.7rem' }}>

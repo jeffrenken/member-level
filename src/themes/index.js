@@ -21,7 +21,7 @@ export const theme = (mode) => {
     //backgroundDefault: backgroundGradient, //mode === 'dark' ? color.darkPaper : '#3ed3ed',
     //background: mode === 'dark' ? color.darkBackground : color.background,
     backgroundSemiTransparent: mode === 'dark' ? 'rgba(0, 0, 0, 0.8)' : 'rgba(255, 255, 255, 0.8)',
-    darkTextPrimary: mode === 'dark' ? color.darkTextPrimary : color.textPrimary,
+    textPrimary: mode === 'dark' ? color.darkTextPrimary : color.textPrimary,
     darkTextSecondary: color.grey300,
     textDark: color.grey900,
     menuSelected: mode === 'dark' ? color.darkTextFocused : color.textFocused,

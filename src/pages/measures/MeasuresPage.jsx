@@ -9,15 +9,17 @@ import { favoritesState } from '@/state/favoritesAtom';
 import TableTest from '@/tables/TanStackTestTable';
 import { Container, Grid, Typography, Stack, Box, useTheme } from '@mui/material';
 import { Link } from 'react-router-dom';
-import { useRecoilState } from 'recoil';
+import { useRecoilState, useRecoilValue } from 'recoil';
 import MeasureCard from '@/components/cards/MeasureCard';
 import Card2 from '@/components/cards/Card2';
 import useMembers from '@/api/useMembers';
 import Top from '@/layout/Top';
-import React, { useEffect } from 'react';
+import React, { useEffect, useMemo } from 'react';
 import { LineChart } from '@/components/charts/nivo/LineChart';
 import { measureFilterState } from '@/state/measureFilterState';
 import Grid2 from '@mui/material/Unstable_Grid2';
+import useProviders from '@/api/useProviders';
+import { providertFilterState } from '@/state/providerFilterState';
 
 const reds = ['#f5a3a3', '#dc4242', '#fb2222'];
 
@@ -60,28 +62,28 @@ const useGlowPointer = () => {
   return null;
 };
 
-const Dashboard = () => {
+const MeasuresPage = () => {
   const UPDATE = useGlowPointer();
   const theme = useTheme();
-  const [favorites, setFavorites] = useRecoilState(favoritesState);
-  const [measureState, setMeasureState] = useRecoilState(measureFilterState);
-  const { data } = useMeasures();
-  const { data: members } = useMembers();
+  const providerId = useRecoilValue(providertFilterState);
+  const { data: measuresData } = useMeasures();
+  const { data: membersData } = useMembers();
+  const { data: providers } = useProviders();
 
-  useEffect(() => {
+  /*   useEffect(() => {
     setMeasureState(null);
-  }, []);
+  }, []); */
 
   const background = theme.palette.background.paper;
 
-  const measures = data.map((measure) => {
+  /* const measures = data.map((measure) => {
     return {
       ...measure,
       numerator: members.filter((member) => member[measure.measure_name] === 'TRUE').length,
       denominator: members.filter((member) => member[measure.measure_name] === 'FALSE').length,
       forecast: 'N/A'
     };
-  });
+  }); */
 
   const sampleMeasure = {
     id: 1,
@@ -92,9 +94,52 @@ const Dashboard = () => {
     forecast: 'something'
   };
 
+  const provider = useMemo(() => {
+    if (!providers) {
+      return null;
+    }
+    return providers.find((provider) => {
+      return provider.id === providerId;
+    });
+  }, [providers, providerId]);
+
+  const measures = useMemo(() => {
+    if (!measuresData.length || !membersData) {
+      return null;
+    }
+
+    let membersCopy = [...membersData];
+
+    let m = measuresData.map((member) => {
+      return {
+        ...member,
+        name: member['FIRST NAME'] + ' ' + member['LAST NAME'],
+        id: member['MEMBER ID']
+      };
+    });
+
+    if (provider) {
+      membersCopy = membersCopy.filter((member) => member['Contract Entity Name'] === provider.label);
+    }
+
+    /* if (contract) {
+      don't have a way to associate a contract with a member now
+      return m.filter((member) => member['Contract Name'] === contract.label);
+    } */
+    let splitMembers = [];
+    measuresData.forEach((measure, i) => {
+      splitMembers[i] = { ...measure };
+      splitMembers[i].numerator = membersCopy.filter((member) => member[measure.measure_name] === 'TRUE').length;
+      splitMembers[i].denominator = membersCopy.filter((member) => member[measure.measure_name] === 'FALSE').length;
+      splitMembers[i].forecast = 'N/A';
+    });
+
+    return splitMembers;
+  }, [measuresData, provider]);
+
   return (
     <Container maxWidth="lg" sx={{ marginBottom: '100px', marginTop: '20px' }}>
-      <Top />
+      <Top filters={['contracts', 'providers']} />
       {/* <Box height={400}>
         <LineChart />
       </Box> */}
@@ -127,6 +172,6 @@ const Dashboard = () => {
   );
 };
 
-export default Dashboard;
+export default MeasuresPage;
 
 /*  <Card2 measure={measure} key={measure.id} colors={selectRandomColor()} /> */

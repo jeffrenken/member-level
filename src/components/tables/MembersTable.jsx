@@ -3,33 +3,17 @@ import useMembers from '@/api/useMembers';
 import { Rating, Chip, Container } from '@mui/material';
 import { Link } from 'react-router-dom';
 import React from 'react';
+import { GapRenderer, LinkRenderer, RatingRenderer, SrfRenderer, StarRenderer } from './CellRenderers';
 
 const randomBoolean = () => Math.random() > 0.5;
 const randomIntegerBetween = (min, max) => Math.floor(Math.random() * (max - min + 1) + min);
 const randomHalfNumberBetween = (min, max) => Math.floor(Math.random() * (max - min + 1) + min) / 2;
 
-const RatingRenderer = (params) => {
-  return <Rating value={params.value} readOnly precision={0.5} size="small" />;
-};
-
-const SrfRenderer = (params) => {
-  return params.value.toString();
-  return <Chip color={params.value ? 'success' : 'error'} label={params.value.toString()} />;
-};
-
-const LinkRenderer = (params) => {
-  return (
-    <Link to={`/members/${params.data.id}`} style={{ textDecoration: 'none', color: '#4d9fda' }}>
-      {params.value}
-    </Link>
-  );
-};
-
 const MemoizedAgGrid = React.memo(function AgGrid({ columnDefs, rowData }) {
   return <AgGrid columnDefs={columnDefs} rowData={rowData} sidebar={false} />;
 });
 
-export default function MembersTable({ rows, csvDownload }) {
+export default function MembersTable({ rows, csvDownload, height }) {
   const members = rows.map((member) => {
     return {
       name: member['FIRST NAME'] + ' ' + member['LAST NAME'],
@@ -40,12 +24,11 @@ export default function MembersTable({ rows, csvDownload }) {
     };
   });
   const columnDefs = [
-    { field: 'name', filter: true, chartDataType: 'category', maxWidth: 230, cellRenderer: LinkRenderer },
+    { field: 'name', filter: true, chartDataType: 'category', cellRenderer: LinkRenderer },
     {
       field: 'srf',
       headerName: 'SRF',
       type: 'numericColumn',
-      maxWidth: 120,
       chartDataType: 'series',
       filter: true,
       cellRenderer: SrfRenderer
@@ -54,26 +37,25 @@ export default function MembersTable({ rows, csvDownload }) {
       field: 'numberOfGaps',
       headerName: 'Gaps',
       type: 'numericColumn',
-      maxWidth: 160,
       chartDataType: 'series',
-      filter: true
-    },
-    {
+      filter: true,
+      cellRenderer: GapRenderer
+    }
+    /*  {
       field: 'starRating',
       headerName: 'Star Rating',
       type: 'numericColumn',
-      maxWidth: 150,
       chartDataType: 'series',
       filter: true,
       cellRenderer: RatingRenderer
-    }
+    } */
   ];
 
   return (
-    <>
-      <AgGrid columnDefs={columnDefs} rowData={members} sideBar={false} csvDownload={csvDownload} />
+    <div style={{ height: '200px' }}>
+      <AgGrid columnDefs={columnDefs} rowData={members} sideBar={false} csvDownload={csvDownload} height={height} />
       {/*       <MemoizedAgGrid columnDefs={columnDefs} rowData={members} />
        */}{' '}
-    </>
+    </div>
   );
 }

@@ -14,15 +14,36 @@ export default function componentStyleOverrides(theme) {
       }
     },
     MuiButtonBase: {
+      styleOverrides: {
+        root: {
+          '&:hover': {
+            backgroundColor: 'transparent'
+          }
+        }
+      },
       defaultProps: {
         disableRipple: true
       }
     },
     MuiButton: {
+      disableRipple: true,
       styleOverrides: {
         root: {
           fontWeight: 500,
-          borderRadius: '4px'
+          borderRadius: '4px',
+          '&:hover': {
+            backgroundColor: 'transparent'
+          }
+        }
+      }
+    },
+    MuiIconButton: {
+      disableRipple: true,
+      styleOverrides: {
+        root: {
+          '&:hover': {
+            backgroundColor: 'transparent'
+          }
         }
       }
     },
@@ -67,7 +88,7 @@ export default function componentStyleOverrides(theme) {
     MuiListItemButton: {
       styleOverrides: {
         root: {
-          color: theme.darkTextPrimary,
+          color: theme.textPrimary,
           paddingTop: '10px',
           paddingBottom: '10px',
           '&.Mui-selected': {
@@ -95,7 +116,7 @@ export default function componentStyleOverrides(theme) {
     MuiListItemIcon: {
       styleOverrides: {
         root: {
-          color: theme.darkTextPrimary,
+          color: theme.textPrimary,
           minWidth: '36px'
         }
       }
@@ -110,7 +131,7 @@ export default function componentStyleOverrides(theme) {
     MuiInputBase: {
       styleOverrides: {
         input: {
-          color: isDarkMode ? theme.colors?.grey300 : theme.darkTextPrimary,
+          color: isDarkMode ? theme.colors?.grey300 : theme.textPrimary,
           '&::placeholder': {
             color: theme.darkTextSecondary,
             fontSize: '0.875rem'

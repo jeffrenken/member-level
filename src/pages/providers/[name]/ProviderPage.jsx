@@ -1,30 +1,14 @@
 import useMembers from '@/api/useMembers';
-import { Container, Typography } from '@mui/material';
+import { Box, Container, Typography } from '@mui/material';
 import { useParams } from 'react-router-dom';
 import AgGrid from '@/components/tables/AgGrid';
 import { Rating } from '@mui/material';
 import { Link } from 'react-router-dom';
+import { SrfRenderer, LinkRenderer, RatingRenderer } from '@/components/tables/CellRenderers';
 
 const randomBoolean = () => Math.random() > 0.5;
 const randomIntegerBetween = (min, max) => Math.floor(Math.random() * (max - min + 1) + min);
 const randomHalfNumberBetween = (min, max) => Math.floor(Math.random() * (max - min + 1) + min) / 2;
-
-const RatingRenderer = (params) => {
-  return <Rating value={params.value} readOnly precision={0.5} size="small" />;
-};
-
-const SrfRenderer = (params) => {
-  return params.value.toString();
-  return <Chip color={params.value ? 'success' : 'error'} label={params.value.toString()} />;
-};
-
-const LinkRenderer = (params) => {
-  return (
-    <Link to={`/members/${params.data.id}`} style={{ textDecoration: 'none', color: '#4d9fda' }}>
-      {params.value}
-    </Link>
-  );
-};
 
 export default function ProviderPage() {
   const params = useParams();
@@ -74,8 +58,12 @@ export default function ProviderPage() {
 
   return (
     <Container maxWidth="lg">
-      <Typography variant="h3">{name}</Typography>
-      <AgGrid columnDefs={columnDefs} rowData={members} sideBar={false} csvDownload={true} sideBar />
+      <Typography variant="h3" mt={3}>
+        {name}
+      </Typography>
+      <Box sx={{ height: 'calc(100vh - 150px)' }}>
+        <AgGrid columnDefs={columnDefs} rowData={members} sideBar={false} csvDownload={true} sideBar />
+      </Box>
     </Container>
   );
 }

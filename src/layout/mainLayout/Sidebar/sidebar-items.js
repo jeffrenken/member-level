@@ -3,7 +3,7 @@ import PlanAutocomplete from '@/components/inputs/PlanAutocomplete';
 import RatingAutocomplete from '@/components/inputs/RatingAutocomplete';
 import StatesAutocomplete from '@/components/inputs/StatesAutocomplete';
 import YearAutocomplete from '@/components/inputs/YearAutocomplete';
-import { IconDashboard, IconExclamationCircle, IconMap, IconPerfume, IconRainbow, IconTable } from '@tabler/icons-react';
+import { IconDashboard, IconExclamationCircle, IconLayoutGrid, IconMap, IconPerfume, IconRainbow, IconTable } from '@tabler/icons-react';
 
 export const items = [
   {
@@ -33,11 +33,11 @@ export const items = [
       } */
 
       {
-        id: 'dashboard',
-        title: 'Dashboard',
+        id: 'measures',
+        title: 'Measures',
         type: 'item',
-        url: '/dashboard',
-        icon: IconDashboard,
+        url: '/',
+        icon: IconLayoutGrid,
         breadcrumbs: false
       },
       {
@@ -58,7 +58,7 @@ export const items = [
       },
       {
         id: 'memberTable',
-        title: 'Member Table',
+        title: 'Members',
         type: 'item',
         url: '/members',
         icon: IconTable,
@@ -66,7 +66,7 @@ export const items = [
       },
       {
         id: 'table',
-        title: 'Table',
+        title: 'Sample',
         type: 'item',
         url: '/table',
         icon: IconTable,

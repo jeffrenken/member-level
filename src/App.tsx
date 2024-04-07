@@ -12,6 +12,7 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 //import theme from './themes';
 import { ThemeContextProvider } from './context/ThemeContextProvider';
 import { RecoilRoot } from 'recoil';
+import { RecoilURLSyncJSON } from 'recoil-sync';
 //import NavigationScroll from './layout/NavigationScroll.jsx';
 const queryClient = new QueryClient();
 
@@ -19,12 +20,14 @@ function App() {
   return (
     <QueryClientProvider client={queryClient}>
       <RecoilRoot>
-        <ThemeContextProvider>
-          <SnackbarProvider anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}>
-            <CssBaseline />
-            <RouterProvider router={router} />
-          </SnackbarProvider>
-        </ThemeContextProvider>
+        <RecoilURLSyncJSON location={{ part: 'queryParams' }}>
+          <ThemeContextProvider>
+            <SnackbarProvider anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}>
+              <CssBaseline />
+              <RouterProvider router={router} />
+            </SnackbarProvider>
+          </ThemeContextProvider>
+        </RecoilURLSyncJSON>
       </RecoilRoot>
     </QueryClientProvider>
   );

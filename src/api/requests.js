@@ -44,6 +44,17 @@ const members = [
   { id: 3, firstName: 'Jack', lastName: 'Doe', contract: 3, plan: 3, rating: 3.5 }
 ];
 
+const fakeProviders = () => {
+  const providerName = memberData
+    .map((d) => d['Contract Entity Name'])
+    .filter((d) => Boolean(d))
+    .sort();
+  const distinctProviders = [...new Set(providerName)];
+
+  const p = distinctProviders.map((p, i) => ({ id: i + 1, label: p }));
+  return p;
+};
+
 const axiosClient = axios.create({
   //baseURL: 'https://jsonplaceholder.typicode.com',
   headers: {
@@ -51,8 +62,16 @@ const axiosClient = axios.create({
   }
 });
 
+const fakeSrf = [
+  { id: 1, label: 'All', value: 1 },
+  { id: 2, label: 'SRF Only', value: 2 },
+  { id: 3, label: 'Non-SRF Only', value: 3 }
+];
+
 const mock = new MockAdapter(axiosClient, { delayResponse: 0 });
 mock.onGet('/contracts').reply(200, fakeContracts());
+mock.onGet('/providers').reply(200, fakeProviders());
+mock.onGet('/srf').reply(200, fakeSrf);
 mock.onGet('/years').reply(200, fakeYears);
 mock.onGet('/plans').reply(200, fakePlans);
 mock.onGet('/ratings').reply(200, fakeRatings);
@@ -90,6 +109,14 @@ mock.onPost('/other-contract-srf-scores').reply((config) => {
 
 export async function fetchContracts() {
   const res = await axiosClient.get('/contracts');
+  return res.data;
+}
+export async function fetchSrf() {
+  const res = await axiosClient.get('/srf');
+  return res.data;
+}
+export async function fetchProviders() {
+  const res = await axiosClient.get('/providers');
   return res.data;
 }
 

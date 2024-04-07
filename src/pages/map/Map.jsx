@@ -1,20 +1,25 @@
+import useMeasures from '@/api/useMeasures';
+import Card from '@/components/Card';
+import MembersTable from '@/components/tables/MembersTable';
+import { measureFilterState } from '@/state/measureFilterState';
+import { Autocomplete, Box, Stack, TextField, Typography, useTheme } from '@mui/material';
 import mapboxgl from 'mapbox-gl';
 import 'mapbox-gl/dist/mapbox-gl.css';
-import React, { useEffect, useRef, useState, useMemo } from 'react';
-import { options, pets } from '../../../fakeData/pets';
-//import { states as s } from '../../../fakeData/states';
-import { MenuItem, Select, useTheme, Autocomplete, TextField, Stack, Box, Typography, Button } from '@mui/material';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { Link, useSearchParams } from 'react-router-dom';
+import { useRecoilState } from 'recoil';
 import s from '../../../fakeData/gz_2010_us_040_00_500k.json';
-//import { countiesData } from "../../../data/counties_us";
 import countiesData from '../../../fakeData/gz_2010_us_050_00_5m.json';
-import stateToNumber from '../../../fakeData/stateToNumber.json';
-import memberData from '../../../fakeData/member_data.json';
-import TopFilters from '@/components/inputs/TopFilters';
 import allMeasures from '../../../fakeData/measures.json';
-import Card from '@/components/Card';
-import { useSrfScores } from '@/api/useSrfScores';
-import MembersTable from '@/components/tables/MembersTable';
+import memberData from '../../../fakeData/member_data.json';
+import stateToNumber from '../../../fakeData/stateToNumber.json';
+import AutocompleteButton from '@/components/Autocomplete';
+import { contractFilterState } from '@/state/contractFilterState';
+import { providertFilterState } from '@/state/providerFilterState';
+import { srfFilterState } from '@/state/srfFilterState';
+import useContracts from '@/api/useContracts';
+import useProviders from '@/api/useProviders';
+import useSrf from '@/api/useSrf';
 
 /* const st = s.features.map((item) => {
   let statePet = pets.find((pet) => pet.state === item.properties.NAME);
@@ -86,7 +91,6 @@ export default function Map() {
   const [zoom, setZoom] = useState(4.5);
   const [category, setCategory] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('');
-  const [categoryOption, setCategoryOption] = useState('');
   const [selectedMeasureOption, setSelectedMeasureOption] = useState('');
   const [categoryOptions, setCategoryOptions] = useState([]);
   const [selectedCounty, setSelectedCounty] = useState(null);
@@ -94,10 +98,7 @@ export default function Map() {
   const [detail, setDetail] = useState(null);
   const [option, setOption] = useState('');
   const [options, setOptions] = useState([]);
-  const [measureOption, setMeasureOption] = useState('');
-  const [measureOptions, setMeasureOptions] = useState(allMeasures);
   const [selectedSrfOption, setSelectedSrfOption] = useState(null);
-  const [measure, setMeasure] = useState('');
   const [filteredData, setFilteredData] = useState([]);
   const [stepArray, setStepArray] = useState([30, 40, 50, 1000000]);
   const [mapData, setMapData] = useState(countyDataWithCount);
@@ -105,7 +106,17 @@ export default function Map() {
   const [measureName, setMeasureName] = useState('');
   const [value, setValue] = React.useState('');
   const [clickedCounty, setClickedCounty] = useState(null);
-  const { data: srfScores } = useSrfScores({ measure: selectedMeasureOption?.hl_code, limit: selectedSrfOption });
+  const [measureState, setMeasureState] = useRecoilState(measureFilterState);
+  const [contractState, setContractState] = useRecoilState(contractFilterState);
+  const [providerState, setProviderState] = useRecoilState(providertFilterState);
+  const [srfState, setSrfState] = useRecoilState(srfFilterState);
+
+  const { data: measures } = useMeasures();
+  const { data: contractsData } = useContracts();
+  const { data: providersData } = useProviders();
+  const { data: srf } = useSrf();
+
+  //const { data: srfScores } = useSrfScores({ measure: selectedMeasureOption?.hl_code, limit: selectedSrfOption });
 
   /*   useEffect(() => {
     const entries = Object.fromEntries([...searchParams]);
@@ -124,6 +135,26 @@ export default function Map() {
     let values = getDataByOption(selectedCategory.value, selectedCategoryOption.value);
     setFilteredData(values);
   }, [selectedCategory, selectedCategoryOption]);
+
+  const contracts = useMemo(() => {
+    if (!contractsData) return null;
+    return contractsData.map((contract) => {
+      return {
+        ...contract,
+        value: contract.id
+      };
+    });
+  }, [contractsData]);
+
+  const providers = useMemo(() => {
+    if (!providersData) return null;
+    return providersData.map((provider) => {
+      return {
+        ...provider,
+        value: provider.id
+      };
+    });
+  }, [providersData]);
 
   useMemo(() => {
     //filters
@@ -330,11 +361,9 @@ export default function Map() {
     setFilteredData(values);
   };
 
-  const handleMeasureChange = (value) => {
-    return;
-    //old sate stuff below
+  //old sate stuff below
 
-    /* const totalCount = filteredData.length;
+  /* const totalCount = filteredData.length;
     const membersInDenom = filteredData.filter(
       (d) => d[selectedMeasure.measure_name] === "FALSE",
     );
@@ -374,18 +403,32 @@ export default function Map() {
 
     setMapData({ type: "FeatureCollection", features: values });
     */
-  };
 
   const handleSelectionChange = (e) => {
     setValue(e.target.value);
   };
 
+  const handleMeasureChange = (value) => {
+    setMeasureState(value);
+    setSelectedMeasureOption(measures.find((m) => m.id === value));
+  };
+
   return (
     <>
       <Box sx={{ position: 'relative' }}>
-        <Box sx={{ position: 'absolute', top: '16px', left: '16px', zIndex: 1000, width: '50%' }}>
-          <Card px={2} py={1}>
-            <Stack direction="row" alignItems="space-between" justifyContent="space-between" m={1} spacing={2}>
+        <Box sx={{ position: 'absolute', top: '16px', left: '16px', zIndex: 2, width: '40%' }}>
+          <Card px={0} py={1}>
+            <Stack direction="row" alignItems="center" justifyContent="flex-start" spacing={2} px={3}>
+              <AutocompleteButton
+                defaultLabel="Contracts"
+                options={contracts}
+                value={contractState}
+                onChange={setContractState}
+                width={90}
+              />
+              <AutocompleteButton defaultLabel="Measures" options={measures} value={measureState} onChange={handleMeasureChange} />
+              <AutocompleteButton defaultLabel="SRF" options={srf} value={srfState} onChange={setSrfState} />
+
               {/* <Autocomplete
                 disablePortal
                 id="combo-box-demo"
@@ -408,7 +451,7 @@ export default function Map() {
                 autoHighlight
                 onChange={(e, value) => setSelectedCategoryOption(value)}
               /> */}
-              <Autocomplete
+              {/* <Autocomplete
                 disablePortal
                 id="combo-box-demo"
                 options={allMeasures}
@@ -431,7 +474,7 @@ export default function Map() {
                 renderInput={(params) => <TextField {...params} label="SRF Options" />}
                 autoHighlight
                 onChange={(e, value) => setSelectedSrfOption(value)}
-              />
+              /> */}
             </Stack>
           </Card>
         </Box>
@@ -457,8 +500,8 @@ export default function Map() {
                 </Typography>
                 <Typography sx={{ fontWeight: 600, fontSize: '0.9rem' }}>Other Info about this. Not sure what.</Typography> */}
               </Stack>
-              <Box sx={{ height: '290px', overflow: 'auto' }}>
-                {filteredMembers.length && <MembersTable rows={filteredMembers} csvDownload />}
+              <Box sx={{ height: '290px' }}>
+                {filteredMembers.length && <MembersTable rows={filteredMembers} csvDownload height="250px" />}
               </Box>
             </Card>
           </Box>

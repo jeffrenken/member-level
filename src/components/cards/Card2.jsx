@@ -27,7 +27,7 @@ const glow = keyframes`
 `;
 
 export const CardContainer = styled.div`
-  --card-height: 180px;
+  --card-height: 160px;
   --card-width: calc(var(--card-height) / 1);
   --bg: 25, 28, 41;
   --color: 88, 199, 250;

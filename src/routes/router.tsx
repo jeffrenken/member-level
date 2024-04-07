@@ -14,6 +14,7 @@ import SocialRiskFactors from '@/pages/social-risk-factors/SocialRiskFactors';
 import Table from '@/pages/table/Table';
 import MembersPage from '@/pages/members/MembersPage';
 import ProviderPage from '@/pages/providers/[name]/ProviderPage';
+import MeasuresPage from '@/pages/measures/MeasuresPage';
 
 export const router = createBrowserRouter([
   {
@@ -26,7 +27,7 @@ export const router = createBrowserRouter([
     children: [
       {
         path: '/',
-        element: <Dashboard />
+        element: <MeasuresPage />
       },
       {
         path: '/map',
@@ -34,6 +35,10 @@ export const router = createBrowserRouter([
       },
       {
         path: '/measures/:id',
+        element: <Measure />
+      },
+      {
+        path: '/measures',
         element: <Measure />
       },
       {

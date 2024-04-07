@@ -1,28 +1,13 @@
 import AgGrid from '@/components/tables/AgGrid';
 import useMembers from '@/api/useMembers';
-import { Rating, Chip, Container } from '@mui/material';
+import { Rating, Chip, Container, Box } from '@mui/material';
 import { Link } from 'react-router-dom';
+import { GapRenderer, LinkRenderer, RatingRenderer, SrfRenderer, StarRenderer } from '@/components/tables/CellRenderers';
+import Top from '@/layout/Top';
 
 const randomBoolean = () => Math.random() > 0.5;
 const randomIntegerBetween = (min, max) => Math.floor(Math.random() * (max - min + 1) + min);
 const randomHalfNumberBetween = (min, max) => Math.floor(Math.random() * (max - min + 1) + min) / 2;
-
-const RatingRenderer = (params) => {
-  return <Rating value={params.value} readOnly precision={0.5} size="small" />;
-};
-
-const SrfRenderer = (params) => {
-  return params.value.toString();
-  return <Chip color={params.value ? 'success' : 'error'} label={params.value.toString()} />;
-};
-
-const LinkRenderer = (params) => {
-  return (
-    <Link to={`/members/${params.data.id}`} style={{ textDecoration: 'none', color: '#4d9fda' }}>
-      {params.value}
-    </Link>
-  );
-};
 
 export default function MembersPage() {
   const { data } = useMembers();
@@ -62,7 +47,8 @@ export default function MembersPage() {
       type: 'numericColumn',
       maxWidth: 180,
       chartDataType: 'series',
-      filter: true
+      filter: true,
+      cellRenderer: GapRenderer
     },
     {
       field: 'starRating',
@@ -71,15 +57,22 @@ export default function MembersPage() {
       maxWidth: 180,
       chartDataType: 'series',
       filter: true,
-      cellRenderer: RatingRenderer
+      cellRenderer: StarRenderer
     }
   ];
+
+  if (!members) {
+    return <div>Loading...</div>;
+  }
 
   return (
     <>
       <Container maxWidth="lg" sx={{ mb: 3, mt: 3 }}>
+        <Top filters={['contracts', 'providers']} />
         <div>Members Page</div>
-        <AgGrid columnDefs={columnDefs} rowData={members} csvDownload saveFiltersButton />
+        <Box sx={{ height: 'calc(100vh - 200px)' }}>
+          <AgGrid columnDefs={columnDefs} rowData={members} csvDownload saveFiltersButton />
+        </Box>
       </Container>
     </>
   );

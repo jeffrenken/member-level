@@ -60,7 +60,7 @@ export default function themeTypography(theme) {
       letterSpacing: '0em',
       fontWeight: 400,
       lineHeight: '1.5em',
-      color: theme.darkTextPrimary
+      color: theme.textPrimary
     },
     button: {
       textTransform: 'capitalize'
@@ -89,10 +89,11 @@ export default function themeTypography(theme) {
     mainContent: {
       //backgroundColor: theme.background,
       width: '100%',
-      minHeight: 'calc(100vh - 72px)',
+      //minHeight: 'calc(100vh - 72px)',
+      minHeight: 'calc(100vh - 0px)',
       flexGrow: 1,
       padding: '0px',
-      marginTop: '72px',
+      //marginTop: '72px',
       marginRight: '0px',
       borderRadius: `16px`
     },

@@ -46,7 +46,7 @@ article {
   gap: 1rem;
   backdrop-filter: blur(calc(var(--cardblur, 5) * 1px));
 }
-main {
+/* main {
   display: flex;
   gap: 2rem;
   flex-wrap: wrap;
@@ -55,7 +55,7 @@ main {
   width: 120ch;
   max-width: calc(100vw - 2rem);
   position: relative;
-}
+} */
 
 /* Glow specific styles */
 [data-glow] {

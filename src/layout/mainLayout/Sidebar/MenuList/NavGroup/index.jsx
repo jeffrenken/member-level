@@ -1,17 +1,25 @@
-import PropTypes from 'prop-types';
-import { Box, Fade, List, Typography } from '@mui/material';
-import { useTheme } from '@mui/material/styles';
-import NavCollapse from '../NavCollapse';
-import NavItem from '../NavItem';
-import Grow from '@mui/material/Grow';
-import { TransitionGroup, CSSTransition } from 'react-transition-group';
-import { useRecoilValue } from 'recoil';
+import logoDark from '@/assets/images/logoDark.png';
+import logoWhite from '@/assets/images/logoWhite.png';
+import { ThemeContext } from '@/context/ThemeContextProvider';
 import { favoritesState } from '@/state/favoritesAtom';
-import { IconStar } from '@tabler/icons-react';
+import { Box, Fade, IconButton, List, Typography, Stack } from '@mui/material';
+import { useTheme } from '@mui/material/styles';
+import { IconMoon, IconSun, IconUserCircle } from '@tabler/icons-react';
+import PropTypes from 'prop-types';
+import { useContext } from 'react';
+import { useLocation } from 'react-router-dom';
+import { useRecoilValue } from 'recoil';
+import NavCollapse from '../NavCollapse';
+import { NavItemStacked as NavItem } from '../NavItem/NavItemStacked';
 
 const NavGroup = ({ item, drawerToggle }) => {
   const theme = useTheme();
+  const { switchColorMode } = useContext(ThemeContext);
+
+  const isDarkMode = theme.palette.mode === 'dark';
+
   const favorites = useRecoilValue(favoritesState);
+  const location = useLocation();
 
   // menu list collapse & items
   const items = item.children?.map((menu, i) => {
@@ -28,9 +36,9 @@ const NavGroup = ({ item, drawerToggle }) => {
       case 'item':
         return (
           <Fade in={true} appear timeout={fadeInTime} key={menu.id}>
-            <div>
+            <Box sx={{ borderRight: location.pathname === menu.url ? `2px solid ${theme.palette.primary.main}` : 'none' }}>
               <NavItem key={menu.id} item={menu} level={1} drawerToggle={drawerToggle} />
-            </div>
+            </Box>
           </Fade>
         );
       case 'component':
@@ -52,22 +60,40 @@ const NavGroup = ({ item, drawerToggle }) => {
 
   return (
     <>
-      <List
-        subheader={
-          item.title && (
-            <Typography variant="caption" sx={{ ...theme.typography.menuCaption }} display="block" gutterBottom>
-              {item.title}
-              {item.caption && (
-                <Typography variant="caption" sx={{ ...theme.typography.subMenuCaption }} display="block" gutterBottom>
-                  {item.caption}
-                </Typography>
-              )}
-            </Typography>
-          )
-        }
-      >
-        {items}
-        <Fade in={true} appear timeout={500}>
+      <Box>
+        <Box
+          component="img"
+          alt="logo"
+          src={isDarkMode ? logoWhite : logoDark}
+          height={30}
+          mt={2}
+          mb={2}
+          sx={{ display: { xs: 'block', md: 'block' }, flexGrow: 1, objectFit: 'contain' }}
+        />
+        <Stack direction="row" justifyContent="center" mb={14} sx={{ width: '100%' }}>
+          <IconButton color="neutral" onClick={switchColorMode}>
+            {isDarkMode ? <IconSun /> : <IconMoon />}
+          </IconButton>
+          <IconButton color="neutral">
+            <IconUserCircle style={{ strokeWidth: 1.5 }} />
+          </IconButton>
+        </Stack>
+        <List
+          subheader={
+            item.title && (
+              <Typography variant="caption" sx={{ ...theme.typography.menuCaption }} display="block" gutterBottom>
+                {item.title}
+                {item.caption && (
+                  <Typography variant="caption" sx={{ ...theme.typography.subMenuCaption }} display="block" gutterBottom>
+                    {item.caption}
+                  </Typography>
+                )}
+              </Typography>
+            )
+          }
+        >
+          {items}
+          {/* <Fade in={true} appear timeout={500}>
           <div>
             <NavCollapse
               level={1}
@@ -78,8 +104,9 @@ const NavGroup = ({ item, drawerToggle }) => {
               }}
             />
           </div>
-        </Fade>
-      </List>
+        </Fade> */}
+        </List>
+      </Box>
     </>
   );
 };
@@ -89,3 +116,13 @@ NavGroup.propTypes = {
 };
 
 export default NavGroup;
+
+/*  sx={(theme) => ({
+          backgroundColor: theme.palette.background.semiTransparent,
+          paddingTop: '20px',
+          marginRight: '20px',
+          boxShadow: '0 2px 14px 0 rgb(32 40 45 / 30%)',
+          border: '1px solid #2d3748',
+          borderLeft: 'none',
+          borderRadius: '0 10px 10px 0'
+        })} */

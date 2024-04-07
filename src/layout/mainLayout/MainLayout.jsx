@@ -5,11 +5,11 @@ import { styled, useTheme } from '@mui/material/styles';
 import { useState } from 'react';
 import { Outlet } from 'react-router-dom';
 import Sidebar from './Sidebar/Sidebar';
-import Header from './header/Header';
+import Header from './header/Header2';
 import { IconPlus } from '@tabler/icons-react';
 import SaveToFavoritesDialog from '@/components/dialogs/SaveToFavoritesDialog';
 
-const drawerWidth = 200;
+const drawerWidth = 100;
 
 const Main = styled('main', { shouldForwardProp: (prop) => prop !== 'open' })(({ theme, open }) => ({
   ...theme.typography.mainContent,
@@ -56,30 +56,16 @@ const MainLayout = () => {
   return (
     <Box sx={{ display: 'flex' }}>
       <CssBaseline />
-      <AppBar
-        enableColorOnDark
-        position="fixed"
-        color="inherit"
-        elevation={0}
-        sx={{
-          //bgcolor: theme.palette.background.default,
-          background: theme.palette.background.semiTransparent,
 
-          transition: leftDrawerOpened ? theme.transitions.create('width') : 'none'
-        }}
-      >
-        <Toolbar>
-          <Header handleLeftDrawerToggle={handleLeftDrawerToggle} />
-        </Toolbar>
-      </AppBar>
-
+      {/*       <Header handleLeftDrawerToggle={handleLeftDrawerToggle} leftDrawerOpened={leftDrawerOpened} />
+       */}
       <Sidebar
         drawerOpen={!matchDownMd ? leftDrawerOpened : !leftDrawerOpened}
         drawerWidth={drawerWidth}
         drawerToggle={handleLeftDrawerToggle}
       />
 
-      <Main theme={theme} open={leftDrawerOpened} sx={{ bgcolor: 'transparent', overflow: 'auto' }}>
+      <Main theme={theme} open={leftDrawerOpened} sx={{ bgcolor: 'transparent' }}>
         <Box sx={{ display: 'block', width: '100%' }}>
           <Outlet />
         </Box>

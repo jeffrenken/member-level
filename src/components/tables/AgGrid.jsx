@@ -19,8 +19,9 @@ import { AgGridReact } from 'ag-grid-react';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { getData } from './data.js';
 import { IconDeviceFloppy, IconFileCv, IconFileTypeCsv } from '@tabler/icons-react';
+import './ag-grid.css';
 
-export default function AgGrid({ rowData, columnDefs, sideBar = true, csvDownload, saveFiltersButton }) {
+export default function AgGrid({ rowData, columnDefs, sideBar = true, csvDownload, saveFiltersButton, height = '100%' }) {
   const gridRef = useRef();
   const theme = useTheme();
   const darkMode = theme.palette.mode === 'dark';
@@ -111,63 +112,7 @@ export default function AgGrid({ rowData, columnDefs, sideBar = true, csvDownloa
   }, []);
 
   function getContextMenuItems(params) {
-    console.log(params);
-    var result = [
-      ...params.defaultItems
-      /* {
-        name: 'Alert ' + params.value,
-        action: () => {
-          window.alert('Alerting about ' + params.value);
-        },
-        cssClasses: ['red', 'bold']
-      },
-      {
-        name: 'Always Disabled',
-        disabled: true,
-        tooltip: 'Very long tooltip, did I mention that I am very long, well I am! Long!  Very Long!'
-      }, */
-      /*       {
-        name: 'Country',
-        subMenu: [
-          {
-            name: 'Ireland',
-            action: () => {
-              console.log('Ireland was pressed');
-            }
-          },
-          {
-            name: 'UK',
-            action: () => {
-              console.log('UK was pressed');
-            }
-          },
-          {
-            name: 'France',
-            action: () => {
-              console.log('France was pressed');
-            }
-          }
-        ]
-      }, */
-
-      /*  'separator',
-      {
-        name: 'Windows',
-        shortcut: 'Alt + W',
-        action: () => {
-          console.log('Windows Item Selected');
-        },
-        icon: '<img src="https://www.ag-grid.com/example-assets/skills/windows.png" />'
-      },
-      {
-        name: 'Mac',
-        shortcut: 'Alt + M',
-        action: () => {
-          console.log('Mac Item Selected');
-        },
-        icon: '<img src="https://www.ag-grid.com/example-assets/skills/mac.png"/>'
-      }  */
-    ];
+    var result = [...params.defaultItems];
 
     return result;
   }
@@ -178,7 +123,6 @@ export default function AgGrid({ rowData, columnDefs, sideBar = true, csvDownloa
 
   const saveFilters = () => {
     const filters = gridRef.current.api.getFilterModel();
-    console.log(filters);
     const current = localStorage.getItem('filters', filters);
     if (!current) {
       setFilters([current]);
@@ -190,46 +134,23 @@ export default function AgGrid({ rowData, columnDefs, sideBar = true, csvDownloa
   };
 
   const handleChangeFilter = (event) => {
-    console.log(event.target.value);
     gridRef.current.api.setFilterModel(event.target.value);
   };
 
   return (
     <>
-      {/* <Stack direction="row" spacing={2} p={1} justifyContent="flex-end">
-        <FormControlLabel control={<Checkbox checked={checked} onChange={handleChange} />} label="Highlight > 1M" />
-        <Button onClick={exportCsv} variant="contained">
-          Export CSV (or right click cell)
-        </Button>
-        <Button onClick={saveFilters} variant="contained">
-          Save Filters
-        </Button>
-        <Box sx={{ minWidth: 120 }}>
-          <FormControl fullWidth>
-            <InputLabel id="demo-simple-select-label">Age</InputLabel>
-            <Select labelId="demo-simple-select-label" id="demo-simple-select" label="Saved" onChange={handleChangeFilter}>
-              {filters.map((f, i) => (
-                <MenuItem key={i} value={f}>
-                  {i}
-                </MenuItem>
-              ))}
-            </Select>
-          </FormControl>
-        </Box>
-      </Stack> */}
-
       <Stack direction="row" spacing={1} p={0} my={1} justifyContent="flex-end">
         {csvDownload && (
           <Tooltip title="Download CSV" placement="top">
             <IconButton color="primary" onClick={exportCsv} aria-label="upload picture" component="label" sx={{ padding: 0 }}>
-              <IconFileTypeCsv />
+              <IconFileTypeCsv style={{ strokeWidth: 1.5 }} />
             </IconButton>
           </Tooltip>
         )}
         {saveFiltersButton && (
           <Tooltip title="Save Filters" placement="top">
             <IconButton color="primary" onClick={exportCsv} aria-label="upload picture" component="label" sx={{ padding: 0 }}>
-              <IconDeviceFloppy />
+              <IconDeviceFloppy style={{ strokeWidth: 1.5 }} />
             </IconButton>
           </Tooltip>
         )}
@@ -237,7 +158,7 @@ export default function AgGrid({ rowData, columnDefs, sideBar = true, csvDownloa
 
       <div
         className={darkMode ? 'ag-theme-alpine-dark' : 'ag-theme-alpine'}
-        style={{ height: 500 }} // the grid will fill the size of the parent container
+        style={{ height: height }} // the grid will fill the size of the parent container
       >
         <AgGridReact
           ref={gridRef}
@@ -251,6 +172,7 @@ export default function AgGrid({ rowData, columnDefs, sideBar = true, csvDownloa
           enableCharts
           defaultCsvExportParams={{ onlySelected: true }}
           getContextMenuItems={getContextMenuItems}
+          //suppressContextMenu
           sideBar={sideBar}
         />
       </div>
