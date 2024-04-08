@@ -72,14 +72,14 @@ export const items = [
         icon: IconTable,
         breadcrumbs: false
       },
-      {
+      /* {
         id: 'table',
         title: 'Sample',
         type: 'item',
         url: '/table',
         icon: IconTable,
         breadcrumbs: false
-      },
+      }, */
       {
         id: 'test',
         title: 'Test',

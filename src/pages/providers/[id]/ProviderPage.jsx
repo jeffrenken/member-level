@@ -1,7 +1,7 @@
 import useMembers from '@/api/useMembers';
 import useProviders from '@/api/useProviders';
 import AgGrid from '@/components/tables/AgGrid';
-import { LinkRenderer, RatingRenderer, SrfRenderer } from '@/components/tables/CellRenderers';
+import { GapRenderer, LinkRenderer, RatingRenderer, SrfRenderer } from '@/components/tables/CellRenderers';
 import { Box, Container, Typography } from '@mui/material';
 import { useMemo } from 'react';
 import { useParams } from 'react-router-dom';
@@ -62,7 +62,8 @@ export default function ProviderPage() {
       type: 'numericColumn',
       maxWidth: 160,
       chartDataType: 'series',
-      filter: true
+      filter: true,
+      cellRenderer: GapRenderer
     },
     {
       field: 'starRating',

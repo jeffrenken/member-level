@@ -70,7 +70,7 @@ const NavGroup = ({ item, drawerToggle }) => {
           mb={2}
           sx={{ display: { xs: 'block', md: 'block' }, flexGrow: 1, objectFit: 'contain' }}
         />
-        <Stack direction="row" justifyContent="center" mb={14} sx={{ width: '100%' }}>
+        <Stack direction="row" justifyContent="center" sx={{ width: '100%', mb: 'calc((100vh - 650px) / 2)' }}>
           <IconButton color="neutral" onClick={switchColorMode}>
             {isDarkMode ? <IconSun /> : <IconMoon />}
           </IconButton>
