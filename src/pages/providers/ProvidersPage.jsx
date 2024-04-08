@@ -1,33 +1,42 @@
 import useMembers from '@/api/useMembers';
-import { Box, Container, Typography } from '@mui/material';
-import { useParams } from 'react-router-dom';
+import useProviders from '@/api/useProviders';
 import AgGrid from '@/components/tables/AgGrid';
-import { Rating } from '@mui/material';
-import { Link } from 'react-router-dom';
-import { SrfRenderer, LinkRenderer, RatingRenderer } from '@/components/tables/CellRenderers';
+import { GapRenderer, LinkRenderer, RatingRenderer, SrfRenderer } from '@/components/tables/CellRenderers';
+import { Box, Container, Typography } from '@mui/material';
+import { useMemo } from 'react';
+import { useParams } from 'react-router-dom';
 
 const randomBoolean = () => Math.random() > 0.5;
 const randomIntegerBetween = (min, max) => Math.floor(Math.random() * (max - min + 1) + min);
 const randomHalfNumberBetween = (min, max) => Math.floor(Math.random() * (max - min + 1) + min) / 2;
 
-export default function ProviderPage() {
+export default function ProvidersPage() {
   const params = useParams();
   const name = decodeURI(params.name);
   const { data } = useMembers();
+  const { data: providersData } = useProviders();
 
-  const members = data
-    .filter((member) => member['Contract Entity Name'] === name)
-    .map((member) => {
-      return {
-        name: member['FIRST NAME'] + ' ' + member['LAST NAME'],
-        id: member['MEMBER ID'],
-        srf: randomBoolean(),
-        numberOfGaps: randomIntegerBetween(0, 50),
-        starRating: randomHalfNumberBetween(0, 10)
-      };
-    });
+  const providers = useMemo(() => {
+    if (!providersData) {
+      return [];
+    }
+    return (
+      providersData
+        //.filter((member) => member['Contract Entity Name'] === name)
+        .map((provider) => {
+          return {
+            ...provider,
+            srf: randomBoolean(),
+            numberOfGaps: randomIntegerBetween(0, 50),
+            starRating: randomHalfNumberBetween(0, 10),
+            url: `/providers/${provider.id}`
+          };
+        })
+    );
+  }, [providersData]);
+
   const columnDefs = [
-    { field: 'name', filter: true, chartDataType: 'category', maxWidth: 230, cellRenderer: LinkRenderer },
+    { field: 'label', headerName: 'Name', filter: true, chartDataType: 'category', maxWidth: 290, cellRenderer: LinkRenderer },
     {
       field: 'srf',
       headerName: 'SRF',
@@ -43,7 +52,8 @@ export default function ProviderPage() {
       type: 'numericColumn',
       maxWidth: 160,
       chartDataType: 'series',
-      filter: true
+      filter: true,
+      cellRenderer: GapRenderer
     },
     {
       field: 'starRating',
@@ -59,10 +69,10 @@ export default function ProviderPage() {
   return (
     <Container maxWidth="lg">
       <Typography variant="h3" mt={3}>
-        {name}
+        Providers
       </Typography>
       <Box sx={{ height: 'calc(100vh - 150px)' }}>
-        <AgGrid columnDefs={columnDefs} rowData={members} sideBar={false} csvDownload={true} sideBar />
+        <AgGrid columnDefs={columnDefs} rowData={providers} csvDownload={true} sideBar />
       </Box>
     </Container>
   );

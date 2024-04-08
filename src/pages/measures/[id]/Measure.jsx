@@ -73,7 +73,8 @@ export default function Measure() {
         id: member['MEMBER ID'],
         srf: randomBoolean(),
         numberOfGaps: randomIntegerBetween(0, 50),
-        starRating: randomHalfNumberBetween(0, 10)
+        starRating: randomHalfNumberBetween(0, 10),
+        url: `/members/${member['MEMBER ID']}`
       };
     });
 
@@ -86,7 +87,7 @@ export default function Measure() {
       return m.filter((member) => member['Contract Name'] === contract.label);
     } */
     let splitMembers = {};
-
+    splitMembers.all = m;
     splitMembers.numerator = m.filter((member) => member[measure?.measure_name] === 'TRUE');
     splitMembers.denominator = m.filter((member) => member[measure?.measure_name] === 'FALSE');
 
@@ -132,8 +133,8 @@ export default function Measure() {
       chartDataType: 'series',
       filter: true,
       cellRenderer: GapRenderer
-    },
-    {
+    }
+    /*  {
       field: 'starRating',
       headerName: 'Star Rating',
       type: 'numericColumn',
@@ -141,7 +142,7 @@ export default function Measure() {
       chartDataType: 'series',
       filter: true,
       cellRenderer: RatingRenderer
-    }
+    } */
   ];
 
   if (isLoading || !members) {
@@ -159,6 +160,7 @@ export default function Measure() {
         </Box>
         <Box>{measureWithData && <CardGlow measure={measureWithData} colors={[background]} disabled />}</Box>
       </Stack>
+
       <AgGrid columnDefs={columnDefs} rowData={members?.denominator} csvDownload saveFiltersButton height={'calc(100vh - 350px)'} />
     </Container>
   );

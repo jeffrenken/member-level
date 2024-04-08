@@ -1,18 +1,16 @@
-import ContractSelect from '@/components/ContractSelect';
-import { Box, Stack, Divider, Typography, IconButton, useTheme } from '@mui/material';
-import { IconChevronRight, IconMoon, IconSun, IconUserCircle } from '@tabler/icons-react';
-import { useContext, useMemo } from 'react';
-import { ThemeContext } from '@/context/ThemeContextProvider';
-import { Link } from 'react-router-dom';
-import AutocompleteButton from '@/components/Autocomplete';
-import useMeasures from '@/api/useMeasures';
 import useContracts from '@/api/useContracts';
+import useMeasures from '@/api/useMeasures';
 import useProviders from '@/api/useProviders';
-import { useRecoilState } from 'recoil';
-import { measureFilterState } from '@/state/measureFilterState';
-import { contractFilterState } from '@/state/contractFilterState';
-import { providertFilterState } from '@/state/providerFilterState';
+import AutocompleteButton from '@/components/Autocomplete';
 import Card from '@/components/Card';
+import { ThemeContext } from '@/context/ThemeContextProvider';
+import { contractFilterState } from '@/state/contractFilterState';
+import { measureFilterState } from '@/state/measureFilterState';
+import { providertFilterState } from '@/state/providerFilterState';
+import { Box, IconButton, Stack, useTheme } from '@mui/material';
+import { IconMoon, IconSun, IconUserCircle } from '@tabler/icons-react';
+import { useContext, useMemo } from 'react';
+import { useRecoilState } from 'recoil';
 
 export default function Top({ filters }) {
   const theme = useTheme();
@@ -71,36 +69,6 @@ export default function Top({ filters }) {
           //pb={2}
           //sx={{ borderBottom: `0.5px solid ${theme.palette.text.primary}` }}
         >
-          {/*  <Box>
-          <Stack direction="row" alignItems="center" justifyContent={'center'} spacing={2} pb={2}>
-            <Typography
-              component={Link}
-              to={'/dashboard'}
-              variant="h3"
-              display="inline"
-              sx={{
-                borderBottom: item ? 'none' : `1px solid ${theme.palette.primary.main}`,
-                textDecoration: 'none'
-              }}
-            >
-              All Measures
-            </Typography>
-            {item && (
-              <>
-                <IconChevronRight size={16} />
-
-                <Typography
-                  variant="h4"
-                  display="inline"
-                  mx={2}
-                  sx={{ borderBottom: `1px solid ${theme.palette.primary.main}`, color: theme.palette.primary.main }}
-                >
-                  {item.label}
-                </Typography>
-              </>
-            )}
-          </Stack>
-        </Box> */}
           <Stack direction="row" spacing={2} alignItems="center">
             {filters.includes('contracts') && (
               <AutocompleteButton
@@ -111,11 +79,11 @@ export default function Top({ filters }) {
                 width={90}
               />
             )}
-            {filters.includes('measures') && (
-              <AutocompleteButton defaultLabel="Measures" options={measures} value={measureState} onChange={setMeasureState} />
-            )}
             {filters.includes('providers') && (
               <AutocompleteButton defaultLabel="Provider" options={providers} value={providerState} onChange={setProviderState} />
+            )}
+            {filters.includes('measures') && (
+              <AutocompleteButton defaultLabel="Measures" options={measures} value={measureState} onChange={setMeasureState} />
             )}
           </Stack>
 

@@ -18,7 +18,8 @@ export default function MembersPage() {
       id: member['MEMBER ID'],
       srf: randomBoolean(),
       numberOfGaps: randomIntegerBetween(0, 50),
-      starRating: randomHalfNumberBetween(0, 10)
+      starRating: randomHalfNumberBetween(0, 10),
+      url: `/members/${member['MEMBER ID']}`
     };
   });
 
@@ -49,8 +50,8 @@ export default function MembersPage() {
       chartDataType: 'series',
       filter: true,
       cellRenderer: GapRenderer
-    },
-    {
+    }
+    /* {
       field: 'starRating',
       headerName: 'Star Rating',
       type: 'numericColumn',
@@ -58,7 +59,7 @@ export default function MembersPage() {
       chartDataType: 'series',
       filter: true,
       cellRenderer: StarRenderer
-    }
+    } */
   ];
 
   if (!members) {

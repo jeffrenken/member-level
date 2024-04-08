@@ -1,11 +1,7 @@
 import useMeasures from '@/api/useMeasures';
-import { Container, Typography, Rating, Box, useTheme } from '@mui/material';
-import { useParams } from 'react-router-dom';
-import AgGrid from '@/components/tables/AgGrid';
-import useMembers from '@/api/useMembers';
+import { Box, Rating, useTheme } from '@mui/material';
+import { IconCheck, IconCheckbox, IconStar, IconX } from '@tabler/icons-react';
 import { Link } from 'react-router-dom';
-import Top from '@/layout/Top';
-import { IconStar, IconCheckbox, IconX, IconCheck, IconStarFilled } from '@tabler/icons-react';
 
 const randomBoolean = () => Math.random() > 0.5;
 const randomIntegerBetween = (min, max) => Math.floor(Math.random() * (max - min + 1) + min);
@@ -118,13 +114,9 @@ export const SrfRenderer = (params) => {
 };
 
 export const LinkRenderer = (params) => {
+  const url = params.data.url;
   return (
-    <Box
-      component={Link}
-      to={`/members/${params.data.id}`}
-      px={1}
-      sx={(theme) => ({ textDecoration: 'none', fontWeight: 300, color: theme.palette.text.primary })}
-    >
+    <Box component={Link} to={url} px={1} sx={(theme) => ({ textDecoration: 'none', fontWeight: 300, color: theme.palette.text.primary })}>
       {params.value}
     </Box>
   );

@@ -1,11 +1,10 @@
-import { Link, useParams } from 'react-router-dom';
-import useMember from '@/api/useMember';
-import useMembers from '@/api/useMembers';
 import memberMeasures from '@/../fakeData/member_measures.json';
+import useMembers from '@/api/useMembers';
+import useProviders from '@/api/useProviders';
 import AgGrid from '@/components/tables/AgGrid';
-import { Box, Container, Typography, Rating } from '@mui/material';
-import { IconCheckbox, IconX } from '@tabler/icons-react';
-import { LinkRenderer, RatingRenderer, SrfRenderer, StarRenderer, BooleanRenderer, TextRenderer } from '@/components/tables/CellRenderers';
+import { SrfRenderer, TextRenderer } from '@/components/tables/CellRenderers';
+import { Box, Container, Rating, Typography } from '@mui/material';
+import { Link, useParams } from 'react-router-dom';
 
 //for deciding srf, not implemented yet
 /*  "DUAL ELIGIBLE": "TRUE", if true = srf
@@ -30,7 +29,9 @@ export default function Member() {
   //const id = parseInt(params.id);
   //const { data: member } = useMember(id);
   const { data } = useMembers();
-  const member = data.find((member) => member['MEMBER ID'] === parseInt(id));
+  const { data: providers } = useProviders();
+
+  const member = data && data.find((member) => member['MEMBER ID'] === parseInt(id));
   const rows = memberMeasures
     .filter((row) => member?.[row])
     .map((row) => {
@@ -38,6 +39,12 @@ export default function Member() {
         label: row,
         value: getValue(member[row])
       };
+    });
+
+  const provider =
+    providers &&
+    providers.find((provider) => {
+      return provider.label === member['Contract Entity Name'];
     });
 
   const columnDefs = [
@@ -83,10 +90,7 @@ export default function Member() {
           <Typography sx={{ fontSize: '1rem' }}>Primary Care Physician: {member['Primary Care Physician - Provider Name']}</Typography>
           <Typography sx={{ fontSize: '1rem' }}>
             Contract Entity:{' '}
-            <Link
-              to={`/providers/${encodeURIComponent(member['Contract Entity Name'])}`}
-              style={{ textDecoration: 'none', color: '#4d9fda' }}
-            >
+            <Link to={`/providers/${provider.id}`} style={{ textDecoration: 'none', color: '#4d9fda' }}>
               {member['Contract Entity Name']}
             </Link>
           </Typography>

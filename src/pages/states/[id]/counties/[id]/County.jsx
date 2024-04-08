@@ -1,7 +1,4 @@
-import { useParams, Link } from 'react-router-dom';
-import { states } from '../../../../../../fakeData/states';
-import countiesData from '../../../../../../fakeData/gz_2010_us_050_00_5m.json';
-import { stateAbbreviations } from '@/helpers/functions';
+import { Link, useParams } from 'react-router-dom';
 
 import useMembers from '@/api/useMembers';
 

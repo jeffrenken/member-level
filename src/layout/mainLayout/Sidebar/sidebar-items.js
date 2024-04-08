@@ -65,6 +65,14 @@ export const items = [
         breadcrumbs: false
       },
       {
+        id: 'providersTable',
+        title: 'Providers',
+        type: 'item',
+        url: '/providers',
+        icon: IconTable,
+        breadcrumbs: false
+      },
+      {
         id: 'table',
         title: 'Sample',
         type: 'item',

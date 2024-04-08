@@ -1,9 +1,6 @@
 import AgGrid from '@/components/tables/AgGrid';
-import useMembers from '@/api/useMembers';
-import { Rating, Chip, Container } from '@mui/material';
-import { Link } from 'react-router-dom';
 import React from 'react';
-import { GapRenderer, LinkRenderer, RatingRenderer, SrfRenderer, StarRenderer } from './CellRenderers';
+import { GapRenderer, LinkRenderer, SrfRenderer } from './CellRenderers';
 
 const randomBoolean = () => Math.random() > 0.5;
 const randomIntegerBetween = (min, max) => Math.floor(Math.random() * (max - min + 1) + min);
@@ -20,7 +17,8 @@ export default function MembersTable({ rows, csvDownload, height }) {
       id: member['MEMBER ID'],
       srf: randomBoolean(),
       numberOfGaps: randomIntegerBetween(0, 50),
-      starRating: randomHalfNumberBetween(0, 10)
+      starRating: randomHalfNumberBetween(0, 10),
+      url: `/members/${member['MEMBER ID']}`
     };
   });
   const columnDefs = [

@@ -1,20 +1,20 @@
-import { Outlet, createBrowserRouter } from 'react-router-dom';
 import MainLayout from '@/layout/mainLayout/MainLayout';
-import Dashboard from '@/pages/dashboard/Dashboard';
-import SignInPage from '@/pages/sign-in/SignInPage';
-import { AuthGuard } from './AuthGuard';
 import BobPage from '@/pages/BobPage';
 import Page2 from '@/pages/Page2';
-import Test from '@/pages/test/Test';
-import Measure from '@/pages/measures/[id]/Measure';
 import Map from '@/pages/map/Map';
-import County from '@/pages/states/[id]/counties/[id]/County';
-import Member from '@/pages/members/[id]/Member';
-import SocialRiskFactors from '@/pages/social-risk-factors/SocialRiskFactors';
-import Table from '@/pages/table/Table';
-import MembersPage from '@/pages/members/MembersPage';
-import ProviderPage from '@/pages/providers/[name]/ProviderPage';
 import MeasuresPage from '@/pages/measures/MeasuresPage';
+import Measure from '@/pages/measures/[id]/Measure';
+import MembersPage from '@/pages/members/MembersPage';
+import Member from '@/pages/members/[id]/Member';
+import ProvidersPage from '@/pages/providers/ProvidersPage';
+import ProviderPage from '@/pages/providers/[id]/ProviderPage';
+import SignInPage from '@/pages/sign-in/SignInPage';
+import SocialRiskFactors from '@/pages/social-risk-factors/SocialRiskFactors';
+import County from '@/pages/states/[id]/counties/[id]/County';
+import Table from '@/pages/table/Table';
+import Test from '@/pages/test/Test';
+import { createBrowserRouter } from 'react-router-dom';
+import { AuthGuard } from './AuthGuard';
 
 export const router = createBrowserRouter([
   {
@@ -42,6 +42,10 @@ export const router = createBrowserRouter([
         element: <Measure />
       },
       {
+        path: '/providers',
+        element: <ProvidersPage />
+      },
+      {
         path: '/members',
         element: <MembersPage />
       },
@@ -50,7 +54,7 @@ export const router = createBrowserRouter([
         element: <Member />
       },
       {
-        path: '/providers/:name',
+        path: '/providers/:id',
         element: <ProviderPage />
       },
       {
@@ -77,10 +81,7 @@ export const router = createBrowserRouter([
         path: '/page2',
         element: <Page2 />
       },
-      {
-        path: '/dashboard',
-        element: <Dashboard />
-      },
+
       {
         path: '/bob',
         element: <BobPage />

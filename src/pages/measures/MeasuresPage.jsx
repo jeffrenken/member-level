@@ -1,25 +1,13 @@
 import useMeasures from '@/api/useMeasures';
-import Card from '@/components/Card';
-import CardGlow from '@/components/cards/card-glow/CardGlow';
-import BarChartExample from '@/components/charts/BarChart';
-import BarChartHorizontal from '@/components/charts/BarChartHorizontal';
-import LineChartExample from '@/components/charts/LineChart';
-import TopFilters from '@/components/inputs/TopFilters';
-import { favoritesState } from '@/state/favoritesAtom';
-import TableTest from '@/tables/TanStackTestTable';
-import { Container, Grid, Typography, Stack, Box, useTheme } from '@mui/material';
-import { Link } from 'react-router-dom';
-import { useRecoilState, useRecoilValue } from 'recoil';
-import MeasureCard from '@/components/cards/MeasureCard';
-import Card2 from '@/components/cards/Card2';
 import useMembers from '@/api/useMembers';
-import Top from '@/layout/Top';
-import React, { useEffect, useMemo } from 'react';
-import { LineChart } from '@/components/charts/nivo/LineChart';
-import { measureFilterState } from '@/state/measureFilterState';
-import Grid2 from '@mui/material/Unstable_Grid2';
 import useProviders from '@/api/useProviders';
+import CardGlow from '@/components/cards/card-glow/CardGlow';
+import Top from '@/layout/Top';
 import { providertFilterState } from '@/state/providerFilterState';
+import { Box, Container, Grid, Stack, Typography, useTheme } from '@mui/material';
+import Grid2 from '@mui/material/Unstable_Grid2';
+import React, { useMemo } from 'react';
+import { useRecoilValue } from 'recoil';
 
 const reds = ['#f5a3a3', '#dc4242', '#fb2222'];
 
