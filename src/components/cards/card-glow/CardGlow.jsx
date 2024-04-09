@@ -1,15 +1,14 @@
 /* import { GUI } from 'https://cdn.skypack.dev/dat.gui';
 import Color from 'https://cdn.skypack.dev/color';
 import gsap from 'https://cdn.skypack.dev/gsap'; */
-import React, { useEffect } from 'react';
-//import './card-glow.css';
-import { CardContainer } from '../Card2.jsx';
+import React from 'react';
+import './card-glow.css';
 
-import styled, { keyframes } from 'styled-components';
-import { Box, ButtonBase, Stack, Typography, useTheme } from '@mui/material';
+import { measureFilterState } from '@/state/measureFilterState.js';
+import { Box, Stack, Typography, useTheme } from '@mui/material';
 import { Link, useNavigate } from 'react-router-dom';
 import { useRecoilState } from 'recoil';
-import { measureFilterState } from '@/state/measureFilterState.js';
+import styled, { keyframes } from 'styled-components';
 
 function hexToHue(hex) {
   // Remove the # if present
