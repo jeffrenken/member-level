@@ -7,6 +7,9 @@ import { ThemeContext } from '@/context/ThemeContextProvider';
 import { contractFilterState } from '@/state/contractFilterState';
 import { measureFilterState } from '@/state/measureFilterState';
 import { providertFilterState } from '@/state/providerFilterState';
+import { srfFilterState } from '@/state/srfFilterState';
+import useSrf from '@/api/useSrf';
+
 import { Box, IconButton, Stack, useTheme } from '@mui/material';
 import { IconMoon, IconSun, IconUserCircle } from '@tabler/icons-react';
 import { useContext, useMemo } from 'react';
@@ -18,9 +21,11 @@ export default function Top({ filters }) {
   const { data: measures } = useMeasures();
   const { data: contractsData } = useContracts();
   const { data: providersData } = useProviders();
+  const { data: srf } = useSrf();
   const [measureState, setMeasureState] = useRecoilState(measureFilterState);
   const [contractState, setContractState] = useRecoilState(contractFilterState);
   const [providerState, setProviderState] = useRecoilState(providertFilterState);
+  const [srfState, setSrfState] = useRecoilState(srfFilterState);
 
   /*   const measures = useMemo(() => {
     if (!measuresData) return null;
@@ -85,6 +90,7 @@ export default function Top({ filters }) {
             {filters.includes('measures') && (
               <AutocompleteButton defaultLabel="Measures" options={measures} value={measureState} onChange={setMeasureState} />
             )}
+            {filters.includes('srf') && <AutocompleteButton defaultLabel="SRF" options={srf} value={srfState} onChange={setSrfState} />}
           </Stack>
 
           <Box>

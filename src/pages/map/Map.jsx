@@ -20,6 +20,7 @@ import { srfFilterState } from '@/state/srfFilterState';
 import useContracts from '@/api/useContracts';
 import useProviders from '@/api/useProviders';
 import useSrf from '@/api/useSrf';
+import statesBoundingBoxes from '../../../fakeData/statesBoundingBoxes.json';
 
 /* const st = s.features.map((item) => {
   let statePet = pets.find((pet) => pet.state === item.properties.NAME);
@@ -123,6 +124,17 @@ export default function Map() {
     const searchAsObject = Object.fromEntries(searchParams);
   }, [searchParams]); */
 
+  /*   useEffect(() => {
+    if (map.current && measures.length && measureState && !selectedMeasureOption) {
+      setSelectedMeasureOption(measures.find((m) => m.id === measureState));
+    }
+  }, [measures, measureState, value]); */
+
+  useEffect(() => {
+    //filter doesn't work on load yet
+    //setMeasureState(null);
+  }, []);
+
   useEffect(() => {
     //filters
     if (!selectedCategory) return;
@@ -171,6 +183,8 @@ export default function Map() {
       selectedMeasure.top_third_value_2
     ];
 
+    let uniqueStateAbbreviations = [];
+
     //county stuff
     const updatedCountyData = countyDataWithCount.features.map((item) => {
       let itemCopy = { ...item };
@@ -189,13 +203,31 @@ export default function Map() {
       let percent = (countInCountyDenom / countTotalInCounty) * 100;
       let itemProperties = { ...item.properties, percent: percent };
       itemCopy.properties = itemProperties;
+
+      console.log(membersInCountyDenom);
+      uniqueStateAbbreviations = [...new Set(membersInCountyDenom.map((d) => d.STATE))];
       return itemCopy;
     });
+
+    console.log(uniqueStateAbbreviations);
 
     map.current.getSource('countiesData').setData({
       type: 'FeatureCollection',
       features: updatedCountyData
     });
+
+    if (uniqueStateAbbreviations.length === 1) {
+      const stateBounds = statesBoundingBoxes.find((state) => state.STUSPS === uniqueStateAbbreviations[0]);
+      map.current.fitBounds(
+        [
+          [stateBounds.xmin, stateBounds.ymin],
+          [stateBounds.xmax, stateBounds.ymax]
+        ],
+        {
+          padding: { top: 250, bottom: 30, left: 80, right: 80 }
+        }
+      );
+    }
 
     if (selectedCounty) {
       let countyName = selectedCounty.NAME;
@@ -419,15 +451,19 @@ export default function Map() {
         <Box sx={{ position: 'absolute', top: '16px', left: '16px', zIndex: 2, width: '40%' }}>
           <Card px={0} py={1}>
             <Stack direction="row" alignItems="center" justifyContent="flex-start" spacing={2} px={3}>
-              <AutocompleteButton
-                defaultLabel="Contracts"
-                options={contracts}
-                value={contractState}
-                onChange={setContractState}
-                width={90}
-              />
-              <AutocompleteButton defaultLabel="Measures" options={measures} value={measureState} onChange={handleMeasureChange} />
-              <AutocompleteButton defaultLabel="SRF" options={srf} value={srfState} onChange={setSrfState} />
+              {measures.length && contracts.length && srf.length && (
+                <>
+                  <AutocompleteButton
+                    defaultLabel="Contracts"
+                    options={contracts}
+                    value={contractState}
+                    onChange={setContractState}
+                    width={90}
+                  />
+                  <AutocompleteButton defaultLabel="Measures" options={measures} value={measureState} onChange={handleMeasureChange} />
+                  <AutocompleteButton defaultLabel="SRF" options={srf} value={srfState} onChange={setSrfState} />
+                </>
+              )}
 
               {/* <Autocomplete
                 disablePortal

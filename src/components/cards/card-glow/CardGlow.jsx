@@ -2,7 +2,7 @@
 import Color from 'https://cdn.skypack.dev/color';
 import gsap from 'https://cdn.skypack.dev/gsap'; */
 import React, { useEffect } from 'react';
-import './card-glow.css';
+//import './card-glow.css';
 import { CardContainer } from '../Card2.jsx';
 
 import styled, { keyframes } from 'styled-components';

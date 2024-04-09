@@ -127,7 +127,7 @@ const MeasuresPage = () => {
 
   return (
     <Container maxWidth="lg" sx={{ marginBottom: '100px', marginTop: '20px' }}>
-      <Top filters={['contracts', 'providers']} />
+      <Top filters={['contracts', 'providers', 'srf']} />
       {/* <Box height={400}>
         <LineChart />
       </Box> */}

@@ -37,15 +37,7 @@ export default function ProvidersPage() {
 
   const columnDefs = [
     { field: 'label', headerName: 'Name', filter: true, chartDataType: 'category', maxWidth: 290, cellRenderer: LinkRenderer },
-    {
-      field: 'srf',
-      headerName: 'SRF',
-      type: 'numericColumn',
-      maxWidth: 120,
-      chartDataType: 'series',
-      filter: true,
-      cellRenderer: SrfRenderer
-    },
+
     {
       field: 'numberOfGaps',
       headerName: 'Gaps',
