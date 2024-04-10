@@ -6,7 +6,6 @@ import CardGlow from '@/components/cards/card-glow/CardGlow';
 import PieChart from '@/components/charts/TestPie';
 import PieChart2 from '@/components/charts/TestPie2';
 import Donut from '@/components/charts/donut/Donut';
-import { BarChart } from '@/components/charts/nivo/Barchart';
 import Top from '@/layout/Top';
 import { providertFilterState } from '@/state/providerFilterState';
 import { Box, Container, Grid, Stack, Typography, useTheme } from '@mui/material';
