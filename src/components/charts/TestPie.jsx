@@ -17,8 +17,6 @@ const Slice2 = styled(`div`)`
   height: 300px;
   background-image: ${(props) => `conic-gradient(#f04c63 ${props.slice1}deg, #51c5dd 0 ${props.slice2}deg)`};
   margin: -50px 0px 0px -50px;
-          f
-
 `;
 
 const PieChart = ({ measure }) => {
@@ -26,12 +24,15 @@ const PieChart = ({ measure }) => {
   const total = measure.numerator + measure.denominator;
   const value1InDegrees = (measure.numerator / total) * 360;
   const value2InDegrees = (measure.denominator / total) * 360;
-  console.log(value1InDegrees, value2InDegrees);
 
   const background = theme.palette.background.paper;
 
   return (
-    <Box height={170} width={170} sx={{ overflow: 'hidden', position: 'relative', borderRadius: '10px' }}>
+    <Box
+      height={170}
+      width={170}
+      sx={{ overflow: 'hidden', position: 'relative', borderRadius: '10px', boxShadow: '0px 4px 10px rgb(0 0 0 / 0.4)' }}
+    >
       <Slice2 slice1={value1InDegrees} slice2={value2InDegrees} />
       <Box
         sx={{

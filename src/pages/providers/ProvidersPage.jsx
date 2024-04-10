@@ -1,7 +1,7 @@
 import useMembers from '@/api/useMembers';
 import useProviders from '@/api/useProviders';
 import AgGrid from '@/components/tables/AgGrid';
-import { GapRenderer, LinkRenderer, RatingRenderer, SrfRenderer } from '@/components/tables/CellRenderers';
+import { GapRenderer, LinkRenderer, RatingRenderer, SrfRenderer, TextRenderer } from '@/components/tables/CellRenderers';
 import { Box, Container, Typography } from '@mui/material';
 import { useMemo } from 'react';
 import { useParams } from 'react-router-dom';
@@ -13,8 +13,9 @@ const randomHalfNumberBetween = (min, max) => Math.floor(Math.random() * (max - 
 export default function ProvidersPage() {
   const params = useParams();
   const name = decodeURI(params.name);
-  const { data } = useMembers();
+  const { data: members } = useMembers();
   const { data: providersData } = useProviders();
+  console.log(providersData);
 
   const providers = useMemo(() => {
     if (!providersData) {
@@ -36,8 +37,44 @@ export default function ProvidersPage() {
   }, [providersData]);
 
   const columnDefs = [
-    { field: 'label', headerName: 'Name', filter: true, chartDataType: 'category', maxWidth: 290, cellRenderer: LinkRenderer },
-
+    {
+      field: 'Contract Entity Name',
+      headerName: 'Name',
+      filter: true,
+      chartDataType: 'category',
+      maxWidth: 290,
+      cellRenderer: TextRenderer,
+      rowGroup: true,
+      hide: true
+    },
+    {
+      field: 'Primary Care Physician - Provider Name',
+      headerName: 'Name',
+      filter: true,
+      chartDataType: 'category',
+      maxWidth: 290,
+      cellRenderer: TextRenderer,
+      rowGroup: true,
+      hide: true
+    },
+    {
+      field: 'FIRST NAME',
+      headerName: 'First',
+      type: 'category',
+      maxWidth: 160,
+      chartDataType: 'series',
+      filter: true,
+      cellRenderer: TextRenderer
+    },
+    {
+      field: 'LAST NAME',
+      headerName: 'Last',
+      type: 'category',
+      maxWidth: 160,
+      chartDataType: 'series',
+      filter: true,
+      cellRenderer: TextRenderer
+    },
     {
       field: 'numberOfGaps',
       headerName: 'Gaps',
@@ -64,7 +101,7 @@ export default function ProvidersPage() {
         Providers
       </Typography>
       <Box sx={{ height: 'calc(100vh - 150px)' }}>
-        <AgGrid columnDefs={columnDefs} rowData={providers} csvDownload={true} sideBar />
+        <AgGrid columnDefs={columnDefs} rowData={members} csvDownload={true} sideBar />
       </Box>
     </Container>
   );

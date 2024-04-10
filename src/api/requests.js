@@ -49,9 +49,9 @@ const fakeProviders = () => {
     .map((d) => d['Contract Entity Name'])
     .filter((d) => Boolean(d))
     .sort();
-  const distinctProviders = [...new Set(providerName)];
+  const distinctProviderGroups = [...new Set(providerName)];
 
-  const p = distinctProviders.map((p, i) => ({ id: i + 1, label: p }));
+  const p = distinctProviderGroups.map((p, i) => ({ id: i + 1, label: p, providers: [] }));
   return p;
 };
 

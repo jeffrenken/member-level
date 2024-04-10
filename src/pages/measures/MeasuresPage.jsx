@@ -5,6 +5,7 @@ import Card from '@/components/Card';
 import CardGlow from '@/components/cards/card-glow/CardGlow';
 import PieChart from '@/components/charts/TestPie';
 import PieChart2 from '@/components/charts/TestPie2';
+import PieChart3 from '@/components/charts/TestPie3';
 import Donut from '@/components/charts/donut/Donut';
 import Top from '@/layout/Top';
 import { providertFilterState } from '@/state/providerFilterState';
@@ -169,6 +170,15 @@ const MeasuresPage = () => {
           .map((measure) => (
             <Grid key={measure.id} m={1.35}>
               <PieChart measure={measure} />
+            </Grid>
+          ))}
+      </Grid2>
+      <Grid2 container spacing={2} sx={{ margin: '0 auto' }}>
+        {measures
+          ?.sort((a, b) => b.numerator - a.numerator)
+          .map((measure) => (
+            <Grid key={measure.id} m={1.35}>
+              <PieChart3 measure={measure} />
             </Grid>
           ))}
       </Grid2>

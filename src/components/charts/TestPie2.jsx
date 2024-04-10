@@ -15,28 +15,12 @@ const green = 'rgb(34, 193, 168)';
 const blue = 'rgb(35, 93, 241)';
 
 const Slice2 = styled(`div`)`
-  width: 100px;
-  height: 100px;
+  width: 90px;
+  height: 90px;
   border-radius: 50%;
   background-image: ${(props) => `conic-gradient(${green} ${props.slice1}deg, ${blue} 0 ${props.slice2}deg)`};
   margin: 0 auto;
 `;
-
-const CenterCircle = styled('div')(
-  ({ theme }) => (
-    console.log(theme),
-    {
-      position: 'absolute',
-      width: '80px',
-      height: '80px',
-      borderRadius: '50%',
-      backgroundColor: theme.palette.background.paper,
-      top: '50%',
-      left: '50%',
-      transform: 'translate(-50%, -50%)'
-    }
-  )
-);
 
 const PieChart2 = ({ measure }) => {
   const theme = useTheme();
@@ -45,14 +29,17 @@ const PieChart2 = ({ measure }) => {
   const value2InDegrees = (measure.denominator / total) * 360;
   const numeratorPercent = (measure.numerator / total) * 100;
   const denominatorPercent = (measure.denominator / total) * 100;
-  console.log(numeratorPercent, denominatorPercent);
+  const quotient = (measure.numerator / measure.denominator).toFixed(2);
 
   const background = theme.palette.background.paper;
-  console.log(theme);
 
   return (
-    <Box height={170} width={170} sx={{ borderRadius: '10px', border: '1px solid #3ed3ed', p: 1 }}>
-      <Typography align="center" sx={{ fontSize: '0.7rem' }}>
+    <Box
+      height={170}
+      width={170}
+      sx={{ borderRadius: '10px', border: theme.palette.border, p: 1, bgcolor: background, boxShadow: '0px 4px 8px rgb(0 0 0 / 0.2)' }}
+    >
+      <Typography align="center" sx={{ fontSize: '0.7rem', mb: '6px', lineHeight: 1 }}>
         {measure.label}
       </Typography>
 
@@ -61,8 +48,8 @@ const PieChart2 = ({ measure }) => {
         <Box
           sx={(theme) => ({
             position: 'absolute',
-            width: '80px',
-            height: '80px',
+            width: '74px',
+            height: '74px',
             borderRadius: '50%',
             backgroundColor: theme.palette.background.paper,
             top: '50%',
@@ -70,12 +57,12 @@ const PieChart2 = ({ measure }) => {
             transform: 'translate(-50%, -50%)'
           })}
         >
-          <Typography align="center" sx={{ fontSize: '2rem', fontWeight: 600, lineHeight: 0.9, letterSpacing: '0px', mt: '24px' }}>
-            {measure.abbreviation}
+          <Typography align="center" sx={{ fontSize: '1.8rem', fontWeight: 600, lineHeight: 0.9, letterSpacing: '0px', mt: '25px' }}>
+            {quotient}
           </Typography>
         </Box>
       </Box>
-      <Stack direction="row" alignItems="space-between" justifyContent="space-between" spacing={1} px={1} mt={'-3px'}>
+      <Stack direction="row" alignItems="space-between" justifyContent="space-between" spacing={1} px={2} mt={'-8px'}>
         <Box
           sx={{
             width: '100%',
@@ -98,7 +85,7 @@ const PieChart2 = ({ measure }) => {
             textAlign: 'right'
           }}
         >
-          Denom
+          Den
         </Box>
       </Stack>
       <Stack
@@ -111,6 +98,7 @@ const PieChart2 = ({ measure }) => {
         mb="6px"
         mt={'-3px'}
         sx={{
+          borderRadius: '4px',
           //background: `linear-gradient(90deg, rgba(34, 193, 168, 1) ${numeratorPercent}%, rgba(35, 93, 241, 1) ${denominatorPercent}%)`
           background: `linear-gradient(90deg, rgba(34, 193, 168, 1) ${numeratorPercent}%, rgba(35, 93, 241, 1) 100%)`
         }}
@@ -144,7 +132,7 @@ const PieChart2 = ({ measure }) => {
           {measure.denominator}
         </Box>
       </Stack>
-      <Stack direction="row" alignItems="space-between" justifyContent="space-between" spacing={1} px={1} mt={'-3px'}>
+      {/* <Stack direction="row" alignItems="space-between" justifyContent="space-between" spacing={1} px={1} mt={'-3px'}>
         <Box
           sx={{
             bgcolor: green,
@@ -173,7 +161,7 @@ const PieChart2 = ({ measure }) => {
         >
           {measure.denominator}
         </Box>
-      </Stack>
+      </Stack> */}
       {/* <Typography align="center" sx={{ fontSize: '1.1rem' }} mt="4px">
         <span style={{ color: green }}>{measure.numerator}</span>/<span style={{ color: blue }}>{measure.denominator}</span>
       </Typography> */}
