@@ -1,7 +1,12 @@
 import useMeasures from '@/api/useMeasures';
 import useMembers from '@/api/useMembers';
 import useProviders from '@/api/useProviders';
+import Card from '@/components/Card';
 import CardGlow from '@/components/cards/card-glow/CardGlow';
+import PieChart from '@/components/charts/TestPie';
+import PieChart2 from '@/components/charts/TestPie2';
+import Donut from '@/components/charts/donut/Donut';
+import { BarChart } from '@/components/charts/nivo/Barchart';
 import Top from '@/layout/Top';
 import { providertFilterState } from '@/state/providerFilterState';
 import { Box, Container, Grid, Stack, Typography, useTheme } from '@mui/material';
@@ -122,6 +127,9 @@ const MeasuresPage = () => {
       splitMembers[i].forecast = 'N/A';
     });
 
+    //remove prod, only showing with values
+    splitMembers = splitMembers.filter((m) => m.numerator > 0 || m.denominator > 0);
+
     return splitMembers;
   }, [measuresData, provider]);
 
@@ -131,6 +139,10 @@ const MeasuresPage = () => {
       {/* <Box height={400}>
         <LineChart />
       </Box> */}
+      {/* <Box height={600}>
+        <BarChart measures={measures} />
+      </Box> */}
+
       <Stack direction="row" alignItems="center" justifyContent="space-around" mb={4}>
         <Box>
           <Typography align="center" my={2} ml={2} sx={{ fontSize: '1.75rem', fontWeight: 600, letterSpacing: '2px' }}>
@@ -143,12 +155,56 @@ const MeasuresPage = () => {
 
         <CardGlow measure={sampleMeasure} colors={[background]} disabled />
       </Stack>
+      <Grid2 container spacing={2} sx={{ margin: '0 auto', mb: 3 }}>
+        {measures
+          ?.sort((a, b) => b.numerator - a.numerator)
+          .map((measure) => (
+            <Grid key={measure.id} m={1.35}>
+              <PieChart2 measure={measure} />
+            </Grid>
+          ))}
+      </Grid2>
       <Grid2 container spacing={2} sx={{ margin: '0 auto' }}>
-        {measures?.map((measure) => (
-          <Grid key={measure.id} m={1.35}>
-            <CardGlow shadow={redGlowBoxShadow} measure={measure} key={measure.id} colors={selectRandomColor()} />
-          </Grid>
-        ))}
+        {measures
+          ?.sort((a, b) => b.numerator - a.numerator)
+          .map((measure) => (
+            <Grid key={measure.id} m={1.35}>
+              <PieChart measure={measure} />
+            </Grid>
+          ))}
+      </Grid2>
+      <Grid2 container spacing={2} sx={{ margin: '0 auto' }}>
+        {measures
+          ?.sort((a, b) => b.numerator - a.numerator)
+          .map((measure) => (
+            <Grid key={measure.id} m={1.35}>
+              <Card height={170} style={{ width: 170 }}>
+                <Typography align="center" sx={{ fontSize: '2rem', fontWeight: 600, lineHeight: 0.9, letterSpacing: '2px', mt: 1 }}>
+                  {measure.abbreviation}
+                </Typography>
+                <Stack direction="row" justifyContent={'center'} alignItems={'center'} spacing={2}>
+                  <Typography>
+                    {measure.numerator}/{measure.denominator}
+                  </Typography>
+                  <Box sx={{ height: 90, width: 90 }}>
+                    <Donut numerator={measure.numerator} denominator={measure.denominator} />
+                  </Box>
+                </Stack>
+                <Typography align="center" sx={{ fontSize: '1.25rem', fontWeight: 400, lineHeight: 0.9, mt: 1 }}>
+                  Projection: 90
+                </Typography>
+              </Card>
+            </Grid>
+          ))}
+      </Grid2>
+      <Grid2 container spacing={2} sx={{ margin: '0 auto' }}>
+        {measures
+          ?.sort((a, b) => b.numerator - a.numerator)
+          .map((measure) => (
+            <Grid key={measure.id} m={1.35}>
+              <CardGlow shadow={redGlowBoxShadow} measure={measure} key={measure.id} colors={selectRandomColor()} />
+            </Grid>
+          ))}
       </Grid2>
 
       {/* <Stack direction="row" useFlexGap flexWrap="wrap" spacing={4}>
