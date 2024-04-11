@@ -39,7 +39,7 @@ const PieChart3 = ({ measure }) => {
         borderRadius: '10px',
         //border: '2px solid rgba(0,0,0,0.2)',
         boxShadow: '0px 4px 10px rgb(0 0 0 / 0.4)',
-        background: `linear-gradient(135deg, rgba(81,197,221,0.5) ${numeratorPercent - 25}%, rgba(240,76,99,0.5) ${
+        background: `linear-gradient(135deg, rgba(81,197,221,0.8) ${numeratorPercent - 25}%, rgba(240,76,99,0.8) ${
           100 - denominatorPercent + 25
         }%)`
       }}
@@ -50,7 +50,7 @@ const PieChart3 = ({ measure }) => {
           top: '50%',
           left: '50%',
           transform: 'translate(-50%, -50%)',
-          //backgroundColor: 'rgba(255,255,255,0.5)',
+          backgroundColor: 'rgba(255,255,255,1)',
           padding: '0px',
           height: '156px',
           width: '156px',

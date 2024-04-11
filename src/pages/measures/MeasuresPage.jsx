@@ -128,7 +128,7 @@ const MeasuresPage = () => {
     });
 
     //remove prod, only showing with values
-    splitMembers = splitMembers.filter((m) => m.numerator > 0 || m.denominator > 0);
+    //splitMembers = splitMembers.filter((m) => m.numerator > 0 || m.denominator > 0);
 
     return splitMembers;
   }, [measuresData, provider]);
@@ -153,7 +153,8 @@ const MeasuresPage = () => {
           </Typography>
         </Box>
 
-        <CardGlow measure={sampleMeasure} colors={[background]} disabled />
+        {/* <CardGlow measure={sampleMeasure} colors={[background]} disabled />
+        <PieChart2 measure={sampleMeasure} disabled /> */}
       </Stack>
       <Grid2 container spacing={2} sx={{ margin: '0 auto', mb: 3 }}>
         {measures
@@ -164,7 +165,7 @@ const MeasuresPage = () => {
             </Grid>
           ))}
       </Grid2>
-      <Grid2 container spacing={2} sx={{ margin: '0 auto' }}>
+      {/* <Grid2 container spacing={2} sx={{ margin: '0 auto' }}>
         {measures
           ?.sort((a, b) => b.numerator - a.numerator)
           .map((measure) => (
@@ -214,7 +215,7 @@ const MeasuresPage = () => {
               <CardGlow shadow={redGlowBoxShadow} measure={measure} key={measure.id} colors={selectRandomColor()} />
             </Grid>
           ))}
-      </Grid2>
+      </Grid2> */}
 
       {/* <Stack direction="row" useFlexGap flexWrap="wrap" spacing={4}>
         {measures?.map((measure) => (

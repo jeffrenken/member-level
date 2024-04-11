@@ -15,6 +15,7 @@ import { contractFilterState } from '@/state/contractFilterState';
 import useProviders from '@/api/useProviders';
 import useContracts from '@/api/useContracts';
 import CardGlow from '@/components/cards/card-glow/CardGlow';
+import PieChart2 from '@/components/charts/TestPie2';
 
 const randomBoolean = () => Math.random() > 0.5;
 const randomIntegerBetween = (min, max) => Math.floor(Math.random() * (max - min + 1) + min);
@@ -158,7 +159,9 @@ export default function Measure() {
           <Typography>{provider?.label}</Typography>
           <Typography>Members in the denominator</Typography>
         </Box>
-        <Box>{measureWithData && <CardGlow measure={measureWithData} colors={[background]} disabled />}</Box>
+        <Box>{measureWithData && <PieChart2 measure={measureWithData} disabled />}</Box>
+        {/*         <CardGlow measure={measureWithData} colors={[background]} disabled />}</Box>
+         */}{' '}
       </Stack>
 
       <AgGrid columnDefs={columnDefs} rowData={members?.denominator} csvDownload saveFiltersButton height={'calc(100vh - 350px)'} />

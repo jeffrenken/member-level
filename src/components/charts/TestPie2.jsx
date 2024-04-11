@@ -1,7 +1,9 @@
 import React from 'react';
 import styled from 'styled-components';
 import { Box, Container, Grid, Stack, Typography, useTheme } from '@mui/material';
-import CardGlow from '../cards/card-glow/CardGlow';
+import { Link, useNavigate } from 'react-router-dom';
+import { useRecoilState } from 'recoil';
+import { measureFilterState } from '@/state/measureFilterState.js';
 
 const measure = {
   id: 1,
@@ -15,15 +17,18 @@ const green = 'rgb(34, 193, 168)';
 const blue = 'rgb(35, 93, 241)';
 
 const Slice2 = styled(`div`)`
-  width: 90px;
-  height: 90px;
+  width: 85px;
+  height: 85px;
   border-radius: 50%;
-  background-image: ${(props) => `conic-gradient(${green} ${props.slice1}deg, ${blue} 0 ${props.slice2}deg)`};
+  background-image: ${(props) => `conic-gradient(${blue} ${props.slice1}deg, ${green} 0 ${props.slice2}deg)`};
   margin: 0 auto;
+  box-shadow: 0px 4px 8px rgb(0 0 0 / 0.4);
 `;
 
-const PieChart2 = ({ measure }) => {
+const PieChart2 = ({ measure, disabled }) => {
   const theme = useTheme();
+  const navigate = useNavigate();
+  const [measureState, setMeasureState] = useRecoilState(measureFilterState);
   const total = measure.numerator + measure.denominator;
   const value1InDegrees = (measure.numerator / total) * 360;
   const value2InDegrees = (measure.denominator / total) * 360;
@@ -33,14 +38,32 @@ const PieChart2 = ({ measure }) => {
 
   const background = theme.palette.background.paper;
 
+  const handleClick = () => {
+    if (!disabled) {
+      navigate(`/measures?measureFilterState=${measure.id}`);
+      setMeasureState(measure.id);
+    }
+  };
+
   return (
     <Box
       height={170}
       width={170}
-      sx={{ borderRadius: '10px', border: theme.palette.border, p: 1, bgcolor: background, boxShadow: '0px 4px 8px rgb(0 0 0 / 0.2)' }}
+      sx={{
+        borderRadius: '10px',
+        border: `2px solid #ccc`,
+        p: 1,
+        bgcolor: background,
+        boxShadow: '0px 4px 8px rgb(0 0 0 / 0.2)',
+        cursor: !disabled ? 'pointer' : 'default'
+      }}
+      onClick={handleClick}
     >
-      <Typography align="center" sx={{ fontSize: '0.7rem', mb: '6px', lineHeight: 1 }}>
-        {measure.label}
+      <Typography
+        align="center"
+        sx={{ fontSize: '1.4rem', mb: '6px', lineHeight: 1, fontWeight: 600, textShadow: '0px 2px 2px rgb(0 0 0 / 0.3)' }}
+      >
+        {measure.abbreviation}
       </Typography>
 
       <Box sx={{ position: 'relative' }}>
@@ -48,17 +71,28 @@ const PieChart2 = ({ measure }) => {
         <Box
           sx={(theme) => ({
             position: 'absolute',
-            width: '74px',
-            height: '74px',
+            width: '70px',
+            height: '70px',
             borderRadius: '50%',
             backgroundColor: theme.palette.background.paper,
             top: '50%',
             left: '50%',
-            transform: 'translate(-50%, -50%)'
+            transform: 'translate(-50%, -50%)',
+            boxShadow: 'inset 0px 4px 8px rgb(0 0 0 / 0.4)'
           })}
         >
-          <Typography align="center" sx={{ fontSize: '1.8rem', fontWeight: 600, lineHeight: 0.9, letterSpacing: '0px', mt: '25px' }}>
-            {quotient}
+          <Typography
+            align="center"
+            sx={{
+              fontSize: '1.8rem',
+              fontWeight: 600,
+              lineHeight: 0.9,
+              letterSpacing: '-1px',
+              mt: '23px',
+              textShadow: '0px 2px 2px rgb(0 0 0 / 0.3)'
+            }}
+          >
+            {isNaN(quotient) ? '' : quotient}
           </Typography>
         </Box>
       </Box>
@@ -70,7 +104,8 @@ const PieChart2 = ({ measure }) => {
             pl: '4px',
             py: '2px',
             fontSize: '0.7rem',
-            textAlign: 'left'
+            textAlign: 'left',
+            textShadow: '0px 2px 2px rgb(0 0 0 / 0.3)'
           }}
         >
           Num
@@ -82,7 +117,8 @@ const PieChart2 = ({ measure }) => {
             pl: '4px',
             py: '2px',
             fontSize: '0.7rem',
-            textAlign: 'right'
+            textAlign: 'right',
+            textShadow: '0px 2px 2px rgb(0 0 0 / 0.3)'
           }}
         >
           Den
@@ -98,9 +134,13 @@ const PieChart2 = ({ measure }) => {
         mb="6px"
         mt={'-3px'}
         sx={{
+          boxShadow: '0px 4px 8px rgb(0 0 0 / 0.2)',
           borderRadius: '4px',
           //background: `linear-gradient(90deg, rgba(34, 193, 168, 1) ${numeratorPercent}%, rgba(35, 93, 241, 1) ${denominatorPercent}%)`
-          background: `linear-gradient(90deg, rgba(34, 193, 168, 1) ${numeratorPercent}%, rgba(35, 93, 241, 1) 100%)`
+          //background: `linear-gradient(90deg, rgba(34, 193, 168, 1) ${numeratorPercent}%, rgba(35, 93, 241, 1) 100%)`
+          background: `linear-gradient(135deg, rgba(34, 193, 168, 1) ${numeratorPercent - 25}%, rgba(35, 93, 241, 1) ${
+            100 - denominatorPercent + 25
+          }%)`
         }}
       >
         <Box

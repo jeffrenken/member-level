@@ -47,15 +47,17 @@ const PieChart = ({ measure }) => {
           borderRadius: '10px'
         }}
       >
-        <Stack direction="column" height="100%" py={1} px={0}>
-          <Typography align="center" sx={{ fontSize: '2.6rem', fontWeight: 600, lineHeight: 0.9, letterSpacing: '2px' }} mt={2}>
-            {measure.abbreviation}
-          </Typography>
-          <Typography align="center" sx={{ fontSize: '0.7rem' }}>
-            {measure.label}
-          </Typography>
-          <Typography align="center" sx={{ fontSize: '1.3rem' }} mt={1.5}>
+        <Stack direction="column" height="100%" py={1} px={0} alignItems="center" justifyContent={'space-around'}>
+          <Stack direction="row" px={0.5} spacing={2}>
+            <Typography align="center" sx={{ fontSize: '2rem', fontWeight: 600, lineHeight: 0.9 }} mt={0}>
+              {measure.abbreviation}
+            </Typography>
+          </Stack>
+          <Typography align="center" sx={{ fontSize: '1.3rem', backgroundColor: '#444', borderRadius: '50%', p: 1 }}>
             <span style={{ color: '#51c5dd' }}>{measure.numerator}</span>/<span style={{ color: '#f04c63' }}>{measure.denominator}</span>
+          </Typography>
+          <Typography align="center" sx={{ fontSize: '0.8rem' }}>
+            {measure.label}
           </Typography>
           <Typography align="center" sx={{ fontSize: '0.9rem' }} mt={0}>
             Forecast: {measure.forecast}

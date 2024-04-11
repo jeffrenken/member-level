@@ -51,11 +51,11 @@ export default function ProvidersPage() {
       field: 'Primary Care Physician - Provider Name',
       headerName: 'Name',
       filter: true,
-      chartDataType: 'category',
+      chartDataType: 'series',
       maxWidth: 290,
-      cellRenderer: TextRenderer,
-      rowGroup: true,
-      hide: true
+      cellRenderer: TextRenderer
+      //rowGroup: true,
+      //hide: true
     },
     {
       field: 'FIRST NAME',
