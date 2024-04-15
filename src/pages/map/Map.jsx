@@ -1,6 +1,6 @@
 import useContracts from '@/api/useContracts';
 import useMeasures from '@/api/useMeasures';
-import useProviders from '@/api/useProviders';
+import useProviders from '@/api/useProvidersGroups';
 import useSrf from '@/api/useSrf';
 import AutocompleteButton from '@/components/Autocomplete';
 import Card from '@/components/Card';
@@ -20,6 +20,7 @@ import countiesData from '../../../fakeData/gz_2010_us_050_00_5m.json';
 import memberData from '../../../fakeData/member_data.json';
 import stateToNumber from '../../../fakeData/stateToNumber.json';
 import statesBoundingBoxes from '../../../fakeData/statesBoundingBoxes.json';
+import useFilteredMembers from '@/api/useFilteredMembers';
 
 /* const st = s.features.map((item) => {
   let statePet = pets.find((pet) => pet.state === item.properties.NAME);
@@ -102,14 +103,17 @@ export default function Map() {
   const [filteredData, setFilteredData] = useState([]);
   const [stepArray, setStepArray] = useState([30, 40, 50, 1000000]);
   const [mapData, setMapData] = useState(countyDataWithCount);
-  const [filteredMembers, setFilteredMembers] = useState([]);
+  const [countyFilteredMembers, setCountyFilteredMembers] = useState([]);
   const [measureName, setMeasureName] = useState('');
   const [value, setValue] = React.useState('');
   const [clickedCounty, setClickedCounty] = useState(null);
   const [measureState, setMeasureState] = useRecoilState(measureFilterState);
   const [contractState, setContractState] = useRecoilState(contractFilterState);
   const [providerState, setProviderState] = useRecoilState(providertFilterState);
+  const [allMembersInDenom, setAllMembersInDenom] = useState([]);
   const [srfState, setSrfState] = useRecoilState(srfFilterState);
+  const [mapReady, setMapReady] = useState(false);
+  const { filteredMembers } = useFilteredMembers();
 
   const { data: measures } = useMeasures();
   const { data: contractsData } = useContracts();
@@ -166,108 +170,6 @@ export default function Map() {
       };
     });
   }, [providersData]);
-
-  useMemo(() => {
-    //filters
-    if (!selectedMeasureOption) return;
-    //setMeasure(value);
-    //const selectedMeasure = allMeasures.find((item) => item.hl_code === selectedMeasureOption.hl_code);
-    const selectedMeasure = selectedMeasureOption;
-
-    setMeasureName(selectedMeasure.measure_name);
-    const measureStepArray = [
-      0,
-      selectedMeasure.bottom_third_value_2,
-      selectedMeasure.middle_third_value_2,
-      selectedMeasure.top_third_value_2
-    ];
-
-    let uniqueStateAbbreviations = [];
-
-    //county stuff
-    const updatedCountyData = countyDataWithCount.features.map((item) => {
-      let itemCopy = { ...item };
-      let membersInCountyDenom = memberData.filter(
-        (d) =>
-          d[selectedMeasure.measure_name] === 'FALSE' && d.COUNTY === item.properties.NAME && d.STATE === item.properties.stateAbbreviation
-      );
-
-      if (membersInCountyDenom.length === 0) {
-        let itemProperties = { ...item.properties, percent: '' };
-        itemCopy.properties = itemProperties;
-        return itemCopy;
-      }
-      let countInCountyDenom = membersInCountyDenom.length;
-      let countTotalInCounty = memberData.filter((d) => d.COUNTY === item.properties.NAME).length;
-      let percent = (countInCountyDenom / countTotalInCounty) * 100;
-      let itemProperties = { ...item.properties, percent: percent };
-      itemCopy.properties = itemProperties;
-
-      uniqueStateAbbreviations = [...new Set(membersInCountyDenom.map((d) => d.STATE))];
-      return itemCopy;
-    });
-
-    map.current.getSource('countiesData').setData({
-      type: 'FeatureCollection',
-      features: updatedCountyData
-    });
-
-    if (uniqueStateAbbreviations.length === 1) {
-      const stateBounds = statesBoundingBoxes.find((state) => state.STUSPS === uniqueStateAbbreviations[0]);
-      map.current.fitBounds(
-        [
-          [stateBounds.xmin, stateBounds.ymin],
-          [stateBounds.xmax, stateBounds.ymax]
-        ],
-        {
-          padding: { top: 250, bottom: 30, left: 80, right: 80 }
-        }
-      );
-    }
-
-    if (selectedCounty) {
-      let countyName = selectedCounty.NAME;
-      let membersInCountyDenom = memberData.filter((d) => d[measureName] === 'FALSE' && d.COUNTY === countyName);
-      setFilteredMembers(membersInCountyDenom);
-    }
-
-    /* 
-    This works, but colors were always yellow, so disabled for now
-    map.current.setPaintProperty("counties-fill", "fill-color", [
-      "step",
-      ["get", "percent"],
-      "#70F870",
-      measureStepArray[0],
-      "#ffeda0",
-      measureStepArray[1],
-      "#F8EC70",
-      measureStepArray[2],
-      "#c00000",
-      110,
-      "#fd8d3c",
-      120,
-      "#fc4e2a",
-    ]); */
-
-    //setMapData({ type: "FeatureCollection", features: updatedCountyData });
-  }, [selectedMeasureOption, selectedCategoryOption, selectedCategory, filteredData]);
-
-  useEffect(() => {
-    if (!clickedCounty) return;
-    const [countyFeatures] = map.current.queryRenderedFeatures(clickedCounty.point, {
-      //as this?
-      layers: ['counties-fill']
-    });
-
-    if (countyFeatures) {
-      let countyName = countyFeatures.properties.NAME;
-      setSelectedCounty(countyFeatures.properties);
-      let membersInCountyDenom = memberData.filter((d) => d[measureName] === 'FALSE' && d.COUNTY === countyName);
-      setFilteredMembers(membersInCountyDenom);
-    }
-  }, [clickedCounty]);
-
-  const style = darkMode ? 'mapbox://styles/mapbox/dark-v11' : 'mapbox://styles/mapbox/light-v11';
 
   useEffect(() => {
     if (map.current) return; // initialize map only once
@@ -376,18 +278,129 @@ export default function Map() {
       setLat(map.current.getCenter().lat.toFixed(4));
       setZoom(map.current.getZoom().toFixed(2));
     });
+
+    if (map.current.getLayer('counties-line')) {
+      setMapReady(true);
+    }
   }, [mapData, darkMode]);
 
-  const handleCategoryChange = (value) => {
-    setCategory(value);
-    setOptions(findUniqueValues(value));
-  };
+  useMemo(() => {
+    //filters
+    console.log('filteredMembers', mapReady, filteredMembers);
+    if (!filteredMembers.length || !map.current.getLayer('counties-line')) {
+      return;
+    }
 
-  const handleOptionChange = (value) => {
-    setOption(value);
-    let values = getDataByOption(category, value);
-    setFilteredData(values);
-  };
+    //setMeasure(value);
+    //const selectedMeasure = allMeasures.find((item) => item.hl_code === selectedMeasureOption.hl_code);
+    const selectedMeasure = selectedMeasureOption;
+
+    let membersInDenom = [...filteredMembers];
+
+    if (selectedMeasure) {
+      membersInDenom = filteredMembers.filter((member) => member.memberMeasures[selectedMeasure['Measure Name']] === 0);
+    }
+    console.log(membersInDenom);
+    setAllMembersInDenom(membersInDenom);
+
+    //setMeasureName(selectedMeasure.measure_name);
+
+    let uniqueStateAbbreviations = [];
+
+    //county stuff
+    const updatedCountyData = countyDataWithCount.features.map((item) => {
+      let itemCopy = { ...item };
+      let membersInCountyDenom = membersInDenom.filter(
+        (member) => member.COUNTY === item.properties.NAME && member.STATE === item.properties.stateAbbreviation
+      );
+
+      if (membersInCountyDenom.length === 0) {
+        let itemProperties = { ...item.properties, percent: '' };
+        itemCopy.properties = itemProperties;
+        return itemCopy;
+      }
+      console.log('membersInCountyDenom', membersInCountyDenom);
+      let countInCountyDenom = membersInCountyDenom.length;
+      let countTotalInCounty = memberData.filter((d) => d.COUNTY === item.properties.NAME).length;
+      let percent = (countInCountyDenom / countTotalInCounty) * 100;
+      let itemProperties = { ...item.properties, percent: percent };
+      itemCopy.properties = itemProperties;
+
+      uniqueStateAbbreviations = [...new Set(membersInCountyDenom.map((d) => d.STATE))];
+      return itemCopy;
+    });
+
+    console.log(updatedCountyData);
+
+    map.current.getSource('countiesData').setData({
+      type: 'FeatureCollection',
+      features: updatedCountyData
+    });
+
+    if (uniqueStateAbbreviations.length === 1) {
+      const stateBounds = statesBoundingBoxes.find((state) => state.STUSPS === uniqueStateAbbreviations[0]);
+      map.current.fitBounds(
+        [
+          [stateBounds.xmin, stateBounds.ymin],
+          [stateBounds.xmax, stateBounds.ymax]
+        ],
+        {
+          padding: { top: 250, bottom: 30, left: 80, right: 80 }
+        }
+      );
+    }
+
+    if (selectedCounty) {
+      console.log(selectedCounty, membersInDenom);
+      let membersInCountyDenom = allMembersInDenom.filter(
+        (member) => member.COUNTY === selectedCounty.NAME && member.STATE === selectedCounty.stateAbbreviation
+      );
+
+      //let membersInCountyDenom = memberData.filter((d) => d[measureName] === 'FALSE' && d.COUNTY === countyName);
+      setCountyFilteredMembers(membersInCountyDenom);
+    }
+
+    /* 
+    This works, but colors were always yellow, so disabled for now
+    map.current.setPaintProperty("counties-fill", "fill-color", [
+      "step",
+      ["get", "percent"],
+      "#70F870",
+      measureStepArray[0],
+      "#ffeda0",
+      measureStepArray[1],
+      "#F8EC70",
+      measureStepArray[2],
+      "#c00000",
+      110,
+      "#fd8d3c",
+      120,
+      "#fc4e2a",
+    ]); */
+
+    //setMapData({ type: "FeatureCollection", features: updatedCountyData });
+  }, [selectedMeasureOption, selectedCategoryOption, selectedCategory, filteredData, filteredMembers, mapReady]);
+
+  useEffect(() => {
+    if (!clickedCounty) return;
+    const [countyFeatures] = map.current.queryRenderedFeatures(clickedCounty.point, {
+      //as this?
+      layers: ['counties-fill']
+    });
+
+    if (countyFeatures) {
+      console.log(countyFeatures, allMembersInDenom);
+      let county = countyFeatures.properties;
+      console.log(county);
+      setSelectedCounty(county);
+      let membersInCountyDenom = allMembersInDenom.filter(
+        (member) => member.COUNTY === county.NAME && member.STATE === county.stateAbbreviation
+      );
+      setCountyFilteredMembers(membersInCountyDenom);
+    }
+  }, [clickedCounty]);
+
+  const style = darkMode ? 'mapbox://styles/mapbox/dark-v11' : 'mapbox://styles/mapbox/light-v11';
 
   //old sate stuff below
 
@@ -441,6 +454,7 @@ export default function Map() {
     setSelectedMeasureOption(measures.find((m) => m.id === value));
   };
 
+  console.log('countyFilteredMembers', countyFilteredMembers);
   return (
     <>
       <Box sx={{ position: 'relative' }}>
@@ -523,7 +537,7 @@ export default function Map() {
                     {selectedCounty.NAME} County, {selectedCounty.stateAbbreviation}
                   </Typography>
                   <Typography>
-                    {filteredMembers.length} Members <br />
+                    {countyFilteredMembers.length} Members <br />
                     {selectedMeasureOption.measure_name} in denominator
                   </Typography>
                 </Stack>
@@ -533,7 +547,7 @@ export default function Map() {
                 <Typography sx={{ fontWeight: 600, fontSize: '0.9rem' }}>Other Info about this. Not sure what.</Typography> */}
               </Stack>
               <Box sx={{ height: '290px' }}>
-                {filteredMembers.length && <MembersTable rows={filteredMembers} csvDownload height="250px" />}
+                {countyFilteredMembers.length && <MembersTable rows={countyFilteredMembers} csvDownload height="250px" />}
               </Box>
             </Card>
           </Box>

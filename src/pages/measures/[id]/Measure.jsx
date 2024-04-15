@@ -12,10 +12,13 @@ import { measureFilterState } from '@/state/measureFilterState';
 import { useMemo } from 'react';
 import { providertFilterState } from '@/state/providerFilterState';
 import { contractFilterState } from '@/state/contractFilterState';
-import useProviders from '@/api/useProviders';
+import useProviders from '@/api/useProvidersGroups';
 import useContracts from '@/api/useContracts';
 import CardGlow from '@/components/cards/card-glow/CardGlow';
 import PieChart2 from '@/components/charts/TestPie2';
+import useMemberMeasures from '@/api/useMemberMeasures';
+import useProviderGroups from '@/api/useProvidersGroups';
+import useFilteredMembers from '@/api/useFilteredMembers';
 
 const randomBoolean = () => Math.random() > 0.5;
 const randomIntegerBetween = (min, max) => Math.floor(Math.random() * (max - min + 1) + min);
@@ -33,7 +36,11 @@ export default function Measure() {
   const { data } = useMembers();
   const { data: providers } = useProviders();
   const { data: contracts } = useContracts();
-  const background = theme.palette.background.paper;
+  const { data: memberMeasures } = useMemberMeasures();
+  const { data: providerGroups } = useProviderGroups();
+  const { filteredMembers } = useFilteredMembers();
+  console.log(memberMeasures);
+  console.log(providerGroups);
 
   const contract = useMemo(() => {
     if (!contracts) {
@@ -63,25 +70,25 @@ export default function Measure() {
   }, [measures, measureId]);
 
   const members = useMemo(() => {
-    if (!data.length) {
+    if (!filteredMembers.length || !measure) {
       return null;
     }
 
-    let m = data.map((member) => {
+    console.log('F', filteredMembers);
+
+    let m = filteredMembers.map((member) => {
       return {
         ...member,
         name: member['FIRST NAME'] + ' ' + member['LAST NAME'],
         id: member['MEMBER ID'],
         srf: randomBoolean(),
-        numberOfGaps: randomIntegerBetween(0, 50),
+        numberOfGaps: Object.keys(member.memberMeasures).filter((key) => member.memberMeasures[key] === 0).length,
         starRating: randomHalfNumberBetween(0, 10),
         url: `/members/${member['MEMBER ID']}`
       };
     });
 
-    if (provider) {
-      m = m.filter((member) => member['Contract Entity Name'] === provider.label);
-    }
+    console.log('members', m);
 
     /* if (contract) {
       don't have a way to associate a contract with a member now
@@ -89,11 +96,11 @@ export default function Measure() {
     } */
     let splitMembers = {};
     splitMembers.all = m;
-    splitMembers.numerator = m.filter((member) => member[measure?.measure_name] === 'TRUE');
-    splitMembers.denominator = m.filter((member) => member[measure?.measure_name] === 'FALSE');
+    splitMembers.numerator = m.filter((d) => d.memberMeasures[measure['Measure Name']] === 1);
+    splitMembers.denominator = m.filter((d) => d.memberMeasures[measure['Measure Name']] === 0);
 
     return splitMembers;
-  }, [data, measure, provider, contract]);
+  }, [data, measure, provider, contract, filteredMembers]);
 
   const measureWithData = useMemo(() => {
     if (!measure || !members) {

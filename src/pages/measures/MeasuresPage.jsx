@@ -1,6 +1,10 @@
+import useContracts from '@/api/useContracts';
+import useFilteredMembers from '@/api/useFilteredMembers';
 import useMeasures from '@/api/useMeasures';
+import useMemberMeasures from '@/api/useMemberMeasures';
 import useMembers from '@/api/useMembers';
-import useProviders from '@/api/useProviders';
+import useProviderGroups from '@/api/useProvidersGroups';
+import useSrf from '@/api/useSrf';
 import Card from '@/components/Card';
 import CardGlow from '@/components/cards/card-glow/CardGlow';
 import PieChart from '@/components/charts/TestPie';
@@ -8,7 +12,9 @@ import PieChart2 from '@/components/charts/TestPie2';
 import PieChart3 from '@/components/charts/TestPie3';
 import Donut from '@/components/charts/donut/Donut';
 import Top from '@/layout/Top';
+import { contractFilterState } from '@/state/contractFilterState';
 import { providertFilterState } from '@/state/providerFilterState';
+import { srfFilterState } from '@/state/srfFilterState';
 import { Box, Container, Grid, Stack, Typography, useTheme } from '@mui/material';
 import Grid2 from '@mui/material/Unstable_Grid2';
 import React, { useMemo } from 'react';
@@ -56,12 +62,20 @@ const useGlowPointer = () => {
 };
 
 const MeasuresPage = () => {
-  const UPDATE = useGlowPointer();
+  //const UPDATE = useGlowPointer();
   const theme = useTheme();
   const providerId = useRecoilValue(providertFilterState);
+  const contractId = useRecoilValue(contractFilterState);
+  const srfId = useRecoilValue(srfFilterState);
   const { data: measuresData } = useMeasures();
   const { data: membersData } = useMembers();
-  const { data: providers } = useProviders();
+  const { data: providerGroups } = useProviderGroups();
+  const { data: memberMeasures } = useMemberMeasures();
+  const { data: contracts } = useContracts();
+  const { data: srfData } = useSrf();
+  const { filteredMembers } = useFilteredMembers();
+
+  console.log(memberMeasures);
 
   /*   useEffect(() => {
     setMeasureState(null);
@@ -87,51 +101,43 @@ const MeasuresPage = () => {
     forecast: 'something'
   };
 
-  const provider = useMemo(() => {
+  /* const provider = useMemo(() => {
     if (!providers) {
       return null;
     }
     return providers.find((provider) => {
       return provider.id === providerId;
     });
-  }, [providers, providerId]);
+  }, [providers, providerId]); */
 
   const measures = useMemo(() => {
-    if (!measuresData.length || !membersData) {
+    if (!filteredMembers.length) {
       return null;
     }
 
-    let membersCopy = [...membersData];
+    /* if (srfId) {
+      console.log(srfId);
+      const srf = srfData.find((s) => s.id === srfId);
 
-    let m = measuresData.map((member) => {
-      return {
-        ...member,
-        name: member['FIRST NAME'] + ' ' + member['LAST NAME'],
-        id: member['MEMBER ID']
-      };
-    });
-
-    if (provider) {
-      membersCopy = membersCopy.filter((member) => member['Contract Entity Name'] === provider.label);
-    }
-
-    /* if (contract) {
-      don't have a way to associate a contract with a member now
-      return m.filter((member) => member['Contract Name'] === contract.label);
+      console.log(srf);
+      filteredMembers = filteredMembers.filter((m) => m['Srf'] === srf.label);
     } */
+
+    console.log(filteredMembers);
+    console.log(measuresData);
+
     let splitMembers = [];
     measuresData.forEach((measure, i) => {
       splitMembers[i] = { ...measure };
-      splitMembers[i].numerator = membersCopy.filter((member) => member[measure.measure_name] === 'TRUE').length;
-      splitMembers[i].denominator = membersCopy.filter((member) => member[measure.measure_name] === 'FALSE').length;
+      splitMembers[i].numerator = filteredMembers.filter((member) => member.memberMeasures[measure['Measure Name']] === 1).length;
+      splitMembers[i].denominator = filteredMembers.filter((member) => member.memberMeasures[measure['Measure Name']] === 0).length;
       splitMembers[i].forecast = 'N/A';
     });
 
-    //remove prod, only showing with values
-    //splitMembers = splitMembers.filter((m) => m.numerator > 0 || m.denominator > 0);
+    console.log(splitMembers);
 
     return splitMembers;
-  }, [measuresData, provider]);
+  }, [filteredMembers, srfId]);
 
   return (
     <Container maxWidth="lg" sx={{ marginBottom: '100px', marginTop: '20px' }}>

@@ -78,7 +78,7 @@ const PieChart2 = ({ measure, disabled }) => {
             top: '50%',
             left: '50%',
             transform: 'translate(-50%, -50%)',
-            boxShadow: 'inset 0px 4px 8px rgb(0 0 0 / 0.4)'
+            boxShadow: 'inset 0px 4px 8px rgb(0 0 0 / 0.3)'
           })}
         >
           <Typography

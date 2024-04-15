@@ -116,7 +116,7 @@ export const SrfRenderer = (params) => {
 export const LinkRenderer = (params) => {
   const url = params.data.url;
   return (
-    <Box component={Link} to={url} px={1} sx={(theme) => ({ textDecoration: 'none', fontWeight: 300, color: theme.palette.text.primary })}>
+    <Box component={Link} to={url} px={0} sx={(theme) => ({ textDecoration: 'none', color: theme.palette.text.primary })}>
       {params.value}
     </Box>
   );

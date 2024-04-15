@@ -1,6 +1,6 @@
 import useContracts from '@/api/useContracts';
 import useMeasures from '@/api/useMeasures';
-import useProviders from '@/api/useProviders';
+import useProviders from '@/api/useProvidersGroups';
 import AutocompleteButton from '@/components/Autocomplete';
 import Card from '@/components/Card';
 import { ThemeContext } from '@/context/ThemeContextProvider';

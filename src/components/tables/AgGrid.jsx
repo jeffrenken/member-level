@@ -19,7 +19,7 @@ import { AgGridReact } from 'ag-grid-react';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { getData } from './data.js';
 import { IconDeviceFloppy, IconFileCv, IconFileTypeCsv } from '@tabler/icons-react';
-//import './ag-grid.css';
+import './ag-grid.css';
 
 export default function AgGrid({ rowData, columnDefs, sideBar = true, csvDownload, saveFiltersButton, height = '100%' }) {
   const gridRef = useRef();

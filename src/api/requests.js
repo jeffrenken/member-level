@@ -2,18 +2,34 @@ import axios from 'axios';
 import MockAdapter from 'axios-mock-adapter';
 //import { measures } from '../../data';
 import hCodes from '../../fakeData/hCodes.json';
-import srfData from '../../fakeData/dataWithSrf.json';
-import memberData from '../../fakeData/member_data.json';
+import srfData from '../../data/memberSrf.json';
+import memberData from '../../data/members.json';
+import providerGroupsData from '../../data/providerGroups.json';
+import measures from '../../data/measures.json';
+import memberMeasures from '../../data/memberMeasures.json';
 
-const measures = hCodes.map((hCode, i) => ({
-  ...hCode,
+const providerGroups = providerGroupsData.map((p, i) => ({ ...p, id: i + 1 }));
+
+console.log(providerGroups);
+
+const members = memberData.map((member, i) => ({
+  ...member,
+  id: member['MEMBER ID'],
+  providerGroup: providerGroups.find((p) => p['MEMBER ID'] === member['MEMBER ID']),
+  memberMeasures: memberMeasures.find((m) => m['MEMBER ID'] === member['MEMBER ID']),
+  srf: srfData.find((s) => s['MEMBER ID'] === member['MEMBER ID'])
+}));
+
+const fakeMeasures = measures.map((measure, i) => ({
+  ...measure,
   id: i + 1,
-  label: hCode.measure_name,
-  value: hCode.hl_code
+  label: measure['Measure Name'],
+  value: measure['Acronym'],
+  abbreviation: measure['Acronym']
 }));
 
 const fakeContracts = () => {
-  const contractName = srfData.map((d) => d['Contract']).sort();
+  const contractName = providerGroups.map((d) => d['CONTRACT']).sort();
   const distinctContracts = [...new Set(contractName)];
   return distinctContracts.map((c, i) => ({ id: i + 1, label: c }));
 };
@@ -38,20 +54,14 @@ const fakeRatings = [
   { id: 6, label: '5' }
 ];
 
-const members = [
-  { id: 1, firstName: 'John', lastName: 'Doe', contract: 1, plan: 1, rating: 2.5 },
-  { id: 2, firstName: 'Jane', lastName: 'Doe', contract: 2, plan: 2, rating: 3 },
-  { id: 3, firstName: 'Jack', lastName: 'Doe', contract: 3, plan: 3, rating: 3.5 }
-];
-
-const fakeProviders = () => {
-  const providerName = memberData
-    .map((d) => d['Contract Entity Name'])
+const fakeProviderGroups = () => {
+  const providerName = providerGroups
+    .map((d) => d['Provider Group'])
     .filter((d) => Boolean(d))
     .sort();
   const distinctProviderGroups = [...new Set(providerName)];
 
-  const p = distinctProviderGroups.map((p, i) => ({ id: i + 1, label: p, providers: [] }));
+  const p = distinctProviderGroups.map((p, i) => ({ id: i + 1, label: p }));
   return p;
 };
 
@@ -63,20 +73,21 @@ const axiosClient = axios.create({
 });
 
 const fakeSrf = [
-  { id: 1, label: 'All', value: 1 },
-  { id: 2, label: 'SRF Only', value: 2 },
-  { id: 3, label: 'Non-SRF Only', value: 3 }
+  { id: 1, label: 'All', value: undefined },
+  { id: 2, label: 'SRF Only', value: true },
+  { id: 3, label: 'Non-SRF Only', value: false }
 ];
 
 const mock = new MockAdapter(axiosClient, { delayResponse: 0 });
 mock.onGet('/contracts').reply(200, fakeContracts());
-mock.onGet('/providers').reply(200, fakeProviders());
+mock.onGet('/provider-groups').reply(200, fakeProviderGroups());
 mock.onGet('/srf').reply(200, fakeSrf);
 mock.onGet('/years').reply(200, fakeYears);
 mock.onGet('/plans').reply(200, fakePlans);
 mock.onGet('/ratings').reply(200, fakeRatings);
-mock.onGet('/measures').reply(200, measures);
-mock.onGet('/members').reply(200, memberData);
+mock.onGet('/measures').reply(200, fakeMeasures);
+mock.onGet('/member-measures').reply(200, memberMeasures);
+mock.onGet('/members').reply(200, members);
 mock.onGet('/members/1').reply(200, members[0]);
 mock.onPost('/srf-scores').reply((config) => {
   const body = JSON.parse(config.data);
@@ -115,8 +126,8 @@ export async function fetchSrf() {
   const res = await axiosClient.get('/srf');
   return res.data;
 }
-export async function fetchProviders() {
-  const res = await axiosClient.get('/providers');
+export async function fetchProviderGroups() {
+  const res = await axiosClient.get('/provider-groups');
   return res.data;
 }
 
@@ -137,6 +148,11 @@ export async function fetchRatings() {
 
 export async function fetchMeasures() {
   const res = await axiosClient.get('/measures');
+  return res.data;
+}
+
+export async function fetchMemberMeasures() {
+  const res = await axiosClient.get('/member-measures');
   return res.data;
 }
 

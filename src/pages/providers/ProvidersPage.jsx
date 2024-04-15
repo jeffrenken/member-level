@@ -1,5 +1,5 @@
 import useMembers from '@/api/useMembers';
-import useProviders from '@/api/useProviders';
+import useProviderGroups from '@/api/useProvidersGroups';
 import AgGrid from '@/components/tables/AgGrid';
 import { GapRenderer, LinkRenderer, RatingRenderer, SrfRenderer, TextRenderer } from '@/components/tables/CellRenderers';
 import { Box, Container, Typography } from '@mui/material';
@@ -13,8 +13,8 @@ const randomHalfNumberBetween = (min, max) => Math.floor(Math.random() * (max - 
 export default function ProvidersPage() {
   const params = useParams();
   const name = decodeURI(params.name);
-  const { data: members } = useMembers();
-  const { data: providersData } = useProviders();
+  const { data: memberData } = useMembers();
+  const { data: providersData } = useProviderGroups();
   console.log(providersData);
 
   const providers = useMemo(() => {
@@ -36,9 +36,30 @@ export default function ProvidersPage() {
     );
   }, [providersData]);
 
+  const members = useMemo(() => {
+    if (!memberData) {
+      return [];
+    }
+    return (
+      memberData
+        //.filter((member) => member['Contract Entity Name'] === name)
+        .map((member) => {
+          return {
+            ...member,
+            providerGroupName: member.providerGroup['Provider Group'],
+            providerName: member.providerGroup.Provider,
+            srf: randomBoolean(),
+            numberOfGaps: randomIntegerBetween(0, 50),
+            starRating: randomHalfNumberBetween(0, 10)
+            //url: `/providers/${provider.id}`
+          };
+        })
+    );
+  }, [providersData]);
+
   const columnDefs = [
     {
-      field: 'Contract Entity Name',
+      field: 'providerGroupName',
       headerName: 'Name',
       filter: true,
       chartDataType: 'category',
@@ -48,7 +69,7 @@ export default function ProvidersPage() {
       hide: true
     },
     {
-      field: 'Primary Care Physician - Provider Name',
+      field: 'providerName',
       headerName: 'Name',
       filter: true,
       chartDataType: 'series',
@@ -94,6 +115,8 @@ export default function ProvidersPage() {
       cellRenderer: RatingRenderer
     }
   ];
+
+  console.log(members);
 
   return (
     <Container maxWidth="lg">

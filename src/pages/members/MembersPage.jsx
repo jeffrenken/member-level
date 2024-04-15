@@ -4,20 +4,21 @@ import { Rating, Chip, Container, Box } from '@mui/material';
 import { Link } from 'react-router-dom';
 import { GapRenderer, LinkRenderer, RatingRenderer, SrfRenderer, StarRenderer } from '@/components/tables/CellRenderers';
 import Top from '@/layout/Top';
+import useFilteredMembers from '@/api/useFilteredMembers';
 
 const randomBoolean = () => Math.random() > 0.5;
 const randomIntegerBetween = (min, max) => Math.floor(Math.random() * (max - min + 1) + min);
 const randomHalfNumberBetween = (min, max) => Math.floor(Math.random() * (max - min + 1) + min) / 2;
 
 export default function MembersPage() {
-  const { data } = useMembers();
+  const { filteredMembers } = useFilteredMembers();
 
-  const members = data.map((member) => {
+  const members = filteredMembers.map((member) => {
     return {
       name: member['FIRST NAME'] + ' ' + member['LAST NAME'],
       id: member['MEMBER ID'],
       srf: randomBoolean(),
-      numberOfGaps: randomIntegerBetween(0, 50),
+      numberOfGaps: Object.keys(member.memberMeasures).filter((key) => member.memberMeasures[key] === 0).length,
       starRating: randomHalfNumberBetween(0, 10),
       url: `/members/${member['MEMBER ID']}`
     };

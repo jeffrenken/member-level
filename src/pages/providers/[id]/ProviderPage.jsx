@@ -1,5 +1,5 @@
 import useMembers from '@/api/useMembers';
-import useProviders from '@/api/useProviders';
+import useProviders from '@/api/useProvidersGroups';
 import AgGrid from '@/components/tables/AgGrid';
 import { GapRenderer, LinkRenderer, RatingRenderer, SrfRenderer } from '@/components/tables/CellRenderers';
 import { Box, Container, Typography } from '@mui/material';
@@ -32,7 +32,7 @@ export default function ProviderPage() {
     }
 
     return data
-      .filter((member) => member['Contract Entity Name'] === provider.label)
+      .filter((member) => (member.providerGroup.id = providerId))
       .map((member) => {
         return {
           name: member['FIRST NAME'] + ' ' + member['LAST NAME'],
