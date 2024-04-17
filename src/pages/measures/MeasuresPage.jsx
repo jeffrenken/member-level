@@ -141,7 +141,7 @@ const MeasuresPage = () => {
   const offTrack = measures.slice(8, measures.length);
 
   return (
-    <Container maxWidth="lg" sx={{ marginBottom: '100px', marginTop: '20px' }}>
+    <Container maxWidth="xl" sx={{ marginBottom: '100px', marginTop: '20px' }}>
       <Top filters={['contracts', 'providers', 'srf', 'measureStatus']} />
       {/* <Box height={400}>
         <LineChart />
@@ -150,19 +150,22 @@ const MeasuresPage = () => {
         <BarChart measures={measures} />
       </Box> */}
 
-      <Stack direction="row" alignItems="center" justifyContent="space-around" mb={4}>
-        <Box>
-          <Typography align="center" my={2} ml={2} sx={{ fontSize: '1.75rem', fontWeight: 600, letterSpacing: '2px' }}>
-            Measures
+      <Stack direction="row" alignItems="center" justifyContent="space-around" mb={4} px={6} mt={4}>
+        <Stack direction="row" alignItems="center" justifyContent="space-around" spacing={3}>
+          <MeasureCountCard measures={onTrack4} label={'On Track - 4 Stars'} />
+          <MeasureCountCard measures={onTrack5} label={'On Track - 5 Stars'} />
+          <MeasureCountCard measures={offTrack} label={'Off Track'} />
+        </Stack>
+        <Box px={6}>
+          <Typography align="center" my={2} ml={2} sx={{ fontSize: '2rem', fontWeight: 600, letterSpacing: '2px' }}>
+            Good Page Title
           </Typography>
-          <Typography align="center" my={2} ml={2} variant="body1">
-            Maybe some kind of explanation of what this page shows.khj
+          <Typography align="left" my={2} ml={2} variant="body1">
+            Maybe some kind of explanation of what this page shows.khjlksadjfgh lakjdsfh glkjahsdf glkjahfs lkjga lksfjgh lakjsfh glkajs
+            dfhlgkjahfsdlgkjahlsdkfjhalskdjf hlaksjd fhlaksjd fhlakjsdhflj k sjdfh kjshd f<br></br>
+            a;skjfdh glakjsfh vlkjah sfdkvjah sdlfkjv aldskfjvlakjdfs vlakjsdf vlkajsdf hvlkajs dfhvlkja slvkj aslfdkjv aslkdfjv halkjsvh
+            lakjdfshvlkj h
           </Typography>
-          <Stack direction="row" alignItems="center" justifyContent="space-around" spacing={3}>
-            <MeasureCountCard measures={onTrack4} label={'On Track - 4 Stars'} />
-            <MeasureCountCard measures={onTrack5} label={'On Track - 5 Stars'} />
-            <MeasureCountCard measures={offTrack} label={'Off Track'} />
-          </Stack>
         </Box>
 
         {/* <CardGlow measure={sampleMeasure} colors={[background]} disabled />

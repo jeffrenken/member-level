@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import { Box, Container, Grid, Stack, Typography, useTheme } from '@mui/material';
+import { Box, Container, Grid, Stack, Tooltip, Typography, useTheme } from '@mui/material';
 import { Link, useNavigate } from 'react-router-dom';
 import { useRecoilState } from 'recoil';
 import { measureFilterState } from '@/state/measureFilterState.js';
@@ -25,6 +25,10 @@ const Slice2 = styled(`div`)`
   box-shadow: 0px 4px 8px rgb(0 0 0 / 0.4);
 `;
 
+function truncate(str, n) {
+  return str.length > n ? str.substr(0, n - 1) + '...' : str;
+}
+
 const PieChart2 = ({ measure, disabled }) => {
   const theme = useTheme();
   const navigate = useNavigate();
@@ -47,129 +51,132 @@ const PieChart2 = ({ measure, disabled }) => {
 
   return (
     <Box
-      height={170}
-      width={170}
+      height={188}
+      width={188}
       sx={{
         borderRadius: '10px',
         border: `2px solid #aaa`,
-        p: 1,
+        p: 0.5,
         bgcolor: background,
         boxShadow: '0px 4px 8px rgb(0 0 0 / 0.2)',
         cursor: !disabled ? 'pointer' : 'default'
       }}
       onClick={handleClick}
     >
-      <Typography
-        align="center"
-        sx={{ fontSize: '1.4rem', mb: '6px', lineHeight: 1, fontWeight: 600, textShadow: '0px 2px 2px rgb(0 0 0 / 0.3)' }}
-      >
-        {measure.abbreviation}
-      </Typography>
+      <Stack direction="column" justifyContent="space-between" sx={{ height: '100%' }} spacing={0}>
+        <Typography align="center" sx={{ fontSize: '1.4rem', lineHeight: 1, fontWeight: 600, textShadow: '0px 2px 2px rgb(0 0 0 / 0.3)' }}>
+          {measure.abbreviation}
+        </Typography>
+        <Tooltip placement="top" title={<Typography>{measure.label}</Typography>}>
+          <Typography align="center" sx={{ fontSize: '0.7rem', lineHeight: 1, mb: '4px' }}>
+            {truncate(measure.label, 50)}
+          </Typography>
+        </Tooltip>
 
-      <Box sx={{ position: 'relative' }}>
-        {/* Yes, I think backwards 1 and 2 is correct*/}
-        <Slice2 slice1={value2InDegrees} slice2={value1InDegrees} />
-        <Box
-          sx={(theme) => ({
-            position: 'absolute',
-            width: '70px',
-            height: '70px',
-            borderRadius: '50%',
-            backgroundColor: theme.palette.background.paper,
-            top: '50%',
-            left: '50%',
-            transform: 'translate(-50%, -50%)',
-            boxShadow: 'inset 0px 4px 8px rgb(0 0 0 / 0.3)'
-          })}
-        >
-          <Typography
-            align="center"
+        <Box sx={{ position: 'relative' }}>
+          <Slice2 slice1={value2InDegrees} slice2={value1InDegrees} />
+          <Box
+            sx={(theme) => ({
+              position: 'absolute',
+              width: '70px',
+              height: '70px',
+              borderRadius: '50%',
+              backgroundColor: theme.palette.background.paper,
+              top: '50%',
+              left: '50%',
+              transform: 'translate(-50%, -50%)',
+              boxShadow: 'inset 0px 4px 8px rgb(0 0 0 / 0.3)'
+            })}
+          >
+            <Typography
+              align="center"
+              sx={{
+                fontSize: '1.8rem',
+                fontWeight: 600,
+                lineHeight: 0.9,
+                letterSpacing: '-1px',
+                mt: '23px',
+                textShadow: '0px 2px 2px rgb(0 0 0 / 0.3)'
+              }}
+            >
+              {isNaN(quotient) ? '' : quotient}
+            </Typography>
+          </Box>
+        </Box>
+        <Stack direction="row" alignItems="space-between" justifyContent="space-between" spacing={1} px={2} mt={'-8px'}>
+          <Box
             sx={{
-              fontSize: '1.8rem',
-              fontWeight: 600,
-              lineHeight: 0.9,
-              letterSpacing: '-1px',
-              mt: '23px',
+              width: '100%',
+              height: '100%',
+              pl: '4px',
+              py: '2px',
+              fontSize: '0.7rem',
+              textAlign: 'left',
               textShadow: '0px 2px 2px rgb(0 0 0 / 0.3)'
             }}
           >
-            {isNaN(quotient) ? '' : quotient}
-          </Typography>
-        </Box>
-      </Box>
-      <Stack direction="row" alignItems="space-between" justifyContent="space-between" spacing={1} px={2} mt={'-8px'}>
-        <Box
+            Num
+          </Box>
+          <Box
+            sx={{
+              width: '100%',
+              height: '100%',
+              pl: '4px',
+              py: '2px',
+              fontSize: '0.7rem',
+              textAlign: 'right',
+              textShadow: '0px 2px 2px rgb(0 0 0 / 0.3)'
+            }}
+          >
+            Den
+          </Box>
+        </Stack>
+        <Stack
+          direction="row"
+          alignItems="space-between"
+          justifyContent="space-between"
+          spacing={1}
+          px={1}
+          mx={1}
+          mb="6px"
+          mt={'-3px'}
           sx={{
-            width: '100%',
-            height: '100%',
-            pl: '4px',
-            py: '2px',
-            fontSize: '0.7rem',
-            textAlign: 'left',
-            textShadow: '0px 2px 2px rgb(0 0 0 / 0.3)'
-          }}
-        >
-          Num
-        </Box>
-        <Box
-          sx={{
-            width: '100%',
-            height: '100%',
-            pl: '4px',
-            py: '2px',
-            fontSize: '0.7rem',
-            textAlign: 'right',
-            textShadow: '0px 2px 2px rgb(0 0 0 / 0.3)'
-          }}
-        >
-          Den
-        </Box>
-      </Stack>
-      <Stack
-        direction="row"
-        alignItems="space-between"
-        justifyContent="space-between"
-        spacing={1}
-        px={1}
-        mx={1}
-        mb="6px"
-        mt={'-3px'}
-        sx={{
-          boxShadow: '0px 4px 8px rgb(0 0 0 / 0.2)',
-          borderRadius: '4px',
-          //background: `linear-gradient(90deg, rgba(34, 193, 168, 1) ${numeratorPercent}%, rgba(35, 93, 241, 1) ${denominatorPercent}%)`
-          //background: `linear-gradient(90deg, rgba(34, 193, 168, 1) ${numeratorPercent}%, rgba(35, 93, 241, 1) 100%)`
-          background: `linear-gradient(135deg, ${blue} ${numeratorPercent - 25}%, ${purple} ${100 - denominatorPercent + 25}%)`
-        }}
-      >
-        <Box
-          sx={{
-            width: '100%',
-            height: '100%',
-            color: 'white',
-            fontSize: '1.1rem',
-            pl: '4px',
-            py: '2px',
+            boxShadow: '0px 4px 8px rgb(0 0 0 / 0.2)',
             borderRadius: '4px',
-            textAlign: 'left'
+            //background: `linear-gradient(90deg, rgba(34, 193, 168, 1) ${numeratorPercent}%, rgba(35, 93, 241, 1) ${denominatorPercent}%)`
+            //background: `linear-gradient(90deg, rgba(34, 193, 168, 1) ${numeratorPercent}%, rgba(35, 93, 241, 1) 100%)`
+            background: `linear-gradient(135deg, ${blue} ${numeratorPercent - 25}%, ${purple} ${100 - denominatorPercent + 25}%)`
           }}
         >
-          {measure.numerator}
-        </Box>
-        <Box
-          sx={{
-            width: '100%',
-            height: '100%',
-            color: 'white',
-            fontSize: '1.1rem',
-            pl: '4px',
-            py: '2px',
-            borderRadius: '4px',
-            textAlign: 'right'
-          }}
-        >
-          {measure.denominator}
-        </Box>
+          <Box
+            sx={{
+              width: '100%',
+              height: '100%',
+              color: 'white',
+              fontSize: '1.1rem',
+              pl: '4px',
+              py: '2px',
+              borderRadius: '4px',
+              textAlign: 'left'
+            }}
+          >
+            {measure.numerator}
+          </Box>
+          <Box
+            sx={{
+              width: '100%',
+              height: '100%',
+              color: 'white',
+              fontSize: '1.1rem',
+              pl: '4px',
+              py: '2px',
+              borderRadius: '4px',
+              textAlign: 'right'
+            }}
+          >
+            {measure.denominator}
+          </Box>
+        </Stack>
       </Stack>
       {/* <Stack direction="row" alignItems="space-between" justifyContent="space-between" spacing={1} px={1} mt={'-3px'}>
         <Box
