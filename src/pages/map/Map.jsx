@@ -7,7 +7,7 @@ import Card from '@/components/Card';
 import MembersTable from '@/components/tables/MembersTable';
 import { contractFilterState } from '@/state/contractFilterState';
 import { measureFilterState } from '@/state/measureFilterState';
-import { providertFilterState } from '@/state/providerFilterState';
+import { providerFilterState } from '@/state/providerFilterState';
 import { srfFilterState } from '@/state/srfFilterState';
 import { Box, Stack, Typography, useTheme } from '@mui/material';
 import mapboxgl from 'mapbox-gl';
@@ -21,6 +21,8 @@ import memberData from '../../../fakeData/member_data.json';
 import stateToNumber from '../../../fakeData/stateToNumber.json';
 import statesBoundingBoxes from '../../../fakeData/statesBoundingBoxes.json';
 import useFilteredMembers from '@/api/useFilteredMembers';
+import { PieChart, Pie, Sector, Cell, ResponsiveContainer } from 'recharts';
+import GaugeChart from '@/components/charts/GaugeChart';
 
 /* const st = s.features.map((item) => {
   let statePet = pets.find((pet) => pet.state === item.properties.NAME);
@@ -43,46 +45,9 @@ const cd = countiesData.features.map((item) => {
 
 const countyDataWithCount = { type: 'FeatureCollection', features: cd };
 
-const categories = [
-  { label: 'Sex', value: 'SEX' },
-  { label: 'Race', value: 'RACE' },
-  { label: 'Ethnicity', value: 'ETHNICITY' }
-];
-
-function findUniqueValues(key) {
-  const values = memberData.map((item) => item[key]);
-  const uniqueValues = Array.from(new Set(values)).map((item) => ({
-    label: item,
-    value: item
-  }));
-  return uniqueValues;
-}
-
-function getDataByOption(category, option) {
-  const values = memberData.filter((item) => item[category] === option);
-  const uniqueValues = Array.from(new Set(values));
-  return uniqueValues;
-}
-
-const st = s.features.map((item) => {
-  //let statePet = pets.find((pet) => pet.state === item.properties.NAME);
-  let itemCopy = { ...item };
-  /*let itemProperties = { ...item.properties, ...statePet };
-  itemCopy.properties = itemProperties; */
-  return itemCopy;
-});
-
-const statesData = { type: 'FeatureCollection', features: st };
-
-const states = { type: 'FeatureCollection', features: st };
-
-const srfOptions = ['All', 'SRF Only', 'Non-SRF Only'];
-
 mapboxgl.accessToken = 'pk.eyJ1IjoiZDQ1MmRzNTQiLCJhIjoiY2xuN2tvMXNoMGNibTJ1cGRwdTJlM3JnNSJ9.YG9u3Xd5SklObzL_hR8jwg'; // Set your mapbox token here
 
 export default function Map() {
-  //const darkMode = useRecoilValue(darkModeState);
-  const searchParams = useSearchParams();
   const theme = useTheme();
   const darkMode = theme.palette.mode === 'dark';
   const mapContainer = useRef(null);
@@ -90,88 +55,28 @@ export default function Map() {
   const [lng, setLng] = useState(-96.609435);
   const [lat, setLat] = useState(40.778561);
   const [zoom, setZoom] = useState(4.5);
-  const [category, setCategory] = useState('');
-  const [selectedCategory, setSelectedCategory] = useState('');
   const [selectedMeasureOption, setSelectedMeasureOption] = useState('');
-  const [categoryOptions, setCategoryOptions] = useState([]);
   const [selectedCounty, setSelectedCounty] = useState(null);
-  const [selectedCategoryOption, setSelectedCategoryOption] = useState(null);
-  const [detail, setDetail] = useState(null);
-  const [option, setOption] = useState('');
-  const [options, setOptions] = useState([]);
-  const [selectedSrfOption, setSelectedSrfOption] = useState(null);
-  const [filteredData, setFilteredData] = useState([]);
-  const [stepArray, setStepArray] = useState([30, 40, 50, 1000000]);
-  const [mapData, setMapData] = useState(countyDataWithCount);
   const [countyFilteredMembers, setCountyFilteredMembers] = useState([]);
-  const [measureName, setMeasureName] = useState('');
-  const [value, setValue] = React.useState('');
   const [clickedCounty, setClickedCounty] = useState(null);
-  const [measureState, setMeasureState] = useRecoilState(measureFilterState);
+  const [measureState, setMeasureState] = useState(null);
   const [contractState, setContractState] = useRecoilState(contractFilterState);
-  const [providerState, setProviderState] = useRecoilState(providertFilterState);
+  const [providerState, setProviderState] = useRecoilState(providerFilterState);
   const [allMembersInDenom, setAllMembersInDenom] = useState([]);
   const [srfState, setSrfState] = useRecoilState(srfFilterState);
   const [mapReady, setMapReady] = useState(false);
   const { filteredMembers } = useFilteredMembers();
 
+  const style = darkMode ? 'mapbox://styles/mapbox/dark-v11' : 'mapbox://styles/mapbox/light-v11';
+  const stepArray = [25, 30, 35, 1000000];
+  const mapData = countyDataWithCount;
+
   const { data: measures } = useMeasures();
-  const { data: contractsData } = useContracts();
+  const { data: contracts } = useContracts();
   const { data: providersData } = useProviders();
   const { data: srf } = useSrf();
 
-  //const { data: srfScores } = useSrfScores({ measure: selectedMeasureOption?.hl_code, limit: selectedSrfOption });
-
-  /*   useEffect(() => {
-    const entries = Object.fromEntries([...searchParams]);
-    const searchAsObject = Object.fromEntries(searchParams);
-  }, [searchParams]); */
-
-  /*   useEffect(() => {
-    if (map.current && measures.length && measureState && !selectedMeasureOption) {
-      setSelectedMeasureOption(measures.find((m) => m.id === measureState));
-    }
-  }, [measures, measureState, value]); */
-
-  useEffect(() => {
-    //filter doesn't work on load yet
-    //setMeasureState(null);
-  }, []);
-
-  useEffect(() => {
-    //filters
-    if (!selectedCategory) return;
-    setCategoryOptions(findUniqueValues(selectedCategory.value));
-  }, [selectedCategory]);
-
-  useEffect(() => {
-    //filters
-    if (!selectedCategoryOption) return;
-    let values = getDataByOption(selectedCategory.value, selectedCategoryOption.value);
-    setFilteredData(values);
-  }, [selectedCategory, selectedCategoryOption]);
-
-  const contracts = useMemo(() => {
-    if (!contractsData) return null;
-    return contractsData.map((contract) => {
-      return {
-        ...contract,
-        value: contract.id
-      };
-    });
-  }, [contractsData]);
-
-  const providers = useMemo(() => {
-    if (!providersData) return null;
-    return providersData.map((provider) => {
-      return {
-        ...provider,
-        value: provider.id
-      };
-    });
-  }, [providersData]);
-
-  useEffect(() => {
+  function setupMap() {
     if (map.current) return; // initialize map only once
     map.current = new mapboxgl.Map({
       container: mapContainer.current,
@@ -255,7 +160,10 @@ export default function Map() {
 
         //display in popup
         //if (percent) {
-        popup.setLngLat(event.lngLat).setHTML(`<div class="text-lg font-bold">${name}</div><div>${percent}%</div>`).addTo(map.current);
+        popup
+          .setLngLat(event.lngLat)
+          .setHTML(`<div class="text-lg font-bold">${name}</div><div>${percent}% in denominator</div>`)
+          .addTo(map.current);
         //}
       });
 
@@ -265,49 +173,38 @@ export default function Map() {
       });
     });
 
-    /* new mapboxgl.Marker({
-      color: "#c00000",
-      scale: 0.7,
-    })
-      .setLngLat([-96.633964, 40.778561])
-      .setPopup(popup)
-      .addTo(map.current); */
-
     map.current.on('move', () => {
       setLng(map.current.getCenter().lng.toFixed(4));
       setLat(map.current.getCenter().lat.toFixed(4));
       setZoom(map.current.getZoom().toFixed(2));
     });
 
-    if (map.current.getLayer('counties-line')) {
+    map.current.once('idle', () => {
+      console.log('idle');
       setMapReady(true);
-    }
-  }, [mapData, darkMode]);
+    });
+  }
+
+  useEffect(() => {
+    setupMap();
+  }, []);
 
   useMemo(() => {
-    //filters
-    console.log('filteredMembers', mapReady, filteredMembers);
-    if (!filteredMembers.length || !map.current.getLayer('counties-line')) {
+    console.log(filteredMembers, mapReady, map.current);
+    if (!filteredMembers.length || !mapReady || !map.current || !selectedMeasureOption) {
       return;
     }
 
-    //setMeasure(value);
-    //const selectedMeasure = allMeasures.find((item) => item.hl_code === selectedMeasureOption.hl_code);
     const selectedMeasure = selectedMeasureOption;
-
     let membersInDenom = [...filteredMembers];
 
     if (selectedMeasure) {
       membersInDenom = filteredMembers.filter((member) => member.memberMeasures[selectedMeasure['Measure Name']] === 0);
     }
-    console.log(membersInDenom);
     setAllMembersInDenom(membersInDenom);
-
-    //setMeasureName(selectedMeasure.measure_name);
 
     let uniqueStateAbbreviations = [];
 
-    //county stuff
     const updatedCountyData = countyDataWithCount.features.map((item) => {
       let itemCopy = { ...item };
       let membersInCountyDenom = membersInDenom.filter(
@@ -319,9 +216,11 @@ export default function Map() {
         itemCopy.properties = itemProperties;
         return itemCopy;
       }
-      console.log('membersInCountyDenom', membersInCountyDenom);
       let countInCountyDenom = membersInCountyDenom.length;
-      let countTotalInCounty = memberData.filter((d) => d.COUNTY === item.properties.NAME).length;
+      let countTotalInCounty = filteredMembers.filter(
+        (member) => member.COUNTY === item.properties.NAME && member.STATE === item.properties.stateAbbreviation
+      ).length;
+      console.log(countInCountyDenom, countTotalInCounty);
       let percent = (countInCountyDenom / countTotalInCounty) * 100;
       let itemProperties = { ...item.properties, percent: percent };
       itemCopy.properties = itemProperties;
@@ -330,12 +229,12 @@ export default function Map() {
       return itemCopy;
     });
 
-    console.log(updatedCountyData);
-
-    map.current.getSource('countiesData').setData({
-      type: 'FeatureCollection',
-      features: updatedCountyData
-    });
+    if (map.current.getSource('countiesData')) {
+      map.current.getSource('countiesData').setData({
+        type: 'FeatureCollection',
+        features: updatedCountyData
+      });
+    }
 
     if (uniqueStateAbbreviations.length === 1) {
       const stateBounds = statesBoundingBoxes.find((state) => state.STUSPS === uniqueStateAbbreviations[0]);
@@ -351,35 +250,13 @@ export default function Map() {
     }
 
     if (selectedCounty) {
-      console.log(selectedCounty, membersInDenom);
       let membersInCountyDenom = allMembersInDenom.filter(
         (member) => member.COUNTY === selectedCounty.NAME && member.STATE === selectedCounty.stateAbbreviation
       );
 
-      //let membersInCountyDenom = memberData.filter((d) => d[measureName] === 'FALSE' && d.COUNTY === countyName);
       setCountyFilteredMembers(membersInCountyDenom);
     }
-
-    /* 
-    This works, but colors were always yellow, so disabled for now
-    map.current.setPaintProperty("counties-fill", "fill-color", [
-      "step",
-      ["get", "percent"],
-      "#70F870",
-      measureStepArray[0],
-      "#ffeda0",
-      measureStepArray[1],
-      "#F8EC70",
-      measureStepArray[2],
-      "#c00000",
-      110,
-      "#fd8d3c",
-      120,
-      "#fc4e2a",
-    ]); */
-
-    //setMapData({ type: "FeatureCollection", features: updatedCountyData });
-  }, [selectedMeasureOption, selectedCategoryOption, selectedCategory, filteredData, filteredMembers, mapReady]);
+  }, [selectedMeasureOption, filteredMembers, mapReady]);
 
   useEffect(() => {
     if (!clickedCounty) return;
@@ -389,9 +266,7 @@ export default function Map() {
     });
 
     if (countyFeatures) {
-      console.log(countyFeatures, allMembersInDenom);
       let county = countyFeatures.properties;
-      console.log(county);
       setSelectedCounty(county);
       let membersInCountyDenom = allMembersInDenom.filter(
         (member) => member.COUNTY === county.NAME && member.STATE === county.stateAbbreviation
@@ -400,61 +275,11 @@ export default function Map() {
     }
   }, [clickedCounty]);
 
-  const style = darkMode ? 'mapbox://styles/mapbox/dark-v11' : 'mapbox://styles/mapbox/light-v11';
-
-  //old sate stuff below
-
-  /* const totalCount = filteredData.length;
-    const membersInDenom = filteredData.filter(
-      (d) => d[selectedMeasure.measure_name] === "FALSE",
-    );
-    const countInDenom = membersInDenom.length;
-    const percent = (countInDenom / totalCount) * 100;
-
-    let color = "red";
-    if (percent >= selectedMeasure.bottom_third_value_1) {
-      color = "yellow";
-    }
-    if (percent >= selectedMeasure.middle_third_value_1) {
-      color = "green";
-    }
-
-    const values = mapData.features.map((item) => {
-      let itemCopy = { ...item };
-      let membersInStateDenom = filteredData.filter(
-        (d) =>
-          d[selectedMeasure.measure_name] === "FALSE" &&
-          d.STATE === item.properties.ABBR,
-      );
-
-      if (membersInStateDenom.length === 0) {
-        let itemProperties = { ...item.properties, percent: "" };
-        itemCopy.properties = itemProperties;
-        return itemCopy;
-      }
-      let countInStateDenom = membersInStateDenom.length;
-      let countTotalInState = filteredData.filter(
-        (d) => d.STATE === item.properties.ABBR,
-      ).length;
-      let percent = (countInStateDenom / countTotalInState) * 100;
-      let itemProperties = { ...item.properties, percent: percent };
-      itemCopy.properties = itemProperties;
-      return itemCopy;
-    });
-
-    setMapData({ type: "FeatureCollection", features: values });
-    */
-
-  const handleSelectionChange = (e) => {
-    setValue(e.target.value);
-  };
-
   const handleMeasureChange = (value) => {
     setMeasureState(value);
     setSelectedMeasureOption(measures.find((m) => m.id === value));
   };
 
-  console.log('countyFilteredMembers', countyFilteredMembers);
   return (
     <>
       <Box sx={{ position: 'relative' }}>
@@ -474,58 +299,11 @@ export default function Map() {
                   <AutocompleteButton defaultLabel="SRF" options={srf} value={srfState} onChange={setSrfState} />
                 </>
               )}
-
-              {/* <Autocomplete
-                disablePortal
-                id="combo-box-demo"
-                options={categories}
-                value={selectedCategory}
-                //sx={{ width: 200 }}
-                fullWidth
-                renderInput={(params) => <TextField {...params} label="Category" />}
-                autoHighlight
-                onChange={(e, value) => setSelectedCategory(value)}
-              />
-              <Autocomplete
-                disablePortal
-                id="combo-box-demo"
-                options={categoryOptions}
-                value={selectedCategoryOption}
-                //sx={{ width: 200 }}
-                fullWidth
-                renderInput={(params) => <TextField {...params} label="Category Options" />}
-                autoHighlight
-                onChange={(e, value) => setSelectedCategoryOption(value)}
-              /> */}
-              {/* <Autocomplete
-                disablePortal
-                id="combo-box-demo"
-                options={allMeasures}
-                value={selectedMeasureOption || ''}
-                //sx={{ width: 200 }}
-                fullWidth
-                getOptionLabel={(item) => item?.measure_name || ''}
-                renderInput={(params) => <TextField {...params} label="Measure" />}
-                autoHighlight
-                onChange={(e, value) => setSelectedMeasureOption(value)}
-              />
-              <Autocomplete
-                disablePortal
-                id="combo-box-demo"
-                options={srfOptions}
-                value={selectedSrfOption || ''}
-                //sx={{ width: 200 }}
-                fullWidth
-                getOptionLabel={(item) => item || ''}
-                renderInput={(params) => <TextField {...params} label="SRF Options" />}
-                autoHighlight
-                onChange={(e, value) => setSelectedSrfOption(value)}
-              /> */}
             </Stack>
           </Card>
         </Box>
         {selectedCounty && (
-          <Box sx={{ position: 'absolute', top: '20px', right: '16px', zIndex: 1001, width: '46%', height: '360px' }}>
+          <Box sx={{ position: 'absolute', top: '20px', right: '16px', zIndex: 1001, width: '46%' }}>
             <Card p={2} height="100%">
               <Stack direction="column" spacing={2}>
                 <Stack direction="row" justifyContent={'space-between'}>
@@ -541,10 +319,9 @@ export default function Map() {
                     {selectedMeasureOption.measure_name} in denominator
                   </Typography>
                 </Stack>
-                {/* <Typography sx={{ fontWeight: 600, fontSize: '1.15rem' }}>
-                  {selectedCounty.percent ? selectedCounty?.percent.toFixed(2) : 'N/A'}%
-                </Typography>
-                <Typography sx={{ fontWeight: 600, fontSize: '0.9rem' }}>Other Info about this. Not sure what.</Typography> */}
+                {/* <ResponsiveContainer width={200} height={200}>
+                  <GaugeChart />
+                </ResponsiveContainer> */}
               </Stack>
               <Box sx={{ height: '290px' }}>
                 {countyFilteredMembers.length && <MembersTable rows={countyFilteredMembers} csvDownload height="250px" />}
@@ -556,18 +333,6 @@ export default function Map() {
       <div style={{ width: '100%', height: '100%' }}>
         <div ref={mapContainer} style={{ height: '100vh' }} />
       </div>
-      {/* <Select label="Select an option" value={option} onChange={(e) => setOption(e.target.value)}>
-        {options.map((item) => (
-          <MenuItem key={item} value={item.value}>
-            {item.label}
-          </MenuItem>
-        ))}
-      </Select>
-      <Link to={`/counties/${selectedState?.STATE}`}>{selectedState?.NAME}</Link>
-      <div>
-        {detail} {option.includes('Perc') && '%'}
-      </div>
-      */}
     </>
   );
 }

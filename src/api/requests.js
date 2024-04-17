@@ -10,8 +10,6 @@ import memberMeasures from '../../data/memberMeasures.json';
 
 const providerGroups = providerGroupsData.map((p, i) => ({ ...p, id: i + 1 }));
 
-console.log(providerGroups);
-
 const members = memberData.map((member, i) => ({
   ...member,
   id: member['MEMBER ID'],
@@ -31,7 +29,7 @@ const fakeMeasures = measures.map((measure, i) => ({
 const fakeContracts = () => {
   const contractName = providerGroups.map((d) => d['CONTRACT']).sort();
   const distinctContracts = [...new Set(contractName)];
-  return distinctContracts.map((c, i) => ({ id: i + 1, label: c }));
+  return distinctContracts.map((c, i) => ({ id: i + 1, label: c, value: i + 1 }));
 };
 
 const fakeYears = [

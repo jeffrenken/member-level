@@ -6,12 +6,14 @@ import useMembers from '@/api/useMembers';
 import useProviderGroups from '@/api/useProvidersGroups';
 import { contractFilterState } from '@/state/contractFilterState';
 import { measureFilterState } from '@/state/measureFilterState';
-import { providertFilterState } from '@/state/providerFilterState';
+import { providerFilterState } from '@/state/providerFilterState';
+import { srfFilterState } from '@/state/srfFilterState';
 import { useQuery } from '@tanstack/react-query';
 import { useParams } from 'react-router-dom';
 import { useRecoilValue } from 'recoil';
 import providerGroups from '../../data/providerGroups.json';
 import { useState, useEffect, useMemo } from 'react';
+import useSrf from './useSrf';
 
 const randomBoolean = () => Math.random() > 0.5;
 const randomIntegerBetween = (min, max) => Math.floor(Math.random() * (max - min + 1) + min);
@@ -22,13 +24,15 @@ export default function useFilteredMembers() {
   const id = parseInt(params.id);
   const { data: measures, isLoading } = useMeasures();
   const measureFilterId = useRecoilValue(measureFilterState);
-  const providerId = useRecoilValue(providertFilterState);
+  const providerId = useRecoilValue(providerFilterState);
   const contractId = useRecoilValue(contractFilterState);
+  const srfId = useRecoilValue(srfFilterState);
   const measureId = measureFilterId || id;
   const { data } = useMembers();
   const { data: providers } = useProviderGroups();
   const { data: contracts } = useContracts();
   const { data: memberMeasures } = useMemberMeasures();
+  const { data: srfData } = useSrf();
   const [filteredMembers, setFilteredMembers] = useState([]);
 
   const contract = useMemo(() => {
@@ -58,6 +62,15 @@ export default function useFilteredMembers() {
     });
   }, [measures, measureId]);
 
+  const srf = useMemo(() => {
+    if (!srfData) {
+      return null;
+    }
+    return srfData.find((s) => {
+      return s.id === srfId;
+    });
+  }, [srfData, srfId]);
+
   useEffect(() => {
     let filtered = providerGroups;
 
@@ -69,15 +82,31 @@ export default function useFilteredMembers() {
       filtered = filtered.filter((d) => d['CONTRACT'] === contract.label);
     }
 
-    let withMember = [];
+    //let withMember = [];
 
     if (data) {
-      withMember = filtered.map((d) => {
+      filtered = filtered.map((d) => {
         return data.find((m) => m['MEMBER ID'] === d['MEMBER ID']);
       });
-      setFilteredMembers(withMember);
+
+      if (srf) {
+        console.log('srf', srf);
+        if (srf.label === 'SRF Only') {
+          console.log(filtered);
+          //shitty way to know if they have an srf category
+          filtered = filtered.filter((d) => Object.keys(d.srf).length > 2);
+        }
+        if (srf.label === 'Non-SRF Only') {
+          console.log(filtered);
+          //shitty way to know if they have an srf category
+          filtered = filtered.filter((d) => Object.keys(d.srf).length === 2);
+        }
+        //filtered = filtered.filter((d) => d['SRF Score'] === srf.label);
+      }
+
+      setFilteredMembers(filtered);
     }
-  }, [measure, provider, contract, data]);
+  }, [measure, provider, contract, data, srf]);
 
   return { filteredMembers: filteredMembers, isLoading };
 }

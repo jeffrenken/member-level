@@ -10,7 +10,7 @@ import { StarRenderer, RatingRenderer, SrfRenderer, LinkRenderer, GapRenderer } 
 import { useRecoilValue } from 'recoil';
 import { measureFilterState } from '@/state/measureFilterState';
 import { useMemo } from 'react';
-import { providertFilterState } from '@/state/providerFilterState';
+import { providerFilterState } from '@/state/providerFilterState';
 import { contractFilterState } from '@/state/contractFilterState';
 import useProviders from '@/api/useProvidersGroups';
 import useContracts from '@/api/useContracts';
@@ -30,7 +30,7 @@ export default function Measure() {
   const id = parseInt(params.id);
   const { data: measures, isLoading } = useMeasures();
   const measureFilterId = useRecoilValue(measureFilterState);
-  const providerId = useRecoilValue(providertFilterState);
+  const providerId = useRecoilValue(providerFilterState);
   const contractId = useRecoilValue(contractFilterState);
   const measureId = measureFilterId || id;
   const { data } = useMembers();
@@ -39,8 +39,6 @@ export default function Measure() {
   const { data: memberMeasures } = useMemberMeasures();
   const { data: providerGroups } = useProviderGroups();
   const { filteredMembers } = useFilteredMembers();
-  console.log(memberMeasures);
-  console.log(providerGroups);
 
   const contract = useMemo(() => {
     if (!contracts) {
@@ -74,8 +72,6 @@ export default function Measure() {
       return null;
     }
 
-    console.log('F', filteredMembers);
-
     let m = filteredMembers.map((member) => {
       return {
         ...member,
@@ -87,8 +83,6 @@ export default function Measure() {
         url: `/members/${member['MEMBER ID']}`
       };
     });
-
-    console.log('members', m);
 
     /* if (contract) {
       don't have a way to associate a contract with a member now
@@ -128,7 +122,7 @@ export default function Measure() {
       field: 'srf',
       headerName: 'SRF',
       type: 'numericColumn',
-      //maxWidth: 180,
+      maxWidth: 100,
       chartDataType: 'series',
       filter: true,
       cellRenderer: SrfRenderer
@@ -165,6 +159,8 @@ export default function Measure() {
           <Typography variant="h1">{measure?.label}</Typography>
           <Typography>{provider?.label}</Typography>
           <Typography>Members in the denominator</Typography>
+          {/*           <Box sx={{ bgcolor: '#3ed', height: 200, width: 600 }}>Month chart</Box>
+           */}{' '}
         </Box>
         <Box>{measureWithData && <PieChart2 measure={measureWithData} disabled />}</Box>
         {/*         <CardGlow measure={measureWithData} colors={[background]} disabled />}</Box>

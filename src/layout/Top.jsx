@@ -6,14 +6,21 @@ import Card from '@/components/Card';
 import { ThemeContext } from '@/context/ThemeContextProvider';
 import { contractFilterState } from '@/state/contractFilterState';
 import { measureFilterState } from '@/state/measureFilterState';
-import { providertFilterState } from '@/state/providerFilterState';
+import { providerFilterState } from '@/state/providerFilterState';
 import { srfFilterState } from '@/state/srfFilterState';
+import { measureStatusFilterState } from '@/state/measureStatusFilterState';
 import useSrf from '@/api/useSrf';
 
 import { Box, IconButton, Stack, useTheme } from '@mui/material';
 import { IconMoon, IconSun, IconUserCircle } from '@tabler/icons-react';
 import { useContext, useMemo } from 'react';
 import { useRecoilState } from 'recoil';
+
+const measureStatusOptions = [
+  { id: 'all', label: 'All Measures', value: 'All' },
+  { id: 'stars', label: 'Stars Measures', value: 'stars' },
+  { id: 'display', label: 'Display Measures', value: 'display' }
+];
 
 export default function Top({ filters }) {
   const theme = useTheme();
@@ -24,7 +31,8 @@ export default function Top({ filters }) {
   const { data: srf } = useSrf();
   const [measureState, setMeasureState] = useRecoilState(measureFilterState);
   const [contractState, setContractState] = useRecoilState(contractFilterState);
-  const [providerState, setProviderState] = useRecoilState(providertFilterState);
+  const [providerState, setProviderState] = useRecoilState(providerFilterState);
+  const [measureStatusState, setMeasureStatusState] = useRecoilState(measureStatusFilterState);
   const [srfState, setSrfState] = useRecoilState(srfFilterState);
 
   /*   const measures = useMemo(() => {
@@ -85,12 +93,20 @@ export default function Top({ filters }) {
               />
             )}
             {filters.includes('providers') && (
-              <AutocompleteButton defaultLabel="Provider" options={providers} value={providerState} onChange={setProviderState} />
+              <AutocompleteButton defaultLabel="Provider Groups" options={providers} value={providerState} onChange={setProviderState} />
             )}
             {filters.includes('measures') && (
               <AutocompleteButton defaultLabel="Measures" options={measures} value={measureState} onChange={setMeasureState} />
             )}
             {filters.includes('srf') && <AutocompleteButton defaultLabel="SRF" options={srf} value={srfState} onChange={setSrfState} />}
+            {filters.includes('measureStatus') && (
+              <AutocompleteButton
+                defaultLabel="Measure Status"
+                options={measureStatusOptions}
+                value={measureStatusState}
+                onChange={setMeasureStatusState}
+              />
+            )}
           </Stack>
 
           <Box>

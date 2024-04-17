@@ -13,12 +13,14 @@ import PieChart3 from '@/components/charts/TestPie3';
 import Donut from '@/components/charts/donut/Donut';
 import Top from '@/layout/Top';
 import { contractFilterState } from '@/state/contractFilterState';
-import { providertFilterState } from '@/state/providerFilterState';
+import { providerFilterState } from '@/state/providerFilterState';
 import { srfFilterState } from '@/state/srfFilterState';
 import { Box, Container, Grid, Stack, Typography, useTheme } from '@mui/material';
 import Grid2 from '@mui/material/Unstable_Grid2';
 import React, { useMemo } from 'react';
 import { useRecoilValue } from 'recoil';
+import { measureStatusFilterState } from '@/state/measureStatusFilterState';
+import MeasureCountCard from '@/components/cards/MeasureCountCard';
 
 const reds = ['#f5a3a3', '#dc4242', '#fb2222'];
 
@@ -64,7 +66,8 @@ const useGlowPointer = () => {
 const MeasuresPage = () => {
   //const UPDATE = useGlowPointer();
   const theme = useTheme();
-  const providerId = useRecoilValue(providertFilterState);
+  const measureStatus = useRecoilValue(measureStatusFilterState);
+  const providerId = useRecoilValue(providerFilterState);
   const contractId = useRecoilValue(contractFilterState);
   const srfId = useRecoilValue(srfFilterState);
   const { data: measuresData } = useMeasures();
@@ -75,7 +78,7 @@ const MeasuresPage = () => {
   const { data: srfData } = useSrf();
   const { filteredMembers } = useFilteredMembers();
 
-  console.log(memberMeasures);
+  console.log(filteredMembers);
 
   /*   useEffect(() => {
     setMeasureState(null);
@@ -112,36 +115,34 @@ const MeasuresPage = () => {
 
   const measures = useMemo(() => {
     if (!filteredMembers.length) {
-      return null;
+      return [];
     }
 
-    /* if (srfId) {
-      console.log(srfId);
-      const srf = srfData.find((s) => s.id === srfId);
+    let filtered = [...measuresData];
+    if (measureStatus !== 'all') {
+      filtered = filtered.filter((measure) => measure.status === measureStatus);
+    }
 
-      console.log(srf);
-      filteredMembers = filteredMembers.filter((m) => m['Srf'] === srf.label);
-    } */
-
-    console.log(filteredMembers);
-    console.log(measuresData);
+    console.log('filtered', filteredMembers);
 
     let splitMembers = [];
-    measuresData.forEach((measure, i) => {
+    filtered.forEach((measure, i) => {
       splitMembers[i] = { ...measure };
       splitMembers[i].numerator = filteredMembers.filter((member) => member.memberMeasures[measure['Measure Name']] === 1).length;
       splitMembers[i].denominator = filteredMembers.filter((member) => member.memberMeasures[measure['Measure Name']] === 0).length;
       splitMembers[i].forecast = 'N/A';
     });
 
-    console.log(splitMembers);
+    return splitMembers.sort((a, b) => b.abbreviation - a.abbreviation);
+  }, [filteredMembers, srfId, measureStatus, measuresData]);
 
-    return splitMembers;
-  }, [filteredMembers, srfId]);
+  const onTrack4 = measures.slice(0, 4);
+  const onTrack5 = measures.slice(4, 8);
+  const offTrack = measures.slice(8, measures.length);
 
   return (
     <Container maxWidth="lg" sx={{ marginBottom: '100px', marginTop: '20px' }}>
-      <Top filters={['contracts', 'providers', 'srf']} />
+      <Top filters={['contracts', 'providers', 'srf', 'measureStatus']} />
       {/* <Box height={400}>
         <LineChart />
       </Box> */}
@@ -155,21 +156,24 @@ const MeasuresPage = () => {
             Measures
           </Typography>
           <Typography align="center" my={2} ml={2} variant="body1">
-            Maybe some kind of explanation of what this page shows.
+            Maybe some kind of explanation of what this page shows.khj
           </Typography>
+          <Stack direction="row" alignItems="center" justifyContent="space-around" spacing={3}>
+            <MeasureCountCard measures={onTrack4} label={'On Track - 4 Stars'} />
+            <MeasureCountCard measures={onTrack5} label={'On Track - 5 Stars'} />
+            <MeasureCountCard measures={offTrack} label={'Off Track'} />
+          </Stack>
         </Box>
 
         {/* <CardGlow measure={sampleMeasure} colors={[background]} disabled />
         <PieChart2 measure={sampleMeasure} disabled /> */}
       </Stack>
       <Grid2 container spacing={2} sx={{ margin: '0 auto', mb: 3 }}>
-        {measures
-          ?.sort((a, b) => b.numerator - a.numerator)
-          .map((measure) => (
-            <Grid key={measure.id} m={1.35}>
-              <PieChart2 measure={measure} />
-            </Grid>
-          ))}
+        {measures?.map((measure) => (
+          <Grid key={measure.id} m={1.35}>
+            <PieChart2 measure={measure} />
+          </Grid>
+        ))}
       </Grid2>
       {/* <Grid2 container spacing={2} sx={{ margin: '0 auto' }}>
         {measures

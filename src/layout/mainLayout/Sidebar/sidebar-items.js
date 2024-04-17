@@ -48,14 +48,14 @@ export const items = [
         icon: IconMap,
         breadcrumbs: false
       },
-      {
+      /*  {
         id: 'social',
         title: 'Social Risk Factors',
         type: 'item',
         url: '/social-risk-factors',
         icon: IconExclamationCircle,
         breadcrumbs: false
-      },
+      }, */
       {
         id: 'memberTable',
         title: 'Members',
@@ -65,13 +65,13 @@ export const items = [
         breadcrumbs: false
       },
       {
-        id: 'providersTable',
-        title: 'Providers',
+        id: 'providerGroupsTable',
+        title: 'Provider Groups',
         type: 'item',
-        url: '/providers',
+        url: '/provider-groups',
         icon: IconTable,
         breadcrumbs: false
-      },
+      }
       /* {
         id: 'table',
         title: 'Sample',
@@ -80,14 +80,6 @@ export const items = [
         icon: IconTable,
         breadcrumbs: false
       }, */
-      {
-        id: 'test',
-        title: 'Test',
-        type: 'item',
-        url: '/test',
-        icon: IconDashboard,
-        breadcrumbs: false
-      }
 
       /*       {
         id: 'icons',

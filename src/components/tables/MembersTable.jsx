@@ -29,7 +29,8 @@ export default function MembersTable({ rows, csvDownload, height }) {
       type: 'numericColumn',
       chartDataType: 'series',
       filter: true,
-      cellRenderer: SrfRenderer
+      cellRenderer: SrfRenderer,
+      maxWidth: 100
     },
     {
       field: 'numberOfGaps',

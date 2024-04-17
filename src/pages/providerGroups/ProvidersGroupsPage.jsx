@@ -10,7 +10,7 @@ const randomBoolean = () => Math.random() > 0.5;
 const randomIntegerBetween = (min, max) => Math.floor(Math.random() * (max - min + 1) + min);
 const randomHalfNumberBetween = (min, max) => Math.floor(Math.random() * (max - min + 1) + min) / 2;
 
-export default function ProvidersPage() {
+export default function ProviderGroupsPage() {
   const params = useParams();
   const name = decodeURI(params.name);
   const { data: memberData } = useMembers();
@@ -30,7 +30,7 @@ export default function ProvidersPage() {
             srf: randomBoolean(),
             numberOfGaps: randomIntegerBetween(0, 50),
             starRating: randomHalfNumberBetween(0, 10),
-            url: `/providers/${provider.id}`
+            url: `/provider-groups/${provider.id}`
           };
         })
     );
@@ -51,7 +51,6 @@ export default function ProvidersPage() {
             srf: randomBoolean(),
             numberOfGaps: randomIntegerBetween(0, 50),
             starRating: randomHalfNumberBetween(0, 10)
-            //url: `/providers/${provider.id}`
           };
         })
     );
@@ -60,20 +59,19 @@ export default function ProvidersPage() {
   const columnDefs = [
     {
       field: 'providerGroupName',
-      headerName: 'Name',
+      headerName: 'Provider Group',
       filter: true,
       chartDataType: 'category',
-      maxWidth: 290,
+      maxWidth: 200,
       cellRenderer: TextRenderer,
       rowGroup: true,
       hide: true
     },
     {
       field: 'providerName',
-      headerName: 'Name',
+      headerName: 'Provider',
       filter: true,
       chartDataType: 'series',
-      maxWidth: 290,
       cellRenderer: TextRenderer
       //rowGroup: true,
       //hide: true
@@ -82,7 +80,6 @@ export default function ProvidersPage() {
       field: 'FIRST NAME',
       headerName: 'First',
       type: 'category',
-      maxWidth: 160,
       chartDataType: 'series',
       filter: true,
       cellRenderer: TextRenderer
@@ -91,7 +88,6 @@ export default function ProvidersPage() {
       field: 'LAST NAME',
       headerName: 'Last',
       type: 'category',
-      maxWidth: 160,
       chartDataType: 'series',
       filter: true,
       cellRenderer: TextRenderer
@@ -100,7 +96,6 @@ export default function ProvidersPage() {
       field: 'numberOfGaps',
       headerName: 'Gaps',
       type: 'numericColumn',
-      maxWidth: 160,
       chartDataType: 'series',
       filter: true,
       cellRenderer: GapRenderer
@@ -109,7 +104,6 @@ export default function ProvidersPage() {
       field: 'starRating',
       headerName: 'Star Rating',
       type: 'numericColumn',
-      maxWidth: 150,
       chartDataType: 'series',
       filter: true,
       cellRenderer: RatingRenderer
@@ -121,7 +115,7 @@ export default function ProvidersPage() {
   return (
     <Container maxWidth="lg">
       <Typography variant="h3" mt={3}>
-        Providers
+        Provider Groups
       </Typography>
       <Box sx={{ height: 'calc(100vh - 150px)' }}>
         <AgGrid columnDefs={columnDefs} rowData={members} csvDownload={true} sideBar />

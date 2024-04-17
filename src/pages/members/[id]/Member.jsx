@@ -1,9 +1,10 @@
 import memberMeasures from '@/../fakeData/member_measures.json';
 import useFilteredMembers from '@/api/useFilteredMembers';
+import useMeasures from '@/api/useMeasures';
 import useMembers from '@/api/useMembers';
 import useProviders from '@/api/useProvidersGroups';
 import AgGrid from '@/components/tables/AgGrid';
-import { SrfRenderer, TextRenderer } from '@/components/tables/CellRenderers';
+import { SrfRenderer, TextRenderer, MeasureRenderer } from '@/components/tables/CellRenderers';
 import { Box, Container, Rating, Typography } from '@mui/material';
 import { useMemo } from 'react';
 import { Link, useParams } from 'react-router-dom';
@@ -14,6 +15,7 @@ import { Link, useParams } from 'react-router-dom';
     "Low Income Subsidy Copay Level": "FALSE",if true = srf */
 
 function getValue(value) {
+  console.log(value);
   if (value === 0) {
     return true;
   } else if (value === 1) {
@@ -32,6 +34,7 @@ export default function Member() {
   //const { data: member } = useMember(id);
   const { data } = useMembers();
   const { filteredMembers } = useFilteredMembers();
+  const { data: measuresData } = useMeasures();
   const { data: providers } = useProviders();
 
   const member = useMemo(() => {
@@ -46,21 +49,27 @@ export default function Member() {
   console.log(member);
 
   const rows = useMemo(() => {
-    if (!member) {
+    if (!member || !measuresData.length) {
       return [];
     }
-    let measures = Object.keys(member?.memberMeasures).map((key) => {
+    let measures = measuresData.map((measure) => {
+      return {
+        label: measure['Measure Name'],
+        value: getValue(member.memberMeasures[measure['Measure Name']])
+      };
+    });
+    /* let measures = Object.keys(member?.memberMeasures).map((key) => {
       console.log(key);
       return {
         label: key,
         value: getValue(member.memberMeasures[key])
       };
-    });
+    }); */
 
     console.log(measures);
 
     return measures.filter((measure) => measure.label !== 'CONTRACT' && measure.label !== 'MEMBER ID');
-  }, [member]);
+  }, [member, measuresData]);
 
   console.log(rows);
 
@@ -74,13 +83,13 @@ export default function Member() {
     { field: 'label', filter: true, chartDataType: 'category', maxWidth: 500, cellRenderer: TextRenderer },
     {
       field: 'value',
-      //headerName: 'Price w/ css',
+      headerName: 'No Gaps',
       //type: 'numericColumn',
-      maxWidth: 300,
+      maxWidth: 150,
       chartDataType: 'series',
       type: 'numericColumn',
       filter: true,
-      cellRenderer: SrfRenderer
+      cellRenderer: MeasureRenderer
     }
   ];
 
@@ -102,7 +111,6 @@ export default function Member() {
           <Typography variant="h3" mb={1} sx={{ fontSize: '1.75rem' }}>
             {member['FIRST NAME']} {member['LAST NAME']}
           </Typography>
-          <Rating value={randomHalfNumberBetween(0, 10)} readOnly precision={0.5} size="small" />
           <Typography sx={{ fontSize: '1rem' }}>{member['ADDRESS']}</Typography>
           <Typography sx={{ fontSize: '1rem' }}>
             {member['CITY']}, {member['STATE']}

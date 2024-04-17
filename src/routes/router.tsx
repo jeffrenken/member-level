@@ -6,8 +6,8 @@ import MeasuresPage from '@/pages/measures/MeasuresPage';
 import Measure from '@/pages/measures/[id]/Measure';
 import MembersPage from '@/pages/members/MembersPage';
 import Member from '@/pages/members/[id]/Member';
-import ProvidersPage from '@/pages/providers/ProvidersPage';
-import ProviderPage from '@/pages/providers/[id]/ProviderPage';
+import ProvidersPage from '@/pages/providerGroups/ProvidersGroupsPage';
+import ProviderPage from '@/pages/providerGroups/[id]/ProviderGroupPage';
 import SignInPage from '@/pages/sign-in/SignInPage';
 import SocialRiskFactors from '@/pages/social-risk-factors/SocialRiskFactors';
 import County from '@/pages/states/[id]/counties/[id]/County';
@@ -42,7 +42,7 @@ export const router = createBrowserRouter([
         element: <Measure />
       },
       {
-        path: '/providers',
+        path: '/provider-groups',
         element: <ProvidersPage />
       },
       {
@@ -54,7 +54,7 @@ export const router = createBrowserRouter([
         element: <Member />
       },
       {
-        path: '/providers/:id',
+        path: '/provider-groups/:id',
         element: <ProviderPage />
       },
       {

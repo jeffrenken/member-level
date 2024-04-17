@@ -1,0 +1,40 @@
+$main-font: 'Yanone Kaffeesatz', sans-serif;
+$new-white: rgb(248, 246, 234);
+$text-margin: 10px;
+
+.measure-count-card-page-container {
+  display: block;
+}
+.measure-count-card-card-container {
+  position: relative;
+  transform-style: preserve-3d;
+  box-sizing: border-box;
+  &.flipped {
+    .front {
+      transform: rotateY(180deg);
+    }
+    .back {
+      transform: rotateY(0deg);
+    }
+  }
+  .front,
+  .back {
+    box-sizing: border-box;
+    height: 100%;
+    width: 100%;
+    display: block;
+    position: absolute;
+    backface-visibility: hidden;
+    transform-style: preserve-3d;
+    transition: -webkit-transform ease 500ms;
+    transition: transform ease 500ms;
+  }
+  .front {
+    z-index: 2;
+    transform: rotateY(0deg);
+  }
+  .back {
+    background: $new-white;
+    transform: rotateY(-180deg);
+  }
+}

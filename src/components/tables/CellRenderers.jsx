@@ -1,6 +1,6 @@
 import useMeasures from '@/api/useMeasures';
 import { Box, Rating, useTheme } from '@mui/material';
-import { IconCheck, IconCheckbox, IconStar, IconX } from '@tabler/icons-react';
+import { IconCheck, IconCheckbox, IconStar, IconX, IconUserHeart } from '@tabler/icons-react';
 import { Link } from 'react-router-dom';
 
 const randomBoolean = () => Math.random() > 0.5;
@@ -13,6 +13,17 @@ export const BooleanRenderer = (params) => {
   } else {
     return <IconX color="#f44336" />;
   }
+};
+
+export const MeasureRenderer = (params) => {
+  if (params.value === undefined) {
+    return undefined;
+  }
+  if (params.value) {
+    return <IconCheck color="#4caf50" />;
+  }
+
+  return <IconX color="#f44336" />;
 };
 
 const icon = (
@@ -85,36 +96,36 @@ export const SrfRenderer = (params) => {
   const greenGradient = isDarkMode
     ? 'linear-gradient(90deg, rgba(237,235,235,0) 35%, rgba(94,175,82,0.15) 85%)'
     : 'linear-gradient(90deg, rgba(237,235,235,0) 35%, rgba(68,145,55,0.20) 85%)';
-  if (params.value.toString() === 'false') {
+  if (params.value && params.value.toString() === 'false') {
     return (
       <Box
         sx={{
           //margin: '1px 4px 1px 4px',
-          background: redGradient,
+          //background: redGradient,
           color: '#CB4E4E',
           px: 2
         }}
-      >
-        <IconX size={16} />
-      </Box>
+      ></Box>
     );
   }
   return (
     <Box
       sx={{
         //margin: '1px 4px 1px 4px',
-        background: greenGradient,
+        //background: greenGradient,
         color: '#5EAF52',
-        px: 2
+        mt: 0.5
+        //px: 2
       }}
     >
-      <IconCheck size={16} />
+      <IconUserHeart size={20} />
     </Box>
   );
 };
 
 export const LinkRenderer = (params) => {
-  const url = params.data.url;
+  console.log(params.data);
+  const url = params.data?.url || '';
   return (
     <Box component={Link} to={url} px={0} sx={(theme) => ({ textDecoration: 'none', color: theme.palette.text.primary })}>
       {params.value}

@@ -14,14 +14,14 @@ import {
 } from '@mui/material';
 import 'ag-grid-charts-enterprise';
 import 'ag-grid-community/styles/ag-grid.css';
-import 'ag-grid-community/styles/ag-theme-alpine.css';
+import 'ag-grid-community/styles/ag-theme-quartz.css';
 import { AgGridReact } from 'ag-grid-react';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { getData } from './data.js';
 import { IconDeviceFloppy, IconFileCv, IconFileTypeCsv } from '@tabler/icons-react';
-import './ag-grid.css';
+//import './ag-grid.css';
 
-export default function AgGrid({ rowData, columnDefs, sideBar = true, csvDownload, saveFiltersButton, height = '100%' }) {
+export default function AgGrid({ rowData, columnDefs, sideBar = true, csvDownload, saveFiltersButton, height = '100%', ...props }) {
   const gridRef = useRef();
   const theme = useTheme();
   const darkMode = theme.palette.mode === 'dark';
@@ -157,7 +157,7 @@ export default function AgGrid({ rowData, columnDefs, sideBar = true, csvDownloa
       </Stack>
 
       <div
-        className={darkMode ? 'ag-theme-alpine-dark' : 'ag-theme-alpine'}
+        className={darkMode ? 'ag-theme-quartz-dark' : 'ag-theme-quartz'}
         style={{ height: height }} // the grid will fill the size of the parent container
       >
         <AgGridReact
@@ -174,6 +174,7 @@ export default function AgGrid({ rowData, columnDefs, sideBar = true, csvDownloa
           getContextMenuItems={getContextMenuItems}
           //suppressContextMenu
           sideBar={sideBar}
+          {...props}
         />
       </div>
     </>

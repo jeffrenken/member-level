@@ -42,7 +42,7 @@ export default function AutocompleteButton({ options, defaultLabel, value, onCha
           color="neutral"
           onClick={handleClick}
           endIcon={<IconChevronDown size={16} />}
-          sx={{ width: width, fontSize: '0.875rem', lineHeight: 1, textAlign: 'left', justifyContent: 'flex-start' }}
+          sx={{ fontSize: '0.875rem', lineHeight: 1, textAlign: 'left', justifyContent: 'flex-start' }}
         >
           {truncate(label, 40)}
         </Button>

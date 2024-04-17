@@ -13,14 +13,14 @@ const measure = {
   denominator: 'Denominator',
   forecast: 'something'
 };
-const green = 'rgb(34, 193, 168)';
-const blue = 'rgb(35, 93, 241)';
+const blue = 'rgba(146, 208,242, 1)';
+const purple = 'rgba(204, 181,250, 1)';
 
 const Slice2 = styled(`div`)`
   width: 85px;
   height: 85px;
   border-radius: 50%;
-  background-image: ${(props) => `conic-gradient(${blue} ${props.slice1}deg, ${green} 0 ${props.slice2}deg)`};
+  background-image: ${(props) => `conic-gradient(${purple} ${props.slice1}deg, ${blue} 0 ${props.slice2}deg)`};
   margin: 0 auto;
   box-shadow: 0px 4px 8px rgb(0 0 0 / 0.4);
 `;
@@ -51,7 +51,7 @@ const PieChart2 = ({ measure, disabled }) => {
       width={170}
       sx={{
         borderRadius: '10px',
-        border: `2px solid #ccc`,
+        border: `2px solid #aaa`,
         p: 1,
         bgcolor: background,
         boxShadow: '0px 4px 8px rgb(0 0 0 / 0.2)',
@@ -67,7 +67,8 @@ const PieChart2 = ({ measure, disabled }) => {
       </Typography>
 
       <Box sx={{ position: 'relative' }}>
-        <Slice2 slice1={value1InDegrees} slice2={value2InDegrees} />
+        {/* Yes, I think backwards 1 and 2 is correct*/}
+        <Slice2 slice1={value2InDegrees} slice2={value1InDegrees} />
         <Box
           sx={(theme) => ({
             position: 'absolute',
@@ -138,9 +139,7 @@ const PieChart2 = ({ measure, disabled }) => {
           borderRadius: '4px',
           //background: `linear-gradient(90deg, rgba(34, 193, 168, 1) ${numeratorPercent}%, rgba(35, 93, 241, 1) ${denominatorPercent}%)`
           //background: `linear-gradient(90deg, rgba(34, 193, 168, 1) ${numeratorPercent}%, rgba(35, 93, 241, 1) 100%)`
-          background: `linear-gradient(135deg, rgba(34, 193, 168, 1) ${numeratorPercent - 25}%, rgba(35, 93, 241, 1) ${
-            100 - denominatorPercent + 25
-          }%)`
+          background: `linear-gradient(135deg, ${blue} ${numeratorPercent - 25}%, ${purple} ${100 - denominatorPercent + 25}%)`
         }}
       >
         <Box
