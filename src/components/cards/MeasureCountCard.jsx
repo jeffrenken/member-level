@@ -2,7 +2,7 @@ import { Card, CardContent, Typography, Box, useTheme, Stack, Skeleton } from '@
 import { useMemo, useState } from 'react';
 import { useSrfScores } from '@/api/useSrfScores';
 import { Link, useSearchParams } from 'react-router-dom';
-import './measureCountCard.css';
+import './measure-count-card.css';
 import { IconArrowRight } from '@tabler/icons-react';
 
 const lightBlue = 'rgb(222, 237, 252, 1)';
