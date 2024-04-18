@@ -85,7 +85,8 @@ export default function themePalette(theme) {
     background: {
       paper: theme.paper,
       default: theme.backgroundDefault,
-      semiTransparent: theme.backgroundSemiTransparent
+      semiTransparent: theme.backgroundSemiTransparent,
+      semiTransparent2: theme.backgroundSemiTransparent2
     }
   };
 }

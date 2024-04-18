@@ -10,6 +10,9 @@ import memberMeasures from '../../data/memberMeasures.json';
 
 const providerGroups = providerGroupsData.map((p, i) => ({ ...p, id: i + 1 }));
 
+//just assuming names are unique for testing
+const distinctProviders = providerGroupsData.filter((value, index, self) => index === self.findIndex((t) => t.Provider === value.Provider));
+
 const members = memberData.map((member, i) => ({
   ...member,
   id: member['MEMBER ID'],
@@ -79,6 +82,7 @@ const fakeSrf = [
 const mock = new MockAdapter(axiosClient, { delayResponse: 0 });
 mock.onGet('/contracts').reply(200, fakeContracts());
 mock.onGet('/provider-groups').reply(200, fakeProviderGroups());
+mock.onGet('/providers').reply(200, distinctProviders);
 mock.onGet('/srf').reply(200, fakeSrf);
 mock.onGet('/years').reply(200, fakeYears);
 mock.onGet('/plans').reply(200, fakePlans);
@@ -126,6 +130,10 @@ export async function fetchSrf() {
 }
 export async function fetchProviderGroups() {
   const res = await axiosClient.get('/provider-groups');
+  return res.data;
+}
+export async function fetchProviders() {
+  const res = await axiosClient.get('/providers');
   return res.data;
 }
 

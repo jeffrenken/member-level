@@ -120,13 +120,13 @@ export default function Member() {
           </Typography>
         </Box>
         <Box>
-          <Typography sx={{ fontSize: '1rem' }}>Primary Care Physician: {member?.providerGroup?.Provider}</Typography>
           <Typography sx={{ fontSize: '1rem' }}>
-            Contract Entity:{' '}
-            <Link to={`/providers/${member.providerGroup?.id}`} style={{ textDecoration: 'none', color: '#4d9fda' }}>
-              {member?.providerGroup?.['Provider Group']}
+            Primary Care Physician:{' '}
+            <Link to={`/providers/${member?.providerGroup?.Provider}`} style={{ textDecoration: 'none', color: '#4d9fda' }}>
+              {member?.providerGroup?.Provider}
             </Link>
           </Typography>
+          <Typography sx={{ fontSize: '1rem' }}>Contract Entity: {member?.providerGroup?.['Provider Group']}</Typography>
         </Box>
         <Box sx={{ height: 'calc(100vh - 300px)' }}>
           <AgGrid rowData={rows} columnDefs={columnDefs} />

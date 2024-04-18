@@ -1,42 +1,81 @@
 [
-  { "Measure Name": "Breast Cancer Screening", "Domain": "HEDIS", "Acronym": "BCS-E", "status": "stars" },
-  { "Measure Name": "Colorectal Cancer Screening", "Domain": "HEDIS", "Acronym": "COL-E", "status": "stars"  },
-  { "Measure Name": "COA - Medication Review", "Domain": "HEDIS", "Acronym": "COA-MR", "status": "stars"  },
-  { "Measure Name": "COA - Pain Assessment", "Domain": "HEDIS", "Acronym": "COA-PA", "status": "stars"  },
-  { "Measure Name": "Osteo Mgmt in Women W Fracture", "Domain": "HEDIS", "Acronym": "OMW", "status": "stars"  },
-  { "Measure Name": "Diabetes Care - Eye Exam", "Domain": "HEDIS", "Acronym": "EED", "status": "stars"  },
-  { "Measure Name": "Diabetes Care - BSC", "Domain": "HEDIS", "Acronym": "GSD", "status": "stars"  },
-  { "Measure Name": "Controlling Blood Pressure", "Domain": "HEDIS", "Acronym": "CBP", "status": "stars"  },
-  { "Measure Name": "Med Rec Post-Discharge", "Domain": "HEDIS", "Acronym": "MRP", "status": "stars"  },
-  { "Measure Name": "Plan All Cause Readmissions", "Domain": "HEDIS", "Acronym": "PCR", "status": "stars"  },
-  { "Measure Name": "Statin Therapy-Patients with CVD", "Domain": "HEDIS", "Acronym": "SPC", "status": "stars"  },
-  { "Measure Name": "Med Adh for Diabetes Meds", "Domain": "PDE", "Acronym": "MAD", "status": "stars"  },
-  { "Measure Name": "Med Adh for Hypertension", "Domain": "PDE", "Acronym": "MAH", "status": "stars"  },
-  { "Measure Name": "Med Adh for Cholesterol", "Domain": "PDE", "Acronym": "MAC", "status": "stars"  },
-  { "Measure Name": "Statin Use with Diabetes (Part D)", "Domain": "PDE", "Acronym": "SUPD", "status": "stars"  },
-  { "Measure Name": "Transitions of Care", "Domain": "HEDIS", "Acronym": "TRC", "status": "stars"  },
+  {
+    "Measure Name": "Breast Cancer Screening",
+    "Domain": "HEDIS",
+    "Acronym": "BCS-E",
+    "status": "stars",
+    "bottom_third_lower_value": 0,
+    "bottom_third_upper_value": 66.4926,
+    "middle_third_lower_value": 66.4927,
+    "middle_third_upper_value": 72.4913,
+    "top_third_lower_value": 72.4914,
+    "top_third_upper_value": 100
+  },
+  {
+    "Measure Name": "Colorectal Cancer Screening",
+    "Domain": "HEDIS",
+    "Acronym": "COL-E",
+    "status": "stars",
+    "bottom_third_lower_value": 0,
+    "bottom_third_upper_value": 66.7735,
+    "middle_third_lower_value": 66.7736,
+    "middle_third_upper_value": 74.0165,
+    "top_third_lower_value": 74.0166,
+    "top_third_upper_value": 100
+  },
+  { "Measure Name": "COA - Medication Review", "Domain": "HEDIS", "Acronym": "COA-MR", "status": "stars" },
+  { "Measure Name": "COA - Pain Assessment", "Domain": "HEDIS", "Acronym": "COA-PA", "status": "stars" },
+  { "Measure Name": "Osteo Mgmt in Women W Fracture", "Domain": "HEDIS", "Acronym": "OMW", "status": "stars" },
+  { "Measure Name": "Diabetes Care - Eye Exam", "Domain": "HEDIS", "Acronym": "EED", "status": "stars" },
+  { "Measure Name": "Diabetes Care - BSC", "Domain": "HEDIS", "Acronym": "GSD", "status": "stars" },
+  { "Measure Name": "Controlling Blood Pressure", "Domain": "HEDIS", "Acronym": "CBP", "status": "stars" },
+  { "Measure Name": "Med Rec Post-Discharge", "Domain": "HEDIS", "Acronym": "MRP", "status": "stars" },
+  { "Measure Name": "Plan All Cause Readmissions", "Domain": "HEDIS", "Acronym": "PCR", "status": "stars" },
+  { "Measure Name": "Statin Therapy-Patients with CVD", "Domain": "HEDIS", "Acronym": "SPC", "status": "stars" },
+  { "Measure Name": "Med Adh for Diabetes Meds", "Domain": "PDE", "Acronym": "MAD", "status": "stars" },
+  { "Measure Name": "Med Adh for Hypertension", "Domain": "PDE", "Acronym": "MAH", "status": "stars" },
+  { "Measure Name": "Med Adh for Cholesterol", "Domain": "PDE", "Acronym": "MAC", "status": "stars" },
+  { "Measure Name": "Statin Use with Diabetes (Part D)", "Domain": "PDE", "Acronym": "SUPD", "status": "stars" },
+  { "Measure Name": "Transitions of Care", "Domain": "HEDIS", "Acronym": "TRC", "status": "stars" },
   {
     "Measure Name": "Follow-up after Emergency Department Visit for Patients with Multiple Chronic Conditions (FMC) ",
     "Domain": "HEDIS",
-    "Acronym": "FMC", "status": "stars" 
+    "Acronym": "FMC",
+    "status": "stars"
   },
-  { "Measure Name": "Notification of Inpatient Adm", "Domain": "HEDIS", "Acronym": "TRC - NOLA", "status": "stars"  },
-  { "Measure Name": "Patient Engagement", "Domain": "HEDIS", "Acronym": "TRC - PE", "status": "stars"  },
-  { "Measure Name": "TRC - Receipt of Discharge Info", "Domain": "HEDIS", "Acronym": "TRC - ROC", "status": "stars"  },
-  { "Measure Name": "KED (Kidney Health Evaluation for Patients with Diabetes)", "Domain": "HEDIS", "Acronym": "KED", "status": "stars"  },
+  { "Measure Name": "Notification of Inpatient Adm", "Domain": "HEDIS", "Acronym": "TRC - NOLA", "status": "stars" },
+  { "Measure Name": "Patient Engagement", "Domain": "HEDIS", "Acronym": "TRC - PE", "status": "stars" },
+  { "Measure Name": "TRC - Receipt of Discharge Info", "Domain": "HEDIS", "Acronym": "TRC - ROC", "status": "stars" },
+  { "Measure Name": "KED (Kidney Health Evaluation for Patients with Diabetes)", "Domain": "HEDIS", "Acronym": "KED", "status": "stars" },
   {
     "Measure Name": "Follow-up Visit after Hospital Stay for Mental Illness (within 30 days of discharge)",
     "Domain": "HEDIS",
-    "Acronym": "FUH", "status": "display" 
+    "Acronym": "FUH",
+    "status": "display"
   },
   { "Measure Name": "Antidepressant Medication Management (6 months)", "Domain": "HEDIS", "Acronym": "AMM", "status": "display" },
   { "Measure Name": "Continuous Beta Blocker Treatment", "Domain": "HEDIS", "Acronym": "PBH", "status": "display" },
   { "Measure Name": "Access to Primary Care Doctor Visits", "Domain": "HEDIS", "Acronym": "AAP", "status": "display" },
-  { "Measure Name": "Pharmacotherapy Management of COPD Exacerbation - Systemic Corticosteroid", "Domain": "HEDIS", "Acronym": "PCE-S", "status": "display" },
-  { "Measure Name": "Pharmacotherapy Management of COPD Exacerbation - Bronchodilator", "Domain": "HEDIS", "Acronym": "PCE-B", "status": "display" },
+  {
+    "Measure Name": "Pharmacotherapy Management of COPD Exacerbation - Systemic Corticosteroid",
+    "Domain": "HEDIS",
+    "Acronym": "PCE-S",
+    "status": "display"
+  },
+  {
+    "Measure Name": "Pharmacotherapy Management of COPD Exacerbation - Bronchodilator",
+    "Domain": "HEDIS",
+    "Acronym": "PCE-B",
+    "status": "display"
+  },
   { "Measure Name": "Initiation of Substance Use Disorder Treatment", "Domain": "HEDIS", "Acronym": "IET-I", "status": "display" },
   { "Measure Name": "Engagement of Substance Use Disorder Treatment", "Domain": "HEDIS", "Acronym": "IET-E", "status": "display" },
-  { "Measure Name": "Initiation and Engagement of Substance Use Disorder Treatment Avera", "Domain": "HEDIS", "Acronym": "IET-A", "status": "display" },
+  {
+    "Measure Name": "Initiation and Engagement of Substance Use Disorder Treatment Avera",
+    "Domain": "HEDIS",
+    "Acronym": "IET-A",
+    "status": "display"
+  },
   { "Measure Name": "Hospitalization for Potentially Preventable Complications", "Domain": "HEDIS", "Acronym": "HPC", "status": "display" },
   { "Measure Name": "Care of Older Adults - Functional Status", "Domain": "HEDIS", "Acronym": "COA-FS", "status": "display" },
   { "Measure Name": "Cardiac Rehabiliation - Acheivement", "Domain": "HEDIS", "Acronym": "CR-A", "status": "display" },
@@ -50,13 +89,29 @@
   {
     "Measure Name": "Antipsychotic Use in Persons with Dementia - for Long-Term Nursing Home Residents",
     "Domain": "PDE",
-    "Acronym": "APD-LT"
- , "status": "display" },
+    "Acronym": "APD-LT",
+    "status": "display"
+  },
   { "Measure Name": "Concurrent Use of Opioids and Benzodiazepines", "Domain": "PDE", "Acronym": "COB", "status": "display" },
   { "Measure Name": "Use of Opioids at High Dosage in Persons Without Cancer", "Domain": "PDE", "Acronym": "OHD", "status": "display" },
-  { "Measure Name": "Use of Opioids from Multiple Providers in Persons Without Cancer", "Domain": "PDE", "Acronym": "OMP", "status": "display" },
-  { "Measure Name": "Polypharmacy: Use of Multiple Anticholinergic Medications in Older Adults", "Domain": "PDE", "Acronym": "Poly-ACH", "status": "display" },
-  { "Measure Name": "Polypharmacy: Use of Multiple CNS-Active Medications in Older Adults", "Domain": "PDE", "Acronym": "Poly-CNS", "status": "display" },
+  {
+    "Measure Name": "Use of Opioids from Multiple Providers in Persons Without Cancer",
+    "Domain": "PDE",
+    "Acronym": "OMP",
+    "status": "display"
+  },
+  {
+    "Measure Name": "Polypharmacy: Use of Multiple Anticholinergic Medications in Older Adults",
+    "Domain": "PDE",
+    "Acronym": "Poly-ACH",
+    "status": "display"
+  },
+  {
+    "Measure Name": "Polypharmacy: Use of Multiple CNS-Active Medications in Older Adults",
+    "Domain": "PDE",
+    "Acronym": "Poly-CNS",
+    "status": "display"
+  },
   { "Measure Name": "Initial Opioid Prescribing (IOP-LD)", "Domain": "PDE", "Acronym": "IOP-LD", "status": "display" },
   { "Measure Name": "Persistence to Basal Insulin (PST-INS)", "Domain": "PDE", "Acronym": "PST-INS", "status": "display" }
 ]

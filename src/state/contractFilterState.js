@@ -4,6 +4,6 @@ import { urlSyncEffect } from 'recoil-sync';
 
 export const contractFilterState = atom({
   key: 'contractFilterState',
-  default: null,
+  default: 1,
   effects: [urlSyncEffect({ refine: number(), history: 'push' })]
 });

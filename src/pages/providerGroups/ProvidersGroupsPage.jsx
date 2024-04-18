@@ -1,4 +1,5 @@
 import useMembers from '@/api/useMembers';
+import useProviders from '@/api/useProviders';
 import useProviderGroups from '@/api/useProvidersGroups';
 import AgGrid from '@/components/tables/AgGrid';
 import { GapRenderer, LinkRenderer, RatingRenderer, SrfRenderer, TextRenderer } from '@/components/tables/CellRenderers';
@@ -14,27 +15,40 @@ export default function ProviderGroupsPage() {
   const params = useParams();
   const name = decodeURI(params.name);
   const { data: memberData } = useMembers();
-  const { data: providersData } = useProviderGroups();
-  console.log(providersData);
+  const { data: providerGroupsData } = useProviderGroups();
+  const { data: providers } = useProviders();
+  console.log(providers);
 
-  const providers = useMemo(() => {
-    if (!providersData) {
+  const rows = useMemo(() => {
+    if (!providers || !memberData) {
       return [];
     }
+
     return (
-      providersData
+      providers
         //.filter((member) => member['Contract Entity Name'] === name)
         .map((provider) => {
+          const providerMembers = memberData.filter((member) => member.providerGroup.Provider === provider.Provider);
+          let memberGaps = 0;
+          providerMembers.forEach((member) => {
+            Object.keys(member.memberMeasures).forEach((key) => {
+              if (member.memberMeasures[key] === 0) {
+                memberGaps++;
+              }
+            });
+          });
+          console.log(providerMembers);
           return {
             ...provider,
+            providerGroupName: provider['Provider Group'],
             srf: randomBoolean(),
-            numberOfGaps: randomIntegerBetween(0, 50),
+            numberOfGaps: memberGaps,
             starRating: randomHalfNumberBetween(0, 10),
-            url: `/provider-groups/${provider.id}`
+            url: `/providers/${provider.Provider}`
           };
         })
     );
-  }, [providersData]);
+  }, [providerGroupsData, memberData]);
 
   const members = useMemo(() => {
     if (!memberData) {
@@ -50,11 +64,15 @@ export default function ProviderGroupsPage() {
             providerName: member.providerGroup.Provider,
             srf: randomBoolean(),
             numberOfGaps: randomIntegerBetween(0, 50),
-            starRating: randomHalfNumberBetween(0, 10)
+            starRating: randomHalfNumberBetween(0, 10),
+            url: `/providers/${member.providerGroup.Provider}`
           };
         })
     );
-  }, [providersData]);
+  }, [providerGroupsData]);
+
+  console.log(rows);
+  console.log(members);
 
   const columnDefs = [
     {
@@ -68,30 +86,15 @@ export default function ProviderGroupsPage() {
       hide: true
     },
     {
-      field: 'providerName',
+      field: 'Provider',
       headerName: 'Provider',
       filter: true,
       chartDataType: 'series',
-      cellRenderer: TextRenderer
+      cellRenderer: LinkRenderer
       //rowGroup: true,
       //hide: true
     },
-    {
-      field: 'FIRST NAME',
-      headerName: 'First',
-      type: 'category',
-      chartDataType: 'series',
-      filter: true,
-      cellRenderer: TextRenderer
-    },
-    {
-      field: 'LAST NAME',
-      headerName: 'Last',
-      type: 'category',
-      chartDataType: 'series',
-      filter: true,
-      cellRenderer: TextRenderer
-    },
+
     {
       field: 'numberOfGaps',
       headerName: 'Gaps',
@@ -113,12 +116,12 @@ export default function ProviderGroupsPage() {
   console.log(members);
 
   return (
-    <Container maxWidth="lg">
+    <Container maxWidth="xl">
       <Typography variant="h3" mt={3}>
         Provider Groups
       </Typography>
       <Box sx={{ height: 'calc(100vh - 150px)' }}>
-        <AgGrid columnDefs={columnDefs} rowData={members} csvDownload={true} sideBar />
+        <AgGrid columnDefs={columnDefs} rowData={rows} csvDownload={true} sideBar />
       </Box>
     </Container>
   );

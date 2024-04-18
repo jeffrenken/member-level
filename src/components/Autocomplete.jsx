@@ -11,7 +11,7 @@ function truncate(str, n) {
   return str.length > n ? str.substr(0, n - 1) + '...' : str;
 }
 
-export default function AutocompleteButton({ options, defaultLabel, value, onChange, width = 178 }) {
+export default function AutocompleteButton({ options, defaultLabel, value, onChange, width = 178, withAllOption }) {
   const [label, setLabel] = React.useState(defaultLabel);
   const [anchorEl, setAnchorEl] = React.useState(null);
 
@@ -48,7 +48,14 @@ export default function AutocompleteButton({ options, defaultLabel, value, onCha
         </Button>
         <Popper id={id} open={open} anchorEl={anchorEl} placement="bottom-start" style={{ zIndex: 3 }}>
           <StyledPopperDiv>
-            <AutocompletePopper handleClose={handleClick} setLabel={setLabel} options={options} value={value} onChange={onChange} />
+            <AutocompletePopper
+              handleClose={handleClick}
+              setLabel={setLabel}
+              options={options}
+              value={value}
+              onChange={onChange}
+              withAllOption={withAllOption}
+            />
           </StyledPopperDiv>
         </Popper>
       </div>
@@ -58,7 +65,7 @@ export default function AutocompleteButton({ options, defaultLabel, value, onCha
 
 const StyledPopperDiv = styled('div')(
   ({ theme }) => css`
-    background-color: ${theme.palette.background.semiTransparent};
+    background-color: ${theme.palette.background.semiTransparent2};
     border-radius: 8px;
     border: ${theme.palette.border};
     box-shadow: ${theme.palette.mode === 'dark' ? `0px 4px 8px rgb(0 0 0 / 0.7)` : `0px 4px 8px rgb(0 0 0 / 0.1)`};
@@ -69,7 +76,7 @@ const StyledPopperDiv = styled('div')(
   `
 );
 
-function AutocompletePopper({ options, handleClose, setLabel, value, onChange }) {
+function AutocompletePopper({ options, handleClose, setLabel, value, onChange, withAllOption }) {
   const [inputValue, setInputValue] = React.useState('');
 
   const handleChange = (newValue) => {
@@ -89,7 +96,7 @@ function AutocompletePopper({ options, handleClose, setLabel, value, onChange })
 
   const { getRootProps, getInputLabelProps, getInputProps, getListboxProps, getOptionProps, groupedOptions, focused } = useAutocomplete({
     id: 'use-autocomplete-demo',
-    options: options,
+    options: withAllOption ? [{ id: 0, label: withAllOption, value: 0 }, ...options] : options,
     getOptionLabel: (option) => option.label,
     autoHighlight: true,
     openOnFocus: true,

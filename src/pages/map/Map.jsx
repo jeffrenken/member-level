@@ -45,7 +45,7 @@ const cd = countiesData.features.map((item) => {
 
 const countyDataWithCount = { type: 'FeatureCollection', features: cd };
 
-mapboxgl.accessToken = 'pk.eyJ1IjoiZDQ1MmRzNTQiLCJhIjoiY2xuN2tvMXNoMGNibTJ1cGRwdTJlM3JnNSJ9.YG9u3Xd5SklObzL_hR8jwg'; // Set your mapbox token here
+mapboxgl.accessToken = import.meta.env.VITE_MAPBOX_TOKEN;
 
 export default function Map() {
   const theme = useTheme();
@@ -189,6 +189,15 @@ export default function Map() {
     setupMap();
   }, []);
 
+  console.log(selectedMeasureOption);
+
+  const chartScale = [
+    [selectedMeasureOption?.bottom_third_upper_value / 100, '#004400'],
+    [selectedMeasureOption?.middle_third_upper_value / 100, '#00cc00'],
+    [selectedMeasureOption?.top_third_upper_value / 100, '#0000ff']
+  ];
+  const chartValue = 0.77;
+
   useMemo(() => {
     console.log(filteredMembers, mapReady, map.current);
     if (!filteredMembers.length || !mapReady || !map.current || !selectedMeasureOption) {
@@ -309,7 +318,7 @@ export default function Map() {
                 <Stack direction="row" justifyContent={'space-between'}>
                   <Typography
                     sx={{ fontWeight: 600, fontSize: '1.5rem', textDecoration: 'none', color: '#4d9fda' }}
-                    component={Link}
+                    //component={Link}
                     to={`/states/${selectedCounty?.stateAbbreviation}/counties/${selectedCounty?.NAME}`}
                   >
                     {selectedCounty.NAME} County, {selectedCounty.stateAbbreviation}
@@ -319,9 +328,12 @@ export default function Map() {
                     {selectedMeasureOption.measure_name} in denominator
                   </Typography>
                 </Stack>
-                {/* <ResponsiveContainer width={200} height={200}>
-                  <GaugeChart />
-                </ResponsiveContainer> */}
+                <Box width={200} height={200}>
+                  <GaugeChart chartScale={chartScale} chartValue={chartValue} />
+                </Box>
+                <Box width={200} height={200}>
+                  <GaugeChart chartScale={chartScale} chartValue={chartValue} />
+                </Box>
               </Stack>
               <Box sx={{ height: '290px' }}>
                 {countyFilteredMembers.length && <MembersTable rows={countyFilteredMembers} csvDownload height="250px" />}

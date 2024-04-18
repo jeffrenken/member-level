@@ -1,5 +1,5 @@
 import useMeasures from '@/api/useMeasures';
-import { Container, Typography, Rating, Box, Stack, useTheme } from '@mui/material';
+import { Container, Typography, Rating, Box, Stack, useTheme, Divider } from '@mui/material';
 import { useParams } from 'react-router-dom';
 import AgGrid from '@/components/tables/AgGrid';
 import useMembers from '@/api/useMembers';
@@ -19,6 +19,7 @@ import PieChart2 from '@/components/charts/TestPie2';
 import useMemberMeasures from '@/api/useMemberMeasures';
 import useProviderGroups from '@/api/useProvidersGroups';
 import useFilteredMembers from '@/api/useFilteredMembers';
+import GaugeChart from '@/components/charts/GaugeChart';
 
 const randomBoolean = () => Math.random() > 0.5;
 const randomIntegerBetween = (min, max) => Math.floor(Math.random() * (max - min + 1) + min);
@@ -67,6 +68,8 @@ export default function Measure() {
     });
   }, [measures, measureId]);
 
+  console.log(measure);
+
   const members = useMemo(() => {
     if (!filteredMembers.length || !measure) {
       return null;
@@ -103,7 +106,7 @@ export default function Measure() {
     let measureCopy = { ...measure };
 
     measureCopy.numerator = members.numerator.length;
-    measureCopy.denominator = members.denominator.length;
+    measureCopy.denominator = members.denominator.length + members.numerator.length;
     measureCopy.forecast = 'N/A';
     return measureCopy;
   }, [measure, measureId, members]);
@@ -151,6 +154,13 @@ export default function Measure() {
     return <div>Loading...</div>;
   }
 
+  const chartScale = [
+    [measure?.bottom_third_upper_value / 100, '#004400'],
+    [measure?.middle_third_upper_value / 100, '#00cc00'],
+    [measure?.top_third_upper_value / 100, '#0000ff']
+  ];
+  const chartValue = 0.77;
+
   return (
     <Container maxWidth="lg" sx={{ marginTop: '20px', marginBottom: '20px' }}>
       <Top filters={['providers', 'contracts', 'measures']} />
@@ -159,8 +169,15 @@ export default function Measure() {
           <Typography variant="h1">{measure?.label}</Typography>
           <Typography>{provider?.label}</Typography>
           <Typography>Members in the denominator</Typography>
+          <Typography>TODO get measure description</Typography>
           {/*           <Box sx={{ bgcolor: '#3ed', height: 200, width: 600 }}>Month chart</Box>
            */}{' '}
+        </Box>
+        <Box width={100} height={200}>
+          <GaugeChart chartScale={chartScale} chartValue={chartValue} />
+        </Box>
+        <Box width={200} height={200}>
+          <GaugeChart chartScale={chartScale} chartValue={chartValue} />
         </Box>
         <Box>{measureWithData && <PieChart2 measure={measureWithData} disabled />}</Box>
         {/*         <CardGlow measure={measureWithData} colors={[background]} disabled />}</Box>

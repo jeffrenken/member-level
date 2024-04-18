@@ -40,7 +40,7 @@ const PieChart2 = ({ measure, disabled }) => {
   const denominatorPercent = (measure.denominator / total) * 100;
   const quotient = (measure.numerator / measure.denominator).toFixed(2);
 
-  const background = theme.palette.background.paper;
+  const background = theme.palette.background.semiTransparent;
 
   const handleClick = () => {
     if (!disabled) {
@@ -67,11 +67,9 @@ const PieChart2 = ({ measure, disabled }) => {
         <Typography align="center" sx={{ fontSize: '1.4rem', lineHeight: 1, fontWeight: 600, textShadow: '0px 2px 2px rgb(0 0 0 / 0.3)' }}>
           {measure.abbreviation}
         </Typography>
-        <Tooltip placement="top" title={<Typography>{measure.label}</Typography>}>
-          <Typography align="center" sx={{ fontSize: '0.7rem', lineHeight: 1, mb: '4px' }}>
-            {truncate(measure.label, 50)}
-          </Typography>
-        </Tooltip>
+        <Typography align="center" sx={{ fontSize: '0.7rem', lineHeight: 1, mb: '4px' }}>
+          {truncate(measure.label, 50)}
+        </Typography>
 
         <Box sx={{ position: 'relative' }}>
           <Slice2 slice1={value2InDegrees} slice2={value1InDegrees} />
@@ -148,11 +146,11 @@ const PieChart2 = ({ measure, disabled }) => {
             background: `linear-gradient(135deg, ${blue} ${numeratorPercent - 25}%, ${purple} ${100 - denominatorPercent + 25}%)`
           }}
         >
-          <Box
+          <Typography
             sx={{
               width: '100%',
               height: '100%',
-              color: 'white',
+              color: '#000',
               fontSize: '1.1rem',
               pl: '4px',
               py: '2px',
@@ -161,12 +159,12 @@ const PieChart2 = ({ measure, disabled }) => {
             }}
           >
             {measure.numerator}
-          </Box>
-          <Box
+          </Typography>
+          <Typography
             sx={{
               width: '100%',
               height: '100%',
-              color: 'white',
+              color: '#000',
               fontSize: '1.1rem',
               pl: '4px',
               py: '2px',
@@ -175,7 +173,7 @@ const PieChart2 = ({ measure, disabled }) => {
             }}
           >
             {measure.denominator}
-          </Box>
+          </Typography>
         </Stack>
       </Stack>
       {/* <Stack direction="row" alignItems="space-between" justifyContent="space-between" spacing={1} px={1} mt={'-3px'}>

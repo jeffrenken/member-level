@@ -22,6 +22,7 @@ const randomIntegerBetween = (min, max) => Math.floor(Math.random() * (max - min
 const randomHalfNumberBetween = (min, max) => Math.floor(Math.random() * (max - min + 1) + min) / 2;
 
 const memberInfoColumns = [
+  'CONTRACT',
   'MEMBER ID',
   'DATE OF BIRTH',
   'ADDRESS',
@@ -66,7 +67,7 @@ export default function MembersPage() {
       firstName: member['FIRST NAME'],
       lastName: member['LAST NAME'],
       id: member['MEMBER ID'],
-      srf: randomBoolean(),
+      srfCell: Object.keys(member.srf).length > 2 ? 'true' : 'false',
       numberOfGaps: Object.keys(member.memberMeasures).filter((key) => member.memberMeasures[key] === 0).length,
       starRating: randomHalfNumberBetween(0, 10),
       url: `/members/${member['MEMBER ID']}`,
@@ -93,7 +94,7 @@ export default function MembersPage() {
       cellRenderer: LinkRenderer
     },
     {
-      field: 'srf',
+      field: 'srfCell',
       headerName: 'SRF',
       type: 'numericColumn',
       maxWidth: 100,
@@ -135,7 +136,20 @@ export default function MembersPage() {
           chartDataType: 'series',
           filter: true,
           cellRenderer: MeasureRenderer,
-          enableRowGroup: true
+          enableRowGroup: true,
+          valueFormatter: ({ value }) => {
+            console.log(value);
+            let gaps = 'N/A';
+            if (value === '0') {
+              gaps = 'Open';
+            }
+            if (value === '1') {
+              gaps = 'Closed';
+            }
+            let text = `${measure['Acronym']} - ${gaps}`;
+
+            return text;
+          }
         };
       })
     },
@@ -172,10 +186,16 @@ export default function MembersPage() {
   return (
     <>
       <Container maxWidth="xl" sx={{ mb: 3, mt: 3 }}>
-        <Top filters={['contracts', 'providers']} />
         <div>Members Page</div>
         <Box sx={{ height: 'calc(100vh - 200px)' }}>
-          <AgGrid columnDefs={columnDefs} rowData={members} csvDownload saveFiltersButton rowGroupPanelShow="always" />
+          <AgGrid
+            columnDefs={columnDefs}
+            rowData={members}
+            csvDownload
+            saveFiltersButton
+            rowGroupPanelShow="always"
+            groupDisplayType="groupRows"
+          />
         </Box>
       </Container>
     </>

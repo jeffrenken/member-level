@@ -77,6 +77,7 @@ export default function Top({ filters }) {
           direction="row"
           justifyContent="space-between"
           alignItems="center"
+          height={40}
           //mb={3}
           //mx={3}
           //pb={2}
@@ -93,7 +94,13 @@ export default function Top({ filters }) {
               />
             )}
             {filters.includes('providers') && (
-              <AutocompleteButton defaultLabel="Provider Groups" options={providers} value={providerState} onChange={setProviderState} />
+              <AutocompleteButton
+                defaultLabel="Provider Groups"
+                options={providers}
+                value={providerState}
+                onChange={setProviderState}
+                withAllOption="All Provider Groups"
+              />
             )}
             {filters.includes('measures') && (
               <AutocompleteButton defaultLabel="Measures" options={measures} value={measureState} onChange={setMeasureState} />
@@ -110,12 +117,12 @@ export default function Top({ filters }) {
           </Stack>
 
           <Box>
-            <IconButton color="neutral">
+            {/* <IconButton color="neutral">
               <IconUserCircle style={{ strokeWidth: 1.5 }} />
             </IconButton>
             <IconButton color="neutral" onClick={switchColorMode}>
               {isDarkMode ? <IconSun /> : <IconMoon />}
-            </IconButton>
+            </IconButton> */}
           </Box>
         </Stack>
       </Card>

@@ -7,7 +7,7 @@ import Measure from '@/pages/measures/[id]/Measure';
 import MembersPage from '@/pages/members/MembersPage';
 import Member from '@/pages/members/[id]/Member';
 import ProvidersPage from '@/pages/providerGroups/ProvidersGroupsPage';
-import ProviderPage from '@/pages/providerGroups/[id]/ProviderGroupPage';
+import ProviderPage from '@/pages/providers/[name]/ProviderPage';
 import SignInPage from '@/pages/sign-in/SignInPage';
 import SocialRiskFactors from '@/pages/social-risk-factors/SocialRiskFactors';
 import County from '@/pages/states/[id]/counties/[id]/County';
@@ -55,6 +55,10 @@ export const router = createBrowserRouter([
       },
       {
         path: '/provider-groups/:id',
+        element: <ProviderPage />
+      },
+      {
+        path: '/providers/:name', //I know name is bad. All we have now
         element: <ProviderPage />
       },
       {

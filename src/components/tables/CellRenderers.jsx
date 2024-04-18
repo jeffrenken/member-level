@@ -16,6 +16,9 @@ export const BooleanRenderer = (params) => {
 };
 
 export const MeasureRenderer = (params) => {
+  if (params.column.rowGroupActive) {
+    console.log('active', params);
+  }
   if (params.value === undefined) {
     return undefined;
   }
@@ -124,7 +127,6 @@ export const SrfRenderer = (params) => {
 };
 
 export const LinkRenderer = (params) => {
-  console.log(params.data);
   const url = params.data?.url || '';
   return (
     <Box component={Link} to={url} px={0} sx={(theme) => ({ textDecoration: 'none', color: theme.palette.text.primary })}>

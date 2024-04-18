@@ -15,7 +15,7 @@ import Top from '@/layout/Top';
 import { contractFilterState } from '@/state/contractFilterState';
 import { providerFilterState } from '@/state/providerFilterState';
 import { srfFilterState } from '@/state/srfFilterState';
-import { Box, Container, Grid, Stack, Typography, useTheme } from '@mui/material';
+import { Box, Container, Divider, Grid, Stack, Typography, useTheme } from '@mui/material';
 import Grid2 from '@mui/material/Unstable_Grid2';
 import React, { useMemo } from 'react';
 import { useRecoilValue } from 'recoil';
@@ -62,6 +62,9 @@ const useGlowPointer = () => {
   }, []);
   return null;
 };
+
+const blue = 'rgba(146, 208,242, 1)';
+const purple = 'rgba(204, 181,250, 1)';
 
 const MeasuresPage = () => {
   //const UPDATE = useGlowPointer();
@@ -127,9 +130,11 @@ const MeasuresPage = () => {
 
     let splitMembers = [];
     filtered.forEach((measure, i) => {
+      const numerator = filteredMembers.filter((member) => member?.memberMeasures[measure['Measure Name']] === 1).length;
+      const denominator = filteredMembers.filter((member) => member?.memberMeasures[measure['Measure Name']] === 0).length;
       splitMembers[i] = { ...measure };
-      splitMembers[i].numerator = filteredMembers.filter((member) => member.memberMeasures[measure['Measure Name']] === 1).length;
-      splitMembers[i].denominator = filteredMembers.filter((member) => member.memberMeasures[measure['Measure Name']] === 0).length;
+      splitMembers[i].numerator = numerator;
+      splitMembers[i].denominator = numerator + denominator;
       splitMembers[i].forecast = 'N/A';
     });
 
@@ -158,7 +163,7 @@ const MeasuresPage = () => {
         </Stack>
         <Box px={6}>
           <Typography align="center" my={2} ml={2} sx={{ fontSize: '2rem', fontWeight: 600, letterSpacing: '2px' }}>
-            Good Page Title
+            Measure Overview
           </Typography>
           <Typography align="left" my={2} ml={2} variant="body1">
             Maybe some kind of explanation of what this page shows.khjlksadjfgh lakjdsfh glkjahsdf glkjahfs lkjga lksfjgh lakjsfh glkajs
@@ -170,6 +175,18 @@ const MeasuresPage = () => {
 
         {/* <CardGlow measure={sampleMeasure} colors={[background]} disabled />
         <PieChart2 measure={sampleMeasure} disabled /> */}
+      </Stack>
+      <Box sx={{ borderBottom: `1px solid #aaa`, margin: '0 auto', width: '95%' }} />
+      <Typography align="center" mt={3} ml={2} sx={{ fontSize: '2rem', fontWeight: 600, letterSpacing: '2px' }}>
+        Current Measure Performance
+      </Typography>
+      <Stack direction="row" alignItems="center" justifyContent="center" spacing={3} mb={3} mt={1}>
+        <Box sx={{ backgroundColor: blue, borderRadius: '6px', color: '#000' }} px={2} py={0.7}>
+          <Typography>Numerator</Typography>
+        </Box>
+        <Box sx={{ backgroundColor: purple, borderRadius: '6px', color: '#000' }} px={2} py={0.7}>
+          <Typography>Denominator</Typography>
+        </Box>
       </Stack>
       <Grid2 container spacing={2} sx={{ margin: '0 auto', mb: 3 }}>
         {measures?.map((measure) => (
