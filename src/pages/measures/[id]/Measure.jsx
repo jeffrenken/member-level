@@ -155,11 +155,11 @@ export default function Measure() {
   }
 
   const chartScale = [
-    [measure?.bottom_third_upper_value / 100, '#004400'],
-    [measure?.middle_third_upper_value / 100, '#00cc00'],
-    [measure?.top_third_upper_value / 100, '#0000ff']
+    [measure?.bottom_third_upper_value / 100, '#d27e6f'],
+    [measure?.middle_third_upper_value / 100, '#dcb05c'],
+    [measure?.top_third_upper_value / 100, '#a1d99e']
   ];
-  const chartValue = 0.77;
+  const chartValue = 0.2;
 
   return (
     <Container maxWidth="lg" sx={{ marginTop: '20px', marginBottom: '20px' }}>
@@ -169,15 +169,18 @@ export default function Measure() {
           <Typography variant="h1">{measure?.label}</Typography>
           <Typography>{provider?.label}</Typography>
           <Typography>Members in the denominator</Typography>
-          <Typography>TODO get measure description</Typography>
+          <Typography>{measure?.description}</Typography>
           {/*           <Box sx={{ bgcolor: '#3ed', height: 200, width: 600 }}>Month chart</Box>
            */}{' '}
-        </Box>
-        <Box width={100} height={200}>
-          <GaugeChart chartScale={chartScale} chartValue={chartValue} />
-        </Box>
-        <Box width={200} height={200}>
-          <GaugeChart chartScale={chartScale} chartValue={chartValue} />
+          <Stack direction="row" justifyContent="center" alignItems={'center'}>
+            <Box sx={{ minWidth: 200, height: 200 }}>
+              <GaugeChart chartScale={chartScale} chartValue={0.68} />
+            </Box>
+
+            <Box sx={{ minWidth: 200, height: 150 }}>
+              <GaugeChart chartScale={chartScale} chartValue={chartValue} />
+            </Box>
+          </Stack>
         </Box>
         <Box>{measureWithData && <PieChart2 measure={measureWithData} disabled />}</Box>
         {/*         <CardGlow measure={measureWithData} colors={[background]} disabled />}</Box>

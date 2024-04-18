@@ -121,7 +121,7 @@ export default function ProviderGroupsPage() {
         Provider Groups
       </Typography>
       <Box sx={{ height: 'calc(100vh - 150px)' }}>
-        <AgGrid columnDefs={columnDefs} rowData={rows} csvDownload={true} sideBar />
+        <AgGrid columnDefs={columnDefs} rowData={rows} csvDownload={true} />
       </Box>
     </Container>
   );

@@ -14,13 +14,16 @@ const measure = {
   forecast: 'something'
 };
 const blue = 'rgba(146, 208,242, 1)';
-const purple = 'rgba(204, 181,250, 1)';
+const green = '#30cba8';
+const red = '#fe412d';
+const numColor = green;
+const denomColor = red;
 
 const Slice2 = styled(`div`)`
   width: 85px;
   height: 85px;
   border-radius: 50%;
-  background-image: ${(props) => `conic-gradient(${purple} ${props.slice1}deg, ${blue} 0 ${props.slice2}deg)`};
+  background-image: ${(props) => `conic-gradient(${denomColor} ${props.slice1}deg, ${numColor} 0 ${props.slice2}deg)`};
   margin: 0 auto;
   box-shadow: 0px 4px 8px rgb(0 0 0 / 0.4);
 `;
@@ -143,7 +146,7 @@ const PieChart2 = ({ measure, disabled }) => {
             borderRadius: '4px',
             //background: `linear-gradient(90deg, rgba(34, 193, 168, 1) ${numeratorPercent}%, rgba(35, 93, 241, 1) ${denominatorPercent}%)`
             //background: `linear-gradient(90deg, rgba(34, 193, 168, 1) ${numeratorPercent}%, rgba(35, 93, 241, 1) 100%)`
-            background: `linear-gradient(135deg, ${blue} ${numeratorPercent - 25}%, ${purple} ${100 - denominatorPercent + 25}%)`
+            background: `linear-gradient(135deg, ${numColor} ${numeratorPercent - 25}%, ${denomColor} ${100 - denominatorPercent + 25}%)`
           }}
         >
           <Typography
@@ -193,7 +196,7 @@ const PieChart2 = ({ measure, disabled }) => {
         </Box>
         <Box
           sx={{
-            bgcolor: blue,
+            bgcolor: numColor,
             width: '100%',
             height: '100%',
             color: 'white',
@@ -207,7 +210,7 @@ const PieChart2 = ({ measure, disabled }) => {
         </Box>
       </Stack> */}
       {/* <Typography align="center" sx={{ fontSize: '1.1rem' }} mt="4px">
-        <span style={{ color: green }}>{measure.numerator}</span>/<span style={{ color: blue }}>{measure.denominator}</span>
+        <span style={{ color: green }}>{measure.numerator}</span>/<span style={{ color: numColor }}>{measure.denominator}</span>
       </Typography> */}
       {/* <Box
         sx={{

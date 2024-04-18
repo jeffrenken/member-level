@@ -66,6 +66,9 @@ const useGlowPointer = () => {
 const blue = 'rgba(146, 208,242, 1)';
 const purple = 'rgba(204, 181,250, 1)';
 
+const green = '#30cba8';
+const red = '#fe412d';
+
 const MeasuresPage = () => {
   //const UPDATE = useGlowPointer();
   const theme = useTheme();
@@ -157,9 +160,9 @@ const MeasuresPage = () => {
 
       <Stack direction="row" alignItems="center" justifyContent="space-around" mb={4} px={6} mt={4}>
         <Stack direction="row" alignItems="center" justifyContent="space-around" spacing={3}>
-          <MeasureCountCard measures={onTrack4} label={'On Track - 4 Stars'} />
-          <MeasureCountCard measures={onTrack5} label={'On Track - 5 Stars'} />
-          <MeasureCountCard measures={offTrack} label={'Off Track'} />
+          <MeasureCountCard measures={onTrack4} label={'On Track - 4 Stars'} color={green} />
+          <MeasureCountCard measures={onTrack5} label={'On Track - 5 Stars'} color={green} />
+          <MeasureCountCard measures={offTrack} label={'Off Track'} color={red} />
         </Stack>
         <Box px={6}>
           <Typography align="center" my={2} ml={2} sx={{ fontSize: '2rem', fontWeight: 600, letterSpacing: '2px' }}>
@@ -181,10 +184,10 @@ const MeasuresPage = () => {
         Current Measure Performance
       </Typography>
       <Stack direction="row" alignItems="center" justifyContent="center" spacing={3} mb={3} mt={1}>
-        <Box sx={{ backgroundColor: blue, borderRadius: '6px', color: '#000' }} px={2} py={0.7}>
+        <Box sx={{ backgroundColor: green, borderRadius: '6px', color: '#000' }} px={2} py={0.7}>
           <Typography>Numerator</Typography>
         </Box>
-        <Box sx={{ backgroundColor: purple, borderRadius: '6px', color: '#000' }} px={2} py={0.7}>
+        <Box sx={{ backgroundColor: red, borderRadius: '6px', color: '#000' }} px={2} py={0.7}>
           <Typography>Denominator</Typography>
         </Box>
       </Stack>

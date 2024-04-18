@@ -9,7 +9,8 @@
     "middle_third_lower_value": 66.4927,
     "middle_third_upper_value": 72.4913,
     "top_third_lower_value": 72.4914,
-    "top_third_upper_value": 100
+    "top_third_upper_value": 100,
+    "description": "The percentage of members 50–74 years of age who were recommended for routine breast cancer screening and had a mammogram to screen for breast cancer."
   },
   {
     "Measure Name": "Colorectal Cancer Screening",
@@ -21,13 +22,32 @@
     "middle_third_lower_value": 66.7736,
     "middle_third_upper_value": 74.0165,
     "top_third_lower_value": 74.0166,
-    "top_third_upper_value": 100
+    "top_third_upper_value": 100,
+    "description": "The percentage of members 45–75 years of age who had appropriate screening for colorectal cancer."
   },
   { "Measure Name": "COA - Medication Review", "Domain": "HEDIS", "Acronym": "COA-MR", "status": "stars" },
   { "Measure Name": "COA - Pain Assessment", "Domain": "HEDIS", "Acronym": "COA-PA", "status": "stars" },
-  { "Measure Name": "Osteo Mgmt in Women W Fracture", "Domain": "HEDIS", "Acronym": "OMW", "status": "stars" },
-  { "Measure Name": "Diabetes Care - Eye Exam", "Domain": "HEDIS", "Acronym": "EED", "status": "stars" },
-  { "Measure Name": "Diabetes Care - BSC", "Domain": "HEDIS", "Acronym": "GSD", "status": "stars" },
+  {
+    "Measure Name": "Osteo Mgmt in Women W Fracture",
+    "Domain": "HEDIS",
+    "Acronym": "OMW",
+    "status": "stars",
+    "description": "The percentage of women 67–85 years of age who suffered a fracture and who had either a bone mineral density (BMD) test or prescription for a drug to treat osteoporosis in the 180 days (6 months) after the fracture."
+  },
+  {
+    "Measure Name": "Diabetes Care - Eye Exam",
+    "Domain": "HEDIS",
+    "Acronym": "EED",
+    "status": "stars",
+    "description": "The percentage of members 18–75 years of age with diabetes (types 1 and 2) who had a retinal eye exam."
+  },
+  {
+    "Measure Name": "Diabetes Care - BSC",
+    "Domain": "HEDIS",
+    "Acronym": "GSD",
+    "status": "stars",
+    "description": "The percentage of members 18–75 years of age with diabetes (types 1 and 2) whose blood pressure (BP) was adequately controlled (<140/90 mm Hg) during the measurement year."
+  },
   { "Measure Name": "Controlling Blood Pressure", "Domain": "HEDIS", "Acronym": "CBP", "status": "stars" },
   { "Measure Name": "Med Rec Post-Discharge", "Domain": "HEDIS", "Acronym": "MRP", "status": "stars" },
   { "Measure Name": "Plan All Cause Readmissions", "Domain": "HEDIS", "Acronym": "PCR", "status": "stars" },

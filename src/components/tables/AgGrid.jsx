@@ -21,7 +21,7 @@ import { getData } from './data.js';
 import { IconDeviceFloppy, IconFileCv, IconFileTypeCsv } from '@tabler/icons-react';
 //import './ag-grid.css';
 
-export default function AgGrid({ rowData, columnDefs, sideBar = true, csvDownload, saveFiltersButton, height = '100%', ...props }) {
+export default function AgGrid({ rowData, columnDefs, sideBar2, csvDownload, saveFiltersButton, height = '100%', ...props }) {
   const gridRef = useRef();
   const theme = useTheme();
   const darkMode = theme.palette.mode === 'dark';
@@ -136,6 +136,31 @@ export default function AgGrid({ rowData, columnDefs, sideBar = true, csvDownloa
   const handleChangeFilter = (event) => {
     gridRef.current.api.setFilterModel(event.target.value);
   };
+
+  const sideBar = useMemo(() => {
+    return {
+      toolPanels: [
+        {
+          id: 'columns',
+          labelDefault: 'Columns',
+          labelKey: 'columns',
+          iconKey: 'columns',
+          toolPanel: 'agColumnsToolPanel',
+          toolPanelParams: {
+            suppressRowGroups: false,
+            suppressValues: false
+          }
+        },
+        {
+          id: 'filters',
+          labelDefault: 'Filters',
+          labelKey: 'filters',
+          iconKey: 'filter',
+          toolPanel: 'agFiltersToolPanel'
+        }
+      ]
+    };
+  }, []);
 
   return (
     <>

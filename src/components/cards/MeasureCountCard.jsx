@@ -7,7 +7,7 @@ import { IconArrowRight } from '@tabler/icons-react';
 
 const lightBlue = 'rgb(222, 237, 252, 1)';
 
-export default function MeasureCountCard({ label, measures, size, isLoading }) {
+export default function MeasureCountCard({ label, measures, size, isLoading, color }) {
   const [isFlipped, setIsFlipped] = useState(false);
   const theme = useTheme();
 
@@ -36,7 +36,7 @@ export default function MeasureCountCard({ label, measures, size, isLoading }) {
               )}
               <IconArrowRight size={16} />
             </Stack>
-            <Typography align="center" sx={{ fontSize: isLg ? '10rem' : '7rem', fontWeight: 600, lineHeight: '8rem' }}>
+            <Typography align="center" sx={{ fontSize: isLg ? '10rem' : '7rem', fontWeight: 600, lineHeight: '8rem', color: color }}>
               {measures.length}
             </Typography>
             <Typography sx={{ fontWeight: 500, fontSize: isLg ? '1.3rem' : '1rem' }} align="center">
