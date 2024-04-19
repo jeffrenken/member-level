@@ -217,13 +217,13 @@ export default function ProviderPage() {
     <>
       <Container maxWidth="xl">
         <Box my={2} mt={3}>
-          <Typography variant="h3" mb={1} sx={{ fontSize: '1.75rem' }}>
+          <Typography variant="h1" mb={1} sx={{ fontSize: '1.75rem' }}>
             {name}
           </Typography>
-          <Typography variant="h3" mb={1} sx={{ fontSize: '1.75rem' }}>
+          <Typography variant="h4" mb={1}>
             Total Gaps: {totalGapsRef.current}
           </Typography>
-          <Typography variant="h3" mb={1} sx={{ fontSize: '1.75rem' }}>
+          <Typography variant="h4" mb={1}>
             Incentive value: ${totalGapsRef.current * worthPerGap}
           </Typography>
         </Box>
