@@ -25,8 +25,6 @@ const PieChart3 = ({ measure }) => {
   const numeratorPercent = (measure.numerator / total) * 100;
   const denominatorPercent = (measure.denominator / total) * 100;
 
-  console.log(numeratorPercent, denominatorPercent);
-
   const background = theme.palette.background.paper;
 
   return (

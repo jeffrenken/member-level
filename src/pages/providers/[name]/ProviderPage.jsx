@@ -79,7 +79,6 @@ export default function ProviderPage() {
     if (!membersData.length) {
       return [];
     }
-    console.log(membersData);
     return membersData
       .filter((member) => member.providerGroup.Provider === name)
       .map((member) => {
@@ -100,8 +99,6 @@ export default function ProviderPage() {
         };
       });
   }, [membersData]);
-
-  console.log('members', members);
 
   /*  const provider =
     providers &&

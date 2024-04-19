@@ -66,8 +66,8 @@ const useGlowPointer = () => {
 const blue = 'rgba(146, 208,242, 1)';
 const purple = 'rgba(204, 181,250, 1)';
 
-const green = '#30cba8';
-const red = '#fe412d';
+const green = '#50CEB2';
+const red = '#F36959';
 
 const MeasuresPage = () => {
   //const UPDATE = useGlowPointer();
@@ -83,8 +83,6 @@ const MeasuresPage = () => {
   const { data: contracts } = useContracts();
   const { data: srfData } = useSrf();
   const { filteredMembers } = useFilteredMembers();
-
-  console.log(filteredMembers);
 
   /*   useEffect(() => {
     setMeasureState(null);
@@ -128,8 +126,6 @@ const MeasuresPage = () => {
     if (measureStatus !== 'all') {
       filtered = filtered.filter((measure) => measure.status === measureStatus);
     }
-
-    console.log('filtered', filteredMembers);
 
     let splitMembers = [];
     filtered.forEach((measure, i) => {
@@ -184,10 +180,10 @@ const MeasuresPage = () => {
         Current Measure Performance
       </Typography>
       <Stack direction="row" alignItems="center" justifyContent="center" spacing={3} mb={3} mt={1}>
-        <Box sx={{ backgroundColor: green, borderRadius: '6px', color: '#000' }} px={2} py={0.7}>
+        <Box sx={{ backgroundColor: green, borderRadius: '6px', color: '#fff' }} px={2} py={0.7}>
           <Typography>Numerator</Typography>
         </Box>
-        <Box sx={{ backgroundColor: red, borderRadius: '6px', color: '#000' }} px={2} py={0.7}>
+        <Box sx={{ backgroundColor: red, borderRadius: '6px', color: '#fff' }} px={2} py={0.7}>
           <Typography>Denominator</Typography>
         </Box>
       </Stack>

@@ -68,8 +68,6 @@ export default function Measure() {
     });
   }, [measures, measureId]);
 
-  console.log(measure);
-
   const members = useMemo(() => {
     if (!filteredMembers.length || !measure) {
       return null;
@@ -172,7 +170,7 @@ export default function Measure() {
           <Typography>{measure?.description}</Typography>
           {/*           <Box sx={{ bgcolor: '#3ed', height: 200, width: 600 }}>Month chart</Box>
            */}{' '}
-          <Stack direction="row" justifyContent="center" alignItems={'center'}>
+          {/* <Stack direction="row" justifyContent="center" alignItems={'center'}>
             <Box sx={{ minWidth: 200, height: 200 }}>
               <GaugeChart chartScale={chartScale} chartValue={0.68} />
             </Box>
@@ -180,7 +178,7 @@ export default function Measure() {
             <Box sx={{ minWidth: 200, height: 150 }}>
               <GaugeChart chartScale={chartScale} chartValue={chartValue} />
             </Box>
-          </Stack>
+          </Stack> */}
         </Box>
         <Box>{measureWithData && <PieChart2 measure={measureWithData} disabled />}</Box>
         {/*         <CardGlow measure={measureWithData} colors={[background]} disabled />}</Box>

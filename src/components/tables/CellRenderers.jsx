@@ -16,9 +16,6 @@ export const BooleanRenderer = (params) => {
 };
 
 export const MeasureRenderer = (params) => {
-  if (params.column.rowGroupActive) {
-    console.log('active', params);
-  }
   if (params.value === undefined) {
     return undefined;
   }

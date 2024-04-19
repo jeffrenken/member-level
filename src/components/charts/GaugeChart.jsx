@@ -10,7 +10,6 @@ const chartScaleFake = [
 ];
 
 export default function GaugeChart({ chartScale, chartValue }) {
-  console.log(chartScale, chartValue);
   const option = {
     series: [
       {
@@ -106,8 +105,6 @@ export default function GaugeChart({ chartScale, chartValue }) {
       }
     }
   };
-  console.log(chartScale);
-  console.log(getBarColor(chartValue));
 
   const option2 = {
     grid: { left: '50px', right: '20px' },

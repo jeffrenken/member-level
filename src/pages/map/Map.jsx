@@ -180,7 +180,6 @@ export default function Map() {
     });
 
     map.current.once('idle', () => {
-      console.log('idle');
       setMapReady(true);
     });
   }
@@ -188,8 +187,6 @@ export default function Map() {
   useEffect(() => {
     setupMap();
   }, []);
-
-  console.log(selectedMeasureOption);
 
   const chartScale = [
     [selectedMeasureOption?.bottom_third_upper_value / 100, '#004400'],
@@ -199,7 +196,6 @@ export default function Map() {
   const chartValue = 0.77;
 
   useMemo(() => {
-    console.log(filteredMembers, mapReady, map.current);
     if (!filteredMembers.length || !mapReady || !map.current || !selectedMeasureOption) {
       return;
     }
@@ -229,7 +225,6 @@ export default function Map() {
       let countTotalInCounty = filteredMembers.filter(
         (member) => member.COUNTY === item.properties.NAME && member.STATE === item.properties.stateAbbreviation
       ).length;
-      console.log(countInCountyDenom, countTotalInCounty);
       let percent = (countInCountyDenom / countTotalInCounty) * 100;
       let itemProperties = { ...item.properties, percent: percent };
       itemCopy.properties = itemProperties;
@@ -328,12 +323,12 @@ export default function Map() {
                     {selectedMeasureOption.measure_name} in denominator
                   </Typography>
                 </Stack>
-                <Box width={200} height={200}>
+                {/* <Box width={200} height={200}>
                   <GaugeChart chartScale={chartScale} chartValue={chartValue} />
                 </Box>
                 <Box width={200} height={200}>
                   <GaugeChart chartScale={chartScale} chartValue={chartValue} />
-                </Box>
+                </Box> */}
               </Stack>
               <Box sx={{ height: '290px' }}>
                 {countyFilteredMembers.length && <MembersTable rows={countyFilteredMembers} csvDownload height="250px" />}

@@ -17,10 +17,9 @@ export default function ProviderGroupsPage() {
   const { data: memberData } = useMembers();
   const { data: providerGroupsData } = useProviderGroups();
   const { data: providers } = useProviders();
-  console.log(providers);
 
   const rows = useMemo(() => {
-    if (!providers || !memberData) {
+    if (!providers.length || !memberData.length) {
       return [];
     }
 
@@ -37,7 +36,6 @@ export default function ProviderGroupsPage() {
               }
             });
           });
-          console.log(providerMembers);
           return {
             ...provider,
             providerGroupName: provider['Provider Group'],
@@ -48,7 +46,7 @@ export default function ProviderGroupsPage() {
           };
         })
     );
-  }, [providerGroupsData, memberData]);
+  }, [providers, memberData]);
 
   const members = useMemo(() => {
     if (!memberData) {
@@ -70,9 +68,6 @@ export default function ProviderGroupsPage() {
         })
     );
   }, [providerGroupsData]);
-
-  console.log(rows);
-  console.log(members);
 
   const columnDefs = [
     {
@@ -112,8 +107,6 @@ export default function ProviderGroupsPage() {
       cellRenderer: RatingRenderer
     }
   ];
-
-  console.log(members);
 
   return (
     <Container maxWidth="xl">

@@ -15,7 +15,6 @@ import { Link, useParams } from 'react-router-dom';
     "Low Income Subsidy Copay Level": "FALSE",if true = srf */
 
 function getValue(value) {
-  console.log(value);
   if (value === 0) {
     return true;
   } else if (value === 1) {
@@ -46,7 +45,6 @@ export default function Member() {
       return member['MEMBER ID'] === parseInt(id);
     });
   }, [data, id]);
-  console.log(member);
 
   const rows = useMemo(() => {
     if (!member || !measuresData.length) {
@@ -59,19 +57,14 @@ export default function Member() {
       };
     });
     /* let measures = Object.keys(member?.memberMeasures).map((key) => {
-      console.log(key);
       return {
         label: key,
         value: getValue(member.memberMeasures[key])
       };
     }); */
 
-    console.log(measures);
-
     return measures.filter((measure) => measure.label !== 'CONTRACT' && measure.label !== 'MEMBER ID');
   }, [member, measuresData]);
-
-  console.log(rows);
 
   /*  const provider =
     providers &&
@@ -97,7 +90,6 @@ export default function Member() {
     return <div>Member not found</div>;
   }
 
-  console.log(member);
   return (
     <>
       <Container maxWidth="md">

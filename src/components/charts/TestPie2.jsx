@@ -14,8 +14,8 @@ const measure = {
   forecast: 'something'
 };
 const blue = 'rgba(146, 208,242, 1)';
-const green = '#30cba8';
-const red = '#fe412d';
+const green = '#50CEB2';
+const red = '#F36959';
 const numColor = green;
 const denomColor = red;
 
@@ -153,7 +153,7 @@ const PieChart2 = ({ measure, disabled }) => {
             sx={{
               width: '100%',
               height: '100%',
-              color: '#000',
+              color: '#fff',
               fontSize: '1.1rem',
               pl: '4px',
               py: '2px',
@@ -167,7 +167,7 @@ const PieChart2 = ({ measure, disabled }) => {
             sx={{
               width: '100%',
               height: '100%',
-              color: '#000',
+              color: '#fff',
               fontSize: '1.1rem',
               pl: '4px',
               py: '2px',

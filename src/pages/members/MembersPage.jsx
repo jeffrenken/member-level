@@ -60,23 +60,25 @@ export default function MembersPage() {
     });
   }, [measures]);
 
-  console.log(starsMeasures, displayMeasures);
+  const members = useMemo(() => {
+    if (!filteredMembers) {
+      return null;
+    }
 
-  const members = filteredMembers.map((member) => {
-    return {
-      firstName: member['FIRST NAME'],
-      lastName: member['LAST NAME'],
-      id: member['MEMBER ID'],
-      srfCell: Object.keys(member.srf).length > 2 ? 'true' : 'false',
-      numberOfGaps: Object.keys(member.memberMeasures).filter((key) => member.memberMeasures[key] === 0).length,
-      starRating: randomHalfNumberBetween(0, 10),
-      url: `/members/${member['MEMBER ID']}`,
-      ...member.memberMeasures,
-      ...member
-    };
-  });
-
-  console.log(members[0]);
+    return filteredMembers.map((member) => {
+      return {
+        firstName: member['FIRST NAME'],
+        lastName: member['LAST NAME'],
+        id: member['MEMBER ID'],
+        srfCell: Object.keys(member.srf).length > 2 ? 'true' : 'false',
+        numberOfGaps: Object.keys(member.memberMeasures).filter((key) => member.memberMeasures[key] === 0).length,
+        starRating: randomHalfNumberBetween(0, 10),
+        url: `/members/${member['MEMBER ID']}`,
+        ...member.memberMeasures,
+        ...member
+      };
+    });
+  }, [filteredMembers]);
 
   const columnDefs = [
     {
@@ -138,7 +140,6 @@ export default function MembersPage() {
           cellRenderer: MeasureRenderer,
           enableRowGroup: true,
           valueFormatter: ({ value }) => {
-            console.log(value);
             let gaps = 'N/A';
             if (value === '0') {
               gaps = 'Open';

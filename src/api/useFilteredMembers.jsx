@@ -90,14 +90,11 @@ export default function useFilteredMembers() {
       });
 
       if (srf) {
-        console.log('srf', srf);
         if (srf.label === 'SRF Only') {
-          console.log(filtered);
           //shitty way to know if they have an srf category
           filtered = filtered.filter((d) => Object.keys(d.srf).length > 2);
         }
         if (srf.label === 'Non-SRF Only') {
-          console.log(filtered);
           //shitty way to know if they have an srf category
           filtered = filtered.filter((d) => Object.keys(d.srf).length === 2);
         }
