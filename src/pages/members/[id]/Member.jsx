@@ -3,6 +3,7 @@ import useFilteredMembers from '@/api/useFilteredMembers';
 import useMeasures from '@/api/useMeasures';
 import useMembers from '@/api/useMembers';
 import useProviders from '@/api/useProvidersGroups';
+import Card from '@/components/Card';
 import AgGrid from '@/components/tables/AgGrid';
 import { SrfRenderer, TextRenderer, MeasureRenderer } from '@/components/tables/CellRenderers';
 import { Box, Container, Rating, Typography } from '@mui/material';
@@ -76,7 +77,7 @@ export default function Member() {
     { field: 'label', filter: true, chartDataType: 'category', maxWidth: 500, cellRenderer: TextRenderer },
     {
       field: 'value',
-      headerName: 'No Gaps',
+      headerName: 'Status',
       //type: 'numericColumn',
       maxWidth: 150,
       chartDataType: 'series',
@@ -99,27 +100,31 @@ export default function Member() {
           Status of the member across different STAR measures. <br /> **Gaps in Care:** Identified gaps and recommended action plans. <br />{' '}
           **Contact and Intervention Tools:** Direct communication options and tools for managing interventions.
         </div> */}
-        <Box my={2} mt={3}>
-          <Typography variant="h3" mb={1} sx={{ fontSize: '1.75rem' }}>
-            {member['FIRST NAME']} {member['LAST NAME']}
-          </Typography>
-          <Typography sx={{ fontSize: '1rem' }}>{member['ADDRESS']}</Typography>
-          <Typography sx={{ fontSize: '1rem' }}>
-            {member['CITY']}, {member['STATE']}
-          </Typography>
-          <Typography mt={2} sx={{ fontSize: '1rem' }}>
-            Date of Birth: {member['DATE OF BIRTH']}
-          </Typography>
-        </Box>
-        <Box>
-          <Typography sx={{ fontSize: '1rem' }}>
-            Primary Care Physician:{' '}
-            <Link to={`/providers/${member?.providerGroup?.Provider}`} style={{ textDecoration: 'none', color: '#4d9fda' }}>
-              {member?.providerGroup?.Provider}
-            </Link>
-          </Typography>
-          <Typography sx={{ fontSize: '1rem' }}>Contract Entity: {member?.providerGroup?.['Provider Group']}</Typography>
-        </Box>
+        <Card p={2} mt={2}>
+          <>
+            <Box>
+              <Typography variant="h3" mb={1} sx={{ fontSize: '1.75rem' }}>
+                {member['FIRST NAME']} {member['LAST NAME']}
+              </Typography>
+              <Typography sx={{ fontSize: '1rem' }}>{member['ADDRESS']}</Typography>
+              <Typography sx={{ fontSize: '1rem' }}>
+                {member['CITY']}, {member['STATE']}
+              </Typography>
+              <Typography mt={2} sx={{ fontSize: '1rem' }}>
+                Date of Birth: {member['DATE OF BIRTH']}
+              </Typography>
+            </Box>
+            <Box>
+              <Typography sx={{ fontSize: '1rem' }}>
+                Primary Care Physician:{' '}
+                <Link to={`/providers/${member?.providerGroup?.Provider}`} style={{ textDecoration: 'none', color: '#4d9fda' }}>
+                  {member?.providerGroup?.Provider}
+                </Link>
+              </Typography>
+              <Typography sx={{ fontSize: '1rem' }}>Contract Entity: {member?.providerGroup?.['Provider Group']}</Typography>
+            </Box>
+          </>
+        </Card>
         <Box sx={{ height: 'calc(100vh - 300px)' }}>
           <AgGrid rowData={rows} columnDefs={columnDefs} />
         </Box>

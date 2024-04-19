@@ -52,13 +52,15 @@ const PieChart2 = ({ measure, disabled }) => {
     }
   };
 
+  const borderColor = '#aaa';
+
   return (
     <Box
       height={188}
       width={188}
       sx={{
         borderRadius: '10px',
-        border: `2px solid #aaa`,
+        border: `2px solid ${borderColor}`,
         p: 0.5,
         bgcolor: background,
         boxShadow: '0px 4px 8px rgb(0 0 0 / 0.2)',

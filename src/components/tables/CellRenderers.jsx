@@ -7,6 +7,42 @@ const randomBoolean = () => Math.random() > 0.5;
 const randomIntegerBetween = (min, max) => Math.floor(Math.random() * (max - min + 1) + min);
 const randomHalfNumberBetween = (min, max) => Math.floor(Math.random() * (max - min + 1) + min) / 2;
 
+//function to add or subtract 10% of value
+function addOrSubractValue(value) {
+  let returnVal = value;
+  const randomNumber = Math.random();
+  if (randomNumber > 0.9) {
+    returnVal = value * 0.9;
+  } else if (randomNumber < 0.1) {
+    returnVal = value * 1.1;
+  } else {
+    returnVal = value;
+  }
+
+  return Math.ceil(returnVal);
+}
+
+export function getSparklineData(finalNumberOfGaps) {
+  const monthChartData = [
+    { x: 'October', y: addOrSubractValue(finalNumberOfGaps) },
+    { x: 'November', y: addOrSubractValue(finalNumberOfGaps) },
+    { x: 'December', y: addOrSubractValue(finalNumberOfGaps) },
+    { x: 'January', y: addOrSubractValue(finalNumberOfGaps) },
+    { x: 'February', y: addOrSubractValue(finalNumberOfGaps) },
+    { x: 'March', y: addOrSubractValue(finalNumberOfGaps) },
+    { x: 'April', y: finalNumberOfGaps }
+  ];
+  return monthChartData;
+}
+
+export const TooltipRenderer = (params) => {
+  const { yValue, xValue } = params;
+  return {
+    title: '',
+    content: xValue + ': ' + yValue + ' Gaps'
+  };
+};
+
 export const BooleanRenderer = (params) => {
   if (params.value) {
     return <IconCheckbox color="#4caf50" />;
@@ -126,7 +162,7 @@ export const SrfRenderer = (params) => {
 export const LinkRenderer = (params) => {
   const url = params.data?.url || '';
   return (
-    <Box component={Link} to={url} px={0} sx={(theme) => ({ textDecoration: 'none', color: theme.palette.text.primary })}>
+    <Box component={Link} to={url} px={0} sx={(theme) => ({ textDecoration: 'none', color: '#4d9fda' })}>
       {params.value}
     </Box>
   );

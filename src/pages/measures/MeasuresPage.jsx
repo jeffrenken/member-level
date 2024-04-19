@@ -154,23 +154,45 @@ const MeasuresPage = () => {
         <BarChart measures={measures} />
       </Box> */}
 
-      <Stack direction="row" alignItems="center" justifyContent="space-around" mb={4} px={6} mt={4}>
-        <Stack direction="row" alignItems="center" justifyContent="space-around" spacing={3}>
-          <MeasureCountCard measures={onTrack4} label={'On Track - 4 Stars'} color={green} />
-          <MeasureCountCard measures={onTrack5} label={'On Track - 5 Stars'} color={green} />
-          <MeasureCountCard measures={offTrack} label={'Off Track'} color={red} />
+      <Stack direction="row" alignItems="center" justifyContent="space-around" mb={4} px={0} mt={4}>
+        <Stack direction="row" alignItems="center" justifyContent="space-around" spacing={3} mx={6}>
+          <Stack direction="row" alignItems="center" justifyContent="space-around" spacing={1} pt={8}>
+            <MeasureCountCard measures={onTrack4} label={'On Track - 4 Stars'} color={green} />
+            <MeasureCountCard measures={onTrack5} label={'On Track - 5 Stars'} color={green} />
+            <MeasureCountCard measures={offTrack} label={'Off Track'} color={red} />
+          </Stack>
+          <Box px={0}>
+            <Typography align="center" my={2} ml={2} sx={{ fontSize: '2rem', fontWeight: 600, letterSpacing: '2px' }}>
+              Measure Overview
+            </Typography>
+            <Typography align="left" variant="body1" sx={{ fontWeight: 600 }}>
+              Measure Table
+            </Typography>
+            <Typography align="left" variant="body1">
+              The dashboard displays a comprehensive table of Medicare Stars and Display measures that can be filtered by Contract, Provider
+              Group, and Member Type.
+            </Typography>
+            <Typography align="left" variant="body1" sx={{ fontWeight: 600, mt: 1 }}>
+              Color-Coded Indicators
+            </Typography>
+            <Typography align="left" variant="body1">
+              Each measure is color-coded to show it's performance level: Green: Numerator Red: Denominator
+            </Typography>
+            <Typography align="left" variant="body1" sx={{ fontWeight: 600, mt: 1 }}>
+              Current Scores
+            </Typography>
+            <Typography align="left" variant="body1">
+              All scores shown are the most recent data available, representing actual performance without forecasts.
+            </Typography>
+            <Typography align="left" variant="body1" sx={{ fontWeight: 600, mt: 1 }}>
+              Access Member Details
+            </Typography>
+            <Typography align="left" variant="body1">
+              Click on any measure within the table to view detailed member-level data, providing deeper insights into specific metrics and
+              performance factors.
+            </Typography>
+          </Box>
         </Stack>
-        <Box px={6}>
-          <Typography align="center" my={2} ml={2} sx={{ fontSize: '2rem', fontWeight: 600, letterSpacing: '2px' }}>
-            Measure Overview
-          </Typography>
-          <Typography align="left" my={2} ml={2} variant="body1">
-            Maybe some kind of explanation of what this page shows.khjlksadjfgh lakjdsfh glkjahsdf glkjahfs lkjga lksfjgh lakjsfh glkajs
-            dfhlgkjahfsdlgkjahlsdkfjhalskdjf hlaksjd fhlaksjd fhlakjsdhflj k sjdfh kjshd f<br></br>
-            a;skjfdh glakjsfh vlkjah sfdkvjah sdlfkjv aldskfjvlakjdfs vlakjsdf vlkajsdf hvlkajs dfhvlkja slvkj aslfdkjv aslkdfjv halkjsvh
-            lakjdfshvlkj h
-          </Typography>
-        </Box>
 
         {/* <CardGlow measure={sampleMeasure} colors={[background]} disabled />
         <PieChart2 measure={sampleMeasure} disabled /> */}

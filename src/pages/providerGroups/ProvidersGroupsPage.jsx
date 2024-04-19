@@ -2,10 +2,20 @@ import useMembers from '@/api/useMembers';
 import useProviders from '@/api/useProviders';
 import useProviderGroups from '@/api/useProvidersGroups';
 import AgGrid from '@/components/tables/AgGrid';
-import { GapRenderer, LinkRenderer, RatingRenderer, SrfRenderer, TextRenderer } from '@/components/tables/CellRenderers';
+import {
+  GapRenderer,
+  LinkRenderer,
+  RatingRenderer,
+  SrfRenderer,
+  TextRenderer,
+  TooltipRenderer,
+  getSparklineData
+} from '@/components/tables/CellRenderers';
 import { Box, Container, Typography } from '@mui/material';
 import { useMemo } from 'react';
 import { useParams } from 'react-router-dom';
+import Top from '@/layout/Top';
+import useFilteredMembers from '@/api/useFilteredMembers';
 
 const randomBoolean = () => Math.random() > 0.5;
 const randomIntegerBetween = (min, max) => Math.floor(Math.random() * (max - min + 1) + min);
@@ -14,11 +24,12 @@ const randomHalfNumberBetween = (min, max) => Math.floor(Math.random() * (max - 
 export default function ProviderGroupsPage() {
   const params = useParams();
   const name = decodeURI(params.name);
-  const { data: memberData } = useMembers();
+  const { filteredMembers: memberData } = useFilteredMembers();
   const { data: providerGroupsData } = useProviderGroups();
   const { data: providers } = useProviders();
 
   const rows = useMemo(() => {
+    console.log(providers, memberData);
     if (!providers.length || !memberData.length) {
       return [];
     }
@@ -99,6 +110,26 @@ export default function ProviderGroupsPage() {
       cellRenderer: GapRenderer
     },
     {
+      field: 'chart',
+      headerName: 'Change',
+      cellRenderer: 'agSparklineCellRenderer',
+      cellRendererParams: {
+        sparklineOptions: {
+          xKey: 'x',
+          yKey: 'y',
+          type: 'line',
+          tooltip: {
+            renderer: TooltipRenderer
+          }
+        }
+      },
+      minWidth: 200,
+      valueGetter: (params) => {
+        console.log(params);
+        return getSparklineData(params.data?.numberOfGaps);
+      }
+    },
+    {
       field: 'starRating',
       headerName: 'Star Rating',
       type: 'numericColumn',
@@ -109,11 +140,12 @@ export default function ProviderGroupsPage() {
   ];
 
   return (
-    <Container maxWidth="xl">
-      <Typography variant="h3" mt={3}>
+    <Container maxWidth="lg" sx={{ marginTop: '20px', marginBottom: '20px' }}>
+      <Top filters={['contracts']} />
+      <Typography variant="h2" mt={3}>
         Provider Groups
       </Typography>
-      <Box sx={{ height: 'calc(100vh - 150px)' }}>
+      <Box sx={{ height: 'calc(100vh - 250px)' }}>
         <AgGrid columnDefs={columnDefs} rowData={rows} csvDownload={true} />
       </Box>
     </Container>

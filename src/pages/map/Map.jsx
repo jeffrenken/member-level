@@ -160,10 +160,7 @@ export default function Map() {
 
         //display in popup
         //if (percent) {
-        popup
-          .setLngLat(event.lngLat)
-          .setHTML(`<div class="text-lg font-bold">${name}</div><div>${percent}% in denominator</div>`)
-          .addTo(map.current);
+        popup.setLngLat(event.lngLat).setHTML(`<div class="text-lg font-bold">${name}</div><div>${percent}%</div>`).addTo(map.current);
         //}
       });
 
@@ -311,17 +308,16 @@ export default function Map() {
             <Card p={2} height="100%">
               <Stack direction="column" spacing={2}>
                 <Stack direction="row" justifyContent={'space-between'}>
-                  <Typography
-                    sx={{ fontWeight: 600, fontSize: '1.5rem', textDecoration: 'none', color: '#4d9fda' }}
-                    //component={Link}
-                    to={`/states/${selectedCounty?.stateAbbreviation}/counties/${selectedCounty?.NAME}`}
-                  >
-                    {selectedCounty.NAME} County, {selectedCounty.stateAbbreviation}
-                  </Typography>
-                  <Typography>
-                    {countyFilteredMembers.length} Members <br />
-                    {selectedMeasureOption.measure_name} in denominator
-                  </Typography>
+                  <Box>
+                    <Typography
+                      sx={{ fontWeight: 600, fontSize: '1.5rem', textDecoration: 'none' }}
+                      //component={Link}
+                      to={`/states/${selectedCounty?.stateAbbreviation}/counties/${selectedCounty?.NAME}`}
+                    >
+                      {selectedCounty.NAME} County, {selectedCounty.stateAbbreviation}
+                    </Typography>
+                    <Typography>Open Gaps: {countyFilteredMembers.length}</Typography>
+                  </Box>
                 </Stack>
                 {/* <Box width={200} height={200}>
                   <GaugeChart chartScale={chartScale} chartValue={chartValue} />

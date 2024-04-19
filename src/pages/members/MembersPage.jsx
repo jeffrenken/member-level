@@ -1,6 +1,6 @@
 import AgGrid from '@/components/tables/AgGrid';
 import useMembers from '@/api/useMembers';
-import { Rating, Chip, Container, Box } from '@mui/material';
+import { Rating, Chip, Container, Box, Typography } from '@mui/material';
 import { Link } from 'react-router-dom';
 import {
   BooleanRenderer,
@@ -10,7 +10,9 @@ import {
   RatingRenderer,
   SrfRenderer,
   StarRenderer,
-  TextRenderer
+  TextRenderer,
+  TooltipRenderer,
+  getSparklineData
 } from '@/components/tables/CellRenderers';
 import Top from '@/layout/Top';
 import useFilteredMembers from '@/api/useFilteredMembers';
@@ -113,6 +115,26 @@ export default function MembersPage() {
       cellRenderer: GapRenderer
     },
     {
+      field: 'chart',
+      headerName: 'Change',
+      cellRenderer: 'agSparklineCellRenderer',
+      cellRendererParams: {
+        sparklineOptions: {
+          xKey: 'x',
+          yKey: 'y',
+          type: 'line',
+          tooltip: {
+            renderer: TooltipRenderer
+          }
+        }
+      },
+      minWidth: 200,
+      valueGetter: (params) => {
+        console.log(params);
+        return getSparklineData(params.data.numberOfGaps);
+      }
+    },
+    {
       field: 'memberInfo',
       headerName: 'Member Info',
       children: memberInfoColumns.map((infoColumn) => {
@@ -187,7 +209,8 @@ export default function MembersPage() {
   return (
     <>
       <Container maxWidth="xl" sx={{ mb: 3, mt: 3 }}>
-        <div>Members Page</div>
+        <Top filters={['contracts']} />
+        <Typography variant="h2">All Members</Typography>
         <Box sx={{ height: 'calc(100vh - 200px)' }}>
           <AgGrid
             columnDefs={columnDefs}

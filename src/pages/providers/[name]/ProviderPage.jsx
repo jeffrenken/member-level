@@ -13,9 +13,12 @@ import {
   RatingRenderer,
   SrfRenderer,
   StarRenderer,
-  TextRenderer
+  TextRenderer,
+  TooltipRenderer,
+  getSparklineData
 } from '@/components/tables/CellRenderers';
 import { Box, Container, Rating, Typography } from '@mui/material';
+import { minWidth } from '@mui/system';
 import { useMemo, useRef } from 'react';
 import { Link, useParams } from 'react-router-dom';
 
@@ -139,6 +142,26 @@ export default function ProviderPage() {
       cellRenderer: GapRenderer
     },
     {
+      field: 'chart',
+      headerName: 'Change',
+      cellRenderer: 'agSparklineCellRenderer',
+      cellRendererParams: {
+        sparklineOptions: {
+          xKey: 'x',
+          yKey: 'y',
+          type: 'line',
+          tooltip: {
+            renderer: TooltipRenderer
+          }
+        }
+      },
+      minWidth: 200,
+      valueGetter: (params) => {
+        console.log(params);
+        return getSparklineData(params.data.numberOfGaps);
+      }
+    },
+    {
       field: 'worth',
       headerName: 'Incentive',
       type: 'numericColumn',
@@ -160,19 +183,7 @@ export default function ProviderPage() {
           chartDataType: 'series',
           filter: true,
           cellRenderer: MeasureRenderer,
-          enableRowGroup: true,
-          valueFormatter: ({ value }) => {
-            let gaps = '';
-            if (value === '0') {
-              gaps = 'No Gaps';
-            }
-            if (value === '1') {
-              gaps = 'Has Gaps';
-            }
-            let text = `${measure['Measure Name']} - ${gaps}`;
-
-            return text;
-          }
+          enableRowGroup: true
         };
       })
     },

@@ -6,7 +6,15 @@ import useMembers from '@/api/useMembers';
 import { Link } from 'react-router-dom';
 import Top from '@/layout/Top';
 import { IconStar } from '@tabler/icons-react';
-import { StarRenderer, RatingRenderer, SrfRenderer, LinkRenderer, GapRenderer } from '@/components/tables/CellRenderers';
+import {
+  StarRenderer,
+  RatingRenderer,
+  SrfRenderer,
+  LinkRenderer,
+  GapRenderer,
+  TooltipRenderer,
+  getSparklineData
+} from '@/components/tables/CellRenderers';
 import { useRecoilValue } from 'recoil';
 import { measureFilterState } from '@/state/measureFilterState';
 import { useMemo } from 'react';
@@ -136,6 +144,26 @@ export default function Measure() {
       chartDataType: 'series',
       filter: true,
       cellRenderer: GapRenderer
+    },
+    {
+      field: 'chart',
+      headerName: 'Change',
+      cellRenderer: 'agSparklineCellRenderer',
+      cellRendererParams: {
+        sparklineOptions: {
+          xKey: 'x',
+          yKey: 'y',
+          type: 'line',
+          tooltip: {
+            renderer: TooltipRenderer
+          }
+        }
+      },
+      minWidth: 200,
+      valueGetter: (params) => {
+        console.log(params);
+        return getSparklineData(params.data.numberOfGaps);
+      }
     }
     /*  {
       field: 'starRating',
@@ -167,7 +195,9 @@ export default function Measure() {
           <Typography variant="h1">{measure?.label}</Typography>
           <Typography>{provider?.label}</Typography>
           <Typography>Members in the denominator</Typography>
-          <Typography>{measure?.description}</Typography>
+          <Typography mt={2} width={'60%'}>
+            {measure?.description}
+          </Typography>
           {/*           <Box sx={{ bgcolor: '#3ed', height: 200, width: 600 }}>Month chart</Box>
            */}{' '}
           {/* <Stack direction="row" justifyContent="center" alignItems={'center'}>

@@ -72,6 +72,9 @@ export default function useFilteredMembers() {
   }, [srfData, srfId]);
 
   useEffect(() => {
+    if (!providerGroups) {
+      return;
+    }
     let filtered = providerGroups;
 
     if (provider) {
