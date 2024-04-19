@@ -184,11 +184,11 @@ export const GapRenderer = (params) => {
   const totalGaps = 50;
   let color = '#5EAF52';
   let colorRgba = isDarkMode ? 'rgba(94,175,82,0.15)' : 'rgba(68,145,55,0.25)';
-  if (params.value > 20) {
+  if (params.value > 10) {
     color = isDarkMode ? '#FDF26E' : '#E6C60D';
     colorRgba = isDarkMode ? 'rgba(253,242,110,0.15)' : 'rgba(253,218,13,0.40)';
   }
-  if (params.value > 30) {
+  if (params.value > 20) {
     color = '#CB4E4E';
     colorRgba = isDarkMode ? 'rgba(203,78,78,0.15)' : 'rgba(179,15,15,0.25)';
   }
