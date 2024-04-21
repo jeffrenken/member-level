@@ -89,7 +89,8 @@ export default function Measure() {
         srf: randomBoolean(),
         numberOfGaps: Object.keys(member.memberMeasures).filter((key) => member.memberMeasures[key] === 0).length,
         starRating: randomHalfNumberBetween(0, 10),
-        url: `/members/${member['MEMBER ID']}`
+        url: `/members/${member['MEMBER ID']}`,
+        date: '2024-01-01'
       };
     });
 
@@ -137,34 +138,24 @@ export default function Measure() {
       cellRenderer: SrfRenderer
     },
     {
+      field: 'date',
+      headerName: 'Date',
+      type: 'numericColumn',
+      maxWidth: 160,
+      chartDataType: 'series',
+      filter: true
+      //cellRenderer: SrfRenderer
+    },
+    {
       field: 'numberOfGaps',
-      headerName: 'Gaps',
+      headerName: 'Total Gaps',
       type: 'numericColumn',
       //maxWidth: 180,
       chartDataType: 'series',
       filter: true,
       cellRenderer: GapRenderer
-    },
-    {
-      field: 'chart',
-      headerName: 'Change',
-      cellRenderer: 'agSparklineCellRenderer',
-      cellRendererParams: {
-        sparklineOptions: {
-          xKey: 'x',
-          yKey: 'y',
-          type: 'line',
-          tooltip: {
-            renderer: TooltipRenderer
-          }
-        }
-      },
-      minWidth: 200,
-      valueGetter: (params) => {
-        console.log(params);
-        return getSparklineData(params.data.numberOfGaps);
-      }
     }
+
     /*  {
       field: 'starRating',
       headerName: 'Star Rating',
@@ -194,7 +185,7 @@ export default function Measure() {
         <Box>
           <Typography variant="h1">{measure?.label}</Typography>
           <Typography>{provider?.label}</Typography>
-          <Typography>Members in the denominator</Typography>
+          <Typography>Members with Open Gaps</Typography>
           <Typography mt={2} width={'60%'}>
             {measure?.description}
           </Typography>

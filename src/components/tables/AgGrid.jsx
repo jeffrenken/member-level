@@ -164,22 +164,25 @@ export default function AgGrid({ rowData, columnDefs, sideBar2, csvDownload, sav
 
   return (
     <>
-      <Stack direction="row" spacing={1} p={0} my={1} justifyContent="flex-end">
-        {csvDownload && (
-          <Tooltip title="Download CSV" placement="top">
-            <IconButton color="primary" onClick={exportCsv} aria-label="upload picture" component="label" sx={{ padding: 0 }}>
-              <IconFileTypeCsv style={{ strokeWidth: 1.5 }} />
-            </IconButton>
-          </Tooltip>
-        )}
-        {saveFiltersButton && (
-          <Tooltip title="Save Filters" placement="top">
-            <IconButton color="primary" onClick={exportCsv} aria-label="upload picture" component="label" sx={{ padding: 0 }}>
-              <IconDeviceFloppy style={{ strokeWidth: 1.5 }} />
-            </IconButton>
-          </Tooltip>
-        )}
-      </Stack>
+      {csvDownload ||
+        (saveFiltersButton && (
+          <Stack direction="row" spacing={1} p={0} my={1} justifyContent="flex-end">
+            {csvDownload && (
+              <Tooltip title="Download CSV" placement="top">
+                <IconButton color="primary" onClick={exportCsv} aria-label="upload picture" component="label" sx={{ padding: 0 }}>
+                  <IconFileTypeCsv style={{ strokeWidth: 1.5 }} />
+                </IconButton>
+              </Tooltip>
+            )}
+            {saveFiltersButton && (
+              <Tooltip title="Save Filters" placement="top">
+                <IconButton color="primary" onClick={exportCsv} aria-label="upload picture" component="label" sx={{ padding: 0 }}>
+                  <IconDeviceFloppy style={{ strokeWidth: 1.5 }} />
+                </IconButton>
+              </Tooltip>
+            )}
+          </Stack>
+        ))}
 
       <div
         className={darkMode ? 'ag-theme-quartz-dark' : 'ag-theme-quartz'}

@@ -9,7 +9,7 @@ import { contractFilterState } from '@/state/contractFilterState';
 import { measureFilterState } from '@/state/measureFilterState';
 import { providerFilterState } from '@/state/providerFilterState';
 import { srfFilterState } from '@/state/srfFilterState';
-import { Box, Stack, Typography, useTheme } from '@mui/material';
+import { Box, Grid, Stack, Typography, useTheme } from '@mui/material';
 import mapboxgl from 'mapbox-gl';
 import 'mapbox-gl/dist/mapbox-gl.css';
 import React, { useEffect, useMemo, useRef, useState } from 'react';
@@ -186,9 +186,9 @@ export default function Map() {
   }, []);
 
   const chartScale = [
-    [selectedMeasureOption?.bottom_third_upper_value / 100, '#004400'],
-    [selectedMeasureOption?.middle_third_upper_value / 100, '#00cc00'],
-    [selectedMeasureOption?.top_third_upper_value / 100, '#0000ff']
+    [selectedMeasureOption?.bottom_third_upper_value / 100, theme.palette.cardRed],
+    [selectedMeasureOption?.middle_third_upper_value / 100, theme.palette.cardYellow],
+    [selectedMeasureOption?.top_third_upper_value / 100, theme.palette.cardGreen]
   ];
   const chartValue = 0.77;
 
@@ -306,28 +306,49 @@ export default function Map() {
         {selectedCounty && (
           <Box sx={{ position: 'absolute', top: '20px', right: '16px', zIndex: 1001, width: '46%' }}>
             <Card p={2} height="100%">
-              <Stack direction="column" spacing={2}>
-                <Stack direction="row" justifyContent={'space-between'}>
-                  <Box>
-                    <Typography
-                      sx={{ fontWeight: 600, fontSize: '1.5rem', textDecoration: 'none' }}
-                      //component={Link}
-                      to={`/states/${selectedCounty?.stateAbbreviation}/counties/${selectedCounty?.NAME}`}
-                    >
-                      {selectedCounty.NAME} County, {selectedCounty.stateAbbreviation}
-                    </Typography>
-                    <Typography>Open Gaps: {countyFilteredMembers.length}</Typography>
-                  </Box>
-                </Stack>
-                {/* <Box width={200} height={200}>
-                  <GaugeChart chartScale={chartScale} chartValue={chartValue} />
-                </Box>
-                <Box width={200} height={200}>
-                  <GaugeChart chartScale={chartScale} chartValue={chartValue} />
-                </Box> */}
-              </Stack>
+              <Grid container>
+                <Grid item md={12} lg={4}>
+                  <Stack direction="column" spacing={2}>
+                    <Stack direction="row" justifyContent={'space-between'}>
+                      <Box>
+                        <Typography
+                          sx={{ fontWeight: 600, fontSize: '1.5rem', textDecoration: 'none' }}
+                          //component={Link}
+                          to={`/states/${selectedCounty?.stateAbbreviation}/counties/${selectedCounty?.NAME}`}
+                        >
+                          {selectedCounty.NAME} County, {selectedCounty.stateAbbreviation}
+                        </Typography>
+                        <Typography sx={{ fontSize: '1.1rem' }}>Open Gaps: {countyFilteredMembers.length}</Typography>
+                      </Box>
+                    </Stack>
+                  </Stack>
+                </Grid>
+                <Grid item md={12} lg={8}>
+                  <Stack direction="row" justifyContent={'flex-end'} alignItems={'center'} spacing={3}>
+                    <Box>
+                      <Box minWidth={140} height={100}>
+                        <GaugeChart chartScale={chartScale} chartValue={0.66} />
+                      </Box>
+                      <Typography sx={{ fontSize: '0.7rem', marginTop: '-8px' }} align="center">
+                        Stars Performance
+                      </Typography>
+                    </Box>
+                    <Box>
+                      <Box minWidth={140} height={100}>
+                        <GaugeChart chartScale={chartScale} chartValue={0.99} />
+                      </Box>
+                      <Typography sx={{ fontSize: '0.7rem', marginTop: '-8px' }} align="center">
+                        Health Equity Performance
+                      </Typography>
+                    </Box>
+                    {/* <Typography sx={{ fontSize: '0.7rem', width: '150px' }}>
+                      Some kind of desctiption. Maybe? .Not sure what to do with the space.
+                    </Typography> */}
+                  </Stack>
+                </Grid>
+              </Grid>
               <Box sx={{ height: '290px' }}>
-                {countyFilteredMembers.length && <MembersTable rows={countyFilteredMembers} csvDownload height="250px" />}
+                {countyFilteredMembers.length && <MembersTable rows={countyFilteredMembers} height="290px" />}
               </Box>
             </Card>
           </Box>

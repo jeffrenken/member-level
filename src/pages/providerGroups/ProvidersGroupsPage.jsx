@@ -5,6 +5,7 @@ import AgGrid from '@/components/tables/AgGrid';
 import {
   GapRenderer,
   LinkRenderer,
+  ProviderLinkRenderer,
   RatingRenderer,
   SrfRenderer,
   TextRenderer,
@@ -96,7 +97,7 @@ export default function ProviderGroupsPage() {
       headerName: 'Provider',
       filter: true,
       chartDataType: 'series',
-      cellRenderer: LinkRenderer
+      cellRenderer: ProviderLinkRenderer
       //rowGroup: true,
       //hide: true
     },

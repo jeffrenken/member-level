@@ -49,6 +49,9 @@ export default function themePalette(theme) {
       main: theme.colors?.successMain,
       dark: theme.colors?.successDark
     },
+    cardGreen: '#50CEB2',
+    cardYellow: '#FFC542',
+    cardRed: '#F36959',
     grey: {
       50: theme.colors?.grey50,
       100: theme.colors?.grey100,

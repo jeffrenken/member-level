@@ -50,11 +50,5 @@ export default function MembersTable({ rows, csvDownload, height }) {
     } */
   ];
 
-  return (
-    <div style={{ height: '200px' }}>
-      <AgGrid columnDefs={columnDefs} rowData={members} sideBar={false} csvDownload={csvDownload} height={height} />
-      {/*       <MemoizedAgGrid columnDefs={columnDefs} rowData={members} />
-       */}{' '}
-    </div>
-  );
+  return <AgGrid columnDefs={columnDefs} rowData={members} sideBar={false} csvDownload={csvDownload} height={height} />;
 }

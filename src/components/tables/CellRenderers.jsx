@@ -168,6 +168,30 @@ export const LinkRenderer = (params) => {
   );
 };
 
+export const ProviderLinkRenderer = (params) => {
+  console.log(params.value);
+  if (!params.value) {
+    return undefined;
+  }
+  const url = params.data?.url || '';
+  return (
+    <Box
+      component={Link}
+      to={url}
+      px={0}
+      sx={(theme) => ({
+        backgroundColor: theme.palette.background.paper,
+        padding: '6px 10px',
+        borderRadius: '16px',
+        textDecoration: 'none',
+        color: theme.palette.text.primary
+      })}
+    >
+      {params.value}
+    </Box>
+  );
+};
+
 export const TextRenderer = (params) => {
   return (
     <Box px={1} sx={(theme) => ({ fontWeight: 300, color: theme.palette.text.primary })}>

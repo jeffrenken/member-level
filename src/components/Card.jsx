@@ -7,9 +7,9 @@ export default function Card({ children, height = '100%', style, ...props }) {
     <Box
       height={height}
       sx={(theme) => ({
-        bgcolor: theme.palette.background.semiTransparent,
+        bgcolor: theme.palette.background.semiTransparent2,
         borderRadius: '10px',
-        border: isDarkMode ? '1px solid #2d3748' : '1px solid #e2e8f0',
+        border: theme.palette.border,
         ...style
       })}
       {...props}
