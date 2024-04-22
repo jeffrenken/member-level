@@ -167,18 +167,18 @@ export const ProviderLinkRenderer = (params) => {
   if (!params.value) {
     return undefined;
   }
-  const url = params.data?.url || '';
+  const url = params.data?.providerUrl || '';
   return (
     <Box
       component={Link}
       to={url}
       px={0}
       sx={(theme) => ({
-        backgroundColor: theme.palette.background.paper,
+        backgroundColor: '#0C1C2F',
         padding: '6px 10px',
         borderRadius: '16px',
         textDecoration: 'none',
-        color: theme.palette.text.primary
+        color: '#ddd'
       })}
     >
       {params.value}

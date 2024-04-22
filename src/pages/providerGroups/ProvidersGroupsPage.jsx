@@ -40,7 +40,7 @@ export default function ProviderGroupsPage() {
         providerGroupName: provider['Provider Group'],
         numberOfGaps: memberGaps,
         starRating: randomHalfNumberBetween(0, 10),
-        url: `/providers/${provider.Provider}`
+        providerUrl: `/providers/${provider.Provider}`
       };
     });
   }, [providers, memberData]);

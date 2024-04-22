@@ -192,7 +192,7 @@
   },
   { "Measure Name": "Transitions of Care", "Domain": "HEDIS", "Acronym": "TRC", "status": "stars" },
   {
-    "Measure Name": "Follow-up after Emergency Department Visit for Patients with Multiple Chronic Conditions (FMC) ",
+    "Measure Name": "Follow-up after Emergency Department Visit for Patients with Multiple Chronic Conditions (FMC)",
     "Domain": "HEDIS",
     "Acronym": "FMC",
     "status": "stars"

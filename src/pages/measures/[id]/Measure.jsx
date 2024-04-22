@@ -105,7 +105,7 @@ export default function Measure() {
     },
     {
       field: 'date',
-      headerName: 'Date',
+      headerName: 'Num Date',
       type: 'numericColumn',
       maxWidth: 160,
       chartDataType: 'series',

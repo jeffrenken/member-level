@@ -7,6 +7,7 @@ import {
   GapRenderer,
   LinkRenderer,
   MeasureRenderer,
+  ProviderLinkRenderer,
   RatingRenderer,
   SrfRenderer,
   StarRenderer,
@@ -75,6 +76,7 @@ export default function MembersPage() {
         providerGroupName: member.providerGroup['Provider Group'],
         providerName: member.providerGroup['Provider'],
         url: `/members/${member['MEMBER ID']}`,
+        providerUrl: `/providers/${member.providerGroup['Provider']}`,
         ...member.memberMeasures,
         ...member
       };
@@ -144,7 +146,7 @@ export default function MembersPage() {
       field: 'providerName',
       headerName: 'Provider',
       filter: true,
-      cellRenderer: TextRenderer
+      cellRenderer: ProviderLinkRenderer
     },
     {
       field: 'memberInfo',
