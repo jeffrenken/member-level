@@ -26,12 +26,14 @@ export default function AutocompleteButton({ options, defaultLabel, value, onCha
   const open = Boolean(anchorEl);
   const id = open ? 'simple-popper' : undefined;
 
+  const listOptions = withAllOption ? [{ id: 0, label: withAllOption, value: 0 }, ...options] : options;
+
   React.useEffect(() => {
-    if (value) {
-      const l = options.find((o) => o.id === value);
+    if (value !== undefined && value !== null) {
+      const l = listOptions.find((o) => o.id === value);
       setLabel(l.label);
     }
-  });
+  }, [value]);
 
   return (
     <ClickAwayListener onClickAway={handleClickAway}>
@@ -48,14 +50,7 @@ export default function AutocompleteButton({ options, defaultLabel, value, onCha
         </Button>
         <Popper id={id} open={open} anchorEl={anchorEl} placement="bottom-start" style={{ zIndex: 3 }}>
           <StyledPopperDiv>
-            <AutocompletePopper
-              handleClose={handleClick}
-              setLabel={setLabel}
-              options={options}
-              value={value}
-              onChange={onChange}
-              withAllOption={withAllOption}
-            />
+            <AutocompletePopper handleClose={handleClick} setLabel={setLabel} options={listOptions} value={value} onChange={onChange} />
           </StyledPopperDiv>
         </Popper>
       </div>
@@ -76,7 +71,7 @@ const StyledPopperDiv = styled('div')(
   `
 );
 
-function AutocompletePopper({ options, handleClose, setLabel, value, onChange, withAllOption }) {
+function AutocompletePopper({ options, handleClose, setLabel, value, onChange }) {
   const [inputValue, setInputValue] = React.useState('');
 
   const handleChange = (newValue) => {
@@ -96,11 +91,11 @@ function AutocompletePopper({ options, handleClose, setLabel, value, onChange, w
 
   const { getRootProps, getInputLabelProps, getInputProps, getListboxProps, getOptionProps, groupedOptions, focused } = useAutocomplete({
     id: 'use-autocomplete-demo',
-    options: withAllOption ? [{ id: 0, label: withAllOption, value: 0 }, ...options] : options,
+    options: options,
     getOptionLabel: (option) => option.label,
     autoHighlight: true,
     openOnFocus: true,
-    value: value || null,
+    value: value,
     inputValue: inputValue || '',
     onInputChange: (event, value) => handleInputChange(value),
     onChange: (event, newValue) => handleChange(newValue),

@@ -1,22 +1,18 @@
-import useMembers from '@/api/useMembers';
+import useFilteredMembers from '@/api/useFilteredMembers';
 import useProviders from '@/api/useProviders';
-import useProviderGroups from '@/api/useProvidersGroups';
 import AgGrid from '@/components/tables/AgGrid';
 import {
   GapRenderer,
-  LinkRenderer,
   ProviderLinkRenderer,
   RatingRenderer,
-  SrfRenderer,
   TextRenderer,
   TooltipRenderer,
   getSparklineData
 } from '@/components/tables/CellRenderers';
+import Top from '@/layout/Top';
 import { Box, Container, Typography } from '@mui/material';
 import { useMemo } from 'react';
 import { useParams } from 'react-router-dom';
-import Top from '@/layout/Top';
-import useFilteredMembers from '@/api/useFilteredMembers';
 
 const randomBoolean = () => Math.random() > 0.5;
 const randomIntegerBetween = (min, max) => Math.floor(Math.random() * (max - min + 1) + min);
@@ -24,9 +20,7 @@ const randomHalfNumberBetween = (min, max) => Math.floor(Math.random() * (max - 
 
 export default function ProviderGroupsPage() {
   const params = useParams();
-  const name = decodeURI(params.name);
   const { filteredMembers: memberData } = useFilteredMembers();
-  const { data: providerGroupsData } = useProviderGroups();
   const { data: providers } = useProviders();
 
   const rows = useMemo(() => {
@@ -35,51 +29,21 @@ export default function ProviderGroupsPage() {
       return [];
     }
 
-    return (
-      providers
-        //.filter((member) => member['Contract Entity Name'] === name)
-        .map((provider) => {
-          const providerMembers = memberData.filter((member) => member.providerGroup.Provider === provider.Provider);
-          let memberGaps = 0;
-          providerMembers.forEach((member) => {
-            Object.keys(member.memberMeasures).forEach((key) => {
-              if (member.memberMeasures[key] === 0) {
-                memberGaps++;
-              }
-            });
-          });
-          return {
-            ...provider,
-            providerGroupName: provider['Provider Group'],
-            srf: randomBoolean(),
-            numberOfGaps: memberGaps,
-            starRating: randomHalfNumberBetween(0, 10),
-            url: `/providers/${provider.Provider}`
-          };
-        })
-    );
+    return providers.map((provider) => {
+      const providerMembers = memberData.filter((member) => member.providerGroup.Provider === provider.Provider);
+      let memberGaps = 0;
+      providerMembers.forEach((member) => {
+        memberGaps = memberGaps + member.measuresOpen.length;
+      });
+      return {
+        ...provider,
+        providerGroupName: provider['Provider Group'],
+        numberOfGaps: memberGaps,
+        starRating: randomHalfNumberBetween(0, 10),
+        url: `/providers/${provider.Provider}`
+      };
+    });
   }, [providers, memberData]);
-
-  const members = useMemo(() => {
-    if (!memberData) {
-      return [];
-    }
-    return (
-      memberData
-        //.filter((member) => member['Contract Entity Name'] === name)
-        .map((member) => {
-          return {
-            ...member,
-            providerGroupName: member.providerGroup['Provider Group'],
-            providerName: member.providerGroup.Provider,
-            srf: randomBoolean(),
-            numberOfGaps: randomIntegerBetween(0, 50),
-            starRating: randomHalfNumberBetween(0, 10),
-            url: `/providers/${member.providerGroup.Provider}`
-          };
-        })
-    );
-  }, [providerGroupsData]);
 
   const columnDefs = [
     {
@@ -90,8 +54,9 @@ export default function ProviderGroupsPage() {
       maxWidth: 200,
       cellRenderer: TextRenderer,
       rowGroup: true,
-      hide: true
+      hide: false
     },
+
     {
       field: 'Provider',
       headerName: 'Provider',
@@ -147,7 +112,7 @@ export default function ProviderGroupsPage() {
         Provider Groups
       </Typography>
       <Box sx={{ height: 'calc(100vh - 250px)' }}>
-        <AgGrid columnDefs={columnDefs} rowData={rows} csvDownload={true} />
+        <AgGrid columnDefs={columnDefs} rowData={rows} csvDownload={true} groupDisplayType="groupRows" />
       </Box>
     </Container>
   );

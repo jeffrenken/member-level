@@ -73,7 +73,7 @@ export default function MembersPage() {
         lastName: member['LAST NAME'],
         id: member['MEMBER ID'],
         srfCell: Object.keys(member.srf).length > 2 ? 'true' : 'false',
-        numberOfGaps: Object.keys(member.memberMeasures).filter((key) => member.memberMeasures[key] === 0).length,
+        numberOfGaps: member.numberOfGaps,
         starRating: randomHalfNumberBetween(0, 10),
         url: `/members/${member['MEMBER ID']}`,
         ...member.memberMeasures,
@@ -130,7 +130,6 @@ export default function MembersPage() {
       },
       minWidth: 200,
       valueGetter: (params) => {
-        console.log(params);
         return getSparklineData(params.data.numberOfGaps);
       }
     },

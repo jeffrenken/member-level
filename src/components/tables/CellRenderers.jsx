@@ -1,5 +1,6 @@
 import useMeasures from '@/api/useMeasures';
 import { Box, Rating, useTheme } from '@mui/material';
+import { fontSize } from '@mui/system';
 import { IconCheck, IconCheckbox, IconStar, IconX, IconUserHeart } from '@tabler/icons-react';
 import { Link } from 'react-router-dom';
 
@@ -56,25 +57,19 @@ export const MeasureRenderer = (params) => {
     return undefined;
   }
   if (params.value) {
-    return <IconCheck color="#4caf50" />;
+    return (
+      <Box pt={0.5}>
+        <IconCheck color="#4caf50" />
+      </Box>
+    );
   }
 
-  return <IconX color="#f44336" />;
+  return (
+    <Box pt={0.5}>
+      <IconX color="#f44336" />
+    </Box>
+  );
 };
-
-const icon = (
-  <svg
-    xmlns="http://www.w3.org/2000/svg"
-    width="24"
-    height="24"
-    viewBox="0 0 24 24"
-    fill="currentColor"
-    class="icon icon-tabler icons-tabler-filled icon-tabler-star"
-  >
-    <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-    <path d="M8.243 7.34l-6.38 .925l-.113 .023a1 1 0 0 0 -.44 1.684l4.622 4.499l-1.09 6.355l-.013 .11a1 1 0 0 0 1.464 .944l5.706 -3l5.693 3l.1 .046a1 1 0 0 0 1.352 -1.1l-1.091 -6.355l4.624 -4.5l.078 -.085a1 1 0 0 0 -.633 -1.62l-6.38 -.926l-2.852 -5.78a1 1 0 0 0 -1.794 0l-2.853 5.78z" />
-  </svg>
-);
 
 export const RatingRenderer = (params) => {
   const theme = useTheme();
@@ -132,7 +127,7 @@ export const SrfRenderer = (params) => {
   const greenGradient = isDarkMode
     ? 'linear-gradient(90deg, rgba(237,235,235,0) 35%, rgba(94,175,82,0.15) 85%)'
     : 'linear-gradient(90deg, rgba(237,235,235,0) 35%, rgba(68,145,55,0.20) 85%)';
-  if (params.value && params.value.toString() === 'false') {
+  if (!params.value) {
     return (
       <Box
         sx={{
@@ -169,7 +164,6 @@ export const LinkRenderer = (params) => {
 };
 
 export const ProviderLinkRenderer = (params) => {
-  console.log(params.value);
   if (!params.value) {
     return undefined;
   }
@@ -205,16 +199,22 @@ export const GapRenderer = (params) => {
   const theme = useTheme();
   const isDarkMode = theme.palette.mode === 'dark';
 
-  const totalGaps = 50;
+  const totalGaps = 50; //just for halfway gradient
   let color = '#5EAF52';
-  let colorRgba = isDarkMode ? 'rgba(94,175,82,0.15)' : 'rgba(68,145,55,0.25)';
+  //let color = theme.palette.cardGreen;
+  let colorRgba = isDarkMode ? 'rgba(94,175,82,0.25)' : 'rgba(68,145,55,0.35)';
+  //let colorRgba = isDarkMode ? 'rgba(80,206,178,0.25)' : 'rgba(80,206,178,0.40)';
   if (params.value > 10) {
-    color = isDarkMode ? '#FDF26E' : '#E6C60D';
-    colorRgba = isDarkMode ? 'rgba(253,242,110,0.15)' : 'rgba(253,218,13,0.40)';
+    //color = isDarkMode ? '#FDF26E' : '#E6C60D';
+    color = theme.palette.cardYellow;
+    //colorRgba = isDarkMode ? 'rgba(253,242,110,0.15)' : 'rgba(253,218,13,0.40)';
+    colorRgba = isDarkMode ? 'rgba(255,197,66,0.35)' : 'rgba(255,197,66,0.40)';
   }
   if (params.value > 20) {
-    color = '#CB4E4E';
-    colorRgba = isDarkMode ? 'rgba(203,78,78,0.15)' : 'rgba(179,15,15,0.25)';
+    //color = '#CB4E4E';
+    color = theme.palette.cardRed;
+    //colorRgba = isDarkMode ? 'rgba(203,78,78,0.15)' : 'rgba(179,15,15,0.25)';
+    colorRgba = isDarkMode ? 'rgba(243,105,89,0.25)' : 'rgba(243,105,89,0.40)';
   }
 
   let gradient = `linear-gradient(90deg, ${colorRgba} 10%, rgba(237,235,235,0) ${totalGaps + params.value - 10}%)`;
@@ -228,6 +228,7 @@ export const GapRenderer = (params) => {
       style={{
         textDecoration: 'none',
         fontWeight: 400,
+        fontSize: '1rem',
         //filter: `drop-shadow(0px 0px 4px ${color})`,
         color: color,
         //background: `linear-gradient(90deg, rgba(237,235,235,0) ${totalGaps - params.value + 0}%, ${colorRgba} 85%)`

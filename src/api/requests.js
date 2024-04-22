@@ -13,13 +13,22 @@ const providerGroups = providerGroupsData.map((p, i) => ({ ...p, id: i + 1 }));
 //just assuming names are unique for testing
 const distinctProviders = providerGroupsData.filter((value, index, self) => index === self.findIndex((t) => t.Provider === value.Provider));
 
-const members = memberData.map((member, i) => ({
-  ...member,
-  id: member['MEMBER ID'],
-  providerGroup: providerGroups.find((p) => p['MEMBER ID'] === member['MEMBER ID']),
-  memberMeasures: memberMeasures.find((m) => m['MEMBER ID'] === member['MEMBER ID']),
-  srf: srfData.find((s) => s['MEMBER ID'] === member['MEMBER ID'])
-}));
+const members = memberData.map((member, i) => {
+  const measures = memberMeasures.find((m) => m['MEMBER ID'] === member['MEMBER ID']);
+  const numberOfGaps = Object.keys(measures).filter((key) => measures[key] === 0).length;
+
+  return {
+    ...member,
+    id: member['MEMBER ID'],
+    providerGroup: providerGroups.find((p) => p['MEMBER ID'] === member['MEMBER ID']),
+    memberMeasures: measures,
+    srf: srfData.find((s) => s['MEMBER ID'] === member['MEMBER ID']),
+    isSrf: Object.keys(srfData.find((s) => s['MEMBER ID'] === member['MEMBER ID'])).length > 2,
+    numberOfGaps: numberOfGaps,
+    measuresOpen: Object.keys(measures).filter((key) => measures[key] === 0),
+    measuresClosed: Object.keys(measures).filter((key) => measures[key] === 1)
+  };
+});
 
 const fakeMeasures = measures.map((measure, i) => ({
   ...measure,

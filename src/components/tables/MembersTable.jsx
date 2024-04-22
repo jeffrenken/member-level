@@ -15,8 +15,8 @@ export default function MembersTable({ rows, csvDownload, height }) {
     return {
       name: member['FIRST NAME'] + ' ' + member['LAST NAME'],
       id: member['MEMBER ID'],
-      srf: randomBoolean(),
-      numberOfGaps: randomIntegerBetween(0, 50),
+      srf: member.isSrf,
+      numberOfGaps: member.numberOfGaps,
       starRating: randomHalfNumberBetween(0, 10),
       url: `/members/${member['MEMBER ID']}`
     };

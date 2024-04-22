@@ -1,32 +1,14 @@
-import useMeasures from '@/api/useMeasures';
-import { Container, Typography, Rating, Box, Stack, useTheme, Divider } from '@mui/material';
-import { useParams } from 'react-router-dom';
-import AgGrid from '@/components/tables/AgGrid';
-import useMembers from '@/api/useMembers';
-import { Link } from 'react-router-dom';
-import Top from '@/layout/Top';
-import { IconStar } from '@tabler/icons-react';
-import {
-  StarRenderer,
-  RatingRenderer,
-  SrfRenderer,
-  LinkRenderer,
-  GapRenderer,
-  TooltipRenderer,
-  getSparklineData
-} from '@/components/tables/CellRenderers';
-import { useRecoilValue } from 'recoil';
-import { measureFilterState } from '@/state/measureFilterState';
-import { useMemo } from 'react';
-import { providerFilterState } from '@/state/providerFilterState';
-import { contractFilterState } from '@/state/contractFilterState';
-import useProviders from '@/api/useProvidersGroups';
-import useContracts from '@/api/useContracts';
-import CardGlow from '@/components/cards/card-glow/CardGlow';
-import PieChart2 from '@/components/charts/TestPie2';
-import useMemberMeasures from '@/api/useMemberMeasures';
-import useProviderGroups from '@/api/useProvidersGroups';
 import useFilteredMembers from '@/api/useFilteredMembers';
+import useMeasures from '@/api/useMeasures';
+import PieChart2 from '@/components/charts/TestPie2';
+import AgGrid from '@/components/tables/AgGrid';
+import { GapRenderer, LinkRenderer, SrfRenderer } from '@/components/tables/CellRenderers';
+import Top from '@/layout/Top';
+import { measureFilterState } from '@/state/measureFilterState';
+import { Box, Container, Stack, Typography, useTheme } from '@mui/material';
+import { useMemo, useState } from 'react';
+import { useParams } from 'react-router-dom';
+import { useRecoilValue } from 'recoil';
 import GaugeChart from '@/components/charts/GaugeChart';
 
 const randomBoolean = () => Math.random() > 0.5;
@@ -39,33 +21,9 @@ export default function Measure() {
   const id = parseInt(params.id);
   const { data: measures, isLoading } = useMeasures();
   const measureFilterId = useRecoilValue(measureFilterState);
-  const providerId = useRecoilValue(providerFilterState);
-  const contractId = useRecoilValue(contractFilterState);
   const measureId = measureFilterId || id;
-  const { data } = useMembers();
-  const { data: providers } = useProviders();
-  const { data: contracts } = useContracts();
-  const { data: memberMeasures } = useMemberMeasures();
-  const { data: providerGroups } = useProviderGroups();
+  const [chartData, setChartData] = useState({});
   const { filteredMembers } = useFilteredMembers();
-
-  const contract = useMemo(() => {
-    if (!contracts) {
-      return null;
-    }
-    return contracts.find((contract) => {
-      return contract.id === contractId;
-    });
-  }, [contracts, contractId]);
-
-  const provider = useMemo(() => {
-    if (!providers) {
-      return null;
-    }
-    return providers.find((provider) => {
-      return provider.id === providerId;
-    });
-  }, [providers, providerId]);
 
   const measure = useMemo(() => {
     if (!measures) {
@@ -86,32 +44,40 @@ export default function Measure() {
         ...member,
         name: member['FIRST NAME'] + ' ' + member['LAST NAME'],
         id: member['MEMBER ID'],
-        srf: randomBoolean(),
-        numberOfGaps: Object.keys(member.memberMeasures).filter((key) => member.memberMeasures[key] === 0).length,
-        starRating: randomHalfNumberBetween(0, 10),
+        srf: member.isSrf,
+        numberOfGaps: member.measuresOpen.length,
         url: `/members/${member['MEMBER ID']}`,
         date: '2024-01-01'
       };
     });
 
-    /* if (contract) {
-      don't have a way to associate a contract with a member now
-      return m.filter((member) => member['Contract Name'] === contract.label);
-    } */
     let splitMembers = {};
     splitMembers.all = m;
-    splitMembers.numerator = m.filter((d) => d.memberMeasures[measure['Measure Name']] === 1);
-    splitMembers.denominator = m.filter((d) => d.memberMeasures[measure['Measure Name']] === 0);
+
+    splitMembers.numerator = m.filter((member) => member?.measuresClosed.includes(measure['Measure Name']));
+    splitMembers.denominator = m.filter((member) => member?.measuresOpen.includes(measure['Measure Name']));
+
+    const chartScale = [
+      [measure?.bottom_third_upper_value / 100, '#d27e6f'],
+      [measure?.middle_third_upper_value / 100, '#dcb05c'],
+      [measure?.top_third_upper_value / 100, '#a1d99e']
+    ];
+    const starsValue = splitMembers.numerator.length / (splitMembers.denominator.length + splitMembers.numerator.length);
+    const heiValue = starsValue * 0.4;
+    setChartData({
+      scale: chartScale,
+      starsVale: starsValue,
+      heiValue: heiValue
+    });
 
     return splitMembers;
-  }, [data, measure, provider, contract, filteredMembers]);
+  }, [measure, filteredMembers]);
 
   const measureWithData = useMemo(() => {
     if (!measure || !members) {
       return null;
     }
     let measureCopy = { ...measure };
-
     measureCopy.numerator = members.numerator.length;
     measureCopy.denominator = members.denominator.length + members.numerator.length;
     measureCopy.forecast = 'N/A';
@@ -155,58 +121,48 @@ export default function Measure() {
       filter: true,
       cellRenderer: GapRenderer
     }
-
-    /*  {
-      field: 'starRating',
-      headerName: 'Star Rating',
-      type: 'numericColumn',
-      //maxWidth: 180,
-      chartDataType: 'series',
-      filter: true,
-      cellRenderer: RatingRenderer
-    } */
   ];
 
   if (isLoading || !members) {
     return <div>Loading...</div>;
   }
 
-  const chartScale = [
-    [measure?.bottom_third_upper_value / 100, '#d27e6f'],
-    [measure?.middle_third_upper_value / 100, '#dcb05c'],
-    [measure?.top_third_upper_value / 100, '#a1d99e']
-  ];
-  const chartValue = 0.2;
+  console.log(chartData);
 
   return (
     <Container maxWidth="lg" sx={{ marginTop: '20px', marginBottom: '20px' }}>
       <Top filters={['providers', 'contracts', 'measures']} />
-      <Stack direction="row" justifyContent="space-around" alignItems={'center'}>
+      <Stack direction="row" justifyContent="space-around" alignItems={'center'} spacing={4}>
         <Box>
           <Typography variant="h1">{measure?.label}</Typography>
-          <Typography>{provider?.label}</Typography>
           <Typography>Members with Open Gaps</Typography>
-          <Typography mt={2} width={'60%'}>
-            {measure?.description}
-          </Typography>
-          {/*           <Box sx={{ bgcolor: '#3ed', height: 200, width: 600 }}>Month chart</Box>
-           */}{' '}
-          {/* <Stack direction="row" justifyContent="center" alignItems={'center'}>
-            <Box sx={{ minWidth: 200, height: 200 }}>
-              <GaugeChart chartScale={chartScale} chartValue={0.68} />
-            </Box>
-
-            <Box sx={{ minWidth: 200, height: 150 }}>
-              <GaugeChart chartScale={chartScale} chartValue={chartValue} />
-            </Box>
-          </Stack> */}
+          <Typography mt={2}>{measure?.description}</Typography>
         </Box>
+        <Stack direction="row" justifyContent={'flex-end'} alignItems={'center'} spacing={3} pr={2}>
+          <Box>
+            <Box minWidth={170} height={120}>
+              <GaugeChart chartScale={chartData.scale} chartValue={chartData.starsVale} />
+            </Box>
+            <Typography sx={{ fontSize: '0.7rem', marginTop: '-8px' }} align="center">
+              Stars Performance
+            </Typography>
+          </Box>
+          <Box>
+            <Box minWidth={170} height={120}>
+              <GaugeChart chartScale={chartData.scale} chartValue={chartData.heiValue} />
+            </Box>
+            <Typography sx={{ fontSize: '0.7rem', marginTop: '-8px' }} align="center">
+              Health Equity Performance
+            </Typography>
+          </Box>
+        </Stack>
         <Box>{measureWithData && <PieChart2 measure={measureWithData} disabled />}</Box>
         {/*         <CardGlow measure={measureWithData} colors={[background]} disabled />}</Box>
          */}{' '}
       </Stack>
+      <Box mt={3} />
 
-      <AgGrid columnDefs={columnDefs} rowData={members?.denominator} csvDownload saveFiltersButton height={'calc(100vh - 350px)'} />
+      <AgGrid columnDefs={columnDefs} rowData={members?.denominator} csvDownload saveFiltersButton height={'calc(100vh - 370px)'} />
     </Container>
   );
 }

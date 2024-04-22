@@ -59,12 +59,13 @@ export default function Map() {
   const [selectedCounty, setSelectedCounty] = useState(null);
   const [countyFilteredMembers, setCountyFilteredMembers] = useState([]);
   const [clickedCounty, setClickedCounty] = useState(null);
-  const [measureState, setMeasureState] = useState(null);
+  const [measureState, setMeasureState] = useState();
   const [contractState, setContractState] = useRecoilState(contractFilterState);
   const [providerState, setProviderState] = useRecoilState(providerFilterState);
   const [allMembersInDenom, setAllMembersInDenom] = useState([]);
   const [srfState, setSrfState] = useRecoilState(srfFilterState);
   const [mapReady, setMapReady] = useState(false);
+  const [chartData, setChartData] = useState({});
   const { filteredMembers } = useFilteredMembers();
 
   const style = darkMode ? 'mapbox://styles/mapbox/dark-v11' : 'mapbox://styles/mapbox/light-v11';
@@ -182,6 +183,7 @@ export default function Map() {
   }
 
   useEffect(() => {
+    handleMeasureChange(0);
     setupMap();
   }, []);
 
@@ -193,7 +195,7 @@ export default function Map() {
   const chartValue = 0.77;
 
   useMemo(() => {
-    if (!filteredMembers.length || !mapReady || !map.current || !selectedMeasureOption) {
+    if (!filteredMembers.length || !mapReady || !map.current) {
       return;
     }
 
@@ -202,6 +204,22 @@ export default function Map() {
 
     if (selectedMeasure) {
       membersInDenom = filteredMembers.filter((member) => member.memberMeasures[selectedMeasure['Measure Name']] === 0);
+
+      const chartScale = [
+        [selectedMeasure?.bottom_third_upper_value / 100, '#d27e6f'],
+        [selectedMeasure?.middle_third_upper_value / 100, '#dcb05c'],
+        [selectedMeasure?.top_third_upper_value / 100, '#a1d99e']
+      ];
+      const starsValue = membersInDenom.length / (filteredMembers.length + membersInDenom.length);
+      const heiValue = starsValue * 0.4;
+      setChartData({
+        scale: chartScale,
+        starsVale: starsValue,
+        heiValue: heiValue
+      });
+    } else {
+      //members with any open
+      membersInDenom = filteredMembers.filter((member) => member.measuresOpen.length);
     }
     setAllMembersInDenom(membersInDenom);
 
@@ -274,7 +292,7 @@ export default function Map() {
       );
       setCountyFilteredMembers(membersInCountyDenom);
     }
-  }, [clickedCounty]);
+  }, [clickedCounty, allMembersInDenom]);
 
   const handleMeasureChange = (value) => {
     setMeasureState(value);
@@ -296,7 +314,13 @@ export default function Map() {
                     onChange={setContractState}
                     width={90}
                   />
-                  <AutocompleteButton defaultLabel="Measures" options={measures} value={measureState} onChange={handleMeasureChange} />
+                  <AutocompleteButton
+                    defaultLabel="Measures"
+                    options={measures}
+                    value={measureState}
+                    onChange={handleMeasureChange}
+                    withAllOption="All Measures"
+                  />
                   <AutocompleteButton defaultLabel="SRF" options={srf} value={srfState} onChange={setSrfState} />
                 </>
               )}
@@ -326,24 +350,29 @@ export default function Map() {
                 <Grid item md={12} lg={8}>
                   <Stack direction="row" justifyContent={'flex-end'} alignItems={'center'} spacing={3}>
                     <Box>
-                      <Box minWidth={140} height={100}>
-                        <GaugeChart chartScale={chartScale} chartValue={0.66} />
-                      </Box>
-                      <Typography sx={{ fontSize: '0.7rem', marginTop: '-8px' }} align="center">
-                        Stars Performance
-                      </Typography>
+                      {selectedMeasureOption && (
+                        <>
+                          <Box minWidth={140} height={100}>
+                            <GaugeChart chartScale={chartData.scale} chartValue={chartData.starsVale} />
+                          </Box>
+                          <Typography sx={{ fontSize: '0.7rem', marginTop: '-8px' }} align="center">
+                            Stars Performance
+                          </Typography>
+                        </>
+                      )}
                     </Box>
                     <Box>
-                      <Box minWidth={140} height={100}>
-                        <GaugeChart chartScale={chartScale} chartValue={0.99} />
-                      </Box>
-                      <Typography sx={{ fontSize: '0.7rem', marginTop: '-8px' }} align="center">
-                        Health Equity Performance
-                      </Typography>
+                      {selectedMeasureOption && (
+                        <>
+                          <Box minWidth={140} height={100}>
+                            <GaugeChart chartScale={chartData.scale} chartValue={chartData.heiValue} />
+                          </Box>
+                          <Typography sx={{ fontSize: '0.7rem', marginTop: '-8px' }} align="center">
+                            Health Equity Performance
+                          </Typography>
+                        </>
+                      )}
                     </Box>
-                    {/* <Typography sx={{ fontSize: '0.7rem', width: '150px' }}>
-                      Some kind of desctiption. Maybe? .Not sure what to do with the space.
-                    </Typography> */}
                   </Stack>
                 </Grid>
               </Grid>

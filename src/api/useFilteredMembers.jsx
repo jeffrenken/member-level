@@ -95,11 +95,11 @@ export default function useFilteredMembers() {
       if (srf) {
         if (srf.label === 'SRF Only') {
           //shitty way to know if they have an srf category
-          filtered = filtered.filter((d) => Object.keys(d.srf).length > 2);
+          filtered = filtered.filter((d) => d.isSrf);
         }
         if (srf.label === 'Non-SRF Only') {
           //shitty way to know if they have an srf category
-          filtered = filtered.filter((d) => Object.keys(d.srf).length === 2);
+          filtered = filtered.filter((d) => !d.isSrf);
         }
         //filtered = filtered.filter((d) => d['SRF Score'] === srf.label);
       }
