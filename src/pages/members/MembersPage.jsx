@@ -91,8 +91,8 @@ export default function MembersPage() {
       filter: true,
       chartDataType: 'category',
       headerCheckboxSelection: true,
-      checkboxSelection: true,
-      cellRenderer: LinkRenderer
+      checkboxSelection: true
+      //cellRenderer: LinkRenderer,
     },
     {
       field: 'lastName',
@@ -137,16 +137,16 @@ export default function MembersPage() {
       }
     },
     {
-      field: 'providerGroupName',
-      headerName: 'Provider Group',
-      filter: true,
-      cellRenderer: TextRenderer
-    },
-    {
       field: 'providerName',
       headerName: 'Provider',
       filter: true,
       cellRenderer: ProviderLinkRenderer
+    },
+    {
+      field: 'providerGroupName',
+      headerName: 'Provider Group',
+      filter: true,
+      cellRenderer: TextRenderer
     },
     {
       field: 'memberInfo',

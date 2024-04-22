@@ -377,7 +377,7 @@ export default function Map() {
                 </Grid>
               </Grid>
               <Box sx={{ height: '290px' }}>
-                {countyFilteredMembers.length && <MembersTable rows={countyFilteredMembers} height="290px" />}
+                {countyFilteredMembers.length && <MembersTable rows={countyFilteredMembers} height="290px" csvDownload />}
               </Box>
             </Card>
           </Box>

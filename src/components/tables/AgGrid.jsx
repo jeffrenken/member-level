@@ -1,24 +1,10 @@
-import {
-  Box,
-  Button,
-  Checkbox,
-  FormControl,
-  FormControlLabel,
-  IconButton,
-  InputLabel,
-  MenuItem,
-  Select,
-  Stack,
-  Tooltip,
-  useTheme
-} from '@mui/material';
+import { IconButton, Stack, Tooltip, useTheme } from '@mui/material';
+import { IconDeviceFloppy, IconFileTypeCsv } from '@tabler/icons-react';
 import 'ag-grid-charts-enterprise';
 import 'ag-grid-community/styles/ag-grid.css';
 import 'ag-grid-community/styles/ag-theme-quartz.css';
 import { AgGridReact } from 'ag-grid-react';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import { getData } from './data.js';
-import { IconDeviceFloppy, IconFileCv, IconFileTypeCsv } from '@tabler/icons-react';
 //import './ag-grid.css';
 
 export default function AgGrid({ rowData, columnDefs, sideBar2, csvDownload, saveFiltersButton, height = '100%', ...props }) {
@@ -106,6 +92,14 @@ export default function AgGrid({ rowData, columnDefs, sideBar2, csvDownload, sav
           .then((resp) => resp.json())
           .then((data) => setRowData(data)); */
   }, []);
+
+  function processCell(cell) {
+    var cellVal = cell.value;
+    if (cell?.column?.colDef?.cellRenderer) {
+      cellVal = cell.column.colDef.cellRenderer({ value: cell.value });
+    }
+    return cellVal;
+  }
 
   const exportCsv = useCallback(() => {
     gridRef.current.api.exportDataAsCsv();
@@ -197,7 +191,17 @@ export default function AgGrid({ rowData, columnDefs, sideBar2, csvDownload, sav
           rowMultiSelectWithClick={true}
           onGridReady={onGridReady}
           enableCharts
-          defaultCsvExportParams={{ onlySelected: true }}
+          defaultCsvExportParams={{
+            fileName: 'member-level-export',
+            processCellCallback: (cell) => {
+              return cell.value;
+              var cellVal = cell.value;
+              if (cell?.column?.colDef?.cellRenderer) {
+                cellVal = cell.column.colDef.cellRenderer({ value: cell.value });
+              }
+              return cellVal;
+            }
+          }}
           getContextMenuItems={getContextMenuItems}
           //suppressContextMenu
           sideBar={sideBar}
