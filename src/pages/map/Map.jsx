@@ -1,28 +1,24 @@
 import useContracts from '@/api/useContracts';
+import useFilteredMembers from '@/api/useFilteredMembers';
 import useMeasures from '@/api/useMeasures';
 import useProviders from '@/api/useProvidersGroups';
 import useSrf from '@/api/useSrf';
 import AutocompleteButton from '@/components/Autocomplete';
 import Card from '@/components/Card';
+import GaugeChart from '@/components/charts/GaugeChart';
 import MembersTable from '@/components/tables/MembersTable';
 import { contractFilterState } from '@/state/contractFilterState';
-import { measureFilterState } from '@/state/measureFilterState';
 import { providerFilterState } from '@/state/providerFilterState';
 import { srfFilterState } from '@/state/srfFilterState';
 import { Box, Grid, Stack, Typography, useTheme } from '@mui/material';
 import mapboxgl from 'mapbox-gl';
 import 'mapbox-gl/dist/mapbox-gl.css';
-import React, { useEffect, useMemo, useRef, useState } from 'react';
-import { Link, useSearchParams } from 'react-router-dom';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { useRecoilState } from 'recoil';
-import s from '../../../fakeData/gz_2010_us_040_00_500k.json';
 import countiesData from '../../../fakeData/gz_2010_us_050_00_5m.json';
-import memberData from '../../../fakeData/member_data.json';
+import memberData from '../../../data/members.json';
 import stateToNumber from '../../../fakeData/stateToNumber.json';
 import statesBoundingBoxes from '../../../fakeData/statesBoundingBoxes.json';
-import useFilteredMembers from '@/api/useFilteredMembers';
-import { PieChart, Pie, Sector, Cell, ResponsiveContainer } from 'recharts';
-import GaugeChart from '@/components/charts/GaugeChart';
 
 /* const st = s.features.map((item) => {
   let statePet = pets.find((pet) => pet.state === item.properties.NAME);
@@ -377,7 +373,7 @@ export default function Map() {
                 </Grid>
               </Grid>
               <Box sx={{ height: '290px' }}>
-                {countyFilteredMembers.length && <MembersTable rows={countyFilteredMembers} height="290px" csvDownload />}
+                {countyFilteredMembers.length && <MembersTable rows={countyFilteredMembers} height="265px" csvDownload />}
               </Box>
             </Card>
           </Box>

@@ -12,7 +12,6 @@ const chartScaleFake = [
 
 export default function GaugeChart({ chartScale, chartValue }) {
   const theme = useTheme();
-  console.log(chartScale, chartValue);
   const option = {
     series: [
       {
@@ -224,8 +223,6 @@ export default function GaugeChart({ chartScale, chartValue }) {
     ]
   };
 
-  console.log(chartScale);
-
   const option3 = {
     grid: { bottom: '90px' },
     series: [
@@ -291,12 +288,9 @@ export default function GaugeChart({ chartScale, chartValue }) {
           distance: -16,
           rotate: 'tangential',
           formatter: function (value, index) {
-            console.log(value);
             if (value / 100 < chartScale[0][0]) {
-              console.log('A', value);
               return 'A';
             } else if (value / 100 < chartScale[1][0]) {
-              console.log('B', value);
               return 'B';
             }
             return 'C';
