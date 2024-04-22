@@ -24,10 +24,7 @@ const randomIntegerBetween = (min, max) => Math.floor(Math.random() * (max - min
 const randomHalfNumberBetween = (min, max) => Math.floor(Math.random() * (max - min + 1) + min) / 2;
 
 const memberInfoColumns = [
-  'CONTRACT',
   'MEMBER ID',
-  'DATE OF BIRTH',
-  'ADDRESS',
   'CITY',
   'COUNTY',
   'STATE',
@@ -75,12 +72,16 @@ export default function MembersPage() {
         srfCell: Object.keys(member.srf).length > 2 ? 'true' : 'false',
         numberOfGaps: member.numberOfGaps,
         starRating: randomHalfNumberBetween(0, 10),
+        providerGroupName: member.providerGroup['Provider Group'],
+        providerName: member.providerGroup['Provider'],
         url: `/members/${member['MEMBER ID']}`,
         ...member.memberMeasures,
         ...member
       };
     });
   }, [filteredMembers]);
+
+  console.log(members);
 
   const columnDefs = [
     {
@@ -132,6 +133,18 @@ export default function MembersPage() {
       valueGetter: (params) => {
         return getSparklineData(params.data.numberOfGaps);
       }
+    },
+    {
+      field: 'providerGroupName',
+      headerName: 'Provider Group',
+      filter: true,
+      cellRenderer: TextRenderer
+    },
+    {
+      field: 'providerName',
+      headerName: 'Provider',
+      filter: true,
+      cellRenderer: TextRenderer
     },
     {
       field: 'memberInfo',

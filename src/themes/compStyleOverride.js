@@ -221,7 +221,6 @@ export default function componentStyleOverrides(theme) {
     MuiTooltip: {
       styleOverrides: {
         tooltip: {
-          color: theme.paper,
           background: theme.colors?.grey700
         }
       }
