@@ -83,16 +83,14 @@ export default function MembersPage() {
     });
   }, [filteredMembers]);
 
-  console.log(members);
-
   const columnDefs = [
     {
       field: 'firstName',
       filter: true,
       chartDataType: 'category',
       headerCheckboxSelection: true,
-      checkboxSelection: true
-      //cellRenderer: LinkRenderer,
+      checkboxSelection: true,
+      cellRenderer: LinkRenderer
     },
     {
       field: 'lastName',

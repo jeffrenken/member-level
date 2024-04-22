@@ -47,7 +47,7 @@ export default function Member() {
   }, [member, measuresData]);
 
   const columnDefs = [
-    { field: 'label', filter: true, chartDataType: 'category', maxWidth: 500, cellRenderer: TextRenderer },
+    { field: 'label', headerName: 'Measure', filter: true, chartDataType: 'category', maxWidth: 500, cellRenderer: TextRenderer },
     {
       field: 'value',
       headerName: 'Status',

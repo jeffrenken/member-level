@@ -41,7 +41,7 @@ const PieChart2 = ({ measure, disabled }) => {
   const value2InDegrees = (measure.denominator / total) * 360;
   const numeratorPercent = (measure.numerator / total) * 100;
   const denominatorPercent = (measure.denominator / total) * 100;
-  const quotient = (measure.numerator / measure.denominator).toFixed(2);
+  const quotient = ((measure.numerator / measure.denominator) * 100).toFixed(0);
 
   const background = theme.palette.background.semiTransparent;
 
@@ -72,9 +72,11 @@ const PieChart2 = ({ measure, disabled }) => {
         <Typography align="center" sx={{ fontSize: '1.4rem', lineHeight: 1, fontWeight: 600, textShadow: '0px 2px 2px rgb(0 0 0 / 0.3)' }}>
           {measure.abbreviation}
         </Typography>
-        <Typography align="center" sx={{ fontSize: '0.7rem', lineHeight: 1, mb: '4px' }}>
-          {truncate(measure.label, 50)}
-        </Typography>
+        <Tooltip placement="top" title={measure.label}>
+          <Typography align="center" sx={{ fontSize: '0.7rem', lineHeight: 1, mb: '4px' }}>
+            {truncate(measure.label, 50)}
+          </Typography>
+        </Tooltip>
 
         <Box sx={{ position: 'relative' }}>
           <Slice2 slice1={value2InDegrees} slice2={value1InDegrees} />
@@ -94,11 +96,11 @@ const PieChart2 = ({ measure, disabled }) => {
             <Typography
               align="center"
               sx={{
-                fontSize: '1.8rem',
+                fontSize: '2.1rem',
                 fontWeight: 600,
                 lineHeight: 0.9,
                 letterSpacing: '-1px',
-                mt: '23px',
+                mt: '21px',
                 textShadow: '0px 2px 2px rgb(0 0 0 / 0.3)'
               }}
             >
