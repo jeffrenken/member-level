@@ -188,7 +188,7 @@ export default function ProviderPage() {
             Total Gaps: {totalGapsRef.current}
           </Typography>
           <Typography variant="h4" mb={1}>
-            Incentive value: ${moneyFormat.format(totalGapsRef.current * worthPerGap)}
+            Incentive value: {moneyFormat.format(totalGapsRef.current * worthPerGap)}
           </Typography>
         </Box>
 
