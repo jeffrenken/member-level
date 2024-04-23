@@ -57,7 +57,7 @@ export default function ProviderPage() {
     },
     {
       field: 'numberOfGaps',
-      headerName: 'Gaps',
+      headerName: 'Total Gaps-in-Care',
       type: 'numericColumn',
       maxWidth: 160,
       chartDataType: 'series',
@@ -81,7 +81,14 @@ export default function ProviderPage() {
         {provider?.label}
       </Typography>
       <Box sx={{ height: 'calc(100vh - 150px)' }}>
-        <AgGrid columnDefs={columnDefs} rowData={members} sideBar={false} csvDownload={true} sideBar />
+        <AgGrid
+          columnDefs={columnDefs}
+          rowData={members}
+          sideBar={false}
+          csvDownload={true}
+          rowGroupPanelShow="always"
+          groupDisplayType="groupRows"
+        />
       </Box>
     </Container>
   );

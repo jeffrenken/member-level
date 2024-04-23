@@ -62,17 +62,18 @@ export default function ProviderGroupsPage() {
       headerName: 'Provider',
       filter: true,
       chartDataType: 'series',
-      cellRenderer: ProviderLinkRenderer
-      //rowGroup: true,
+      cellRenderer: ProviderLinkRenderer,
+      enableRowGroup: true
       //hide: true
     },
 
     {
       field: 'numberOfGaps',
-      headerName: 'Gaps',
+      headerName: 'Total Gaps-in-Care',
       type: 'numericColumn',
       chartDataType: 'series',
       filter: true,
+      enableRowGroup: true,
       cellRenderer: GapRenderer
     },
     {
@@ -90,6 +91,8 @@ export default function ProviderGroupsPage() {
         }
       },
       minWidth: 200,
+      enableRowGroup: true,
+
       valueGetter: (params) => {
         console.log(params);
         return getSparklineData(params.data?.numberOfGaps);
@@ -101,6 +104,7 @@ export default function ProviderGroupsPage() {
       type: 'numericColumn',
       chartDataType: 'series',
       filter: true,
+      enableRowGroup: true,
       cellRenderer: RatingRenderer
     }
   ];
@@ -112,7 +116,7 @@ export default function ProviderGroupsPage() {
         Provider Groups
       </Typography>
       <Box sx={{ height: 'calc(100vh - 250px)' }}>
-        <AgGrid columnDefs={columnDefs} rowData={rows} csvDownload={true} groupDisplayType="groupRows" />
+        <AgGrid columnDefs={columnDefs} rowData={rows} csvDownload={true} rowGroupPanelShow="always" groupDisplayType="groupRows" />
       </Box>
     </Container>
   );

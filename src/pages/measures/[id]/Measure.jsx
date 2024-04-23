@@ -128,7 +128,7 @@ export default function Measure() {
     },
     {
       field: 'numberOfGaps',
-      headerName: 'Total Gaps',
+      headerName: 'Total Gaps-in-Care',
       type: 'numericColumn',
       //maxWidth: 180,
       chartDataType: 'series',

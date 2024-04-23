@@ -99,7 +99,7 @@ export default function ProviderPage() {
     },
     {
       field: 'numberOfGaps',
-      headerName: 'Gaps',
+      headerName: 'Total Gaps-in-Care',
       type: 'numericColumn',
       chartDataType: 'series',
       filter: true,
