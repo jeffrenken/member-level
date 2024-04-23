@@ -6,10 +6,11 @@ import { GapRenderer, LinkRenderer, SrfRenderer } from '@/components/tables/Cell
 import Top from '@/layout/Top';
 import { measureFilterState } from '@/state/measureFilterState';
 import { Box, Container, Stack, Typography, useTheme } from '@mui/material';
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { useRecoilValue } from 'recoil';
+import { useRecoilState, useRecoilValue } from 'recoil';
 import GaugeChart from '@/components/charts/GaugeChart';
+import { srfFilterState } from '@/state/srfFilterState';
 
 const randomBoolean = () => Math.random() > 0.5;
 const randomIntegerBetween = (min, max) => Math.floor(Math.random() * (max - min + 1) + min);
@@ -21,9 +22,14 @@ export default function Measure() {
   const id = parseInt(params.id);
   const { data: measures, isLoading } = useMeasures();
   const measureFilterId = useRecoilValue(measureFilterState);
+  const [srf, setSrf] = useRecoilState(srfFilterState);
   const measureId = measureFilterId || id;
   const [chartData, setChartData] = useState({});
   const { filteredMembers } = useFilteredMembers();
+
+  useEffect(() => {
+    setSrf(undefined);
+  }, []);
 
   const measure = useMemo(() => {
     if (!measures) {
@@ -57,16 +63,24 @@ export default function Measure() {
     splitMembers.numerator = m.filter((member) => member?.measuresClosed.includes(measure['Measure Name']));
     splitMembers.denominator = m.filter((member) => member?.measuresOpen.includes(measure['Measure Name']));
 
-    const chartScale = [
-      [measure?.bottom_third_upper_value / 100, '#d27e6f'],
-      [measure?.middle_third_upper_value / 100, '#dcb05c'],
-      [measure?.top_third_upper_value / 100, '#a1d99e']
+    let chartScale = [
+      [75 / 100, '#d27e6f'],
+      [82 / 100, '#dcb05c'],
+      [100 / 100, '#a1d99e']
     ];
+
+    if (measure?.bottom_third_upper_value) {
+      chartScale = [
+        [measure?.bottom_third_upper_value / 100, '#d27e6f'],
+        [measure?.middle_third_upper_value / 100, '#dcb05c'],
+        [measure?.top_third_upper_value / 100, '#a1d99e']
+      ];
+    }
     const starsValue = splitMembers.numerator.length / (splitMembers.denominator.length + splitMembers.numerator.length);
-    const heiValue = starsValue * 0.4;
+    const heiValue = filteredMembers.filter((member) => member.isSrf).length / filteredMembers.length;
     setChartData({
       scale: chartScale,
-      starsVale: starsValue,
+      starsValue: starsValue,
       heiValue: heiValue
     });
 
@@ -82,7 +96,7 @@ export default function Measure() {
     measureCopy.denominator = members.denominator.length + members.numerator.length;
     measureCopy.forecast = 'N/A';
     return measureCopy;
-  }, [measure, measureId, members]);
+  }, [measure, measureId, members, srf]);
 
   const columnDefs = [
     {
@@ -127,8 +141,6 @@ export default function Measure() {
     return <div>Loading...</div>;
   }
 
-  console.log(chartData);
-
   return (
     <Container maxWidth="lg" sx={{ marginTop: '20px', marginBottom: '20px' }}>
       <Top filters={['providers', 'contracts', 'measures']} />
@@ -141,7 +153,7 @@ export default function Measure() {
         <Stack direction="row" justifyContent={'flex-end'} alignItems={'center'} spacing={3} pr={2}>
           <Box>
             <Box minWidth={170} height={120}>
-              <GaugeChart chartScale={chartData.scale} chartValue={chartData.starsVale} />
+              <GaugeChart chartScale={chartData.scale} chartValue={chartData.starsValue} />
             </Box>
             <Typography sx={{ fontSize: '0.7rem', marginTop: '-8px' }} align="center">
               Stars Performance
