@@ -37,9 +37,8 @@ export default function ProviderPage() {
         return {
           name: member['FIRST NAME'] + ' ' + member['LAST NAME'],
           id: member['MEMBER ID'],
-          srf: randomBoolean(),
-          numberOfGaps: randomIntegerBetween(0, 50),
-          starRating: randomHalfNumberBetween(0, 10),
+          srf: member.isSrf,
+          numberOfGaps: member.numberOfGaps,
           url: `/members/${member['MEMBER ID']}`
         };
       });

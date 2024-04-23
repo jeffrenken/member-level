@@ -65,7 +65,7 @@ export default function MembersPage() {
         firstName: member['FIRST NAME'],
         lastName: member['LAST NAME'],
         id: member['MEMBER ID'],
-        srfCell: Object.keys(member.srf).length > 2 ? 'true' : 'false',
+        srfCell: member.isSrf,
         numberOfGaps: member.numberOfGaps,
         starRating: randomHalfNumberBetween(0, 10),
         providerGroupName: member.providerGroup['Provider Group'],
