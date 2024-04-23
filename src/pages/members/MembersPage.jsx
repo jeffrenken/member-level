@@ -105,7 +105,8 @@ export default function MembersPage() {
       maxWidth: 100,
       chartDataType: 'series',
       filter: true,
-      cellRenderer: SrfRenderer
+      cellRenderer: SrfRenderer,
+      enableRowGroup: true
     },
     {
       field: 'numberOfGaps',
@@ -113,7 +114,8 @@ export default function MembersPage() {
       type: 'numericColumn',
       chartDataType: 'series',
       filter: true,
-      cellRenderer: GapRenderer
+      cellRenderer: GapRenderer,
+      enableRowGroup: true
     },
     {
       field: 'chart',
@@ -138,13 +140,15 @@ export default function MembersPage() {
       field: 'providerName',
       headerName: 'Provider',
       filter: true,
-      cellRenderer: ProviderLinkRenderer
+      cellRenderer: ProviderLinkRenderer,
+      enableRowGroup: true
     },
     {
       field: 'providerGroupName',
       headerName: 'Provider Group',
       filter: true,
-      cellRenderer: TextRenderer
+      cellRenderer: TextRenderer,
+      enableRowGroup: true
     },
     {
       field: 'memberInfo',
