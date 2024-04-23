@@ -1,6 +1,5 @@
 import { useTheme } from '@mui/material';
 import ReactEcharts from 'echarts-for-react';
-import { m } from 'framer-motion';
 // TODO CREATE CHART
 
 const chartScaleFake = [
@@ -12,6 +11,10 @@ const chartScaleFake = [
 
 export default function GaugeChart({ chartScale, chartValue }) {
   const theme = useTheme();
+
+  if (!chartScale) {
+    return null;
+  }
   const option = {
     series: [
       {

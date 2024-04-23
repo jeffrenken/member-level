@@ -1,23 +1,18 @@
+import useFilteredMembers from '@/api/useFilteredMembers';
+import useMeasures from '@/api/useMeasures';
 import AgGrid from '@/components/tables/AgGrid';
-import useMembers from '@/api/useMembers';
-import { Rating, Chip, Container, Box, Typography } from '@mui/material';
-import { Link } from 'react-router-dom';
 import {
-  BooleanRenderer,
   GapRenderer,
   LinkRenderer,
   MeasureRenderer,
   ProviderLinkRenderer,
-  RatingRenderer,
   SrfRenderer,
-  StarRenderer,
   TextRenderer,
   TooltipRenderer,
   getSparklineData
 } from '@/components/tables/CellRenderers';
 import Top from '@/layout/Top';
-import useFilteredMembers from '@/api/useFilteredMembers';
-import useMeasures from '@/api/useMeasures';
+import { Box, Container, Typography } from '@mui/material';
 import { useMemo } from 'react';
 
 const randomBoolean = () => Math.random() > 0.5;

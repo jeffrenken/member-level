@@ -53,7 +53,6 @@ export default function Map() {
   const [zoom, setZoom] = useState(4.5);
   const [selectedMeasureOption, setSelectedMeasureOption] = useState('');
   const [selectedCounty, setSelectedCounty] = useState(null);
-  const [countyFilteredMembers, setCountyFilteredMembers] = useState([]);
   const [clickedCounty, setClickedCounty] = useState(null);
   const [measureState, setMeasureState] = useState();
   const [contractState, setContractState] = useRecoilState(contractFilterState);
@@ -62,6 +61,9 @@ export default function Map() {
   const [srfState, setSrfState] = useRecoilState(srfFilterState);
   const [mapReady, setMapReady] = useState(false);
   const [chartData, setChartData] = useState({});
+  const [membersInCounty, setMembersInCounty] = useState([]);
+  const [membersInCountyNumerator, setMembersInCountyNumerator] = useState([]);
+  const [membersInCountyDenom, setMembersInCountyDenom] = useState([]);
   const { filteredMembers } = useFilteredMembers();
 
   const style = darkMode ? 'mapbox://styles/mapbox/dark-v11' : 'mapbox://styles/mapbox/light-v11';
@@ -185,13 +187,6 @@ export default function Map() {
     setupMap();
   }, []);
 
-  const chartScale = [
-    [selectedMeasureOption?.bottom_third_upper_value / 100, theme.palette.cardRed],
-    [selectedMeasureOption?.middle_third_upper_value / 100, theme.palette.cardYellow],
-    [selectedMeasureOption?.top_third_upper_value / 100, theme.palette.cardGreen]
-  ];
-  const chartValue = 0.77;
-
   useMemo(() => {
     if (!filteredMembers.length || !mapReady || !map.current) {
       return;
@@ -199,25 +194,48 @@ export default function Map() {
 
     const selectedMeasure = selectedMeasureOption;
     let membersInDenom = [...filteredMembers];
+    let membersInNumerator = [...filteredMembers];
 
     if (selectedMeasure) {
       membersInDenom = filteredMembers.filter((member) => member.measuresOpen.includes(selectedMeasure['Measure Name']));
+      membersInNumerator = filteredMembers.filter((member) => member.measuresClosed.includes(selectedMeasure['Measure Name']));
 
-      const chartScale = [
-        [selectedMeasure?.bottom_third_upper_value / 100, '#d27e6f'],
-        [selectedMeasure?.middle_third_upper_value / 100, '#dcb05c'],
-        [selectedMeasure?.top_third_upper_value / 100, '#a1d99e']
+      let chartScale = [
+        [75 / 100, '#d27e6f'],
+        [82 / 100, '#dcb05c'],
+        [100 / 100, '#a1d99e']
       ];
+
+      if (selectedMeasure?.bottom_third_upper_value) {
+        chartScale = [
+          [selectedMeasure?.bottom_third_upper_value / 100, '#d27e6f'],
+          [selectedMeasure?.middle_third_upper_value / 100, '#dcb05c'],
+          [selectedMeasure?.top_third_upper_value / 100, '#a1d99e']
+        ];
+      }
       const starsValue = membersInDenom.length / (filteredMembers.length + membersInDenom.length);
       const heiValue = starsValue * 0.4;
       setChartData({
         scale: chartScale,
-        starsVale: starsValue,
+        starsValue: starsValue,
         heiValue: heiValue
       });
     } else {
       //members with any open
       membersInDenom = filteredMembers.filter((member) => member.measuresOpen.length);
+
+      const chartScale = [
+        [75 / 100, '#d27e6f'],
+        [82 / 100, '#dcb05c'],
+        [100 / 100, '#a1d99e']
+      ];
+      const starsValue = membersInDenom.length / (filteredMembers.length + membersInDenom.length);
+      const heiValue = starsValue * 0.4;
+      setChartData({
+        scale: chartScale,
+        starsValue: starsValue,
+        heiValue: heiValue
+      });
     }
     setAllMembersInDenom(membersInDenom);
 
@@ -244,7 +262,7 @@ export default function Map() {
         return itemCopy;
       }
 
-      const percent = (membersInCountyNumerator.length / membersInCountyDenom.length) * 100;
+      const percent = (membersInCountyNumerator.length / (membersInCountyNumerator.length + membersInCountyDenom.length)) * 100;
 
       /* let countInCountyDenom = membersInCountyDenom.length;
       let countTotalInCounty = filteredMembers.filter(
@@ -279,13 +297,18 @@ export default function Map() {
     }
 
     if (selectedCounty) {
-      let membersInCountyDenom = allMembersInDenom.filter(
-        (member) => member.COUNTY === selectedCounty.NAME && member.STATE === selectedCounty.stateAbbreviation
+      setMembersInCountyNumerator(
+        membersInNumerator.filter((member) => member.COUNTY === selectedCounty.NAME && member.STATE === selectedCounty.stateAbbreviation)
+      );
+      setMembersInCountyDenom(
+        membersInDenom.filter((member) => member.COUNTY === selectedCounty.NAME && member.STATE === selectedCounty.stateAbbreviation)
       );
 
-      setCountyFilteredMembers(membersInCountyDenom);
+      setMembersInCounty(
+        filteredMembers.filter((member) => member.COUNTY === selectedCounty.NAME && member.STATE === selectedCounty.stateAbbreviation)
+      );
     }
-  }, [selectedMeasureOption, filteredMembers, mapReady]);
+  }, [selectedMeasureOption, filteredMembers, mapReady, selectedCounty]);
 
   useEffect(() => {
     if (!clickedCounty) return;
@@ -297,12 +320,8 @@ export default function Map() {
     if (countyFeatures) {
       let county = countyFeatures.properties;
       setSelectedCounty(county);
-      let membersInCountyDenom = allMembersInDenom.filter(
-        (member) => member.COUNTY === county.NAME && member.STATE === county.stateAbbreviation
-      );
-      setCountyFilteredMembers(membersInCountyDenom);
     }
-  }, [clickedCounty, allMembersInDenom]);
+  }, [clickedCounty]);
 
   const handleMeasureChange = (value) => {
     setMeasureState(value);
@@ -352,42 +371,45 @@ export default function Map() {
                         >
                           {selectedCounty.NAME} County, {selectedCounty.stateAbbreviation}
                         </Typography>
-                        <Typography sx={{ fontSize: '1.1rem' }}>Open Gaps: {countyFilteredMembers.length}</Typography>
+                        <Typography sx={{ fontSize: '1.1rem' }}>Open Gaps: {membersInCountyDenom.length}</Typography>
                       </Box>
                     </Stack>
                   </Stack>
                 </Grid>
+
                 <Grid item md={12} lg={8}>
                   <Stack direction="row" justifyContent={'flex-end'} alignItems={'center'} spacing={3}>
                     <Box>
-                      {selectedMeasureOption && (
-                        <>
-                          <Box minWidth={140} height={100}>
-                            <GaugeChart chartScale={chartData.scale} chartValue={chartData.starsVale} />
-                          </Box>
-                          <Typography sx={{ fontSize: '0.7rem', marginTop: '-8px' }} align="center">
-                            Stars Performance
-                          </Typography>
-                        </>
-                      )}
+                      <>
+                        <Box minWidth={140} height={100}>
+                          <GaugeChart
+                            chartScale={chartData.scale}
+                            chartValue={membersInCountyNumerator.length / (membersInCountyDenom.length + membersInCountyNumerator.length)}
+                          />
+                        </Box>
+                        <Typography sx={{ fontSize: '0.7rem', marginTop: '-8px' }} align="center">
+                          Stars Performance
+                        </Typography>
+                      </>
                     </Box>
                     <Box>
-                      {selectedMeasureOption && (
-                        <>
-                          <Box minWidth={140} height={100}>
-                            <GaugeChart chartScale={chartData.scale} chartValue={chartData.heiValue} />
-                          </Box>
-                          <Typography sx={{ fontSize: '0.7rem', marginTop: '-8px' }} align="center">
-                            Health Equity Performance
-                          </Typography>
-                        </>
-                      )}
+                      <>
+                        <Box minWidth={140} height={100}>
+                          <GaugeChart
+                            chartScale={chartData.scale}
+                            chartValue={membersInCounty.filter((m) => m.isSrf).length / membersInCounty.length}
+                          />
+                        </Box>
+                        <Typography sx={{ fontSize: '0.7rem', marginTop: '-8px' }} align="center">
+                          Health Equity Performance
+                        </Typography>
+                      </>
                     </Box>
                   </Stack>
                 </Grid>
               </Grid>
               <Box sx={{ height: '290px' }}>
-                {countyFilteredMembers.length && <MembersTable rows={countyFilteredMembers} height="265px" csvDownload />}
+                {membersInCountyDenom.length && <MembersTable rows={membersInCountyDenom} height="265px" csvDownload />}
               </Box>
             </Card>
           </Box>
