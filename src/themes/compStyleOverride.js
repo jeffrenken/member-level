@@ -17,13 +17,6 @@ export default function componentStyleOverrides(theme) {
       }
     },
     MuiButtonBase: {
-      styleOverrides: {
-        root: {
-          '&:hover': {
-            backgroundColor: 'transparent'
-          }
-        }
-      },
       defaultProps: {
         disableRipple: true
       }
@@ -33,10 +26,12 @@ export default function componentStyleOverrides(theme) {
       styleOverrides: {
         root: {
           fontWeight: 500,
-          borderRadius: '4px',
+          textTransform: 'none',
           '&:hover': {
-            backgroundColor: 'transparent'
-          }
+            //backgroundColor: 'white',
+            boxShadow: 'none'
+          },
+          boxShadow: 'none'
         }
       }
     },

@@ -11,10 +11,11 @@ import { srfFilterState } from '@/state/srfFilterState';
 import { measureStatusFilterState } from '@/state/measureStatusFilterState';
 import useSrf from '@/api/useSrf';
 
-import { Box, IconButton, Stack, useTheme } from '@mui/material';
-import { IconMoon, IconSun, IconUserCircle } from '@tabler/icons-react';
-import { useContext, useMemo } from 'react';
+import { Box, Button, IconButton, Stack, TextField, useTheme, ButtonBase, InputAdornment } from '@mui/material';
+import { IconMoon, IconSun, IconUserCircle, IconSearch } from '@tabler/icons-react';
+import { useContext, useMemo, useState } from 'react';
 import { useRecoilState } from 'recoil';
+import { SearchDialog } from '@/components/SearchDialog';
 
 const measureStatusOptions = [
   { id: 'all', label: 'All Measures', value: 'All' },
@@ -34,6 +35,7 @@ export default function Top({ filters }) {
   const [providerState, setProviderState] = useRecoilState(providerFilterState);
   const [measureStatusState, setMeasureStatusState] = useRecoilState(measureStatusFilterState);
   const [srfState, setSrfState] = useRecoilState(srfFilterState);
+  const [searchOpen, setSearchOpen] = useState(false);
 
   /*   const measures = useMemo(() => {
     if (!measuresData) return null;
@@ -72,6 +74,7 @@ export default function Top({ filters }) {
   if (!measures || !contracts || !providers) return <></>;
   return (
     <>
+      <SearchDialog open={searchOpen} onClose={() => setSearchOpen(false)} />
       <Card px={1} mb={2}>
         <Stack
           direction="row"
@@ -117,6 +120,26 @@ export default function Top({ filters }) {
           </Stack>
 
           <Box>
+            <TextField
+              variant="outlined"
+              component={ButtonBase}
+              onClick={() => setSearchOpen(true)}
+              placeholder="Search"
+              size="small"
+              sx={{
+                width: '150px',
+                height: '40px'
+              }}
+              inputProps={{ style: { padding: '4px' } }}
+              InputProps={{
+                startAdornment: (
+                  <InputAdornment position="start">
+                    <IconSearch size={14} />
+                  </InputAdornment>
+                )
+              }}
+            />
+
             {/* <IconButton color="neutral">
               <IconUserCircle style={{ strokeWidth: 1.5 }} />
             </IconButton>
