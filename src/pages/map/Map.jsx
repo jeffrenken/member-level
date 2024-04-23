@@ -65,7 +65,7 @@ export default function Map() {
   const { filteredMembers } = useFilteredMembers();
 
   const style = darkMode ? 'mapbox://styles/mapbox/dark-v11' : 'mapbox://styles/mapbox/light-v11';
-  const stepArray = [25, 30, 35, 1000000];
+  const stepArray = [0, 25, 30, 35, 50, 70, 100, 1000000];
   const mapData = countyDataWithCount;
 
   const { data: measures } = useMeasures();
@@ -102,17 +102,19 @@ export default function Map() {
           'fill-color': [
             'step',
             ['get', 'percent'],
-            '#70F870',
+            '#EAF3B6',
             stepArray[0],
-            '#ffeda0',
-            stepArray[1],
-            '#F8EC70',
-            stepArray[2],
             '#c00000',
+            stepArray[1],
+            '#f0a0a0',
+            stepArray[2],
+            '#F8B474',
+            stepArray[3],
+            '#ffeda0',
             110,
-            '#fd8d3c',
+            '#00aa00',
             120,
-            '#fc4e2a'
+            '#00ff00'
           ],
           'fill-opacity': 0.5
         }
@@ -199,7 +201,7 @@ export default function Map() {
     let membersInDenom = [...filteredMembers];
 
     if (selectedMeasure) {
-      membersInDenom = filteredMembers.filter((member) => member.memberMeasures[selectedMeasure['Measure Name']] === 0);
+      membersInDenom = filteredMembers.filter((member) => member.measuresOpen.includes(selectedMeasure['Measure Name']));
 
       const chartScale = [
         [selectedMeasure?.bottom_third_upper_value / 100, '#d27e6f'],
@@ -223,20 +225,32 @@ export default function Map() {
 
     const updatedCountyData = countyDataWithCount.features.map((item) => {
       let itemCopy = { ...item };
-      let membersInCountyDenom = membersInDenom.filter(
+      let membersInCounty = filteredMembers.filter(
         (member) => member.COUNTY === item.properties.NAME && member.STATE === item.properties.stateAbbreviation
       );
+      let membersInCountyDenom = membersInCounty.filter((member) => member.measuresOpen.length);
+      let membersInCountyNumerator = membersInCounty.filter((member) => member.measuresClosed.length);
 
-      if (membersInCountyDenom.length === 0) {
+      if (selectedMeasure) {
+        membersInCountyDenom = membersInCountyDenom.filter((member) => member.measuresOpen.includes(selectedMeasure['Measure Name']));
+        membersInCountyNumerator = membersInCountyNumerator.filter((member) =>
+          member.measuresClosed.includes(selectedMeasure['Measure Name'])
+        );
+      }
+
+      if (!membersInCountyDenom.length) {
         let itemProperties = { ...item.properties, percent: '' };
         itemCopy.properties = itemProperties;
         return itemCopy;
       }
-      let countInCountyDenom = membersInCountyDenom.length;
+
+      const percent = (membersInCountyNumerator.length / membersInCountyDenom.length) * 100;
+
+      /* let countInCountyDenom = membersInCountyDenom.length;
       let countTotalInCounty = filteredMembers.filter(
         (member) => member.COUNTY === item.properties.NAME && member.STATE === item.properties.stateAbbreviation
       ).length;
-      let percent = (countInCountyDenom / countTotalInCounty) * 100;
+      let percent = (countInCountyDenom / countTotalInCounty) * 100; */
       let itemProperties = { ...item.properties, percent: percent };
       itemCopy.properties = itemProperties;
 
