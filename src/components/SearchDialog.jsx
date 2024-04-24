@@ -60,24 +60,17 @@ export function SearchDialog({ open, onClose }) {
     return items;
   }, [members, providers]);
 
-  console.log(providers);
-  console.log(providerGroups);
-
   React.useEffect(() => {
     if (searchTerm === '') {
       //reset list
-      console.log('reset');
       setFilteredItems(searchItems);
       return;
     }
-    console.log('search');
     //remove spaces
     const search = searchTerm.replace(/\s/g, '');
-    console.log(search);
     const results = searchItems.filter((item) => {
       return item.value.toLowerCase().includes(search.toLowerCase());
     });
-    console.log(results);
     setFilteredItems(results);
   }, [searchTerm, searchItems]);
 

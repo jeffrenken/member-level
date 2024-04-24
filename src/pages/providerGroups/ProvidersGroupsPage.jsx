@@ -13,6 +13,9 @@ import Top from '@/layout/Top';
 import { Box, Container, Typography } from '@mui/material';
 import { useMemo } from 'react';
 import { useParams } from 'react-router-dom';
+import { useRecoilValue } from 'recoil';
+import { providerFilterState } from '@/state/providerFilterState';
+import useProviderGroups from '@/api/useProvidersGroups';
 
 const randomBoolean = () => Math.random() > 0.5;
 const randomIntegerBetween = (min, max) => Math.floor(Math.random() * (max - min + 1) + min);
@@ -20,16 +23,36 @@ const randomHalfNumberBetween = (min, max) => Math.floor(Math.random() * (max - 
 
 export default function ProviderGroupsPage() {
   const params = useParams();
+  const selectedProvider = useRecoilValue(providerFilterState);
   const { filteredMembers: memberData } = useFilteredMembers();
   const { data: providers } = useProviders();
+  const { data: providerGroups } = useProviderGroups();
+
+  console.log(selectedProvider);
+  console.log(providerGroups);
+
+  const providerGroup = useMemo(() => {
+    if (!providerGroups) {
+      return null;
+    }
+    return providerGroups.find((provider) => {
+      return provider.id === selectedProvider;
+    });
+  }, [providerGroups, selectedProvider]);
+
+  console.log(providerGroup);
 
   const rows = useMemo(() => {
     console.log(providers, memberData);
     if (!providers.length || !memberData.length) {
       return [];
     }
+    let filteredProviders = [...providers];
+    if (providerGroup) {
+      filteredProviders = filteredProviders.filter((provider) => provider['Provider Group'] === providerGroup.label);
+    }
 
-    return providers.map((provider) => {
+    return filteredProviders.map((provider) => {
       const providerMembers = memberData.filter((member) => member.providerGroup.Provider === provider.Provider);
       let memberGaps = 0;
       providerMembers.forEach((member) => {
@@ -43,7 +66,7 @@ export default function ProviderGroupsPage() {
         providerUrl: `/providers/${provider.Provider}`
       };
     });
-  }, [providers, memberData]);
+  }, [providers, memberData, providerGroup]);
 
   const columnDefs = [
     {
@@ -52,9 +75,9 @@ export default function ProviderGroupsPage() {
       filter: true,
       chartDataType: 'category',
       maxWidth: 200,
-      cellRenderer: TextRenderer,
-      rowGroup: true,
-      hide: false
+      cellRenderer: TextRenderer
+      //rowGroup: true,
+      //hide: false
     },
 
     {
@@ -111,7 +134,7 @@ export default function ProviderGroupsPage() {
 
   return (
     <Container maxWidth="lg" sx={{ marginTop: '20px', marginBottom: '20px' }}>
-      <Top filters={['contracts']} />
+      <Top filters={['contracts', 'providers']} />
       <Typography variant="h2" mt={3}>
         Provider Groups
       </Typography>
