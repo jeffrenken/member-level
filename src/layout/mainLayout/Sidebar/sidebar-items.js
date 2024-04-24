@@ -66,7 +66,7 @@ export const items = [
       },
       {
         id: 'providerGroupsTable',
-        title: 'Provider Groups',
+        title: 'Providers',
         type: 'item',
         url: '/provider-groups',
         icon: IconTable,
