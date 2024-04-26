@@ -28,9 +28,6 @@ export default function ProviderGroupsPage() {
   const { data: providers } = useProviders();
   const { data: providerGroups } = useProviderGroups();
 
-  console.log(selectedProvider);
-  console.log(providerGroups);
-
   const providerGroup = useMemo(() => {
     if (!providerGroups) {
       return null;
@@ -40,10 +37,7 @@ export default function ProviderGroupsPage() {
     });
   }, [providerGroups, selectedProvider]);
 
-  console.log(providerGroup);
-
   const rows = useMemo(() => {
-    console.log(providers, memberData);
     if (!providers.length || !memberData.length) {
       return [];
     }
@@ -117,7 +111,6 @@ export default function ProviderGroupsPage() {
       enableRowGroup: true,
 
       valueGetter: (params) => {
-        console.log(params);
         return getSparklineData(params.data?.numberOfGaps);
       }
     },
@@ -134,7 +127,7 @@ export default function ProviderGroupsPage() {
 
   return (
     <Container maxWidth="lg" sx={{ marginTop: '20px', marginBottom: '20px' }}>
-      <Top filters={['contracts', 'providers']} />
+      <Top filters={['contract', 'provider']} />
       <Typography variant="h2" mt={3}>
         Provider Groups
       </Typography>

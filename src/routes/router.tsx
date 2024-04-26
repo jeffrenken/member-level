@@ -3,7 +3,7 @@ import BobPage from '@/pages/BobPage';
 import Page2 from '@/pages/Page2';
 import Map from '@/pages/map/Map';
 import MeasuresPage from '@/pages/measures/MeasuresPage';
-import Measure from '@/pages/measures/[id]/Measure';
+import Measure from '@/pages/measures/[id]/MeasurePage';
 import MembersPage from '@/pages/members/MembersPage';
 import Member from '@/pages/members/[id]/Member';
 import ProvidersPage from '@/pages/providerGroups/ProvidersGroupsPage';
@@ -15,6 +15,8 @@ import Table from '@/pages/table/Table';
 import Test from '@/pages/test/Test';
 import { createBrowserRouter } from 'react-router-dom';
 import { AuthGuard } from './AuthGuard';
+import HeiPage from '@/pages/hei/HeiPage';
+import MembersFilteredByMeasuresPage from '@/pages/members/MembersFilteredByMeasuresPage';
 
 export const router = createBrowserRouter([
   {
@@ -50,8 +52,16 @@ export const router = createBrowserRouter([
         element: <MembersPage />
       },
       {
+        path: '/members/filters/measures',
+        element: <MembersFilteredByMeasuresPage />
+      },
+      {
         path: '/members/:id',
         element: <Member />
+      },
+      {
+        path: '/hei',
+        element: <HeiPage />
       },
       {
         path: '/provider-groups/:id',

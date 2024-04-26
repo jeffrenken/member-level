@@ -11,35 +11,39 @@ import { useParams } from 'react-router-dom';
 import { useRecoilState, useRecoilValue } from 'recoil';
 import GaugeChart from '@/components/charts/GaugeChart';
 import { srfFilterState } from '@/state/srfFilterState';
+import MembersByMeasureTable from '@/components/tables/MembersByMeasureTable';
+import useMembersFilteredByMeasures from '@/api/useMembersFilteredByMeasures';
+import { measuresFilterState } from '@/state/measuresFilterState';
+import MeasuresAutocomplete from '@/components/MeasuresAutocomplete';
 
-const randomBoolean = () => Math.random() > 0.5;
-const randomIntegerBetween = (min, max) => Math.floor(Math.random() * (max - min + 1) + min);
-const randomHalfNumberBetween = (min, max) => Math.floor(Math.random() * (max - min + 1) + min) / 2;
-
-export default function Measure() {
+export default function MembersFilteredByMeasuresPage() {
   const theme = useTheme();
   const params = useParams();
-  const id = parseInt(params.id);
-  const { data: measures, isLoading } = useMeasures();
-  const measureFilterId = useRecoilValue(measureFilterState);
+  const { data: measuresData, isLoading } = useMeasures();
+  const measureIds = useRecoilValue(measuresFilterState);
   const [srf, setSrf] = useRecoilState(srfFilterState);
-  const measureId = measureFilterId || id;
-  const [chartData, setChartData] = useState({});
+  //const [chartData, setChartData] = useState({});
   const { filteredMembers } = useFilteredMembers();
 
+  console.log(measureIds);
+
+  const measures = useMemo(() => {
+    if (!measuresData || !measureIds.length) {
+      return [];
+    }
+    return measuresData.filter((measure) => measureIds.includes(measure.id));
+  }, [measuresData, measureIds]);
+
+  console.log(measures);
+
+  const { members, chartData } = useMembersFilteredByMeasures(filteredMembers, measures);
+  console.log(members?.denominator, chartData);
+
   useEffect(() => {
-    setSrf(undefined);
+    setSrf(0);
   }, []);
 
-  const measure = useMemo(() => {
-    if (!measures) {
-      return null;
-    }
-    return measures.find((measure) => {
-      return measure.id === measureId;
-    });
-  }, [measures, measureId]);
-
+  /* 
   const members = useMemo(() => {
     if (!filteredMembers.length || !measure) {
       return null;
@@ -85,75 +89,24 @@ export default function Measure() {
     });
 
     return splitMembers;
-  }, [measure, filteredMembers]);
+  }, [measure, filteredMembers]); */
 
-  const measureWithData = useMemo(() => {
-    if (!measure || !members) {
-      return null;
-    }
-    let measureCopy = { ...measure };
-    measureCopy.numerator = members.numerator.length;
-    measureCopy.denominator = members.denominator.length + members.numerator.length;
-    measureCopy.forecast = 'N/A';
-    return measureCopy;
-  }, [measure, measureId, members, srf]);
-
-  const columnDefs = [
-    {
-      field: 'name',
-      filter: true,
-      chartDataType: 'category',
-      //maxWidth: 200,
-      headerCheckboxSelection: true,
-      checkboxSelection: true,
-      cellRenderer: LinkRenderer
-    },
-    {
-      field: 'srf',
-      headerName: 'SRF',
-      type: 'numericColumn',
-      maxWidth: 100,
-      chartDataType: 'series',
-      filter: true,
-      cellRenderer: SrfRenderer
-    },
-    {
-      field: 'date',
-      headerName: 'Num Date',
-      type: 'numericColumn',
-      maxWidth: 160,
-      chartDataType: 'series',
-      filter: true
-      //cellRenderer: SrfRenderer
-    },
-    {
-      field: 'numberOfGaps',
-      headerName: 'Total Gaps-in-Care',
-      type: 'numericColumn',
-      //maxWidth: 180,
-      chartDataType: 'series',
-      filter: true,
-      cellRenderer: GapRenderer
-    }
-  ];
-
-  if (isLoading || !members) {
+  if (isLoading) {
     return <div>Loading...</div>;
   }
 
   return (
     <Container maxWidth="lg" sx={{ marginTop: '20px', marginBottom: '20px' }}>
-      <Top filters={['providers', 'contracts', 'measures']} />
+      <Top filters={['provider', 'contract', 'measures']} />
       <Stack direction="row" justifyContent="space-around" alignItems={'center'} spacing={4}>
         <Box>
-          <Typography variant="h1">{measure?.label}</Typography>
-          <Typography>Members with Open Gaps</Typography>
-          <Typography mt={2}>{measure?.description}</Typography>
+          Multiselect on Measures. Shows members who have an open gap in ALL of the selected measure. Let me know if it should be an open
+          gap in any of the selected measures
         </Box>
         <Stack direction="row" justifyContent={'flex-end'} alignItems={'center'} spacing={3} pr={2}>
           <Box>
             <Box minWidth={170} height={120}>
-              <GaugeChart chartScale={chartData.scale} chartValue={chartData.starsValue} />
+              <GaugeChart chartScale={chartData?.scale} chartValue={chartData?.starsValue} />
             </Box>
             <Typography sx={{ fontSize: '0.7rem', marginTop: '-8px' }} align="center">
               Stars Performance
@@ -161,20 +114,18 @@ export default function Measure() {
           </Box>
           <Box>
             <Box minWidth={170} height={120}>
-              <GaugeChart chartScale={chartData.scale} chartValue={chartData.heiValue} />
+              <GaugeChart chartScale={chartData?.scale} chartValue={chartData?.heiValue} />
             </Box>
             <Typography sx={{ fontSize: '0.7rem', marginTop: '-8px' }} align="center">
               Health Equity Performance
             </Typography>
           </Box>
         </Stack>
-        <Box>{measureWithData && <PieChart2 measure={measureWithData} disabled />}</Box>
-        {/*         <CardGlow measure={measureWithData} colors={[background]} disabled />}</Box>
-         */}{' '}
       </Stack>
+      <Typography>Maybe measure filter below?</Typography>
+      <MeasuresAutocomplete />
       <Box mt={3} />
-
-      <AgGrid columnDefs={columnDefs} rowData={members?.denominator} csvDownload saveFiltersButton height={'calc(100vh - 370px)'} />
+      <MembersByMeasureTable rows={members?.denominator} />
     </Container>
   );
 }

@@ -4,6 +4,7 @@ import { Box, Container, Grid, Stack, Tooltip, Typography, useTheme } from '@mui
 import { Link, useNavigate } from 'react-router-dom';
 import { useRecoilState } from 'recoil';
 import { measureFilterState } from '@/state/measureFilterState.js';
+import ProgressChart from './ProgressChart';
 
 const measure = {
   id: 1,
@@ -32,7 +33,7 @@ function truncate(str, n) {
   return str.length > n ? str.substr(0, n - 1) + '...' : str;
 }
 
-const PieChart2 = ({ measure, disabled }) => {
+const PieChart2 = ({ measure, disabled, chart }) => {
   const theme = useTheme();
   const navigate = useNavigate();
   const [measureState, setMeasureState] = useRecoilState(measureFilterState);
@@ -53,6 +54,85 @@ const PieChart2 = ({ measure, disabled }) => {
   };
 
   const borderColor = '#aaa';
+
+  const gradientChart = (
+    <>
+      <Stack direction="row" alignItems="space-between" justifyContent="space-between" spacing={1} px={2} mt={'-8px'}>
+        <Box
+          sx={{
+            width: '100%',
+            height: '100%',
+            pl: '4px',
+            py: '2px',
+            fontSize: '0.7rem',
+            textAlign: 'left',
+            textShadow: '0px 2px 2px rgb(0 0 0 / 0.3)'
+          }}
+        >
+          Num
+        </Box>
+        <Box
+          sx={{
+            width: '100%',
+            height: '100%',
+            pl: '4px',
+            py: '2px',
+            fontSize: '0.7rem',
+            textAlign: 'right',
+            textShadow: '0px 2px 2px rgb(0 0 0 / 0.3)'
+          }}
+        >
+          Den
+        </Box>
+      </Stack>
+      <Stack
+        direction="row"
+        alignItems="space-between"
+        justifyContent="space-between"
+        spacing={1}
+        px={1}
+        mx={1}
+        mb="6px"
+        mt={'-3px'}
+        sx={{
+          boxShadow: '0px 4px 8px rgb(0 0 0 / 0.2)',
+          borderRadius: '4px',
+          //background: `linear-gradient(90deg, rgba(34, 193, 168, 1) ${numeratorPercent}%, rgba(35, 93, 241, 1) ${denominatorPercent}%)`
+          //background: `linear-gradient(90deg, rgba(34, 193, 168, 1) ${numeratorPercent}%, rgba(35, 93, 241, 1) 100%)`
+          background: `linear-gradient(135deg, ${numColor} ${numeratorPercent - 25}%, ${denomColor} ${100 - denominatorPercent + 25}%)`
+        }}
+      >
+        <Typography
+          sx={{
+            width: '100%',
+            height: '100%',
+            color: '#fff',
+            fontSize: '1.1rem',
+            pl: '4px',
+            py: '2px',
+            borderRadius: '4px',
+            textAlign: 'left'
+          }}
+        >
+          {measure.numerator}
+        </Typography>
+        <Typography
+          sx={{
+            width: '100%',
+            height: '100%',
+            color: '#fff',
+            fontSize: '1.1rem',
+            pl: '4px',
+            py: '2px',
+            borderRadius: '4px',
+            textAlign: 'right'
+          }}
+        >
+          {measure.denominator}
+        </Typography>
+      </Stack>
+    </>
+  );
 
   return (
     <Box
@@ -108,81 +188,14 @@ const PieChart2 = ({ measure, disabled }) => {
             </Typography>
           </Box>
         </Box>
-        <Stack direction="row" alignItems="space-between" justifyContent="space-between" spacing={1} px={2} mt={'-8px'}>
-          <Box
-            sx={{
-              width: '100%',
-              height: '100%',
-              pl: '4px',
-              py: '2px',
-              fontSize: '0.7rem',
-              textAlign: 'left',
-              textShadow: '0px 2px 2px rgb(0 0 0 / 0.3)'
-            }}
-          >
-            Num
+        {chart === 'gradient' && gradientChart}
+        {chart === 'progress' && (
+          <Box sx={{ height: '130px', width: '100%', mt: '0px' }}>
+            <ProgressChart measure={measure} />
           </Box>
-          <Box
-            sx={{
-              width: '100%',
-              height: '100%',
-              pl: '4px',
-              py: '2px',
-              fontSize: '0.7rem',
-              textAlign: 'right',
-              textShadow: '0px 2px 2px rgb(0 0 0 / 0.3)'
-            }}
-          >
-            Den
-          </Box>
-        </Stack>
-        <Stack
-          direction="row"
-          alignItems="space-between"
-          justifyContent="space-between"
-          spacing={1}
-          px={1}
-          mx={1}
-          mb="6px"
-          mt={'-3px'}
-          sx={{
-            boxShadow: '0px 4px 8px rgb(0 0 0 / 0.2)',
-            borderRadius: '4px',
-            //background: `linear-gradient(90deg, rgba(34, 193, 168, 1) ${numeratorPercent}%, rgba(35, 93, 241, 1) ${denominatorPercent}%)`
-            //background: `linear-gradient(90deg, rgba(34, 193, 168, 1) ${numeratorPercent}%, rgba(35, 93, 241, 1) 100%)`
-            background: `linear-gradient(135deg, ${numColor} ${numeratorPercent - 25}%, ${denomColor} ${100 - denominatorPercent + 25}%)`
-          }}
-        >
-          <Typography
-            sx={{
-              width: '100%',
-              height: '100%',
-              color: '#fff',
-              fontSize: '1.1rem',
-              pl: '4px',
-              py: '2px',
-              borderRadius: '4px',
-              textAlign: 'left'
-            }}
-          >
-            {measure.numerator}
-          </Typography>
-          <Typography
-            sx={{
-              width: '100%',
-              height: '100%',
-              color: '#fff',
-              fontSize: '1.1rem',
-              pl: '4px',
-              py: '2px',
-              borderRadius: '4px',
-              textAlign: 'right'
-            }}
-          >
-            {measure.denominator}
-          </Typography>
-        </Stack>
+        )}
       </Stack>
+
       {/* <Stack direction="row" alignItems="space-between" justifyContent="space-between" spacing={1} px={1} mt={'-3px'}>
         <Box
           sx={{

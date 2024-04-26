@@ -16,18 +16,30 @@ const distinctProviders = providerGroupsData.filter((value, index, self) => inde
 const members = memberData.map((member, i) => {
   const measures = memberMeasures.find((m) => m['MEMBER ID'] === member['MEMBER ID']);
 
-  const numberOfGaps = Object.keys(measures).filter((key) => measures[key] === 0).length;
+  const numberOfGaps = Object.keys(measures).filter((key) => measures?.[key] === 0).length;
+  const srfOptions = ['Low Income Subsidy Copay Level', 'DUAL ELIGIBLE', 'DISABLED'];
+
+  let srf = {};
+  let isSrf = false;
+  if (srfData.find((s) => s['MEMBER ID'] === member['MEMBER ID'])) {
+    const srfArray = Object.keys(srfData.find((s) => s['MEMBER ID'] === member['MEMBER ID'])).slice(2);
+    isSrf = Boolean(srfArray.length);
+
+    srfOptions.forEach((key) => {
+      srf[key] = srfArray.includes(key);
+    });
+  }
 
   return {
     ...member,
     id: member['MEMBER ID'],
     providerGroup: providerGroups.find((p) => p['MEMBER ID'] === member['MEMBER ID']),
     memberMeasures: measures,
-    srf: srfData.find((s) => s['MEMBER ID'] === member['MEMBER ID']),
-    isSrf: Object.keys(srfData.find((s) => s['MEMBER ID'] === member['MEMBER ID'])).length > 2,
+    srf: srf,
+    isSrf: isSrf,
     numberOfGaps: numberOfGaps,
-    measuresOpen: Object.keys(measures).filter((key) => measures[key] === 0),
-    measuresClosed: Object.keys(measures).filter((key) => measures[key] === 1)
+    measuresOpen: Object.keys(measures).filter((key) => measures?.[key] === 0),
+    measuresClosed: Object.keys(measures).filter((key) => measures?.[key] === 1)
   };
 });
 
@@ -84,7 +96,7 @@ const axiosClient = axios.create({
 });
 
 const fakeSrf = [
-  { id: 1, label: 'All', value: undefined },
+  { id: 1, label: 'All SRF', value: undefined },
   { id: 2, label: 'SRF Only', value: true },
   { id: 3, label: 'Non-SRF Only', value: false }
 ];

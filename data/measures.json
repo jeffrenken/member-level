@@ -114,7 +114,6 @@
     "measure_id": "C16",
     "measure_name": "Statin Therapy for Patients with Cardiovascular Disease",
     "description": "This rating is based on the percent of plan members with heart disease who get the right type of cholesterol-lowering drugs. Health plans can help make sure their members are prescribed medications that are more effective for them.",
-
     "bottom_third_lower_value": 0,
     "bottom_third_upper_value": 83.5419,
     "middle_third_lower_value": 83.542,
@@ -199,7 +198,7 @@
   },
   { "Measure Name": "Notification of Inpatient Adm", "Domain": "HEDIS", "Acronym": "TRC - NOLA", "status": "stars" },
   { "Measure Name": "Patient Engagement", "Domain": "HEDIS", "Acronym": "TRC - PE", "status": "stars" },
-  { "Measure Name": "TRC - Receipt of Discharge Info", "Domain": "HEDIS", "Acronym": "TRC - ROC", "status": "stars" },
+  { "Measure Name": "TRC – Receipt of Discharge Info", "Domain": "HEDIS", "Acronym": "TRC - ROC", "status": "stars" },
   { "Measure Name": "KED (Kidney Health Evaluation for Patients with Diabetes)", "Domain": "HEDIS", "Acronym": "KED", "status": "stars" },
   {
     "Measure Name": "Follow-up Visit after Hospital Stay for Mental Illness (within 30 days of discharge)",
@@ -211,13 +210,13 @@
   { "Measure Name": "Continuous Beta Blocker Treatment", "Domain": "HEDIS", "Acronym": "PBH", "status": "display" },
   { "Measure Name": "Access to Primary Care Doctor Visits", "Domain": "HEDIS", "Acronym": "AAP", "status": "display" },
   {
-    "Measure Name": "Pharmacotherapy Management of COPD Exacerbation - Systemic Corticosteroid",
+    "Measure Name": "Pharmacotherapy Management of COPD Exacerbation – Systemic Corticosteroid",
     "Domain": "HEDIS",
     "Acronym": "PCE-S",
     "status": "display"
   },
   {
-    "Measure Name": "Pharmacotherapy Management of COPD Exacerbation - Bronchodilator",
+    "Measure Name": "Pharmacotherapy Management of COPD Exacerbation – Bronchodilator",
     "Domain": "HEDIS",
     "Acronym": "PCE-B",
     "status": "display"

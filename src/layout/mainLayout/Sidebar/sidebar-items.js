@@ -41,6 +41,22 @@ export const items = [
         breadcrumbs: false
       },
       {
+        id: 'members/filters/measures',
+        title: 'New',
+        type: 'item',
+        url: '/members/filters/measures',
+        icon: IconLayoutGrid,
+        breadcrumbs: false
+      },
+      {
+        id: 'HEI',
+        title: 'HEI',
+        type: 'item',
+        url: '/hei',
+        icon: IconLayoutGrid,
+        breadcrumbs: false
+      },
+      {
         id: 'map',
         title: 'Map',
         type: 'item',

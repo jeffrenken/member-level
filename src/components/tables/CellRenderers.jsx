@@ -53,7 +53,7 @@ export const BooleanRenderer = (params) => {
 };
 
 export const MeasureRenderer = (params) => {
-  if (params.value === '') {
+  if (params.value === undefined) {
     return undefined;
   }
   if (params.value) {

@@ -3,16 +3,15 @@ import { useAutocomplete } from '@mui/base/useAutocomplete';
 import { Popper } from '@mui/base';
 import { styled, css } from '@mui/system';
 import useForkRef from '@mui/utils/useForkRef';
-import { Button, ButtonBase, Box } from '@mui/material';
-import { IconChevronDown, IconSearch } from '@tabler/icons-react';
+import { Button, ButtonBase, Box, IconButton, Tooltip } from '@mui/material';
+import { IconCheck, IconCheckbox, IconChevronDown, IconSearch, IconSquare, IconX } from '@tabler/icons-react';
 import { ClickAwayListener } from '@mui/base/ClickAwayListener';
 
 function truncate(str, n) {
   return str.length > n ? str.substr(0, n - 1) + '...' : str;
 }
 
-export default function AutocompleteButton({ options, defaultLabel, value, onChange, width = 178, withAllOption }) {
-  const [label, setLabel] = React.useState(defaultLabel);
+export default function AutocompleteButton({ label, defaultLabel, value, onChange, withAllOption, buttonProps, autocompleteProps }) {
   const [anchorEl, setAnchorEl] = React.useState(null);
 
   const handleClick = (event) => {
@@ -26,14 +25,11 @@ export default function AutocompleteButton({ options, defaultLabel, value, onCha
   const open = Boolean(anchorEl);
   const id = open ? 'simple-popper' : undefined;
 
-  const listOptions = withAllOption ? [{ id: 0, label: withAllOption, value: 0 }, ...options] : options;
-
-  React.useEffect(() => {
-    if (value !== undefined && value !== null) {
-      const l = listOptions.find((o) => o.id === value);
-      setLabel(l.label);
-    }
-  }, [value]);
+  const listOptions = withAllOption
+    ? [{ id: 0, label: withAllOption, value: 0, name: 'all' }, ...autocompleteProps.options]
+    : autocompleteProps.options;
+  let autocompletePropsCopy = { ...autocompleteProps };
+  autocompletePropsCopy.options = listOptions;
 
   return (
     <ClickAwayListener onClickAway={handleClickAway}>
@@ -45,12 +41,20 @@ export default function AutocompleteButton({ options, defaultLabel, value, onCha
           onClick={handleClick}
           endIcon={<IconChevronDown size={16} />}
           sx={{ fontSize: '0.875rem', lineHeight: 1, textAlign: 'left', justifyContent: 'flex-start' }}
+          {...buttonProps}
         >
           {truncate(label, 40)}
         </Button>
         <Popper id={id} open={open} anchorEl={anchorEl} placement="bottom-start" style={{ zIndex: 3 }}>
           <StyledPopperDiv>
-            <AutocompletePopper handleClose={handleClick} setLabel={setLabel} options={listOptions} value={value} onChange={onChange} />
+            <AutocompletePopper
+              handleClose={handleClick}
+              //setLabel={handleLabelChange}
+              options={listOptions}
+              value={value}
+              onChange={onChange}
+              props={autocompletePropsCopy}
+            />
           </StyledPopperDiv>
         </Popper>
       </div>
@@ -71,16 +75,26 @@ const StyledPopperDiv = styled('div')(
   `
 );
 
-function AutocompletePopper({ options, handleClose, setLabel, value, onChange }) {
+function AutocompletePopper({ handleClose, props }) {
   const [inputValue, setInputValue] = React.useState('');
+  const { onChange, ...otherProps } = props;
 
-  const handleChange = (newValue) => {
+  const handleClick = (e, newValue) => {
     if (newValue) {
-      onChange(newValue.id);
-      handleClose();
-      setLabel(newValue.label);
+      onChange(e, newValue);
+      !props.disableCloseOnSelect && handleClose();
+      //handleClose();
+      //setLabel(newValue);
       setInputValue('');
     }
+  };
+
+  const handleClear = (e) => {
+    onChange(e, []);
+    !props.disableCloseOnSelect && handleClose();
+    //handleClose();
+    //setLabel(newValue);
+    setInputValue('');
   };
 
   const handleInputChange = (value) => {
@@ -90,34 +104,71 @@ function AutocompletePopper({ options, handleClose, setLabel, value, onChange })
   };
 
   const { getRootProps, getInputLabelProps, getInputProps, getListboxProps, getOptionProps, groupedOptions, focused } = useAutocomplete({
-    id: 'use-autocomplete-demo',
-    options: options,
-    getOptionLabel: (option) => option.label,
-    autoHighlight: true,
-    openOnFocus: true,
-    value: value,
     inputValue: inputValue || '',
     onInputChange: (event, value) => handleInputChange(value),
-    onChange: (event, newValue) => handleChange(newValue),
-    isOptionEqualToValue: (option, value) => option.id === value
+    onChange: handleClick,
+    ...otherProps
   });
+
+  function isSelected(option) {
+    if (otherProps.multiple) {
+      return otherProps.value.find((v) => otherProps.isOptionEqualToValue(option, v));
+    } else {
+      return groupedOptions?.id === option.id;
+    }
+  }
+
+  const selectedLength = otherProps.multiple ? otherProps.value.length : Boolean(otherProps.value);
 
   return (
     <>
       <Root {...getRootProps()} className={focused ? 'Mui-focused' : ''}>
-        <IconSearch size={18} style={{ margin: '0.5rem' }} /> <Input {...getInputProps()} autoFocus />
+        <IconSearch size={18} style={{ margin: '0.5rem' }} /> <Input {...getInputProps()} autoFocus sx={{ marginRight: '22px' }} />
+        {otherProps.multiple && Boolean(selectedLength) && (
+          <Tooltip title="Clear selected" placement="top">
+            <IconButton onClick={handleClear} size="small" sx={{ position: 'absolute', right: 0, top: 0 }}>
+              <IconX size={18} style={{ margin: '0.5rem' }} />
+            </IconButton>
+          </Tooltip>
+        )}
       </Root>
       {groupedOptions.length > 0 && (
         <Listbox {...getListboxProps()}>
           {groupedOptions.map((option, index) => (
-            <Option {...getOptionProps({ option, index })}>{option.label}</Option>
+            <Option {...getOptionProps({ option, index })} selected={isSelected(option)} name={option?.name}>
+              {otherProps.multiple ? (
+                <>
+                  {isSelected(option) ? (
+                    <IconCheckbox size={18} style={{ margin: '1px 6px 1px 0px', minWidth: '18px' }} />
+                  ) : (
+                    <IconSquare size={18} style={{ margin: '1px 6px 1px 0px', minWidth: '18px' }} />
+                  )}
+                  {option.label}
+                </>
+              ) : (
+                <>{option.label}</>
+              )}
+            </Option>
           ))}
         </Listbox>
       )}
-      {groupedOptions.length === 0 && options.length > 0 && Boolean(!inputValue) && (
+      {groupedOptions.length === 0 && props.options.length > 0 && Boolean(!inputValue) && (
         <Listbox {...getListboxProps()}>
-          {options.map((option, index) => (
-            <Option {...getOptionProps({ option, index })}>{option.label}</Option>
+          {props.options.map((option, index) => (
+            <Option {...getOptionProps({ option, index })} selected={isSelected(option)} name={option?.name}>
+              {otherProps.multiple ? (
+                <>
+                  {isSelected(option) ? (
+                    <IconCheckbox size={18} style={{ margin: '1px 6px 1px 0px', minWidth: '18px' }} />
+                  ) : (
+                    <IconSquare size={18} style={{ margin: '1px 6px 1px 0px', minWidth: '18px' }} />
+                  )}
+                  {option.label}
+                </>
+              ) : (
+                <>{option.label}</>
+              )}
+            </Option>
           ))}
         </Listbox>
       )}
@@ -239,6 +290,8 @@ const Listbox = styled('ul')(
 
 const Option = styled('li')(
   ({ theme }) => `
+  display: flex;
+  align-items: center;
   list-style: none;
   padding: 8px;
   border-radius: 8px;

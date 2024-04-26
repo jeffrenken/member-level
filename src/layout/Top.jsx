@@ -6,6 +6,8 @@ import Card from '@/components/Card';
 import { ThemeContext } from '@/context/ThemeContextProvider';
 import { contractFilterState } from '@/state/contractFilterState';
 import { measureFilterState } from '@/state/measureFilterState';
+import { measuresFilterState } from '@/state/measuresFilterState';
+
 import { providerFilterState } from '@/state/providerFilterState';
 import { srfFilterState } from '@/state/srfFilterState';
 import { measureStatusFilterState } from '@/state/measureStatusFilterState';
@@ -31,6 +33,7 @@ export default function Top({ filters }) {
   const { data: providersData } = useProviders();
   const { data: srf } = useSrf();
   const [measureState, setMeasureState] = useRecoilState(measureFilterState);
+  const [measuresState, setMeasuresState] = useRecoilState(measuresFilterState);
   const [contractState, setContractState] = useRecoilState(contractFilterState);
   const [providerState, setProviderState] = useRecoilState(providerFilterState);
   const [measureStatusState, setMeasureStatusState] = useRecoilState(measureStatusFilterState);
@@ -71,50 +74,125 @@ export default function Top({ filters }) {
 
   const isDarkMode = theme.palette.mode === 'dark';
 
+  const handleMeasureChange = (value) => {
+    setMeasureState(value);
+  };
+
+  const handleMeasuresChange = (value) => {
+    const newValues = value.map((v) => {
+      if (typeof v === 'object') {
+        return v.id;
+      }
+      return v;
+    });
+    setMeasuresState(newValues);
+  };
+
   if (!measures || !contracts || !providers) return <></>;
   return (
     <>
       <SearchDialog open={searchOpen} onClose={() => setSearchOpen(false)} />
       <Card px={1} mb={2}>
-        <Stack
-          direction="row"
-          justifyContent="space-between"
-          alignItems="center"
-          height={40}
-          //mb={3}
-          //mx={3}
-          //pb={2}
-          //sx={{ borderBottom: `0.5px solid ${theme.palette.text.primary}` }}
-        >
+        <Stack direction="row" justifyContent="space-between" alignItems="center" height={40}>
           <Stack direction="row" spacing={2} alignItems="center">
-            {filters.includes('contracts') && (
+            {filters.includes('contract') && (
               <AutocompleteButton
                 defaultLabel="Contracts"
-                options={contracts}
-                value={contractState}
-                onChange={setContractState}
+                label={contractState ? (contracts.find((c) => c.id === contractState) || {}).label : 'Contracts'}
                 width={90}
+                autocompleteProps={{
+                  id: 'contractState',
+                  options: contracts,
+                  getOptionLabel: (option) => option.label,
+                  autoHighlight: true,
+                  openOnFocus: true,
+                  value: contractState,
+                  onChange: (event, newValue) => setContractState(newValue.id),
+                  isOptionEqualToValue: (option, value) => option.id === value.id
+                }}
               />
             )}
-            {filters.includes('providers') && (
+            {filters.includes('provider') && (
               <AutocompleteButton
                 defaultLabel="Provider Groups"
-                options={providers}
-                value={providerState}
-                onChange={setProviderState}
                 withAllOption="All Provider Groups"
+                label={providerState ? (providers.find((p) => p.id === providerState) || {}).label : 'Provider Groups'}
+                autocompleteProps={{
+                  id: 'providerState',
+                  options: providers,
+                  getOptionLabel: (option) => option.label,
+                  autoHighlight: true,
+                  openOnFocus: true,
+                  value: providerState,
+                  onChange: (event, newValue) => setProviderState(newValue.id),
+                  isOptionEqualToValue: (option, value) => option.id === value.id
+                }}
+              />
+            )}
+            {filters.includes('measure') && (
+              <AutocompleteButton
+                defaultLabel="Measure"
+                label={measureState ? (measures.find((p) => p.id === measureState) || {}).label : 'Measure'}
+                autocompleteProps={{
+                  id: 'measureState',
+                  options: measures,
+                  getOptionLabel: (option) => option.label,
+                  autoHighlight: true,
+                  openOnFocus: true,
+                  value: measureState,
+                  onChange: (event, newValue) => setMeasureState(newValue.id),
+                  isOptionEqualToValue: (option, value) => option.id === value.id
+                }}
               />
             )}
             {filters.includes('measures') && (
-              <AutocompleteButton defaultLabel="Measures" options={measures} value={measureState} onChange={setMeasureState} />
+              <AutocompleteButton
+                defaultLabel="Measures"
+                label={'Measures'}
+                autocompleteProps={{
+                  id: 'measuresState',
+                  options: measures,
+                  getOptionLabel: (option) => option.label,
+                  autoHighlight: true,
+                  openOnFocus: true,
+                  value: measuresState,
+                  onChange: (event, newValue) => handleMeasuresChange(newValue),
+                  isOptionEqualToValue: (option, value) => {
+                    return option.id === value;
+                  },
+                  multiple: true,
+                  disableCloseOnSelect: true
+                }}
+              />
             )}
-            {filters.includes('srf') && <AutocompleteButton defaultLabel="SRF" options={srf} value={srfState} onChange={setSrfState} />}
+            {filters.includes('srf') && (
+              <AutocompleteButton
+                label={srfState ? (srf.find((s) => s.id === srfState) || {}).label : 'Srf'}
+                autocompleteProps={{
+                  id: 'srfState',
+                  options: srf,
+                  getOptionLabel: (option) => option.label,
+                  autoHighlight: true,
+                  openOnFocus: true,
+                  value: srfState,
+                  onChange: (event, newValue) => setSrfState(newValue.id),
+                  isOptionEqualToValue: (option, value) => option.id === value.id
+                }}
+              />
+            )}
             {filters.includes('measureStatus') && (
               <AutocompleteButton
-                defaultLabel="Measure Status"
-                options={measureStatusOptions}
-                value={measureStatusState}
-                onChange={setMeasureStatusState}
+                label={measureStatusState ? (measureStatusOptions.find((m) => m.id === measureStatusState) || {}).label : 'Measure Status'}
+                autocompleteProps={{
+                  id: 'measureStatusState',
+                  options: measureStatusOptions,
+                  getOptionLabel: (option) => option.label,
+                  autoHighlight: true,
+                  openOnFocus: true,
+                  value: measureStatusState,
+                  onChange: (event, newValue) => setMeasureStatusState(newValue.id),
+                  isOptionEqualToValue: (option, value) => option.id === value.id
+                }}
               />
             )}
           </Stack>

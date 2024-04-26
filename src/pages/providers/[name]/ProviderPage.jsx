@@ -121,7 +121,6 @@ export default function ProviderPage() {
       },
       minWidth: 200,
       valueGetter: (params) => {
-        console.log(params);
         return getSparklineData(params.data.numberOfGaps);
       }
     },

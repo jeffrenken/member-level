@@ -71,7 +71,7 @@ const MeasuresPage = () => {
 
   return (
     <Container maxWidth="xl" sx={{ marginBottom: '100px', marginTop: '20px' }}>
-      <Top filters={['contracts', 'providers', 'srf', 'measureStatus']} />
+      <Top filters={['contract', 'provider', 'srf', 'measureStatus']} />
 
       <Stack direction="row" alignItems="center" justifyContent="space-around" mb={4} px={0} mt={4}>
         <Stack direction="row" alignItems="center" justifyContent="space-around" spacing={3} mx={6}>
@@ -131,7 +131,7 @@ const MeasuresPage = () => {
       <Grid2 container spacing={2} sx={{ margin: '0 auto', mb: 3 }}>
         {measures?.map((measure) => (
           <Grid key={measure.id} m={1.35}>
-            <PieChart2 measure={measure} />
+            <PieChart2 measure={measure} chart="gradient" />
           </Grid>
         ))}
       </Grid2>

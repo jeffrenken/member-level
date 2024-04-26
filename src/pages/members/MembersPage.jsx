@@ -33,6 +33,8 @@ const memberInfoColumns = [
   'PRIMARY LANGUAGE'
 ];
 
+const srfOptions = ['Low Income Subsidy Copay Level', 'DUAL ELIGIBLE', 'DISABLED'];
+
 export default function MembersPage() {
   const { filteredMembers } = useFilteredMembers();
   const { data: measures } = useMeasures();
@@ -72,6 +74,7 @@ export default function MembersPage() {
         providerName: member.providerGroup['Provider'],
         url: `/members/${member['MEMBER ID']}`,
         providerUrl: `/providers/${member.providerGroup['Provider']}`,
+        ...member.srf,
         ...member.memberMeasures,
         ...member
       };
@@ -96,12 +99,18 @@ export default function MembersPage() {
     {
       field: 'srfCell',
       headerName: 'SRF',
-      type: 'numericColumn',
-      maxWidth: 100,
-      chartDataType: 'series',
-      filter: true,
-      cellRenderer: SrfRenderer,
-      enableRowGroup: true
+
+      children: srfOptions.map((srfOption) => {
+        return {
+          field: srfOption,
+          headerName: srfOption,
+          type: 'numericColumn',
+          chartDataType: 'series',
+          filter: true,
+          cellRenderer: SrfRenderer,
+          enableRowGroup: true
+        };
+      })
     },
     {
       field: 'numberOfGaps',
@@ -220,7 +229,7 @@ export default function MembersPage() {
   return (
     <>
       <Container maxWidth="xl" sx={{ mb: 3, mt: 3 }}>
-        <Top filters={['contracts']} />
+        <Top filters={['contract']} />
         <Typography variant="h2">All Members</Typography>
         <Box sx={{ height: 'calc(100vh - 200px)' }}>
           <AgGrid
