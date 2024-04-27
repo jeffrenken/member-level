@@ -1,7 +1,6 @@
 import { useMemo } from 'react';
 
 export default function useMembersFilteredByMeasures(members, measures) {
-  console.log(members, measures);
   const info = useMemo(() => {
     if (!members.length) {
       return {};
@@ -20,7 +19,6 @@ export default function useMembersFilteredByMeasures(members, measures) {
     });
 
     const measureNames = measures.map((m) => m['Measure Name']);
-    console.log(measureNames);
 
     let splitMembers = {};
     splitMembers.all = m;
@@ -31,7 +29,6 @@ export default function useMembersFilteredByMeasures(members, measures) {
     } else {
       splitMembers.numerator = m.filter((member) => member.measuresClosed.length);
       splitMembers.denominator = m.filter((member) => member.measuresOpen.length);
-      console.log(splitMembers);
     }
 
     let chartScale = [

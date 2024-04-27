@@ -25,8 +25,6 @@ export default function Measure() {
   //const [chartData, setChartData] = useState({});
   const { filteredMembers } = useFilteredMembers();
 
-  console.log(measureId);
-
   const measures = useMemo(() => {
     if (!measuresData) {
       return [];
@@ -38,10 +36,7 @@ export default function Measure() {
     return [m];
   }, [measuresData, measureId]);
 
-  console.log(measures);
-
   const { members, chartData } = useMembersFilteredByMeasures(filteredMembers, measures);
-  console.log({ members, chartData });
 
   useEffect(() => {
     setSrf(0);

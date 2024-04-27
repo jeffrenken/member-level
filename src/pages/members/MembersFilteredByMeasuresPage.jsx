@@ -1,20 +1,16 @@
 import useFilteredMembers from '@/api/useFilteredMembers';
 import useMeasures from '@/api/useMeasures';
-import PieChart2 from '@/components/charts/TestPie2';
-import AgGrid from '@/components/tables/AgGrid';
-import { GapRenderer, LinkRenderer, SrfRenderer } from '@/components/tables/CellRenderers';
+import useMembersFilteredByMeasures from '@/api/useMembersFilteredByMeasures';
+import MeasuresAutocomplete from '@/components/MeasuresAutocomplete';
+import GaugeChart from '@/components/charts/GaugeChart';
+import MembersByMeasureTable from '@/components/tables/MembersByMeasureTable';
 import Top from '@/layout/Top';
-import { measureFilterState } from '@/state/measureFilterState';
+import { measuresFilterState } from '@/state/measuresFilterState';
+import { srfFilterState } from '@/state/srfFilterState';
 import { Box, Container, Stack, Typography, useTheme } from '@mui/material';
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo } from 'react';
 import { useParams } from 'react-router-dom';
 import { useRecoilState, useRecoilValue } from 'recoil';
-import GaugeChart from '@/components/charts/GaugeChart';
-import { srfFilterState } from '@/state/srfFilterState';
-import MembersByMeasureTable from '@/components/tables/MembersByMeasureTable';
-import useMembersFilteredByMeasures from '@/api/useMembersFilteredByMeasures';
-import { measuresFilterState } from '@/state/measuresFilterState';
-import MeasuresAutocomplete from '@/components/MeasuresAutocomplete';
 
 export default function MembersFilteredByMeasuresPage() {
   const theme = useTheme();
@@ -25,8 +21,6 @@ export default function MembersFilteredByMeasuresPage() {
   //const [chartData, setChartData] = useState({});
   const { filteredMembers } = useFilteredMembers();
 
-  console.log(measureIds);
-
   const measures = useMemo(() => {
     if (!measuresData || !measureIds.length) {
       return [];
@@ -34,10 +28,7 @@ export default function MembersFilteredByMeasuresPage() {
     return measuresData.filter((measure) => measureIds.includes(measure.id));
   }, [measuresData, measureIds]);
 
-  console.log(measures);
-
   const { members, chartData } = useMembersFilteredByMeasures(filteredMembers, measures);
-  console.log(members?.denominator, chartData);
 
   useEffect(() => {
     setSrf(0);

@@ -338,19 +338,46 @@ export default function Map() {
                 <>
                   <AutocompleteButton
                     defaultLabel="Contracts"
-                    options={contracts}
-                    value={contractState}
-                    onChange={setContractState}
+                    label={contractState ? (contracts.find((c) => c.id === contractState) || {}).label : 'Contracts'}
                     width={90}
+                    autocompleteProps={{
+                      id: 'contractState',
+                      options: contracts,
+                      getOptionLabel: (option) => option.label,
+                      autoHighlight: true,
+                      openOnFocus: true,
+                      value: contractState,
+                      onChange: (event, newValue) => setContractState(newValue.id),
+                      isOptionEqualToValue: (option, value) => option.id === value.id
+                    }}
                   />
                   <AutocompleteButton
-                    defaultLabel="Measures"
-                    options={measures}
-                    value={measureState}
-                    onChange={handleMeasureChange}
-                    withAllOption="All Measures"
+                    defaultLabel="Measure"
+                    label={measureState ? (measures.find((p) => p.id === measureState) || {}).label : 'Measure'}
+                    autocompleteProps={{
+                      id: 'measureState',
+                      options: measures,
+                      getOptionLabel: (option) => option.label,
+                      autoHighlight: true,
+                      openOnFocus: true,
+                      value: measureState,
+                      onChange: (event, newValue) => handleMeasureChange(newValue.id),
+                      isOptionEqualToValue: (option, value) => option.id === value.id
+                    }}
                   />
-                  <AutocompleteButton defaultLabel="SRF" options={srf} value={srfState} onChange={setSrfState} />
+                  <AutocompleteButton
+                    label={srfState ? (srf.find((s) => s.id === srfState) || {}).label : 'Srf'}
+                    autocompleteProps={{
+                      id: 'srfState',
+                      options: srf,
+                      getOptionLabel: (option) => option.label,
+                      autoHighlight: true,
+                      openOnFocus: true,
+                      value: srfState,
+                      onChange: (event, newValue) => setSrfState(newValue.id),
+                      isOptionEqualToValue: (option, value) => option.id === value.id
+                    }}
+                  />{' '}
                 </>
               )}
             </Stack>

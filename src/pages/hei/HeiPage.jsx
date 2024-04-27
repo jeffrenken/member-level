@@ -18,7 +18,6 @@ const green = '#50CEB2';
 const red = '#F36959';
 
 function inRange(x, min, max) {
-  console.log(x, min, max);
   return (x - min) * (x - max) <= 0;
 }
 
@@ -39,10 +38,6 @@ export default function HeiPage() {
     let filtered = [...measuresData];
     if (measureStatus !== 'all') {
       filtered = filtered.filter((measure) => measure.status === measureStatus);
-    }
-
-    if (thresholdFilter) {
-      console.log(thresholdFilter);
     }
 
     let splitMembers = [];
@@ -66,10 +61,8 @@ export default function HeiPage() {
       let isCloseToNextThreshold = false;
       if (thresholdFilter) {
         ranges.forEach((range) => {
-          console.log(range);
           if (inRange(quotient, range[0], range[1])) {
             isCloseToNextThreshold = true;
-            console.log(measure);
           }
         });
       }
@@ -87,8 +80,6 @@ export default function HeiPage() {
 
     return splitMembers.sort((a, b) => b.abbreviation - a.abbreviation);
   }, [filteredMembers, srfId, measureStatus, measuresData, thresholdFilter]);
-
-  console.log(measures);
 
   const gridCards = [
     <HeiCard content="4" title={'Bottom Third'} color={green} />,
