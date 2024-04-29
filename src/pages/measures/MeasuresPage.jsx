@@ -10,17 +10,13 @@ import Grid2 from '@mui/material/Unstable_Grid2';
 import { useMemo } from 'react';
 import { useRecoilValue } from 'recoil';
 
-const reds = ['#f5a3a3', '#dc4242', '#fb2222'];
-const yellows = ['#f5f5a3', '#f5dc42', '#f5fb22'];
-const greens = ['#14620A', '#488740', '#A6DAA0'];
 const redGlowBoxShadow =
   '0 0 10px rgba(255, 0, 0, 0.6), 0 0 20px rgba(255, 0, 0, 0.8), 0 0 20px rgba(255, 0, 0, 0.4), 0 0 20px rgba(255, 0, 0, 0.2)';
 const yellowGlowBoxShadow =
   '0 0 10px rgba(255, 255, 0, 0.6), 0 0 20px rgba(255, 255, 0, 0.8), 0 0 20px rgba(255, 255, 0, 0.4), 0 0 20px rgba(255, 255, 0, 0.2)';
 const greenGlowBoxShadow =
   '0 0 10px rgba(0, 128, 0, 0.6), 0 0 20px rgba(0, 128, 0, 0.8), 0 0 20px rgba(0, 128, 0, 0.4), 0 0 20px rgba(0, 128, 0, 0.2)';
-const blue = 'rgba(146, 208,242, 1)';
-const purple = 'rgba(204, 181,250, 1)';
+
 const green = '#50CEB2';
 const red = '#F36959';
 
@@ -128,9 +124,9 @@ const MeasuresPage = () => {
           <Typography>Denominator</Typography>
         </Box>
       </Stack>
-      <Grid2 container spacing={2} sx={{ margin: '0 auto', mb: 3 }}>
+      <Grid2 container sx={{ margin: '0 auto', mb: 3 }} direction="row" justifyContent={'center'} alignItems="center">
         {measures?.map((measure) => (
-          <Grid key={measure.id} m={1.35}>
+          <Grid key={measure.id} m={1}>
             <PieChart2 measure={measure} chart="gradient" />
           </Grid>
         ))}

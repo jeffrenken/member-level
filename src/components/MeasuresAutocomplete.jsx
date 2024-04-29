@@ -27,8 +27,6 @@ export default function MeasuresAutocomplete() {
       return;
     }
 
-    console.log(newValues);
-
     setMeasuresState(newValues);
   };
 

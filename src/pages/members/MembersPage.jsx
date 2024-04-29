@@ -15,8 +15,6 @@ import Top from '@/layout/Top';
 import { Box, Container, Typography } from '@mui/material';
 import { useMemo } from 'react';
 
-const randomBoolean = () => Math.random() > 0.5;
-const randomIntegerBetween = (min, max) => Math.floor(Math.random() * (max - min + 1) + min);
 const randomHalfNumberBetween = (min, max) => Math.floor(Math.random() * (max - min + 1) + min) / 2;
 
 const memberInfoColumns = [

@@ -1,18 +1,16 @@
 import useFilteredMembers from '@/api/useFilteredMembers';
 import useMeasures from '@/api/useMeasures';
 import HeiCard from '@/components/cards/HeiCard';
-import MeasureCountCard from '@/components/cards/MeasureCountCard';
 import PieChart2 from '@/components/charts/TestPie2';
 import Top from '@/layout/Top';
 import { measureStatusFilterState } from '@/state/measureStatusFilterState';
 import { srfFilterState } from '@/state/srfFilterState';
+import { thresholdFilterState } from '@/state/thresholdFilterState';
 import { Box, Container, Grid, Stack, Typography, useTheme } from '@mui/material';
 import Grid2 from '@mui/material/Unstable_Grid2';
-import React, { useMemo } from 'react';
+import { useMemo } from 'react';
 import { useRecoilValue } from 'recoil';
 import ThresholdSelect from './components/ThresholdSelect';
-import useMembersFilteredByMeasures from '@/api/useMembersFilteredByMeasures';
-import { thresholdFilterState } from '@/state/thresholdFilterState';
 
 const green = '#50CEB2';
 const red = '#F36959';
@@ -133,10 +131,10 @@ export default function HeiPage() {
       <Box mb={2}>
         <ThresholdSelect />
       </Box>
-      <Grid2 container spacing={2} sx={{ margin: '0 auto', mb: 3 }}>
+      <Grid2 container sx={{ margin: '0 auto', mb: 3 }} direction="row" justifyContent={'center'} alignItems="center">
         {measures.length ? (
           measures?.map((measure) => (
-            <Grid key={measure.id} m={1.35}>
+            <Grid key={measure.id} m={1}>
               <PieChart2 measure={measure} chart="progress" />
             </Grid>
           ))

@@ -1,18 +1,16 @@
 import useFilteredMembers from '@/api/useFilteredMembers';
 import useMeasures from '@/api/useMeasures';
+import useMembersFilteredByMeasures from '@/api/useMembersFilteredByMeasures';
+import GaugeChart from '@/components/charts/GaugeChart';
 import PieChart2 from '@/components/charts/TestPie2';
-import AgGrid from '@/components/tables/AgGrid';
-import { GapRenderer, LinkRenderer, SrfRenderer } from '@/components/tables/CellRenderers';
+import MembersByMeasureTable from '@/components/tables/MembersByMeasureTable';
 import Top from '@/layout/Top';
 import { measureFilterState } from '@/state/measureFilterState';
+import { srfFilterState } from '@/state/srfFilterState';
 import { Box, Container, Stack, Typography, useTheme } from '@mui/material';
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo } from 'react';
 import { useParams } from 'react-router-dom';
 import { useRecoilState, useRecoilValue } from 'recoil';
-import GaugeChart from '@/components/charts/GaugeChart';
-import { srfFilterState } from '@/state/srfFilterState';
-import MembersByMeasureTable from '@/components/tables/MembersByMeasureTable';
-import useMembersFilteredByMeasures from '@/api/useMembersFilteredByMeasures';
 
 export default function Measure() {
   const theme = useTheme();

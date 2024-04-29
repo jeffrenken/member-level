@@ -15,14 +15,6 @@ export default function ProgressChart({ measure }) {
     ];
   }
   const rawData = chartScale;
-  /*   const totalData = [];
-  for (let i = 0; i < rawData[0].length; ++i) {
-    let sum = 0;
-    for (let j = 0; j < rawData.length; ++j) {
-      sum += rawData[j][i];
-    }
-    totalData.push(sum);
-  } */
 
   const colors = [theme.palette.cardRed, theme.palette.cardYellow, theme.palette.cardGreen];
   let series = ['Lower', 'Middle', 'Upper'].map((name, i) => {
@@ -75,7 +67,26 @@ export default function ProgressChart({ measure }) {
       axisPointer: {
         // Use axis to trigger tooltip
         type: 'shadow' // 'shadow' as default; can also be 'line' or 'shadow'
+      },
+      valueFormatter: (value) => {
+        //might need a better way to do this
+        let val = value;
+        let valRange = [
+          `${measure?.bottom_third_lower_value ?? ''} - ${measure?.bottom_third_upper_value ?? ''}`,
+          `${measure?.middle_third_lower_value ?? ''} - ${measure?.middle_third_upper_value ?? ''}`,
+          `${measure?.top_third_lower_value ?? ''} - ${measure?.top_third_upper_value ?? ''}`
+        ];
+        const valueIndex = rawData.findIndex((data) => data === val);
+        valueIndex === 1 && (val = rawData[0] + rawData[1]);
+        valueIndex === chartScale.length - 1 && (val = 100);
+        if (val) {
+          val = Math.round(val);
+        }
+        return valRange[valueIndex] || val;
       }
+      /* formatter: function (params) {
+        return params.map((param) => `${param.seriesName} - ${param.value.toFixed(2)}`).join('<br />');
+      } */
     },
     legend: {
       show: false
