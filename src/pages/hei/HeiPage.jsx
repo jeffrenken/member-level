@@ -11,6 +11,9 @@ import Grid2 from '@mui/material/Unstable_Grid2';
 import { useMemo } from 'react';
 import { useRecoilValue } from 'recoil';
 import ThresholdSelect from './components/ThresholdSelect';
+import MeasureCountCard from '@/components/cards/MeasureCountCard';
+import DonutChart from '@/components/charts/DonutChart';
+import Card from '@/components/Card';
 
 const green = '#50CEB2';
 const red = '#F36959';
@@ -33,7 +36,7 @@ export default function HeiPage() {
       return [];
     }
 
-    let filtered = [...measuresData];
+    let filtered = measuresData.filter((measure) => measure?.top_third_upper_value);
     if (measureStatus !== 'all') {
       filtered = filtered.filter((measure) => measure.status === measureStatus);
     }
@@ -79,13 +82,51 @@ export default function HeiPage() {
     return splitMembers.sort((a, b) => b.abbreviation - a.abbreviation);
   }, [filteredMembers, srfId, measureStatus, measuresData, thresholdFilter]);
 
-  const gridCards = [
-    <HeiCard content="4" title={'Bottom Third'} color={green} />,
-    <HeiCard content={'33'} title={'Middle Third'} color={green} />,
-    <HeiCard content={'100%'} title={'Top Third'} color={red} />,
-    <HeiCard content={'22%'} title={'SRF Percentage'} color={red} />,
-    <HeiCard content={'22%'} title={'SRF By Category'} color={red} />,
-    <HeiCard content={'22%'} title={'HEI Bonus Percentage'} color={red} />
+  const top = measures.slice(0, 2);
+  const middle = measures.slice(3, 6);
+  const lower = measures.slice(6, measures.length);
+  const chartData = [
+    {
+      value: (lower.length / measures.length) * 100,
+      name: 'Bottom Third'
+    },
+    {
+      value: (middle.length / measures.length) * 100,
+      name: 'Middle Third'
+    },
+    {
+      value: (top.length / measures.length) * 100,
+      name: 'Top Third'
+    }
+  ];
+
+  const srfPercent = filteredMembers.length
+    ? ((filteredMembers.filter((member) => member.isSrf).length / filteredMembers.length) * 100).toFixed(0) + '%'
+    : '-';
+
+  const background = theme.palette.background.paper;
+
+  const gridCards1 = [
+    <MeasureCountCard measures={lower} label={'Bottom Third'} color={green} size="md" />,
+    <MeasureCountCard measures={middle} label={'Middle Third'} color={green} size="md" />,
+    <MeasureCountCard measures={top} label={'Top Third'} color={green} size="md" />
+  ];
+  const gridCards2 = [
+    <HeiCard content={srfPercent} title={'SRF Percentage'} color={red} />,
+    <HeiCard content={'22%'} title={'HEI Bonus Percentage'} color={red} />,
+    <Box
+      sx={{
+        height: '200px',
+        width: '330px',
+        borderRadius: '10px',
+        border: `2px solid #aaa`,
+        bgcolor: background,
+        boxShadow: '0px 4px 8px rgb(0 0 0 / 0.2)',
+        py: 0.5
+      }}
+    >
+      <DonutChart data={chartData} />
+    </Box>
   ];
 
   return (
@@ -95,9 +136,17 @@ export default function HeiPage() {
         <Typography align="center" my={2} ml={2} sx={{ fontSize: '2rem', fontWeight: 600, letterSpacing: '2px' }}>
           HEI Title
         </Typography>
+        <Typography>Not sure how to handle this layout. Maybe more charts for other percentages?</Typography>
       </Box>
       <Grid2 container sx={{ margin: '0 auto', mb: 3 }} justifyContent={'center'}>
-        {gridCards?.map((card) => (
+        {gridCards1?.map((card) => (
+          <Grid key={card.id} m={1}>
+            {card}
+          </Grid>
+        ))}
+      </Grid2>
+      <Grid2 container sx={{ margin: '0 auto', mb: 3 }} justifyContent={'center'}>
+        {gridCards2?.map((card) => (
           <Grid key={card.id} m={1}>
             {card}
           </Grid>

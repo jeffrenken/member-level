@@ -6,16 +6,23 @@ import { IconArrowRight } from '@tabler/icons-react';
 
 const lightBlue = 'rgb(222, 237, 252, 1)';
 
-export default function HeiCard({ title, content, isLoading, color }) {
+const sizeStyles = {
+  sm: { width: 160, fontSize: '5rem', lineHeight: '4rem' },
+  md: { width: 200, fontSize: '5rem', lineHeight: '5rem' },
+  lg: { width: 300, fontSize: '10rem', lineHeight: '5rem' }
+};
+
+export default function HeiCard({ title, content, isLoading, color, size = 'md' }) {
   const [isFlipped, setIsFlipped] = useState(false);
   const theme = useTheme();
 
-  const width = 160;
+  const isLg = size === 'lg';
+  const styles = sizeStyles[size];
 
   const background = theme.palette.background.paper;
 
   const card = (
-    <Card sx={{ width: width, height: width, backgroundColor: 'transparent' }}>
+    <Card sx={{ width: styles.width, height: styles.width, backgroundColor: 'transparent' }}>
       <Box
         //className="front"
         sx={{
@@ -36,7 +43,7 @@ export default function HeiCard({ title, content, isLoading, color }) {
               </Typography>
             )}
           </Stack>
-          <Typography align="center" sx={{ fontSize: '3.5rem', fontWeight: 600, lineHeight: '4rem', color: color }}>
+          <Typography align="center" sx={{ fontSize: styles.fontSize, fontWeight: 600, lineHeight: styles.lineHeight, color: color }}>
             {content}
           </Typography>
           <Typography sx={{ fontWeight: 500, fontSize: '1rem' }} align="center">
