@@ -113,7 +113,7 @@ export default function HeiPage() {
   ];
   const gridCards2 = [
     <HeiCard content={srfPercent} title={'SRF Percentage'} color={red} />,
-    <HeiCard content={'22%'} title={'HEI Bonus Percentage'} color={red} />,
+    <HeiCard content={'20%'} title={'HEI Bonus Percentage'} color={red} />,
     <Box
       sx={{
         height: '200px',

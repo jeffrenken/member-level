@@ -64,6 +64,10 @@ export default function ProgressChart({ measure }) {
   const option = {
     tooltip: {
       trigger: 'axis',
+      backgroundColor: theme.palette.background.semiTransparent2,
+      textStyle: {
+        color: theme.palette.text.primary
+      },
       axisPointer: {
         // Use axis to trigger tooltip
         type: 'shadow' // 'shadow' as default; can also be 'line' or 'shadow'

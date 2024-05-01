@@ -7,7 +7,7 @@ import { IconArrowRight } from '@tabler/icons-react';
 const lightBlue = 'rgb(222, 237, 252, 1)';
 
 const sizeStyles = {
-  sm: { width: 160, fontSize: '5rem', lineHeight: '4rem' },
+  sm: { width: 160, fontSize: '3.5rem', lineHeight: '4rem' },
   md: { width: 200, fontSize: '5rem', lineHeight: '5rem' },
   lg: { width: 300, fontSize: '10rem', lineHeight: '5rem' }
 };

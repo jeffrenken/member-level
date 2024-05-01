@@ -3,6 +3,7 @@ import useMeasures from '@/api/useMeasures';
 import useMembersFilteredByMeasures from '@/api/useMembersFilteredByMeasures';
 import MeasuresAutocomplete from '@/components/MeasuresAutocomplete';
 import HeiCard from '@/components/cards/HeiCard';
+import BarChart from '@/components/charts/BarChart';
 import GaugeChart from '@/components/charts/GaugeChart';
 import MembersByMeasureTable from '@/components/tables/MembersByMeasureTable';
 import Top from '@/layout/Top';
@@ -29,15 +30,29 @@ export default function MembersFilteredByMeasuresPage() {
     return measuresData.filter((measure) => measureIds.includes(measure.id));
   }, [measuresData, measureIds]);
 
-  const { members, chartData } = useMembersFilteredByMeasures(filteredMembers, measures);
+  const { members } = useMembersFilteredByMeasures(filteredMembers, measures);
 
   useEffect(() => {
     setSrf(0);
   }, []);
 
+  const chartData = useMemo(() => {
+    console.log(members);
+    if (!members?.all || !measuresData.length) {
+      return [];
+    }
+    let gapCounts = [];
+
+    measuresData.forEach((measure, i) => {
+      gapCounts.push({ label: i.toString(), value: members.all.filter((member) => member.measuresOpen.length === i).length });
+    });
+    return gapCounts;
+  }, [members, measuresData]);
+
   if (isLoading) {
     return <div>Loading...</div>;
   }
+  console.log(chartData);
 
   return (
     <Container maxWidth="lg" sx={{ marginTop: '20px', marginBottom: '20px' }}>
@@ -53,10 +68,13 @@ export default function MembersFilteredByMeasuresPage() {
           <MeasuresAutocomplete />
         </Box>
         <Stack direction="row" justifyContent={'flex-end'} alignItems={'center'} spacing={1} pr={2}>
-          <HeiCard content={'82%'} title={'Members with Multiple Gaps'} color={theme.palette.cardRed} />,
-          <HeiCard content={'43%'} title={'Members with 3+ Gaps'} color={theme.palette.cardRed} />,
+          <HeiCard content={'82%'} title={'Members with Multiple Gaps'} color={theme.palette.cardRed} size="sm" />
+          <HeiCard content={'43%'} title={'Members with 3+ Gaps'} color={theme.palette.cardRed} size="sm" />
         </Stack>
       </Stack>
+      <Box height={200} mt={3}>
+        <BarChart data={chartData} title="Distribution of Members with Gaps" />
+      </Box>
       <Box mt={3} />
       {members?.denominator && <MembersByMeasureTable rows={members?.denominator} />}
     </Container>

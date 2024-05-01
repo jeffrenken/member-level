@@ -19,7 +19,12 @@ export default function DonutChart({ data }) {
   const option = {
     tooltip: {
       trigger: 'item',
-      valueFormatter: (value) => value + '%'
+      valueFormatter: (value) => value + '%',
+      backgroundColor: theme.palette.background.semiTransparent2,
+      textStyle: {
+        color: theme.palette.text.primary
+      },
+      borderColor: theme.palette.divider
     },
     legend: {
       orient: 'vertical',
