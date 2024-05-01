@@ -3,7 +3,16 @@ import PlanAutocomplete from '@/components/inputs/PlanAutocomplete';
 import RatingAutocomplete from '@/components/inputs/RatingAutocomplete';
 import StatesAutocomplete from '@/components/inputs/StatesAutocomplete';
 import YearAutocomplete from '@/components/inputs/YearAutocomplete';
-import { IconDashboard, IconExclamationCircle, IconLayoutGrid, IconMap, IconPerfume, IconRainbow, IconTable } from '@tabler/icons-react';
+import {
+  IconDashboard,
+  IconExclamationCircle,
+  IconLayoutGrid,
+  IconMap,
+  IconPerfume,
+  IconRainbow,
+  IconTable,
+  IconUserHeart
+} from '@tabler/icons-react';
 
 export const items = [
   {
@@ -42,7 +51,7 @@ export const items = [
       },
       {
         id: 'members/filters/measures',
-        title: 'New',
+        title: 'Multi-Measure',
         type: 'item',
         url: '/members/filters/measures',
         icon: IconLayoutGrid,
@@ -53,7 +62,7 @@ export const items = [
         title: 'HEI',
         type: 'item',
         url: '/hei',
-        icon: IconLayoutGrid,
+        icon: IconUserHeart,
         breadcrumbs: false
       },
       {

@@ -96,7 +96,7 @@ const axiosClient = axios.create({
 });
 
 const fakeSrf = [
-  { id: 1, label: 'All SRF', value: undefined },
+  { id: 1, label: 'All Members', value: undefined },
   { id: 2, label: 'SRF Only', value: true },
   { id: 3, label: 'Non-SRF Only', value: false }
 ];

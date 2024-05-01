@@ -133,10 +133,12 @@ export default function HeiPage() {
     <Container maxWidth="xl" sx={{ marginBottom: '100px', marginTop: '20px' }}>
       <Top filters={['contract', 'provider', 'srf', 'measureStatus']} />
       <Box px={0}>
-        <Typography align="center" my={2} ml={2} sx={{ fontSize: '2rem', fontWeight: 600, letterSpacing: '2px' }}>
+        <Typography align="center" my={2} ml={2} variant="h2">
           HEI Title
         </Typography>
-        <Typography>Not sure how to handle this layout. Maybe more charts for other percentages?</Typography>
+        <Typography>
+          Not sure how to handle this layout or chart display/separation yet. And should chart respond to measure filter below?
+        </Typography>
       </Box>
       <Grid2 container sx={{ margin: '0 auto', mb: 3 }} justifyContent={'center'}>
         {gridCards1?.map((card) => (
@@ -174,7 +176,7 @@ export default function HeiPage() {
         <PieChart2 measure={sampleMeasure} disabled /> */}
       </Stack>
       <Box sx={{ borderBottom: `1px solid #aaa`, margin: '0 auto', width: '95%' }} />
-      <Typography align="center" mt={3} ml={2} sx={{ fontSize: '2rem', fontWeight: 600, letterSpacing: '2px' }}>
+      <Typography align="center" mt={3} ml={2} variant="h2">
         Current HEI
       </Typography>
       <Box mb={2}>

@@ -156,6 +156,8 @@ export default function AgGrid({ rowData, columnDefs, sideBar2, csvDownload, sav
     };
   }, []);
 
+  console.log(rowData);
+
   return (
     <>
       {(csvDownload || saveFiltersButton) && (
@@ -191,6 +193,7 @@ export default function AgGrid({ rowData, columnDefs, sideBar2, csvDownload, sav
           rowMultiSelectWithClick={true}
           onGridReady={onGridReady}
           enableCharts
+          domLayout={!rowData.length || rowData.length > 10 ? 'normal' : 'autoHeight'}
           defaultCsvExportParams={{
             fileName: 'member-level-export',
             processCellCallback: (cell) => {

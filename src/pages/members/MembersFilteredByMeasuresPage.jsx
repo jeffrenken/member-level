@@ -2,6 +2,7 @@ import useFilteredMembers from '@/api/useFilteredMembers';
 import useMeasures from '@/api/useMeasures';
 import useMembersFilteredByMeasures from '@/api/useMembersFilteredByMeasures';
 import MeasuresAutocomplete from '@/components/MeasuresAutocomplete';
+import HeiCard from '@/components/cards/HeiCard';
 import GaugeChart from '@/components/charts/GaugeChart';
 import MembersByMeasureTable from '@/components/tables/MembersByMeasureTable';
 import Top from '@/layout/Top';
@@ -34,54 +35,6 @@ export default function MembersFilteredByMeasuresPage() {
     setSrf(0);
   }, []);
 
-  /* 
-  const members = useMemo(() => {
-    if (!filteredMembers.length || !measure) {
-      return null;
-    }
-
-    let m = filteredMembers.map((member) => {
-      return {
-        ...member,
-        name: member['FIRST NAME'] + ' ' + member['LAST NAME'],
-        id: member['MEMBER ID'],
-        srf: member.isSrf,
-        numberOfGaps: member.measuresOpen.length,
-        url: `/members/${member['MEMBER ID']}`,
-        date: '2024-01-01'
-      };
-    });
-
-    let splitMembers = {};
-    splitMembers.all = m;
-
-    splitMembers.numerator = m.filter((member) => member?.measuresClosed.includes(measure['Measure Name']));
-    splitMembers.denominator = m.filter((member) => member?.measuresOpen.includes(measure['Measure Name']));
-
-    let chartScale = [
-      [75 / 100, '#d27e6f'],
-      [82 / 100, '#dcb05c'],
-      [100 / 100, '#a1d99e']
-    ];
-
-    if (measure?.bottom_third_upper_value) {
-      chartScale = [
-        [measure?.bottom_third_upper_value / 100, '#d27e6f'],
-        [measure?.middle_third_upper_value / 100, '#dcb05c'],
-        [measure?.top_third_upper_value / 100, '#a1d99e']
-      ];
-    }
-    const starsValue = splitMembers.numerator.length / (splitMembers.denominator.length + splitMembers.numerator.length);
-    const heiValue = filteredMembers.filter((member) => member.isSrf).length / filteredMembers.length;
-    setChartData({
-      scale: chartScale,
-      starsValue: starsValue,
-      heiValue: heiValue
-    });
-
-    return splitMembers;
-  }, [measure, filteredMembers]); */
-
   if (isLoading) {
     return <div>Loading...</div>;
   }
@@ -89,34 +42,23 @@ export default function MembersFilteredByMeasuresPage() {
   return (
     <Container maxWidth="lg" sx={{ marginTop: '20px', marginBottom: '20px' }}>
       <Top filters={['provider', 'contract', 'measures']} />
-      <Stack direction="row" justifyContent="space-around" alignItems={'center'} spacing={4}>
+      <Stack direction="row" justifyContent="space-around" alignItems={'center'} spacing={4} width={'85%'} sx={{ margin: '0 auto' }}>
         <Box>
-          Multiselect on Measures. Shows members who have an open gap in ALL of the selected measure. Let me know if it should be an open
-          gap in any of the selected measures
+          <Typography variant="h2" mb={3}>
+            Multi-Measure
+          </Typography>
+          <Typography mb={3} variant="body1">
+            Select multiple measures fromt he dropdown to identify members with open gaps across the chosen measures.
+          </Typography>
+          <MeasuresAutocomplete />
         </Box>
-        <Stack direction="row" justifyContent={'flex-end'} alignItems={'center'} spacing={3} pr={2}>
-          <Box>
-            <Box minWidth={170} height={120}>
-              <GaugeChart chartScale={chartData?.scale} chartValue={chartData?.starsValue} />
-            </Box>
-            <Typography sx={{ fontSize: '0.7rem', marginTop: '-8px' }} align="center">
-              Stars Performance
-            </Typography>
-          </Box>
-          <Box>
-            <Box minWidth={170} height={120}>
-              <GaugeChart chartScale={chartData?.scale} chartValue={chartData?.heiValue} />
-            </Box>
-            <Typography sx={{ fontSize: '0.7rem', marginTop: '-8px' }} align="center">
-              Health Equity Performance
-            </Typography>
-          </Box>
+        <Stack direction="row" justifyContent={'flex-end'} alignItems={'center'} spacing={1} pr={2}>
+          <HeiCard content={'82%'} title={'Members with Multiple Gaps'} color={theme.palette.cardRed} />,
+          <HeiCard content={'43%'} title={'Members with 3+ Gaps'} color={theme.palette.cardRed} />,
         </Stack>
       </Stack>
-      <Typography>Maybe measure filter below?</Typography>
-      <MeasuresAutocomplete />
       <Box mt={3} />
-      <MembersByMeasureTable rows={members?.denominator} />
+      {members?.denominator && <MembersByMeasureTable rows={members?.denominator} />}
     </Container>
   );
 }

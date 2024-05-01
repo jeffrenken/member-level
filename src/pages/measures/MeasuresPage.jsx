@@ -70,14 +70,14 @@ const MeasuresPage = () => {
       <Top filters={['contract', 'provider', 'srf', 'measureStatus']} />
 
       <Stack direction="row" alignItems="center" justifyContent="space-around" mb={4} px={0} mt={4}>
-        <Stack direction="row" alignItems="center" justifyContent="space-around" spacing={3} mx={6}>
+        <Stack direction="row" alignItems="center" justifyContent="space-around" spacing={3} mx={0}>
           <Stack direction="row" alignItems="center" justifyContent="space-around" spacing={1} pt={8}>
             <MeasureCountCard measures={onTrack4} label={'On Track - 4 Stars'} color={green} />
             <MeasureCountCard measures={onTrack5} label={'On Track - 5 Stars'} color={green} />
             <MeasureCountCard measures={offTrack} label={'Off Track'} color={red} />
           </Stack>
           <Box px={0}>
-            <Typography align="center" my={2} ml={2} sx={{ fontSize: '2rem', fontWeight: 600, letterSpacing: '2px' }}>
+            <Typography align="center" my={2} ml={2} variant="h2">
               Measure Overview
             </Typography>
             <Typography align="left" variant="body1" sx={{ fontWeight: 600 }}>
@@ -113,7 +113,7 @@ const MeasuresPage = () => {
         <PieChart2 measure={sampleMeasure} disabled /> */}
       </Stack>
       <Box sx={{ borderBottom: `1px solid #aaa`, margin: '0 auto', width: '95%' }} />
-      <Typography align="center" mt={3} ml={2} sx={{ fontSize: '2rem', fontWeight: 600, letterSpacing: '2px' }}>
+      <Typography align="center" mt={3} ml={2} variant="h2">
         Current Measure Performance
       </Typography>
       <Stack direction="row" alignItems="center" justifyContent="center" spacing={3} mb={3} mt={1}>
