@@ -1,18 +1,4 @@
-import ContractsAutocomplete from '@/components/inputs/ContractsAutocomplete';
-import PlanAutocomplete from '@/components/inputs/PlanAutocomplete';
-import RatingAutocomplete from '@/components/inputs/RatingAutocomplete';
-import StatesAutocomplete from '@/components/inputs/StatesAutocomplete';
-import YearAutocomplete from '@/components/inputs/YearAutocomplete';
-import {
-  IconDashboard,
-  IconExclamationCircle,
-  IconLayoutGrid,
-  IconMap,
-  IconPerfume,
-  IconRainbow,
-  IconTable,
-  IconUserHeart
-} from '@tabler/icons-react';
+import { IconChartBar, IconLayoutGrid, IconMap, IconTable, IconTableHeart, IconUserHeart } from '@tabler/icons-react';
 
 export const items = [
   {
@@ -54,7 +40,7 @@ export const items = [
         title: 'Multi-Measure',
         type: 'item',
         url: '/members/filters/measures',
-        icon: IconLayoutGrid,
+        icon: IconChartBar,
         breadcrumbs: false
       },
       {
@@ -86,7 +72,7 @@ export const items = [
         title: 'Members',
         type: 'item',
         url: '/members',
-        icon: IconTable,
+        icon: IconTableHeart,
         breadcrumbs: false
       },
       {
