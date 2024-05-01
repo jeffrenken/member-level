@@ -4,7 +4,6 @@ import useMembersFilteredByMeasures from '@/api/useMembersFilteredByMeasures';
 import MeasuresAutocomplete from '@/components/MeasuresAutocomplete';
 import HeiCard from '@/components/cards/HeiCard';
 import BarChart from '@/components/charts/BarChart';
-import GaugeChart from '@/components/charts/GaugeChart';
 import MembersByMeasureTable from '@/components/tables/MembersByMeasureTable';
 import Top from '@/layout/Top';
 import { measuresFilterState } from '@/state/measuresFilterState';
@@ -37,7 +36,6 @@ export default function MembersFilteredByMeasuresPage() {
   }, []);
 
   const chartData = useMemo(() => {
-    console.log(members);
     if (!members?.all || !measuresData.length) {
       return [];
     }
@@ -52,7 +50,6 @@ export default function MembersFilteredByMeasuresPage() {
   if (isLoading) {
     return <div>Loading...</div>;
   }
-  console.log(chartData);
 
   return (
     <Container maxWidth="lg" sx={{ marginTop: '20px', marginBottom: '20px' }}>

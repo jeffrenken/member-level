@@ -12,7 +12,6 @@ const chartScaleFake = [
 ];
 
 export default function DonutChart({ data }) {
-  console.log(data);
   const theme = useTheme();
   const colors = [theme.palette.cardRed, theme.palette.cardYellow, theme.palette.cardGreen];
 

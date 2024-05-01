@@ -45,7 +45,7 @@ const members = memberData.map((member, i) => {
 
 const fakeMeasures = measures.map((measure, i) => ({
   ...measure,
-  id: i + 1,
+  //id: i + 1,
   label: measure['Measure Name'],
   value: measure['Acronym'],
   abbreviation: measure['Acronym']

@@ -19,7 +19,7 @@ export default function Measure() {
   const { data: measuresData, isLoading } = useMeasures();
   const measureFilterId = useRecoilValue(measureFilterState);
   const [srf, setSrf] = useRecoilState(srfFilterState);
-  const measureId = measureFilterId || id;
+  const measureId = id || measureFilterId;
   //const [chartData, setChartData] = useState({});
   const { filteredMembers } = useFilteredMembers();
 
@@ -41,15 +41,15 @@ export default function Measure() {
   }, []);
 
   const measureWithData = useMemo(() => {
-    if (!measuresData || !members) {
+    if (!measuresData || !members || !measures.length) {
       return null;
     }
-    let measureCopy = { ...measuresData[0] };
+    let measureCopy = { ...measures[0] };
     measureCopy.numerator = members.numerator.length;
     measureCopy.denominator = members.denominator.length + members.numerator.length;
     measureCopy.forecast = 'N/A';
     return measureCopy;
-  }, [measuresData, measureId, members, srf]);
+  }, [measuresData, measureId, members]);
 
   if (isLoading) {
     return <div>Loading...</div>;

@@ -156,8 +156,6 @@ export default function AgGrid({ rowData, columnDefs, sideBar2, csvDownload, sav
     };
   }, []);
 
-  console.log(rowData);
-
   return (
     <>
       {(csvDownload || saveFiltersButton) && (

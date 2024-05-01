@@ -2,7 +2,7 @@ import useMeasures from '@/api/useMeasures';
 import useMembers from '@/api/useMembers';
 import Card from '@/components/Card';
 import AgGrid from '@/components/tables/AgGrid';
-import { MeasureRenderer, TextRenderer } from '@/components/tables/CellRenderers';
+import { LinkRenderer, MeasureRenderer, TextRenderer } from '@/components/tables/CellRenderers';
 import { Box, Container, Typography } from '@mui/material';
 import { useMemo } from 'react';
 import { Link, useParams } from 'react-router-dom';
@@ -39,7 +39,8 @@ export default function Member() {
     let measures = measuresData.map((measure) => {
       return {
         label: measure['Measure Name'],
-        value: getValue(member.memberMeasures[measure['Measure Name']])
+        value: getValue(member.memberMeasures[measure['Measure Name']]),
+        url: `/measures/${measure.id}`
       };
     });
 
@@ -47,7 +48,7 @@ export default function Member() {
   }, [member, measuresData]);
 
   const columnDefs = [
-    { field: 'label', headerName: 'Measure', filter: true, chartDataType: 'category', maxWidth: 500, cellRenderer: TextRenderer },
+    { field: 'label', headerName: 'Measure', filter: true, chartDataType: 'category', maxWidth: 500, cellRenderer: LinkRenderer },
     {
       field: 'value',
       headerName: 'Status',
