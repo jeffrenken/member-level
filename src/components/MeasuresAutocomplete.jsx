@@ -42,7 +42,7 @@ export default function MeasuresAutocomplete() {
       //withAllOption={'All Measures'}
       buttonProps={{
         name: 'measures',
-        color: 'primary',
+        color: 'neutral',
         variant: 'outlined',
         size: 'large'
       }}

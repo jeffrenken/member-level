@@ -9,7 +9,7 @@ import Header from './header/Header2';
 import { IconPlus } from '@tabler/icons-react';
 import SaveToFavoritesDialog from '@/components/dialogs/SaveToFavoritesDialog';
 
-const drawerWidth = 100;
+const drawerWidth = 110;
 
 const Main = styled('main', { shouldForwardProp: (prop) => prop !== 'open' })(({ theme, open }) => ({
   ...theme.typography.mainContent,

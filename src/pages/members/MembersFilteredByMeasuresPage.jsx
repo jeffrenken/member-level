@@ -65,12 +65,12 @@ export default function MembersFilteredByMeasuresPage() {
         </Box>
       </Stack>
       <Grid container mt={2} justifyContent={'center'} spacing={2}>
-        <Grid item xs={12} md={7}>
+        <Grid item md={12} lg={7}>
           <Box height={200} width={600} sx={{ margin: '0 auto' }}>
             <BarChart data={chartData.slice(0, 15)} title="Distribution of Members with Gaps" />
           </Box>
         </Grid>
-        <Grid item xs={12} md={5}>
+        <Grid item md={12} lg={5}>
           <Stack direction="row" justifyContent={'center'} alignItems={'center'} spacing={2} pr={2}>
             <HeiCard content={'82%'} title={'Members with Multiple Gaps'} color={theme.palette.cardRed} size="md" />
             <HeiCard content={'43%'} title={'Members with 3+ Gaps'} color={theme.palette.cardRed} size="md" />

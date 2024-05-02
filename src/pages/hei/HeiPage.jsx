@@ -132,82 +132,57 @@ export default function HeiPage() {
   return (
     <Container maxWidth="xl" sx={{ marginBottom: '100px', marginTop: '20px' }}>
       <Top filters={['contract', 'provider', 'srf', 'measureStatus']} />
-
-      <Stack direction="row" alignItems="center" justifyContent="space-around" spacing={3} mx={0}>
-        <Box px={0}>
-          <Typography align="center" my={2} ml={2} variant="h2">
-            Health Equity Index
-          </Typography>
-          <Typography align="left" variant="body1" sx={{ fontWeight: 600 }}>
-            HEI Performance
-          </Typography>
-          <Typography align="left" variant="body1">
-            The Health Equity Index (HEI) divides measures into three performance categories. The top three boxes indicate how many measures
-            you currently have in each category.
-          </Typography>
-          <Typography align="left" variant="body1" sx={{ fontWeight: 600, mt: 1 }}>
-            SRF Population Percentage
-          </Typography>
-          <Typography align="left" variant="body1">
-            The HEI summarizes contract performance on certain Star Ratings measures among enrollees with the specified social risk factors
-            (SRFs). This box indicates what percentage of your population qualifies for the HEI.
-          </Typography>
-          <Typography align="left" variant="body1" sx={{ fontWeight: 600, mt: 1 }}>
-            HEI Reward
-          </Typography>
-          <Typography align="left" variant="body1">
-            There are three score options in the HEI scoring system - 0, .20, and .40. This box indicates your current expected HEI reward.
-          </Typography>
-          <Typography align="left" variant="body1" sx={{ fontWeight: 600, mt: 1 }}>
-            Pie Chart
-          </Typography>
-          <Typography align="left" variant="body1">
-            This chart indicates what percentage of your member population falls into each HEI performance category.
-          </Typography>
-        </Box>
-        <Box>
-          <Stack direction="row" alignItems="flex-start" justifyContent="flex-start" spacing={1} pt={8}>
-            {gridCards1?.map((card) => (
-              <Box>{card}</Box>
-            ))}
-          </Stack>
-          <Stack direction="row" alignItems="center" justifyContent="flex-start" spacing={1} pt={1}>
-            {gridCards2?.map((card) => (
-              <Box>{card}</Box>
-            ))}
-          </Stack>
-        </Box>
-      </Stack>
-
-      {/*  <Grid2 container sx={{ margin: '0 auto', mb: 3 }} justifyContent={'center'}>
-        {gridCards2?.map((card) => (
-          <Grid key={card.id} m={1}>
-            {card}
-          </Grid>
-        ))}
-      </Grid2> */}
-
-      {/* <Grid2 container spacing={2} sx={{ margin: '0 auto' }}>
-        <Grid2 xs={12} sm={12} md={6} item>
-          <Stack direction="row" spacing={2} justifyContent={'space-around'}>
-            {gridCards.slice(0, 3).map((card, i) => (
-              <React.Fragment key={card.title}>{card}</React.Fragment>
-            ))}
-          </Stack>
-        </Grid2>
-        <Grid2 xs={12} sm={12} md={6} item>
-          <Stack direction="row" spacing={2} justifyContent={'space-around'}>
-            {gridCards.slice(0, 3).map((card, i) => (
-              <React.Fragment key={card.title}>{card}</React.Fragment>
-            ))}
-          </Stack>
-        </Grid2>
-      </Grid2> */}
-      <Stack direction="row" alignItems="center" justifyContent="space-around" mb={4} px={0} mt={4}>
-        {/* <CardGlow measure={sampleMeasure} colors={[background]} disabled />
-        <PieChart2 measure={sampleMeasure} disabled /> */}
-      </Stack>
-      <Box sx={{ borderBottom: `1px solid #aaa`, margin: '0 auto', width: '95%' }} />
+      <Grid container justifyContent={'center'} alignItems={'center'} spacing={2} sx={{ margin: '0 auto' }}>
+        <Grid item md={12} lg={6}>
+          <Box>
+            <Typography align="center" mb={2} ml={2} variant="h2">
+              Health Equity Index
+            </Typography>
+            <Typography align="left" variant="body1" sx={{ fontWeight: 600 }}>
+              HEI Performance
+            </Typography>
+            <Typography align="left" variant="body1">
+              The Health Equity Index (HEI) divides measures into three performance categories. The top three boxes indicate how many
+              measures you currently have in each category.
+            </Typography>
+            <Typography align="left" variant="body1" sx={{ fontWeight: 600, mt: 1 }}>
+              SRF Population Percentage
+            </Typography>
+            <Typography align="left" variant="body1">
+              The HEI summarizes contract performance on certain Star Ratings measures among enrollees with the specified social risk
+              factors (SRFs). This box indicates what percentage of your population qualifies for the HEI.
+            </Typography>
+            <Typography align="left" variant="body1" sx={{ fontWeight: 600, mt: 1 }}>
+              HEI Reward
+            </Typography>
+            <Typography align="left" variant="body1">
+              There are three score options in the HEI scoring system - 0, .20, and .40. This box indicates your current expected HEI
+              reward.
+            </Typography>
+            <Typography align="left" variant="body1" sx={{ fontWeight: 600, mt: 1 }}>
+              Pie Chart
+            </Typography>
+            <Typography align="left" variant="body1">
+              This chart indicates what percentage of your member population falls into each HEI performance category.
+            </Typography>
+          </Box>
+        </Grid>
+        <Grid item md={12} lg={6}>
+          <Box>
+            <Stack direction="row" alignItems="flex-start" justifyContent="center" spacing={1}>
+              {gridCards1?.map((card) => (
+                <Box>{card}</Box>
+              ))}
+            </Stack>
+            <Stack direction="row" alignItems="center" justifyContent="center" spacing={1} pt={1}>
+              {gridCards2?.map((card) => (
+                <Box>{card}</Box>
+              ))}
+            </Stack>
+          </Box>
+        </Grid>
+      </Grid>
+      <Box sx={{ borderBottom: `1px solid #aaa`, margin: '0 auto', width: '95%', mt: 3 }} />
       <Typography align="center" mt={3} ml={2} variant="h2">
         Current HEI Performance
       </Typography>

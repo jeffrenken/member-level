@@ -40,10 +40,10 @@ const Sidebar = ({ drawerOpen, drawerToggle, drawerWidth, window }) => {
             //flex: 1,
             //justifyContent: 'center',
             //alignItems: 'center',
-            background: theme.palette.background.semiTransparent,
+            background: isDarkMode ? theme.palette.background.paper : '#f8f8f8',
             //background: 'transparent',
             color: theme.palette.text.primary,
-            borderRight: 'none',
+            borderRight: 'none', //theme.palette.border,
             //marginRight: '30px',
             [theme.breakpoints.up('md')]: {
               //top: '88px'
