@@ -52,7 +52,7 @@ export default function MembersFilteredByMeasuresPage() {
   }
 
   return (
-    <Container maxWidth="lg" sx={{ marginTop: '20px', marginBottom: '20px' }}>
+    <Container maxWidth="lg" sx={{ marginTop: '20px', marginBottom: '50px' }}>
       <Top filters={['provider', 'contract', 'measures']} />
       <Stack direction="row" alignItems={'center'} spacing={4} width={'100%'} sx={{ margin: '0 auto' }}>
         <Box>
@@ -72,7 +72,7 @@ export default function MembersFilteredByMeasuresPage() {
         </Grid>
         <Grid item md={12} lg={5}>
           <Stack direction="row" justifyContent={'center'} alignItems={'center'} spacing={2} pr={2}>
-            <HeiCard content={'82%'} title={'Members with Multiple Gaps'} color={theme.palette.cardRed} size="md" />
+            <HeiCard content={'82%'} title={'Members with >1 Gap'} color={theme.palette.cardRed} size="md" />
             <HeiCard content={'43%'} title={'Members with 3+ Gaps'} color={theme.palette.cardRed} size="md" />
           </Stack>
         </Grid>

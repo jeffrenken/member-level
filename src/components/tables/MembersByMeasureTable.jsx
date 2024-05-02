@@ -41,5 +41,5 @@ const columnDefs = [
 ];
 
 export default function MembersByMeasureTable({ rows }) {
-  return <AgGrid columnDefs={columnDefs} rowData={rows || []} csvDownload saveFiltersButton height={'calc(100vh - 550px)'} />;
+  return <AgGrid columnDefs={columnDefs} rowData={rows || []} csvDownload saveFiltersButton height={'calc(100vh - 200px)'} />;
 }
