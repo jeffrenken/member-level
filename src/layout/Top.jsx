@@ -167,7 +167,7 @@ export default function Top({ filters }) {
             )}
             {filters.includes('srf') && (
               <AutocompleteButton
-                label={srfState ? (srf.find((s) => s.id === srfState) || {}).label : 'Srf'}
+                label={srfState ? (srf.find((s) => s.id === srfState) || {}).label : 'Members'}
                 autocompleteProps={{
                   id: 'srfState',
                   options: srf,

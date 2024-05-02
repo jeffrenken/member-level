@@ -366,7 +366,7 @@ export default function Map() {
                     }}
                   />
                   <AutocompleteButton
-                    label={srfState ? (srf.find((s) => s.id === srfState) || {}).label : 'Srf'}
+                    label={srfState ? (srf.find((s) => s.id === srfState) || {}).label : 'Members'}
                     autocompleteProps={{
                       id: 'srfState',
                       options: srf,

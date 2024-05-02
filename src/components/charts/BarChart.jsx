@@ -18,7 +18,7 @@ export default function BarChart({ data, title }) {
   const option = {
     grid: {
       top: '15%',
-      left: '4%',
+      left: '8%',
       right: '2%',
       bottom: '9%'
     },

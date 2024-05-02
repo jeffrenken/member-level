@@ -107,53 +107,85 @@ export default function HeiPage() {
   const background = theme.palette.background.paper;
 
   const gridCards1 = [
-    <MeasureCountCard measures={lower} label={'Bottom Third'} color={green} size="md" />,
-    <MeasureCountCard measures={middle} label={'Middle Third'} color={green} size="md" />,
-    <MeasureCountCard measures={top} label={'Top Third'} color={green} size="md" />
+    <MeasureCountCard measures={lower} label={'Bottom Third'} color={theme.palette.cardRed} size="md" />,
+    <MeasureCountCard measures={middle} label={'Middle Third'} color={theme.palette.cardYellow} size="md" />,
+    <MeasureCountCard measures={top} label={'Top Third'} color={theme.palette.cardGreen} size="md" />
   ];
   const gridCards2 = [
-    <HeiCard content={srfPercent} title={'SRF Percentage'} color={red} />,
-    <HeiCard content={'20%'} title={'HEI Bonus Percentage'} color={red} />,
+    <HeiCard content={srfPercent} title={'SRF Percentage'} color={theme.palette.text.primary} />,
+    <HeiCard content={'.20'} title={'HEI Reward'} color={theme.palette.text.primary} />,
     <Box
       sx={{
         height: '200px',
-        width: '330px',
+        width: '200px',
         borderRadius: '10px',
         border: `2px solid #aaa`,
         bgcolor: background,
         boxShadow: '0px 4px 8px rgb(0 0 0 / 0.2)',
-        py: 0.5
+        py: 0
       }}
     >
-      <DonutChart data={chartData} />
+      <DonutChart data={chartData} title={`Percentage of Pop.\nin Each Category`} />
     </Box>
   ];
 
   return (
     <Container maxWidth="xl" sx={{ marginBottom: '100px', marginTop: '20px' }}>
       <Top filters={['contract', 'provider', 'srf', 'measureStatus']} />
-      <Box px={0}>
-        <Typography align="center" my={2} ml={2} variant="h2">
-          HEI Title
-        </Typography>
-        <Typography>
-          Not sure how to handle this layout or chart display/separation yet. And should chart respond to measure filter below?
-        </Typography>
-      </Box>
-      <Grid2 container sx={{ margin: '0 auto', mb: 3 }} justifyContent={'center'}>
-        {gridCards1?.map((card) => (
-          <Grid key={card.id} m={1}>
-            {card}
-          </Grid>
-        ))}
-      </Grid2>
-      <Grid2 container sx={{ margin: '0 auto', mb: 3 }} justifyContent={'center'}>
+
+      <Stack direction="row" alignItems="center" justifyContent="space-around" spacing={3} mx={0}>
+        <Box px={0}>
+          <Typography align="center" my={2} ml={2} variant="h2">
+            Health Equity Index
+          </Typography>
+          <Typography align="left" variant="body1" sx={{ fontWeight: 600 }}>
+            HEI Performance
+          </Typography>
+          <Typography align="left" variant="body1">
+            The Health Equity Index (HEI) divides measures into three performance categories. The top three boxes indicate how many measures
+            you currently have in each category.
+          </Typography>
+          <Typography align="left" variant="body1" sx={{ fontWeight: 600, mt: 1 }}>
+            SRF Population Percentage
+          </Typography>
+          <Typography align="left" variant="body1">
+            The HEI summarizes contract performance on certain Star Ratings measures among enrollees with the specified social risk factors
+            (SRFs). This box indicates what percentage of your population qualifies for the HEI.
+          </Typography>
+          <Typography align="left" variant="body1" sx={{ fontWeight: 600, mt: 1 }}>
+            HEI Reward
+          </Typography>
+          <Typography align="left" variant="body1">
+            There are three score options in the HEI scoring system - 0, .20, and .40. This box indicates your current expected HEI reward.
+          </Typography>
+          <Typography align="left" variant="body1" sx={{ fontWeight: 600, mt: 1 }}>
+            Pie Chart
+          </Typography>
+          <Typography align="left" variant="body1">
+            This chart indicates what percentage of your member population falls into each HEI performance category.
+          </Typography>
+        </Box>
+        <Box>
+          <Stack direction="row" alignItems="flex-start" justifyContent="flex-start" spacing={1} pt={8}>
+            {gridCards1?.map((card) => (
+              <Box>{card}</Box>
+            ))}
+          </Stack>
+          <Stack direction="row" alignItems="center" justifyContent="flex-start" spacing={1} pt={1}>
+            {gridCards2?.map((card) => (
+              <Box>{card}</Box>
+            ))}
+          </Stack>
+        </Box>
+      </Stack>
+
+      {/*  <Grid2 container sx={{ margin: '0 auto', mb: 3 }} justifyContent={'center'}>
         {gridCards2?.map((card) => (
           <Grid key={card.id} m={1}>
             {card}
           </Grid>
         ))}
-      </Grid2>
+      </Grid2> */}
 
       {/* <Grid2 container spacing={2} sx={{ margin: '0 auto' }}>
         <Grid2 xs={12} sm={12} md={6} item>
@@ -177,7 +209,7 @@ export default function HeiPage() {
       </Stack>
       <Box sx={{ borderBottom: `1px solid #aaa`, margin: '0 auto', width: '95%' }} />
       <Typography align="center" mt={3} ml={2} variant="h2">
-        Current HEI
+        Current HEI Performance
       </Typography>
       <Box mb={2}>
         <ThresholdSelect />

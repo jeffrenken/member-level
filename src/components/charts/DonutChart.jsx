@@ -11,7 +11,7 @@ const chartScaleFake = [
   [1, '#7CFFB2']
 ];
 
-export default function DonutChart({ data }) {
+export default function DonutChart({ data, title = '' }) {
   const theme = useTheme();
   const colors = [theme.palette.cardRed, theme.palette.cardYellow, theme.palette.cardGreen];
 
@@ -26,6 +26,7 @@ export default function DonutChart({ data }) {
       borderColor: theme.palette.divider
     },
     legend: {
+      show: false,
       orient: 'vertical',
       top: '15%',
       right: '5%',
@@ -34,8 +35,8 @@ export default function DonutChart({ data }) {
       }
     },
     title: {
-      text: 'Percentage in threshcold categories',
-      left: 'center',
+      text: title,
+      left: '4%',
       textStyle: {
         fontFamily: 'Roboto',
         fontSize: 14,
@@ -51,10 +52,10 @@ export default function DonutChart({ data }) {
         radius: ['0%', '90%'],
         avoidLabelOverlap: true,
         color: colors,
-        top: '8%',
-        left: '-35%',
+        top: '17%',
+        left: '0%',
         right: '0%',
-        bottom: '0%',
+        bottom: '2%',
         itemStyle: {
           borderRadius: 0,
           borderColor: '#aaa',
