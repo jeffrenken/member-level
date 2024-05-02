@@ -92,7 +92,7 @@ export default function Member() {
             </Box>
           </>
         </Card>
-        <Box sx={{ height: 'calc(100vh - 300px)' }} mt={2}>
+        <Box sx={{ height: 'calc(100vh - 250px)' }} mt={2}>
           <AgGrid rowData={rows} columnDefs={columnDefs} />
         </Box>
       </Container>

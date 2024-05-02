@@ -133,7 +133,7 @@ export default function HeiPage() {
     <Container maxWidth="xl" sx={{ marginBottom: '100px', marginTop: '20px' }}>
       <Top filters={['contract', 'provider', 'srf', 'measureStatus']} />
       <Grid container justifyContent={'center'} alignItems={'center'} spacing={2} sx={{ margin: '0 auto' }}>
-        <Grid item md={12} lg={6}>
+        <Grid item md={12} lg={5}>
           <Box>
             <Typography align="center" mb={2} ml={2} variant="h2">
               Health Equity Index
@@ -167,7 +167,7 @@ export default function HeiPage() {
             </Typography>
           </Box>
         </Grid>
-        <Grid item md={12} lg={6}>
+        <Grid item md={12} lg={7}>
           <Box>
             <Stack direction="row" alignItems="flex-start" justifyContent="center" spacing={1}>
               {gridCards1?.map((card) => (

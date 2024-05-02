@@ -79,7 +79,7 @@ export default function MeasureCountCard({ label, measures, size = 'md', isLoadi
               {measures.length}
             </Typography>
             <Typography sx={{ fontWeight: 500, fontSize: isLg ? '1.3rem' : '1rem' }} align="center">
-              measures
+              Measures
             </Typography>
           </Stack>
         </Box>

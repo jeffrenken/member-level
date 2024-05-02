@@ -47,7 +47,7 @@ export default function HeiCard({ title, content, isLoading, color, size = 'md' 
             {content}
           </Typography>
           <Typography sx={{ fontWeight: 500, fontSize: '1rem' }} align="center">
-            measures
+            {' '}
           </Typography>
         </Stack>
       </Box>
