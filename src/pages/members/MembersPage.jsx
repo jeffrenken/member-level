@@ -95,20 +95,13 @@ export default function MembersPage() {
       cellRenderer: LinkRenderer
     },
     {
-      field: 'srfCell',
+      field: 'isSrf',
       headerName: 'SRF',
-
-      children: srfOptions.map((srfOption) => {
-        return {
-          field: srfOption,
-          headerName: srfOption,
-          type: 'numericColumn',
-          chartDataType: 'series',
-          filter: true,
-          cellRenderer: SrfRenderer,
-          enableRowGroup: true
-        };
-      })
+      type: 'numericColumn',
+      chartDataType: 'series',
+      filter: true,
+      cellRenderer: SrfRenderer,
+      enableRowGroup: true
     },
     {
       field: 'numberOfGaps',
@@ -163,6 +156,22 @@ export default function MembersPage() {
           chartDataType: 'series',
           filter: true,
           cellRenderer: TextRenderer,
+          enableRowGroup: true
+        };
+      })
+    },
+    {
+      field: 'srfCell',
+      headerName: 'SRF',
+
+      children: srfOptions.map((srfOption) => {
+        return {
+          field: srfOption,
+          headerName: srfOption,
+          type: 'numericColumn',
+          chartDataType: 'series',
+          filter: true,
+          cellRenderer: SrfRenderer,
           enableRowGroup: true
         };
       })
