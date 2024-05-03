@@ -6,6 +6,8 @@ import 'ag-grid-community/styles/ag-theme-quartz.css';
 import { AgGridReact } from 'ag-grid-react';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 //import './ag-grid.css';
+import { LicenseManager } from '@ag-grid-enterprise/core';
+LicenseManager.setLicenseKey('MTc0NjIyNjgwMDAwMA==b9e4304e0b77822ed69eabdad49d708b');
 
 export default function AgGrid({ rowData, columnDefs, sideBar2, csvDownload, saveFiltersButton, height = '100%', ...props }) {
   const gridRef = useRef();
