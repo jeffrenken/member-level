@@ -8,11 +8,6 @@ import providerGroupsData from '../../data/providerGroups.json';
 import measures from '../../data/measures.json';
 import memberMeasures from '../../data/memberMeasures.json';
 
-const providerGroups = providerGroupsData.map((p, i) => ({ ...p, id: i + 1 }));
-
-//just assuming names are unique for testing
-const distinctProviders = providerGroupsData.filter((value, index, self) => index === self.findIndex((t) => t.Provider === value.Provider));
-
 const members = memberData.map((member, i) => {
   const measures = memberMeasures.find((m) => m['MEMBER ID'] === member['MEMBER ID']);
 
@@ -33,7 +28,8 @@ const members = memberData.map((member, i) => {
   return {
     ...member,
     id: member['MEMBER ID'],
-    providerGroup: providerGroups.find((p) => p['MEMBER ID'] === member['MEMBER ID']),
+    providerGroup: providerGroupsData.find((p) => p['MEMBER ID'] === member['MEMBER ID']),
+    provider: providerGroupsData.find((p) => p['MEMBER ID'] === member['MEMBER ID'])?.Provider,
     memberMeasures: measures,
     srf: srf,
     isSrf: isSrf,
@@ -41,6 +37,22 @@ const members = memberData.map((member, i) => {
     measuresOpen: Object.keys(measures).filter((key) => measures?.[key] === 0),
     measuresClosed: Object.keys(measures).filter((key) => measures?.[key] === 1)
   };
+});
+
+//just assuming names are unique for testing
+const distinctProviders = providerGroupsData
+  .filter((value, index, self) => index === self.findIndex((t) => t.Provider === value.Provider))
+  .map((p, i) => {
+    const filteredMembers = members.filter((m) => m.provider === p.Provider);
+    const avgGapsPerMember = filteredMembers.reduce((sum, member) => sum + member.numberOfGaps, 0) / filteredMembers.length;
+    return { id: i + 1, label: p.Provider, value: p.Provider, avgGapsPerMember: avgGapsPerMember, providerGroup: p['Provider Group'] };
+  });
+
+const providerGroups = providerGroupsData.map((p, i) => {
+  const filteredMembers = members.filter((m) => m.providerGroup['Provider Group'] === p['Provider Group']);
+
+  const avgGapsPerMember = filteredMembers.reduce((sum, member) => sum + member.numberOfGaps, 0) / filteredMembers.length;
+  return { ...p, id: i + 1, avgGapsPerMember: avgGapsPerMember };
 });
 
 const fakeMeasures = measures.map((measure, i) => ({
@@ -83,8 +95,14 @@ const fakeProviderGroups = () => {
     .filter((d) => Boolean(d))
     .sort();
   const distinctProviderGroups = [...new Set(providerName)];
-
-  const p = distinctProviderGroups.map((p, i) => ({ id: i + 1, label: p }));
+  const p = distinctProviderGroups.map((p, i) => {
+    console.log('p', p);
+    const filteredMembers = members.filter((m) => m.providerGroup['Provider Group'] === p);
+    console.log('filteredMembers', filteredMembers);
+    const avgGapsPerMember = filteredMembers.reduce((sum, member) => sum + member.numberOfGaps, 0) / filteredMembers.length;
+    return { name: p, id: i + 1, avgGapsPerMember: avgGapsPerMember, label: p, value: i + 1 };
+  });
+  console.log(p);
   return p;
 };
 
