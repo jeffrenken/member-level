@@ -156,7 +156,12 @@ export default function ProviderGroupsPage() {
         <Typography variant="h2" mt={3} pr={6}>
           Provider Groups
         </Typography>
-        <Card height={200} width={200} p={1} style={{ overflowY: 'auto', border: `2px solid #aaa` }}>
+        <Card
+          height={200}
+          width={200}
+          p={1}
+          style={{ overflowY: 'auto', border: `2px solid #aaa`, backgroundColor: theme.palette.background.paper }}
+        >
           <Typography variant="h4" mb={1} sx={{ lineHeight: 0.9 }}>
             Top Provider Groups
             <br />
@@ -174,7 +179,12 @@ export default function ProviderGroupsPage() {
           </table>
         </Card>
         {console.log(theme)}
-        <Card height={200} width={200} p={1} style={{ overflowY: 'auto', border: `2px solid #aaa` }}>
+        <Card
+          height={200}
+          width={200}
+          p={1}
+          style={{ overflowY: 'auto', border: `2px solid #aaa`, backgroundColor: theme.palette.background.paper }}
+        >
           <Typography variant="h4" mb={1} sx={{ lineHeight: 0.9 }}>
             Top Providers
             <br />
