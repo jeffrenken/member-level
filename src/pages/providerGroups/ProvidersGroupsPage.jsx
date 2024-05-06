@@ -31,7 +31,6 @@ export default function ProviderGroupsPage() {
   const { filteredMembers: memberData } = useFilteredMembers();
   const { data: providers } = useProviders();
   const { data: providerGroups } = useProviderGroups();
-
   const providerGroup = useMemo(() => {
     if (!providerGroups) {
       return null;
@@ -40,18 +39,16 @@ export default function ProviderGroupsPage() {
       return provider.id === selectedProvider;
     });
   }, [providerGroups, selectedProvider]);
-
   const rows = useMemo(() => {
     if (!providers.length || !memberData.length) {
       return [];
     }
     let filteredProviders = [...providers];
     if (providerGroup) {
-      filteredProviders = filteredProviders.filter((provider) => provider['Provider Group'] === providerGroup.label);
+      filteredProviders = filteredProviders.filter((provider) => provider.providerGroup === providerGroup.label);
     }
 
     return filteredProviders.map((provider) => {
-      console.log('provider', provider);
       const providerMembers = memberData.filter((member) => member.providerGroup.Provider === provider.value);
       let memberGaps = 0;
       providerMembers.forEach((member) => {
@@ -74,8 +71,6 @@ export default function ProviderGroupsPage() {
     const sorted = providerGroups.sort((a, b) => a.avgGapsPerMember - b.avgGapsPerMember).slice(0, 10);
     return sorted;
   }, [providerGroups]);
-  console.log('topProviderGroups', topProviderGroups);
-
   const topProviders = useMemo(() => {
     if (!providers.length) {
       return [];
@@ -83,8 +78,6 @@ export default function ProviderGroupsPage() {
     const sorted = providers.sort((a, b) => a.avgGapsPerMember - b.avgGapsPerMember).slice(0, 10);
     return sorted;
   }, [providers]);
-  console.log('topProviders', topProviders);
-
   const columnDefs = [
     {
       field: 'providerGroupName',
@@ -178,7 +171,6 @@ export default function ProviderGroupsPage() {
             </tbody>
           </table>
         </Card>
-        {console.log(theme)}
         <Card
           height={200}
           width={200}
