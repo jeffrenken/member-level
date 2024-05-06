@@ -1,12 +1,7 @@
 import useMeasures from '@/api/useMeasures';
 import { Box, Rating, useTheme } from '@mui/material';
-import { fontSize } from '@mui/system';
 import { IconCheck, IconCheckbox, IconStar, IconX, IconUserHeart } from '@tabler/icons-react';
 import { Link } from 'react-router-dom';
-
-const randomBoolean = () => Math.random() > 0.5;
-const randomIntegerBetween = (min, max) => Math.floor(Math.random() * (max - min + 1) + min);
-const randomHalfNumberBetween = (min, max) => Math.floor(Math.random() * (max - min + 1) + min) / 2;
 
 //function to add or subtract 10% of value
 function addOrSubractValue(value) {
@@ -194,23 +189,40 @@ export const TextRenderer = (params) => {
   );
 };
 
+export const DecimalRenderer = (params) => {
+  return (
+    <Box px={1} sx={(theme) => ({ fontWeight: 300, color: theme.palette.text.primary })}>
+      {params.value.toFixed(2)}
+    </Box>
+  );
+};
+
 export const GapRenderer = (params) => {
-  const { data: measures } = useMeasures();
   const theme = useTheme();
   const isDarkMode = theme.palette.mode === 'dark';
 
-  const totalGaps = 50; //just for halfway gradient
+  const individualGapScale = [10, 20, 30];
+  const groupGapScale = [100, 200, 300];
+
+  let gapScale = individualGapScale;
+  let totalGaps = 50; //just for halfway gradient
+
+  if (params.value >= groupGapScale[0]) {
+    gapScale = groupGapScale;
+    totalGaps = 200;
+  }
+
   let color = '#5EAF52';
   //let color = theme.palette.cardGreen;
   let colorRgba = isDarkMode ? 'rgba(94,175,82,0.25)' : 'rgba(68,145,55,0.35)';
   //let colorRgba = isDarkMode ? 'rgba(80,206,178,0.25)' : 'rgba(80,206,178,0.40)';
-  if (params.value > 10) {
+  if (params.value > gapScale[0]) {
     //color = isDarkMode ? '#FDF26E' : '#E6C60D';
     color = theme.palette.cardYellow;
     //colorRgba = isDarkMode ? 'rgba(253,242,110,0.15)' : 'rgba(253,218,13,0.40)';
     colorRgba = isDarkMode ? 'rgba(255,197,66,0.35)' : 'rgba(255,197,66,0.40)';
   }
-  if (params.value > 20) {
+  if (params.value > gapScale[1]) {
     //color = '#CB4E4E';
     color = theme.palette.cardRed;
     //colorRgba = isDarkMode ? 'rgba(203,78,78,0.15)' : 'rgba(179,15,15,0.25)';

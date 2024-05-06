@@ -39,11 +39,11 @@ export function SearchDialog({ open, onClose }) {
     providers.length &&
       providers.forEach((provider) => {
         items.push({
-          id: provider.Provider,
+          id: provider.id,
           category: 'Provider',
-          value: provider.Provider.replace(/\s/g, ''),
-          url: `/providers/${provider.Provider}`,
-          label: provider.Provider
+          value: provider.value.replace(/\s/g, ''),
+          url: `/providers/${provider.value}`,
+          label: provider.value
         });
       });
     members.length &&

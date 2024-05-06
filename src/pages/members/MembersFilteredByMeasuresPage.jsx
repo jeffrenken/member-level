@@ -60,7 +60,7 @@ export default function MembersFilteredByMeasuresPage() {
             Multi-Measure
           </Typography>
           <Typography mb={3} variant="body1">
-            Select multiple measures fromt he dropdown to identify members with open gaps across the chosen measures.
+            Select multiple measures from the dropdown to identify members with open gaps across the chosen measures.
           </Typography>
         </Box>
       </Stack>
