@@ -1,22 +1,21 @@
 import MainLayout from '@/layout/mainLayout/MainLayout';
 import BobPage from '@/pages/BobPage';
 import Page2 from '@/pages/Page2';
+import HeiPage from '@/pages/hei/HeiPage';
 import Map from '@/pages/map/Map';
 import MeasuresPage from '@/pages/measures/MeasuresPage';
 import Measure from '@/pages/measures/[id]/MeasurePage';
+import MembersFilteredByMeasuresPage from '@/pages/members/MembersFilteredByMeasuresPage';
 import MembersPage from '@/pages/members/MembersPage';
 import Member from '@/pages/members/[id]/Member';
 import ProvidersPage from '@/pages/providerGroups/ProvidersGroupsPage';
 import ProviderPage from '@/pages/providers/[name]/ProviderPage';
-import SignInPage from '@/pages/sign-in/SignInPage';
 import SocialRiskFactors from '@/pages/social-risk-factors/SocialRiskFactors';
 import County from '@/pages/states/[id]/counties/[id]/County';
 import Table from '@/pages/table/Table';
 import Test from '@/pages/test/Test';
 import { createBrowserRouter } from 'react-router-dom';
 import { AuthGuard } from './AuthGuard';
-import HeiPage from '@/pages/hei/HeiPage';
-import MembersFilteredByMeasuresPage from '@/pages/members/MembersFilteredByMeasuresPage';
 
 export const router = createBrowserRouter([
   {
@@ -102,8 +101,5 @@ export const router = createBrowserRouter([
       }
     ]
   },
-  {
-    path: '/sign-in',
-    element: <SignInPage />
-  }
+
 ]);
