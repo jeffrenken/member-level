@@ -12,7 +12,7 @@ const sizeStyles = {
   lg: { width: 300, fontSize: '10rem', lineHeight: '5rem' }
 };
 
-export default function HeiCard({ title, content, isLoading, color, size = 'md' }) {
+export default function HeiCard({ title, content, isLoading, color, size = 'md', ...props }) {
   const [isFlipped, setIsFlipped] = useState(false);
   const theme = useTheme();
 
@@ -22,9 +22,10 @@ export default function HeiCard({ title, content, isLoading, color, size = 'md' 
   const background = theme.palette.background.paper;
 
   const card = (
-    <Card sx={{ width: styles.width, height: styles.width, backgroundColor: 'transparent' }}>
+    <Card {...props} sx={{ width: styles.width, height: styles.width, backgroundColor: 'transparent', textDecoration: 'none' }}>
       <Box
         //className="front"
+
         sx={{
           borderRadius: '10px',
           border: `2px solid #aaa`,

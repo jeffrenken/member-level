@@ -22,6 +22,8 @@ function inRange(x, min, max) {
   return (x - min) * (x - max) <= 0;
 }
 
+const filters = ['contract', 'provider', 'srf', 'measureStatus'];
+
 export default function HeiPage() {
   //const UPDATE = useGlowPointer();
   const theme = useTheme();
@@ -30,7 +32,7 @@ export default function HeiPage() {
   const srfId = useRecoilValue(srfFilterState);
   const { data: measuresData } = useMeasures();
 
-  const { filteredMembers } = useFilteredMembers();
+  const { filteredMembers } = useFilteredMembers(['contract', 'provider', 'srf', 'measureStatus']);
   const measures = useMemo(() => {
     if (!filteredMembers.length) {
       return [];
@@ -131,7 +133,7 @@ export default function HeiPage() {
 
   return (
     <Container maxWidth="xl" sx={{ marginBottom: '100px', marginTop: '20px' }}>
-      <Top filters={['contract', 'provider', 'srf', 'measureStatus']} />
+      <Top filters={filters} />
       <Grid container justifyContent={'center'} alignItems={'center'} spacing={2} sx={{ margin: '0 auto' }}>
         <Grid item md={12} lg={5}>
           <Box>

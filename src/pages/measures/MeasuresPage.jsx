@@ -20,6 +20,8 @@ const greenGlowBoxShadow =
 const green = '#50CEB2';
 const red = '#F36959';
 
+const filters = ['contract', 'provider', 'srf', 'measureStatus'];
+
 const MeasuresPage = () => {
   //const UPDATE = useGlowPointer();
   const theme = useTheme();
@@ -27,7 +29,7 @@ const MeasuresPage = () => {
   const srfId = useRecoilValue(srfFilterState);
   const { data: measuresData } = useMeasures();
 
-  const { filteredMembers } = useFilteredMembers();
+  const { filteredMembers } = useFilteredMembers(filters);
 
   const sampleMeasure = {
     id: 1,
@@ -67,7 +69,7 @@ const MeasuresPage = () => {
 
   return (
     <Container maxWidth="xl" sx={{ marginBottom: '100px', marginTop: '20px' }}>
-      <Top filters={['contract', 'provider', 'srf', 'measureStatus']} />
+      <Top filters={filters} />
 
       <Stack direction="row" alignItems="center" justifyContent="space-around" mb={4} px={0} mt={4}>
         <Stack direction="row" alignItems="center" justifyContent="space-around" spacing={3} mx={0}>

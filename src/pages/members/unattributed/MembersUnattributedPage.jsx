@@ -14,7 +14,7 @@ import {
 import Top from '@/layout/Top';
 import { Box, Container, Typography } from '@mui/material';
 import { useMemo } from 'react';
-import MembersLayout from './MembersLayout';
+import MembersLayout from '../MembersLayout';
 
 const randomHalfNumberBetween = (min, max) => Math.floor(Math.random() * (max - min + 1) + min) / 2;
 
@@ -34,12 +34,20 @@ const memberInfoColumns = [
 
 const srfOptions = ['Low Income Subsidy Copay Level', 'DUAL ELIGIBLE', 'DISABLED'];
 
-export default function MembersPage() {
-  const { filteredMembers } = useFilteredMembers();
+export default function MembersUnattributedPage() {
+  const { filteredMembers } = useFilteredMembers(['contract']);
+  console.log('filteredMembers', filteredMembers);
+
+  const members = useMemo(() => {
+    if (!filteredMembers) {
+      return null;
+    }
+    return filteredMembers.filter((member) => !member.providerGroup);
+  }, [filteredMembers]);
 
   return (
     <>
-      <MembersLayout title="All Members" members={filteredMembers} />
+      <MembersLayout title="Unattributed Members" members={members} />
     </>
   );
 }

@@ -1,12 +1,10 @@
 import axios from 'axios';
 import MockAdapter from 'axios-mock-adapter';
-//import { measures } from '../../data';
-import hCodes from '../../fakeData/hCodes.json';
+import measures from '../../data/measures.json';
+import memberMeasures from '../../data/memberMeasures.json';
 import srfData from '../../data/memberSrf.json';
 import memberData from '../../data/members.json';
 import providerGroupsData from '../../data/providerGroups.json';
-import measures from '../../data/measures.json';
-import memberMeasures from '../../data/memberMeasures.json';
 
 const members = memberData.map((member, i) => {
   const measures = memberMeasures.find((m) => m['MEMBER ID'] === member['MEMBER ID']);
@@ -49,7 +47,7 @@ const distinctProviders = providerGroupsData
   });
 
 const providerGroups = providerGroupsData.map((p, i) => {
-  const filteredMembers = members.filter((m) => m.providerGroup['Provider Group'] === p['Provider Group']);
+  const filteredMembers = members.filter((m) => m.providerGroup && m.providerGroup['Provider Group'] === p['Provider Group']);
 
   const avgGapsPerMember = filteredMembers.reduce((sum, member) => sum + member.numberOfGaps, 0) / filteredMembers.length;
   return { ...p, id: i + 1, avgGapsPerMember: avgGapsPerMember };
@@ -96,13 +94,10 @@ const fakeProviderGroups = () => {
     .sort();
   const distinctProviderGroups = [...new Set(providerName)];
   const p = distinctProviderGroups.map((p, i) => {
-    console.log('p', p);
-    const filteredMembers = members.filter((m) => m.providerGroup['Provider Group'] === p);
-    console.log('filteredMembers', filteredMembers);
+    const filteredMembers = members.filter((m) => m.providerGroup && m.providerGroup['Provider Group'] === p);
     const avgGapsPerMember = filteredMembers.reduce((sum, member) => sum + member.numberOfGaps, 0) / filteredMembers.length;
     return { name: p, id: i + 1, avgGapsPerMember: avgGapsPerMember, label: p, value: i + 1 };
   });
-  console.log(p);
   return p;
 };
 

@@ -16,6 +16,7 @@ import Table from '@/pages/table/Table';
 import Test from '@/pages/test/Test';
 import { createBrowserRouter } from 'react-router-dom';
 import { AuthGuard } from './AuthGuard';
+import MembersUnattributedPage from '@/pages/members/unattributed/MembersUnattributedPage';
 
 export const router = createBrowserRouter([
   {
@@ -53,6 +54,10 @@ export const router = createBrowserRouter([
       {
         path: '/members/filters/measures',
         element: <MembersFilteredByMeasuresPage />
+      },
+      {
+        path: '/members/unattributed',
+        element: <MembersUnattributedPage />
       },
       {
         path: '/members/:id',

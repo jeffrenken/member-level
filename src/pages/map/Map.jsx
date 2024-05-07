@@ -43,6 +43,8 @@ const countyDataWithCount = { type: 'FeatureCollection', features: cd };
 
 mapboxgl.accessToken = import.meta.env.VITE_MAPBOX_TOKEN;
 
+const filters = ['contract', 'srf'];
+
 export default function Map() {
   const theme = useTheme();
   const darkMode = theme.palette.mode === 'dark';
@@ -64,7 +66,7 @@ export default function Map() {
   const [membersInCounty, setMembersInCounty] = useState([]);
   const [membersInCountyNumerator, setMembersInCountyNumerator] = useState([]);
   const [membersInCountyDenom, setMembersInCountyDenom] = useState([]);
-  const { filteredMembers } = useFilteredMembers();
+  const { filteredMembers } = useFilteredMembers(filters);
 
   const style = darkMode ? 'mapbox://styles/mapbox/dark-v11' : 'mapbox://styles/mapbox/light-v11';
   const stepArray = [0, 25, 30, 35, 50, 70, 100, 1000000];

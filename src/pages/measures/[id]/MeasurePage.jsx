@@ -12,6 +12,7 @@ import { useEffect, useMemo } from 'react';
 import { useParams } from 'react-router-dom';
 import { useRecoilState, useRecoilValue } from 'recoil';
 
+const filters = ['provider', 'contract', 'measure'];
 export default function Measure() {
   const theme = useTheme();
   const params = useParams();
@@ -21,7 +22,7 @@ export default function Measure() {
   const [srf, setSrf] = useRecoilState(srfFilterState);
   const measureId = id || measureFilterId;
   //const [chartData, setChartData] = useState({});
-  const { filteredMembers } = useFilteredMembers();
+  const { filteredMembers } = useFilteredMembers(filters);
 
   const measures = useMemo(() => {
     if (!measuresData) {
@@ -57,7 +58,7 @@ export default function Measure() {
 
   return (
     <Container maxWidth="lg" sx={{ marginTop: '20px', marginBottom: '20px' }}>
-      <Top filters={['provider', 'contract', 'measure']} />
+      <Top filters={filters} />
       <Stack direction="row" justifyContent="space-around" alignItems={'center'} spacing={4}>
         <Box>
           <Typography variant="h1">{measureWithData?.label}</Typography>

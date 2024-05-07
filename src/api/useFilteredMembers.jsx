@@ -19,7 +19,7 @@ const randomBoolean = () => Math.random() > 0.5;
 const randomIntegerBetween = (min, max) => Math.floor(Math.random() * (max - min + 1) + min);
 const randomHalfNumberBetween = (min, max) => Math.floor(Math.random() * (max - min + 1) + min) / 2;
 
-export default function useFilteredMembers() {
+export default function useFilteredMembers(filters) {
   const params = useParams();
   const id = parseInt(params.id);
   const { data: measures, isLoading } = useMeasures();
@@ -28,8 +28,8 @@ export default function useFilteredMembers() {
   const contractId = useRecoilValue(contractFilterState);
   const srfId = useRecoilValue(srfFilterState);
   const measureId = measureFilterId || id;
-  const { data } = useMembers();
-  const { data: providers } = useProviderGroups();
+  const { data: members } = useMembers();
+  const { data: providerGroups } = useProviderGroups();
   const { data: contracts } = useContracts();
   const { data: memberMeasures } = useMemberMeasures();
   const { data: srfData } = useSrf();
@@ -44,14 +44,14 @@ export default function useFilteredMembers() {
     });
   }, [contracts, contractId]);
 
-  const provider = useMemo(() => {
-    if (!providers) {
+  const providerGroup = useMemo(() => {
+    if (!providerGroups) {
       return null;
     }
-    return providers.find((provider) => {
-      return provider.id === providerId;
+    return providerGroups.find((providerGroup) => {
+      return providerGroup.id === providerId;
     });
-  }, [providers, providerId]);
+  }, [providerGroups, providerId]);
 
   const measure = useMemo(() => {
     if (!measures) {
@@ -72,41 +72,40 @@ export default function useFilteredMembers() {
   }, [srfData, srfId]);
 
   useEffect(() => {
-    if (!providerGroups) {
+    if (!members) {
       return;
     }
-    let filtered = providerGroups;
-
-    if (provider) {
-      filtered = filtered.filter((d) => d['Provider Group'] === provider.label);
+    let filtered = [...members];
+    console.log('filtered', filtered);
+    if (providerGroup && filters.includes('providerGroup')) {
+      console.log('providerGroup', providerGroup);
+      filtered = filtered.filter((d) => d.providerGroup && d.providerGroup['Provider Group'] === providerGroup.label);
     }
 
-    if (contract) {
+    if (contract && filters.includes('contract')) {
       filtered = filtered.filter((d) => d['CONTRACT'] === contract.label);
     }
 
     //let withMember = [];
 
-    if (data) {
-      filtered = filtered.map((d) => {
+    /* filtered = filtered.map((d) => {
         return data.find((m) => m['MEMBER ID'] === d['MEMBER ID']);
-      });
+      }); */
 
-      if (srf) {
-        if (srf.label === 'SRF Only') {
-          //shitty way to know if they have an srf category
-          filtered = filtered.filter((d) => d.isSrf);
-        }
-        if (srf.label === 'Non-SRF Only') {
-          //shitty way to know if they have an srf category
-          filtered = filtered.filter((d) => !d.isSrf);
-        }
-        //filtered = filtered.filter((d) => d['SRF Score'] === srf.label);
+    if (srf && filters.includes('srf')) {
+      console.log('srf', srf);
+      if (srf.label === 'SRF Only') {
+        //shitty way to know if they have an srf category
+        filtered = filtered.filter((d) => d.isSrf);
       }
-
-      setFilteredMembers(filtered);
+      if (srf.label === 'Non-SRF Only') {
+        //shitty way to know if they have an srf category
+        filtered = filtered.filter((d) => !d.isSrf);
+      }
+      //filtered = filtered.filter((d) => d['SRF Score'] === srf.label);
     }
-  }, [measure, provider, contract, data, srf]);
+    setFilteredMembers(filtered);
+  }, [measure, providerGroup, contract, members, srf]);
 
   return { filteredMembers: filteredMembers, isLoading };
 }

@@ -53,7 +53,7 @@ export default function ProviderPage() {
       return [];
     }
     return membersData
-      .filter((member) => member.providerGroup.Provider === name)
+      .filter((member) => member.providerGroup && member.providerGroup.Provider === name)
       .map((member) => {
         const numberOfGaps = member.measuresOpen.length;
         totalGapsRef.current += numberOfGaps;

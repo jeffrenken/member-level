@@ -1,12 +1,6 @@
 [
   {
     "CONTRACT": "H2222",
-    "MEMBER ID": 951,
-    "Provider": "Dr. Donald Adams",
-    "Provider Group": "Aspen Medical Group"
-  },
-  {
-    "CONTRACT": "H2222",
     "MEMBER ID": 952,
     "Provider": "Dr. Donald Gonzalez",
     "Provider Group": "Elm Medical Group"
@@ -52,72 +46,6 @@
     "MEMBER ID": 959,
     "Provider": "Dr. Kenneth Flores",
     "Provider Group": "Birch Medical Group"
-  },
-  {
-    "CONTRACT": "H2222",
-    "MEMBER ID": 960,
-    "Provider": "Dr. Nancy White",
-    "Provider Group": "Cedar Medical Group"
-  },
-  {
-    "CONTRACT": "H1111",
-    "MEMBER ID": 961,
-    "Provider": "Dr. Nancy Anderson",
-    "Provider Group": "Fir Medical Group"
-  },
-  {
-    "CONTRACT": "H1111",
-    "MEMBER ID": 962,
-    "Provider": "Dr. Nancy Flores",
-    "Provider Group": "Dogwood Medical Group"
-  },
-  {
-    "CONTRACT": "H1111",
-    "MEMBER ID": 963,
-    "Provider": "Dr. Kenneth Ramirez",
-    "Provider Group": "Birch Medical Group"
-  },
-  {
-    "CONTRACT": "H1111",
-    "MEMBER ID": 964,
-    "Provider": "Dr. Nancy Anderson",
-    "Provider Group": "Fir Medical Group"
-  },
-  {
-    "CONTRACT": "H2222",
-    "MEMBER ID": 965,
-    "Provider": "Dr. Matthew Flores",
-    "Provider Group": "Aspen Medical Group"
-  },
-  {
-    "CONTRACT": "H2222",
-    "MEMBER ID": 966,
-    "Provider": "Dr. Donald Garcia",
-    "Provider Group": "Aspen Medical Group"
-  },
-  {
-    "CONTRACT": "H2222",
-    "MEMBER ID": 967,
-    "Provider": "Dr. Kenneth Garcia",
-    "Provider Group": "Fir Medical Group"
-  },
-  {
-    "CONTRACT": "H1111",
-    "MEMBER ID": 968,
-    "Provider": "Dr. Donald Adams",
-    "Provider Group": "Aspen Medical Group"
-  },
-  {
-    "CONTRACT": "H2222",
-    "MEMBER ID": 969,
-    "Provider": "Dr. Nancy Rodriguez",
-    "Provider Group": "Cedar Medical Group"
-  },
-  {
-    "CONTRACT": "H2222",
-    "MEMBER ID": 970,
-    "Provider": "Dr. Donald Thomas",
-    "Provider Group": "Cedar Medical Group"
   },
   {
     "CONTRACT": "H2222",
