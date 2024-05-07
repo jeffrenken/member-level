@@ -192,6 +192,10 @@ export default function AgGrid({ rowData, columnDefs, sideBar2, csvDownload, sav
           defaultCsvExportParams={{
             fileName: 'member-level-export',
             processCellCallback: (cell) => {
+              //if value is an  object
+              if (typeof cell.value === 'object') {
+                return '';
+              }
               return cell.value;
               var cellVal = cell.value;
               if (cell?.column?.colDef?.cellRenderer) {

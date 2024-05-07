@@ -192,7 +192,7 @@ export default function ProviderPage() {
         </Box>
 
         <Box sx={{ height: 'calc(100vh - 300px)' }}>
-          <AgGrid rowData={members} columnDefs={columnDefs} />
+          <AgGrid rowData={members} columnDefs={columnDefs} csvDownload={true} />
         </Box>
       </Container>
     </>
