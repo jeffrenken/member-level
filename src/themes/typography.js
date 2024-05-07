@@ -18,7 +18,7 @@ export default function themeTypography(theme) {
       fontWeight: 500
     },
     h4: {
-      fontSize: '1rem',
+      fontSize: '0.9rem',
       color: theme.heading,
       fontWeight: 600
     },

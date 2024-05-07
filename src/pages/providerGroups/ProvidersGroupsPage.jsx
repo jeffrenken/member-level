@@ -15,7 +15,7 @@ import {
 } from '@/components/tables/CellRenderers';
 import Top from '@/layout/Top';
 import { providerFilterState } from '@/state/providerFilterState';
-import { Box, Container, Stack, Typography, useTheme } from '@mui/material';
+import { Box, Container, Stack, Typography, useTheme, Button } from '@mui/material';
 import { IconArrowDownRight, IconArrowUpRight } from '@tabler/icons-react';
 import { useMemo } from 'react';
 import { Link, useParams } from 'react-router-dom';
@@ -161,7 +161,7 @@ export default function ProviderGroupsPage() {
     }
   ];
 
-  const cardWidth = 240;
+  const cardWidth = 250;
 
   return (
     <Container maxWidth="lg" sx={{ marginTop: '20px', marginBottom: '20px' }}>
@@ -170,23 +170,25 @@ export default function ProviderGroupsPage() {
         <Typography variant="h2" mt={3} pr={6}>
           Providers
         </Typography>
-        <HeiCard
+        <Button component={Link} to="/members/unattributed" variant="contained">
+          View Unattributed Members
+        </Button>
+        {/* <HeiCard
           content={membersWithoutProvider.length}
           title={'Members Unattributed'}
           color={theme.palette.text.primary}
           component={Link}
           to="/members/unattributed"
-        />
-        ,
+        /> */}
       </Stack>
-      <Stack direction="row" alignItems={'center'} justifyContent={'center'} spacing={3} sx={{ marginTop: '20px' }}>
+      <Stack direction="row" alignItems={'center'} justifyContent={'center'} spacing={2} sx={{ marginTop: '20px' }}>
         <Card
           height={cardWidth}
           width={cardWidth}
           p={1}
           style={{ overflowY: 'auto', border: `2px solid #aaa`, backgroundColor: theme.palette.background.paper }}
         >
-          <Typography variant="h4" mb={1} sx={{ lineHeight: 0.9 }}>
+          <Typography variant="h4" mb={1} color={theme.palette.cardGreen}>
             High Performing Provider Groups
             <br />
             <span style={{ fontSize: '0.8rem', color: theme.palette.text.secondary }}>Avg Gaps per Member</span>
@@ -215,7 +217,7 @@ export default function ProviderGroupsPage() {
           p={1}
           style={{ overflowY: 'auto', border: `2px solid #aaa`, backgroundColor: theme.palette.background.paper }}
         >
-          <Typography variant="h4" mb={1} sx={{ lineHeight: 0.9 }}>
+          <Typography variant="h4" mb={1} color={theme.palette.cardRed}>
             Low Performing Provider Groups
             <br />
             <span style={{ fontSize: '0.8rem', color: theme.palette.text.secondary }}>Avg Gaps per Member</span>
@@ -244,7 +246,7 @@ export default function ProviderGroupsPage() {
           p={1}
           style={{ overflowY: 'auto', border: `2px solid #aaa`, backgroundColor: theme.palette.background.paper }}
         >
-          <Typography variant="h4" mb={1} sx={{ lineHeight: 0.9 }}>
+          <Typography variant="h4" mb={1} color={theme.palette.cardGreen}>
             High Performing Providers
             <br />
             <span style={{ fontSize: '0.8rem', color: theme.palette.text.secondary }}>Avg Gaps per Member</span>
@@ -274,7 +276,7 @@ export default function ProviderGroupsPage() {
           p={1}
           style={{ overflowY: 'auto', border: `2px solid #aaa`, backgroundColor: theme.palette.background.paper }}
         >
-          <Typography variant="h4" mb={1} sx={{ lineHeight: 0.9 }}>
+          <Typography variant="h4" mb={1} color={theme.palette.cardRed}>
             Low Performing Providers
             <br />
             <span style={{ fontSize: '0.8rem', color: theme.palette.text.secondary }}>Avg Gaps per Member</span>
@@ -299,7 +301,7 @@ export default function ProviderGroupsPage() {
           </table>
         </Card>
       </Stack>
-      <Box sx={{ height: 'calc(100vh - 250px)' }}>
+      <Box sx={{ height: 'calc(100vh - 250px)' }} mt={2}>
         <AgGrid columnDefs={columnDefs} rowData={rows} csvDownload={true} rowGroupPanelShow="always" groupDisplayType="groupRows" />
       </Box>
     </Container>
