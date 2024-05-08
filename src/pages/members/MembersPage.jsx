@@ -8,7 +8,7 @@ export default function MembersPage() {
 
   return (
     <>
-      <MembersLayout title="All Members" members={filteredMembers} />
+      <MembersLayout title="All Members" members={filteredMembers} filters={filters} />
     </>
   );
 }

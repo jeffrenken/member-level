@@ -33,9 +33,7 @@ const memberInfoColumns = [
 
 const srfOptions = ['Low Income Subsidy Copay Level', 'DUAL ELIGIBLE', 'DISABLED'];
 
-const filters = ['contract'];
-
-export default function MembersLayout({ members: filteredMembers, title }) {
+export default function MembersLayout({ members: filteredMembers, title, filters }) {
   const { data: measures } = useMeasures();
 
   const starsMeasures = useMemo(() => {

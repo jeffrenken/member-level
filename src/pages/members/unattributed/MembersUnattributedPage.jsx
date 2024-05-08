@@ -2,8 +2,10 @@ import useFilteredMembers from '@/api/useFilteredMembers';
 import { useMemo } from 'react';
 import MembersLayout from '../MembersLayout';
 
+const filters = ['contract'];
 export default function MembersUnattributedPage() {
-  const { filteredMembers } = useFilteredMembers(['contract']);
+  const { filteredMembers } = useFilteredMembers(filters);
+
   const members = useMemo(() => {
     if (!filteredMembers) {
       return null;
@@ -13,7 +15,7 @@ export default function MembersUnattributedPage() {
 
   return (
     <>
-      <MembersLayout title="Unattributed Members" members={members} />
+      <MembersLayout title="Unattributed Members" members={members} filters={filters} />
     </>
   );
 }
