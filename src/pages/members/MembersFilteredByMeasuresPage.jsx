@@ -13,7 +13,7 @@ import { useEffect, useMemo } from 'react';
 import { useParams } from 'react-router-dom';
 import { useRecoilState, useRecoilValue } from 'recoil';
 
-const filters = ['provider', 'contract', 'measures'];
+const filters = ['providerGroup', 'contract', 'measures'];
 
 export default function MembersFilteredByMeasuresPage() {
   const theme = useTheme();

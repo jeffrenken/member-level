@@ -8,16 +8,16 @@ import { contractFilterState } from '@/state/contractFilterState';
 import { measureFilterState } from '@/state/measureFilterState';
 import { measuresFilterState } from '@/state/measuresFilterState';
 
+import useSrf from '@/api/useSrf';
+import { measureStatusFilterState } from '@/state/measureStatusFilterState';
 import { providerFilterState } from '@/state/providerFilterState';
 import { srfFilterState } from '@/state/srfFilterState';
-import { measureStatusFilterState } from '@/state/measureStatusFilterState';
-import useSrf from '@/api/useSrf';
 
-import { Box, Button, IconButton, Stack, TextField, useTheme, ButtonBase, InputAdornment } from '@mui/material';
-import { IconMoon, IconSun, IconUserCircle, IconSearch } from '@tabler/icons-react';
+import { SearchDialog } from '@/components/SearchDialog';
+import { Box, ButtonBase, InputAdornment, Stack, TextField, useTheme } from '@mui/material';
+import { IconSearch } from '@tabler/icons-react';
 import { useContext, useMemo, useState } from 'react';
 import { useRecoilState } from 'recoil';
-import { SearchDialog } from '@/components/SearchDialog';
 
 const measureStatusOptions = [
   { id: 'all', label: 'All Measures', value: 'All' },
@@ -112,7 +112,7 @@ export default function Top({ filters }) {
                 }}
               />
             )}
-            {filters.includes('provider') && (
+            {filters.includes('providerGroup') && (
               <AutocompleteButton
                 defaultLabel="Provider Groups"
                 withAllOption="All Provider Groups"

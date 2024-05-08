@@ -3,7 +3,6 @@ import useMembers from '@/api/useMembers';
 import useProviders from '@/api/useProviders';
 import useProviderGroups from '@/api/useProvidersGroups';
 import Card from '@/components/Card';
-import HeiCard from '@/components/cards/HeiCard';
 import AgGrid from '@/components/tables/AgGrid';
 import {
   DecimalRenderer,
@@ -15,10 +14,10 @@ import {
 } from '@/components/tables/CellRenderers';
 import Top from '@/layout/Top';
 import { providerFilterState } from '@/state/providerFilterState';
-import { Box, Container, Stack, Typography, useTheme, Button } from '@mui/material';
+import { Box, Button, Container, Stack, Typography, useTheme } from '@mui/material';
 import { IconArrowDownRight, IconArrowUpRight } from '@tabler/icons-react';
 import { useMemo } from 'react';
-import { Link, useParams } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { useRecoilValue } from 'recoil';
 
 const randomHalfNumberBetween = (min, max) => Math.floor(Math.random() * (max - min + 1) + min) / 2;
@@ -27,10 +26,9 @@ function getRandomNumberBetween(min = 0, max = 2) {
   return Math.floor(Math.random() * (max - min + 1) + min);
 }
 
-const filters = ['contract', 'provider'];
+const filters = ['contract', 'providerGroup'];
 
 export default function ProviderGroupsPage() {
-  const params = useParams();
   const theme = useTheme();
   const selectedProvider = useRecoilValue(providerFilterState);
   const { filteredMembers: memberData } = useFilteredMembers(filters);
@@ -164,14 +162,15 @@ export default function ProviderGroupsPage() {
   const cardWidth = 250;
 
   return (
-    <Container maxWidth="lg" sx={{ marginTop: '20px', marginBottom: '20px' }}>
+    <Container maxWidth="xl" sx={{ marginTop: '20px', marginBottom: '100px' }}>
       <Top filters={filters} />
-      <Stack direction="row" alignItems={'center'} justifyContent={'space-around'} spacing={3} sx={{ marginTop: '20px' }}>
+
+      <Stack direction="row" alignItems={'center'} justifyContent={'space-between'} spacing={3} sx={{ marginTop: '20px' }}>
         <Typography variant="h2" mt={3} pr={6}>
           Providers
         </Typography>
-        <Button component={Link} to="/members/unattributed" variant="contained">
-          View Unattributed Members
+        <Button component={Link} to="/members/unattributed" variant="contained" sx={{ borderRadius: '16px' }}>
+          View Unattributed Members ({membersWithoutProvider.length})
         </Button>
         {/* <HeiCard
           content={membersWithoutProvider.length}

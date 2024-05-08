@@ -20,7 +20,7 @@ const greenGlowBoxShadow =
 const green = '#50CEB2';
 const red = '#F36959';
 
-const filters = ['contract', 'provider', 'srf', 'measureStatus'];
+const filters = ['contract', 'providerGroup', 'srf', 'measureStatus'];
 
 const MeasuresPage = () => {
   //const UPDATE = useGlowPointer();
@@ -30,6 +30,7 @@ const MeasuresPage = () => {
   const { data: measuresData } = useMeasures();
 
   const { filteredMembers } = useFilteredMembers(filters);
+  console.log('filteredMembers', filteredMembers);
 
   const sampleMeasure = {
     id: 1,
@@ -61,7 +62,7 @@ const MeasuresPage = () => {
     });
 
     return splitMembers.sort((a, b) => b.abbreviation - a.abbreviation);
-  }, [filteredMembers, srfId, measureStatus, measuresData]);
+  }, [filteredMembers, measureStatus, measuresData]);
 
   const onTrack4 = measures.slice(0, 4);
   const onTrack5 = measures.slice(4, 8);

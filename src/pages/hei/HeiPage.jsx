@@ -1,6 +1,8 @@
 import useFilteredMembers from '@/api/useFilteredMembers';
 import useMeasures from '@/api/useMeasures';
 import HeiCard from '@/components/cards/HeiCard';
+import MeasureCountCard from '@/components/cards/MeasureCountCard';
+import DonutChart from '@/components/charts/DonutChart';
 import PieChart2 from '@/components/charts/TestPie2';
 import Top from '@/layout/Top';
 import { measureStatusFilterState } from '@/state/measureStatusFilterState';
@@ -11,9 +13,6 @@ import Grid2 from '@mui/material/Unstable_Grid2';
 import { useMemo } from 'react';
 import { useRecoilValue } from 'recoil';
 import ThresholdSelect from './components/ThresholdSelect';
-import MeasureCountCard from '@/components/cards/MeasureCountCard';
-import DonutChart from '@/components/charts/DonutChart';
-import Card from '@/components/Card';
 
 const green = '#50CEB2';
 const red = '#F36959';
@@ -22,7 +21,7 @@ function inRange(x, min, max) {
   return (x - min) * (x - max) <= 0;
 }
 
-const filters = ['contract', 'provider', 'srf', 'measureStatus'];
+const filters = ['contract', 'providerGroup', 'srf', 'measureStatus'];
 
 export default function HeiPage() {
   //const UPDATE = useGlowPointer();
@@ -32,7 +31,7 @@ export default function HeiPage() {
   const srfId = useRecoilValue(srfFilterState);
   const { data: measuresData } = useMeasures();
 
-  const { filteredMembers } = useFilteredMembers(['contract', 'provider', 'srf', 'measureStatus']);
+  const { filteredMembers } = useFilteredMembers(['contract', 'providerGroup', 'srf', 'measureStatus']);
   const measures = useMemo(() => {
     if (!filteredMembers.length) {
       return [];

@@ -76,9 +76,7 @@ export default function useFilteredMembers(filters) {
       return;
     }
     let filtered = [...members];
-    console.log('filtered', filtered);
     if (providerGroup && filters.includes('providerGroup')) {
-      console.log('providerGroup', providerGroup);
       filtered = filtered.filter((d) => d.providerGroup && d.providerGroup['Provider Group'] === providerGroup.label);
     }
 
@@ -93,7 +91,6 @@ export default function useFilteredMembers(filters) {
       }); */
 
     if (srf && filters.includes('srf')) {
-      console.log('srf', srf);
       if (srf.label === 'SRF Only') {
         //shitty way to know if they have an srf category
         filtered = filtered.filter((d) => d.isSrf);

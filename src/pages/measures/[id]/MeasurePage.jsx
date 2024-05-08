@@ -7,14 +7,13 @@ import MembersByMeasureTable from '@/components/tables/MembersByMeasureTable';
 import Top from '@/layout/Top';
 import { measureFilterState } from '@/state/measureFilterState';
 import { srfFilterState } from '@/state/srfFilterState';
-import { Box, Container, Stack, Typography, useTheme } from '@mui/material';
+import { Box, Container, Stack, Typography } from '@mui/material';
 import { useEffect, useMemo } from 'react';
 import { useParams } from 'react-router-dom';
 import { useRecoilState, useRecoilValue } from 'recoil';
 
-const filters = ['provider', 'contract', 'measure'];
+const filters = ['providerGroup', 'contract', 'measure'];
 export default function Measure() {
-  const theme = useTheme();
   const params = useParams();
   const id = parseInt(params.id);
   const { data: measuresData, isLoading } = useMeasures();
@@ -42,7 +41,7 @@ export default function Measure() {
   }, []);
 
   const measureWithData = useMemo(() => {
-    if (!measuresData || !members || !measures.length) {
+    if (!measuresData || !members) {
       return null;
     }
     let measureCopy = { ...measures[0] };
