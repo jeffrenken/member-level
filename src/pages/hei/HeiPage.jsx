@@ -31,7 +31,7 @@ export default function HeiPage() {
   const srfId = useRecoilValue(srfFilterState);
   const { data: measuresData } = useMeasures();
 
-  const { filteredMembers } = useFilteredMembers(['contract', 'providerGroup', 'srf', 'measureStatus']);
+  const { filteredMembers } = useFilteredMembers(filters);
   const measures = useMemo(() => {
     if (!filteredMembers.length) {
       return [];

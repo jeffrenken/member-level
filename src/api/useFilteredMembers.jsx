@@ -102,7 +102,7 @@ export default function useFilteredMembers(filters) {
       //filtered = filtered.filter((d) => d['SRF Score'] === srf.label);
     }
     setFilteredMembers(filtered);
-  }, [measure, providerGroup, contract, members, srf]);
+  }, [providerGroup, contract, members, srf, filters]);
 
   return { filteredMembers: filteredMembers, isLoading };
 }

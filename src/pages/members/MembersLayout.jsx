@@ -239,6 +239,11 @@ export default function MembersLayout({ members: filteredMembers, title }) {
       <Container maxWidth="xl" sx={{ mb: 3, mt: 3 }}>
         <Top filters={filters} />
         <Typography variant="h2">{title}</Typography>
+        <Typography>
+          Instructions: To navigate this screen, simply drag and drop column headers to the grouping area at the top to organize and analyze
+          your data by your preferred criteria. Customize filters, sort options, and groupings to tailor the view and uncover key member
+          insights quickly.
+        </Typography>
         <Box sx={{ height: 'calc(100vh - 200px)' }}>
           <AgGrid
             columnDefs={columnDefs}
