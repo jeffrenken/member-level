@@ -1,5 +1,5 @@
+import useFilteredMeasures from '@/api/useFilteredMeasures';
 import useFilteredMembers from '@/api/useFilteredMembers';
-import useMeasures from '@/api/useMeasures';
 import useMembersFilteredByMeasures from '@/api/useMembersFilteredByMeasures';
 import MeasuresAutocomplete from '@/components/MeasuresAutocomplete';
 import HeiCard from '@/components/cards/HeiCard';
@@ -8,17 +8,15 @@ import MembersByMeasureTable from '@/components/tables/MembersByMeasureTable';
 import Top from '@/layout/Top';
 import { measuresFilterState } from '@/state/measuresFilterState';
 import { srfFilterState } from '@/state/srfFilterState';
-import { Box, Container, Stack, Typography, useTheme, Grid } from '@mui/material';
+import { Box, Container, Grid, Stack, Typography, useTheme } from '@mui/material';
 import { useEffect, useMemo } from 'react';
-import { useParams } from 'react-router-dom';
 import { useRecoilState, useRecoilValue } from 'recoil';
 
-const filters = ['providerGroup', 'contract', 'measures'];
+const filters = ['providerGroup', 'contract', 'measureStatus'];
 
 export default function MembersFilteredByMeasuresPage() {
   const theme = useTheme();
-  const params = useParams();
-  const { data: measuresData, isLoading } = useMeasures();
+  const { data: measuresData, isLoading } = useFilteredMeasures();
   const measureIds = useRecoilValue(measuresFilterState);
   const [srf, setSrf] = useRecoilState(srfFilterState);
   //const [chartData, setChartData] = useState({});
@@ -44,7 +42,7 @@ export default function MembersFilteredByMeasuresPage() {
     let gapCounts = [];
 
     measuresData.forEach((measure, i) => {
-      gapCounts.push({ label: i.toString(), value: members.all.filter((member) => member.measuresOpen.length === i).length });
+      gapCounts.push({ label: i.toString(), value: members.all.filter((member) => member.filteredNumberOfGaps === i).length });
     });
     return gapCounts;
   }, [members, measuresData]);
@@ -81,7 +79,7 @@ export default function MembersFilteredByMeasuresPage() {
       </Grid>
 
       <Box mt={5} />
-      <MeasuresAutocomplete />
+      <MeasuresAutocomplete measures={measuresData} />
       {members?.denominator && <MembersByMeasureTable rows={members?.denominator} />}
     </Container>
   );

@@ -30,8 +30,8 @@ const columnDefs = [
     //cellRenderer: SrfRenderer
   },
   {
-    field: 'numberOfGaps',
-    headerName: 'Total Gaps-in-Care',
+    field: 'filteredNumberOfGaps',
+    headerName: 'Gaps-in-Care',
     type: 'numericColumn',
     //maxWidth: 180,
     chartDataType: 'series',

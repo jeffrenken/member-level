@@ -1,12 +1,20 @@
 import useMeasures from '@/api/useMeasures';
 import AutocompleteButton from '@/components/Autocomplete';
 import { measuresFilterState } from '@/state/measuresFilterState';
+import { useEffect } from 'react';
 
 import { useRecoilState } from 'recoil';
 
-export default function MeasuresAutocomplete() {
+export default function MeasuresAutocomplete({ measures }) {
   const [measuresState, setMeasuresState] = useRecoilState(measuresFilterState);
-  const { data: measures } = useMeasures();
+
+  useEffect(() => {
+    if (measuresState.length) {
+      //filter any measures that are not in the list
+      const filteredMeasures = measures.filter((m) => measuresState.includes(m.id));
+      setMeasuresState(filteredMeasures.map((m) => m.id));
+    }
+  }, [measures]);
 
   const handleMeasuresChange = (e, value) => {
     let newValues = value.map((v) => {

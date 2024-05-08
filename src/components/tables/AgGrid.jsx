@@ -194,20 +194,20 @@ export default function AgGrid({ rowData, columnDefs, sideBar2, csvDownload, sav
 
       <div
         className={darkMode ? 'ag-theme-quartz-dark' : 'ag-theme-quartz'}
-        style={{ height: height }} // the grid will fill the size of the parent container
+        style={{ height: height, width: '100%' }} // the grid will fill the size of the parent container
       >
         <AgGridReact
           key={rows}
           ref={gridRef}
           rowData={rows}
-          onRowDataUpdated={autoSizeAll}
+          onRowDataUpdated={columnDefs.length > 6 && autoSizeAll}
           columnDefs={columnDefs}
           defaultColDef={defaultColDef}
           enableRangeSelection={true}
           rowSelection="multiple"
           rowMultiSelectWithClick={true}
           onGridReady={onGridReady}
-          autoSizeStrategy={autoSizeStrategy}
+          autoSizeStrategy={columnDefs.length > 6 && autoSizeStrategy}
           enableCharts
           domLayout={!rows.length || rows.length > 10 ? 'normal' : 'autoHeight'}
           defaultCsvExportParams={{
