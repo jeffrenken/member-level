@@ -180,7 +180,7 @@ export default function MembersLayout({ members: filteredMembers, title, filters
       children: starsMeasures.map((measure) => {
         return {
           field: measure['Measure Name'],
-          headerName: measure['Measure Name'],
+          headerName: measure.abbreviation + ' - ' + measure['Measure Name'],
           type: 'numericColumn',
           chartDataType: 'series',
           filter: true,
@@ -207,7 +207,7 @@ export default function MembersLayout({ members: filteredMembers, title, filters
       children: displayMeasures.map((measure) => {
         return {
           field: measure['Measure Name'],
-          headerName: measure['Measure Name'],
+          headerName: measure.abbreviation + ' - ' + measure['Measure Name'],
           type: 'numericColumn',
           chartDataType: 'series',
           filter: true,
