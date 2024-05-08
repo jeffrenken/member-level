@@ -1,3 +1,4 @@
+import useFilteredMeasures from '@/api/useFilteredMeasures';
 import useMeasures from '@/api/useMeasures';
 import AgGrid from '@/components/tables/AgGrid';
 import {
@@ -33,7 +34,8 @@ const memberInfoColumns = [
 const srfOptions = ['Low Income Subsidy Copay Level', 'DUAL ELIGIBLE', 'DISABLED'];
 
 export default function MembersLayout({ members: filteredMembers, title, filters }) {
-  const { data: measures } = useMeasures();
+  const { data: measures } = useFilteredMeasures();
+  console.log('measures', measures);
 
   const starsMeasures = useMemo(() => {
     if (!measures.length) {
