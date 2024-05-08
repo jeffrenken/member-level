@@ -1,7 +1,7 @@
 import useFilteredMembers from '@/api/useFilteredMembers';
 import MembersLayout from './MembersLayout';
 
-const filters = ['contract'];
+const filters = ['contract', 'measureStatus'];
 
 export default function MembersPage() {
   const { filteredMembers } = useFilteredMembers(filters);

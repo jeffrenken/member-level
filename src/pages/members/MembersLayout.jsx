@@ -1,4 +1,3 @@
-import useFilteredMembers from '@/api/useFilteredMembers';
 import useMeasures from '@/api/useMeasures';
 import AgGrid from '@/components/tables/AgGrid';
 import {
@@ -63,9 +62,7 @@ export default function MembersLayout({ members: filteredMembers, title, filters
       return {
         firstName: member['FIRST NAME'],
         lastName: member['LAST NAME'],
-        id: member['MEMBER ID'],
         srfCell: member.isSrf,
-        numberOfGaps: member.numberOfGaps,
         starRating: randomHalfNumberBetween(0, 10),
         providerGroupName: member.providerGroup?.['Provider Group'] || '',
         providerName: member.providerGroup?.['Provider'] || '',
@@ -103,8 +100,8 @@ export default function MembersLayout({ members: filteredMembers, title, filters
       enableRowGroup: true
     },
     {
-      field: 'numberOfGaps',
-      headerName: 'Total Gaps-in-Care',
+      field: 'filteredNumberOfGaps',
+      headerName: 'Gaps-in-Care',
       type: 'numericColumn',
       chartDataType: 'series',
       filter: true,

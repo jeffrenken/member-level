@@ -26,7 +26,7 @@ function getRandomNumberBetween(min = 0, max = 2) {
   return Math.floor(Math.random() * (max - min + 1) + min);
 }
 
-const filters = ['contract', 'providerGroup'];
+const filters = ['contract', 'providerGroup', 'measureStatus'];
 
 export default function ProviderGroupsPage() {
   const theme = useTheme();
@@ -62,7 +62,7 @@ export default function ProviderGroupsPage() {
       const providerMembers = memberData.filter((member) => member.providerGroup && member.providerGroup.Provider === provider.value);
       let memberGaps = 0;
       providerMembers.forEach((member) => {
-        memberGaps = memberGaps + member.measuresOpen.length;
+        memberGaps = memberGaps + member.filteredNumberOfGaps;
       });
       return {
         ...provider,
@@ -120,7 +120,7 @@ export default function ProviderGroupsPage() {
 
     {
       field: 'numberOfGaps',
-      headerName: 'Total Gaps-in-Care',
+      headerName: 'Gaps-in-Care',
       type: 'numericColumn',
       chartDataType: 'series',
       filter: true,

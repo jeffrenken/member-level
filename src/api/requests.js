@@ -32,6 +32,7 @@ const members = memberData.map((member, i) => {
     srf: srf,
     isSrf: isSrf,
     numberOfGaps: numberOfGaps,
+    filteredNumberOfGaps: numberOfGaps,
     measuresOpen: Object.keys(measures).filter((key) => measures?.[key] === 0),
     measuresClosed: Object.keys(measures).filter((key) => measures?.[key] === 1)
   };

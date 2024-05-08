@@ -2,7 +2,7 @@ import useFilteredMembers from '@/api/useFilteredMembers';
 import { useMemo } from 'react';
 import MembersLayout from '../MembersLayout';
 
-const filters = ['contract'];
+const filters = ['contract', 'measureStatus'];
 export default function MembersUnattributedPage() {
   const { filteredMembers } = useFilteredMembers(filters);
 

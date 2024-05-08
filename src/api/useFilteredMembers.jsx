@@ -8,6 +8,7 @@ import { contractFilterState } from '@/state/contractFilterState';
 import { measureFilterState } from '@/state/measureFilterState';
 import { providerFilterState } from '@/state/providerFilterState';
 import { srfFilterState } from '@/state/srfFilterState';
+import { measureStatusFilterState } from '@/state/measureStatusFilterState';
 import { useQuery } from '@tanstack/react-query';
 import { useParams } from 'react-router-dom';
 import { useRecoilValue } from 'recoil';
@@ -27,12 +28,14 @@ export default function useFilteredMembers(filters) {
   const providerId = useRecoilValue(providerFilterState);
   const contractId = useRecoilValue(contractFilterState);
   const srfId = useRecoilValue(srfFilterState);
+  const measureStatus = useRecoilValue(measureStatusFilterState);
   const measureId = measureFilterId || id;
   const { data: members } = useMembers();
   const { data: providerGroups } = useProviderGroups();
   const { data: contracts } = useContracts();
   const { data: memberMeasures } = useMemberMeasures();
   const { data: srfData } = useSrf();
+
   const [filteredMembers, setFilteredMembers] = useState([]);
 
   const contract = useMemo(() => {
@@ -72,7 +75,7 @@ export default function useFilteredMembers(filters) {
   }, [srfData, srfId]);
 
   useEffect(() => {
-    if (!members) {
+    if (!members || !measures) {
       return;
     }
     let filtered = [...members];
@@ -84,6 +87,17 @@ export default function useFilteredMembers(filters) {
       filtered = filtered.filter((d) => d['CONTRACT'] === contract.label);
     }
 
+    if (contract && filters.includes('contract')) {
+      filtered = filtered.filter((d) => d['CONTRACT'] === contract.label);
+    }
+
+    let filteredMeasures = [...measures];
+    if (measureStatus !== 'all') {
+      filteredMeasures = measures.filter((measure) => measure.status === measureStatus).map((d) => d['Measure Name']);
+      filtered = filtered.map((d) => {
+        return { ...d, filteredNumberOfGaps: d.measuresOpen.filter((m) => filteredMeasures.includes(m)).length };
+      });
+    }
     //let withMember = [];
 
     /* filtered = filtered.map((d) => {
@@ -102,7 +116,7 @@ export default function useFilteredMembers(filters) {
       //filtered = filtered.filter((d) => d['SRF Score'] === srf.label);
     }
     setFilteredMembers(filtered);
-  }, [providerGroup, contract, members, srf, filters]);
+  }, [providerGroup, contract, members, srf, filters, measureStatus]);
 
   return { filteredMembers: filteredMembers, isLoading };
 }

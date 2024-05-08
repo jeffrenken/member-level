@@ -10,6 +10,7 @@ export default function AgGrid({ rowData, columnDefs, sideBar2, csvDownload, sav
   const darkMode = theme.palette.mode === 'dark';
   const [checked, setChecked] = useState(false);
   const [filters, setFilters] = useState([]);
+  const [rows, setRows] = useState(rowData);
 
   useEffect(() => {
     let f = localStorage.getItem('filters', JSON.stringify(filters));
@@ -17,6 +18,10 @@ export default function AgGrid({ rowData, columnDefs, sideBar2, csvDownload, sav
       setFilters(JSON.parse(f));
     }
   }, []);
+
+  useEffect(() => {
+    setRows(rowData);
+  }, [rowData]);
 
   function cellStyling(params) {
     if (checked && params.value > 1000000) {
@@ -84,7 +89,8 @@ export default function AgGrid({ rowData, columnDefs, sideBar2, csvDownload, sav
     };
   }, []);
 
-  const onGridReady = useCallback((params) => {
+  const onGridReady = useCallback((event) => {
+    //gridRef.current.autoSizeAllColumns();
     /* fetch('https://www.ag-grid.com/example-assets/olympic-winners.json')
           .then((resp) => resp.json())
           .then((data) => setRowData(data)); */
@@ -153,6 +159,18 @@ export default function AgGrid({ rowData, columnDefs, sideBar2, csvDownload, sav
     };
   }, []);
 
+  const autoSizeStrategy = {
+    type: 'fitCellContents'
+  };
+
+  const autoSizeAll = useCallback(() => {
+    const allColumnIds = [];
+    gridRef.current.api.getColumns().forEach((column) => {
+      allColumnIds.push(column.getId());
+    });
+    gridRef.current.api.autoSizeColumns(allColumnIds, false);
+  }, []);
+
   return (
     <>
       {(csvDownload || saveFiltersButton) && (
@@ -179,16 +197,19 @@ export default function AgGrid({ rowData, columnDefs, sideBar2, csvDownload, sav
         style={{ height: height }} // the grid will fill the size of the parent container
       >
         <AgGridReact
+          key={rows}
           ref={gridRef}
-          rowData={rowData}
+          rowData={rows}
+          onRowDataUpdated={autoSizeAll}
           columnDefs={columnDefs}
           defaultColDef={defaultColDef}
           enableRangeSelection={true}
           rowSelection="multiple"
           rowMultiSelectWithClick={true}
           onGridReady={onGridReady}
+          autoSizeStrategy={autoSizeStrategy}
           enableCharts
-          domLayout={!rowData.length || rowData.length > 10 ? 'normal' : 'autoHeight'}
+          domLayout={!rows.length || rows.length > 10 ? 'normal' : 'autoHeight'}
           defaultCsvExportParams={{
             fileName: 'member-level-export',
             processCellCallback: (cell) => {
