@@ -35,7 +35,7 @@ export default function ProviderPage() {
       return [];
     }
     return measures.filter((measure) => {
-      return measure.status === 'stars';
+      return measure.status === 1;
     });
   }, [measures]);
 

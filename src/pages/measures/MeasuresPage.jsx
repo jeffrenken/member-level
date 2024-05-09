@@ -37,7 +37,7 @@ const MeasuresPage = () => {
     }
 
     let filtered = [...measuresData];
-    if (measureStatus !== 'all') {
+    if (measureStatus !== 0) {
       filtered = filtered.filter((measure) => measure.status === measureStatus);
     }
 

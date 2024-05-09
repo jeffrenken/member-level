@@ -38,7 +38,7 @@ export default function HeiPage() {
     }
 
     let filtered = measuresData.filter((measure) => measure?.top_third_upper_value);
-    if (measureStatus !== 'all') {
+    if (measureStatus !== 0) {
       filtered = filtered.filter((measure) => measure.status === measureStatus);
     }
 

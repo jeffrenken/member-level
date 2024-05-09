@@ -1,17 +1,17 @@
-import * as React from 'react';
-import { useAutocomplete } from '@mui/base/useAutocomplete';
 import { Popper } from '@mui/base';
-import { styled, css } from '@mui/system';
-import useForkRef from '@mui/utils/useForkRef';
-import { Button, ButtonBase, Box, IconButton, Tooltip } from '@mui/material';
-import { IconCheck, IconCheckbox, IconChevronDown, IconSearch, IconSquare, IconX } from '@tabler/icons-react';
 import { ClickAwayListener } from '@mui/base/ClickAwayListener';
+import { useAutocomplete } from '@mui/base/useAutocomplete';
+import { Button, IconButton, Tooltip } from '@mui/material';
+import { css, styled } from '@mui/system';
+import { IconCheckbox, IconChevronDown, IconSearch, IconSquare, IconX } from '@tabler/icons-react';
+import * as React from 'react';
 
 function truncate(str, n) {
+  if (!str) return '';
   return str.length > n ? str.substr(0, n - 1) + '...' : str;
 }
 
-export default function AutocompleteButton({ label, defaultLabel, value, onChange, withAllOption, buttonProps, autocompleteProps }) {
+export default function AutocompleteButton({ label, onChange, withAllOption, buttonProps, autocompleteProps }) {
   const [anchorEl, setAnchorEl] = React.useState(null);
 
   const handleClick = (event) => {
@@ -51,7 +51,6 @@ export default function AutocompleteButton({ label, defaultLabel, value, onChang
               handleClose={handleClick}
               //setLabel={handleLabelChange}
               options={listOptions}
-              value={value}
               onChange={onChange}
               props={autocompletePropsCopy}
             />
@@ -78,7 +77,6 @@ const StyledPopperDiv = styled('div')(
 function AutocompletePopper({ handleClose, props }) {
   const [inputValue, setInputValue] = React.useState('');
   const { onChange, ...otherProps } = props;
-
   const handleClick = (e, newValue) => {
     if (newValue) {
       onChange(e, newValue);
@@ -114,7 +112,7 @@ function AutocompletePopper({ handleClose, props }) {
     if (otherProps.multiple) {
       return otherProps.value.find((v) => otherProps.isOptionEqualToValue(option, v));
     } else {
-      return groupedOptions?.id === option.id;
+      return option.value === otherProps.value;
     }
   }
 
@@ -135,7 +133,7 @@ function AutocompletePopper({ handleClose, props }) {
       {groupedOptions.length > 0 && (
         <Listbox {...getListboxProps()}>
           {groupedOptions.map((option, index) => (
-            <Option {...getOptionProps({ option, index })} selected={isSelected(option)} name={option?.name}>
+            <Option {...getOptionProps({ option, index })} aria-selected={isSelected(option)} name={option?.name}>
               {otherProps.multiple ? (
                 <>
                   {isSelected(option) ? (
@@ -155,7 +153,7 @@ function AutocompletePopper({ handleClose, props }) {
       {groupedOptions.length === 0 && props.options.length > 0 && Boolean(!inputValue) && (
         <Listbox {...getListboxProps()}>
           {props.options.map((option, index) => (
-            <Option {...getOptionProps({ option, index })} selected={isSelected(option)} name={option?.name}>
+            <Option {...getOptionProps({ option, index })} ariaSelected={isSelected(option)} name={option?.name}>
               {otherProps.multiple ? (
                 <>
                   {isSelected(option) ? (
@@ -312,8 +310,10 @@ const Option = styled('li')(
 
   &.Mui-focused,
   &.Mui-focusVisible {
-    background-color: ${theme.palette.mode === 'dark' ? grey[800] : grey[100]};
-    color: ${theme.palette.mode === 'dark' ? grey[300] : grey[900]};
+      &:hover {
+      background-color: ${theme.palette.mode === 'dark' ? grey[800] : grey[100]};
+      color: ${theme.palette.mode === 'dark' ? grey[300] : grey[900]};
+    }
   }
 
   &.Mui-focusVisible {

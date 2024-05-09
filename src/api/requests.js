@@ -117,9 +117,8 @@ const axiosClient = axios.create({
 });
 
 const fakeSrf = [
-  { id: 1, label: 'All Members', value: undefined },
-  { id: 2, label: 'SRF Only', value: true },
-  { id: 3, label: 'Non-SRF Only', value: false }
+  { id: 1, label: 'SRF Only', value: 1 },
+  { id: 2, label: 'Non-SRF Only', value: 2 }
 ];
 
 const mock = new MockAdapter(axiosClient, { delayResponse: 0 });

@@ -20,9 +20,8 @@ import { useContext, useMemo, useState } from 'react';
 import { useRecoilState } from 'recoil';
 
 const measureStatusOptions = [
-  { id: 'all', label: 'All Measures', value: 'All' },
-  { id: 'stars', label: 'Stars Measures', value: 'stars' },
-  { id: 'display', label: 'Display Measures', value: 'display' }
+  { id: 1, label: 'Stars Measures', value: 1 },
+  { id: 2, label: 'Display Measures', value: 2 }
 ];
 
 export default function Top({ filters }) {
@@ -132,6 +131,7 @@ export default function Top({ filters }) {
             {filters.includes('measure') && (
               <AutocompleteButton
                 defaultLabel="Measure"
+                withAllOption="All Measures"
                 label={measureState ? (measures.find((p) => p.id === measureState) || {}).label : 'Measure'}
                 autocompleteProps={{
                   id: 'measureState',
@@ -168,6 +168,7 @@ export default function Top({ filters }) {
             {filters.includes('srf') && (
               <AutocompleteButton
                 label={srfState ? (srf.find((s) => s.id === srfState) || {}).label : 'Members'}
+                withAllOption={'All Members'}
                 autocompleteProps={{
                   id: 'srfState',
                   options: srf,
@@ -182,7 +183,8 @@ export default function Top({ filters }) {
             )}
             {filters.includes('measureStatus') && (
               <AutocompleteButton
-                label={measureStatusState ? (measureStatusOptions.find((m) => m.id === measureStatusState) || {}).label : 'Measure Status'}
+                label={measureStatusState ? (measureStatusOptions.find((m) => m.id === measureStatusState) || {}).label : 'Measures'}
+                withAllOption={'All Measures'}
                 autocompleteProps={{
                   id: 'measureStatusState',
                   options: measureStatusOptions,

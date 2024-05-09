@@ -80,7 +80,7 @@ export default function useFilteredMeasures() {
     }
 
     let filtered = [...measures];
-    if (measureStatus !== 'all') {
+    if (measureStatus !== 0) {
       filtered = measures.filter((measure) => measure.status === measureStatus);
     }
     setFilteredMeasures(filtered);
