@@ -10,7 +10,7 @@ import MembersTable from '@/components/tables/MembersTable';
 import { contractFilterState } from '@/state/contractFilterState';
 import { providerFilterState } from '@/state/providerFilterState';
 import { srfFilterState } from '@/state/srfFilterState';
-import { Box, Grid, Stack, Typography, useTheme } from '@mui/material';
+import { Box, Grid, IconButton, Stack, Typography, useTheme } from '@mui/material';
 import mapboxgl from 'mapbox-gl';
 import 'mapbox-gl/dist/mapbox-gl.css';
 import { useEffect, useMemo, useRef, useState } from 'react';
@@ -19,6 +19,7 @@ import countiesData from '../../../fakeData/gz_2010_us_050_00_5m.json';
 import memberData from '../../../data/members.json';
 import stateToNumber from '../../../fakeData/stateToNumber.json';
 import statesBoundingBoxes from '../../../fakeData/statesBoundingBoxes.json';
+import { IconX } from '@tabler/icons-react';
 
 /* const st = s.features.map((item) => {
   let statePet = pets.find((pet) => pet.state === item.properties.NAME);
@@ -387,58 +388,69 @@ export default function Map() {
         </Box>
         {selectedCounty && (
           <Box sx={{ position: 'absolute', top: '20px', right: '16px', zIndex: 1001, width: '46%' }}>
-            <Card p={2} height="100%">
-              <Grid container>
-                <Grid item md={12} lg={4}>
-                  <Stack direction="column" spacing={2}>
-                    <Stack direction="row" justifyContent={'space-between'}>
-                      <Box>
-                        <Typography
-                          sx={{ fontWeight: 600, fontSize: '1.5rem', textDecoration: 'none' }}
-                          //component={Link}
-                          to={`/states/${selectedCounty?.stateAbbreviation}/counties/${selectedCounty?.NAME}`}
-                        >
-                          {selectedCounty.NAME} County, {selectedCounty.stateAbbreviation}
-                        </Typography>
-                        <Typography sx={{ fontSize: '1.1rem' }}>Open Gaps: {membersInCountyDenom.length}</Typography>
-                      </Box>
-                    </Stack>
-                  </Stack>
-                </Grid>
-
-                <Grid item md={12} lg={8}>
-                  <Stack direction="row" justifyContent={'flex-end'} alignItems={'center'} spacing={3}>
-                    <Box>
-                      <>
-                        <Box minWidth={140} height={100}>
-                          <GaugeChart
-                            chartScale={chartData.scale}
-                            chartValue={membersInCountyNumerator.length / (membersInCountyDenom.length + membersInCountyNumerator.length)}
-                          />
-                        </Box>
-                        <Typography sx={{ fontSize: '0.7rem', marginTop: '-8px' }} align="center">
-                          Stars Performance
-                        </Typography>
-                      </>
-                    </Box>
-                    <Box>
-                      <>
-                        <Box minWidth={140} height={100}>
-                          <GaugeChart
-                            chartScale={chartData.scale}
-                            chartValue={membersInCounty.filter((m) => m.isSrf).length / membersInCounty.length}
-                          />
-                        </Box>
-                        <Typography sx={{ fontSize: '0.7rem', marginTop: '-8px' }} align="center">
-                          Health Equity Performance
-                        </Typography>
-                      </>
-                    </Box>
-                  </Stack>
-                </Grid>
+            <Card p={0} height="100%">
+              <Grid container justifyContent="flex-end">
+                <IconButton sx={{ padding: 0.5 }} onClick={() => setSelectedCounty(null)}>
+                  <IconX />
+                </IconButton>
               </Grid>
-              <Box sx={{ height: '290px' }}>
-                {membersInCountyDenom.length && <MembersTable rows={membersInCountyDenom} height="265px" csvDownload />}
+              <Box pb={2} px={2}>
+                <>
+                  <Grid container>
+                    <Grid item md={12} lg={4}>
+                      <Stack direction="column" spacing={2}>
+                        <Stack direction="row" justifyContent={'space-between'}>
+                          <Box>
+                            <Typography
+                              sx={{ fontWeight: 600, fontSize: '1.5rem', textDecoration: 'none' }}
+                              //component={Link}
+                              to={`/states/${selectedCounty?.stateAbbreviation}/counties/${selectedCounty?.NAME}`}
+                            >
+                              {selectedCounty.NAME} County, {selectedCounty.stateAbbreviation}
+                            </Typography>
+                            <Typography sx={{ fontSize: '1.1rem' }}>Open Gaps: {membersInCountyDenom.length}</Typography>
+                          </Box>
+                        </Stack>
+                      </Stack>
+                    </Grid>
+
+                    <Grid item md={12} lg={8}>
+                      <Stack direction="row" justifyContent={'flex-end'} alignItems={'center'} spacing={3}>
+                        <Box>
+                          <>
+                            <Box minWidth={140} height={100}>
+                              <GaugeChart
+                                chartScale={chartData.scale}
+                                chartValue={
+                                  membersInCountyNumerator.length / (membersInCountyDenom.length + membersInCountyNumerator.length)
+                                }
+                              />
+                            </Box>
+                            <Typography sx={{ fontSize: '0.7rem', marginTop: '-8px' }} align="center">
+                              Stars Performance
+                            </Typography>
+                          </>
+                        </Box>
+                        <Box>
+                          <>
+                            <Box minWidth={140} height={100}>
+                              <GaugeChart
+                                chartScale={chartData.scale}
+                                chartValue={membersInCounty.filter((m) => m.isSrf).length / membersInCounty.length}
+                              />
+                            </Box>
+                            <Typography sx={{ fontSize: '0.7rem', marginTop: '-8px' }} align="center">
+                              Health Equity Performance
+                            </Typography>
+                          </>
+                        </Box>
+                      </Stack>
+                    </Grid>
+                  </Grid>
+                  <Box sx={{ height: '290px' }}>
+                    {membersInCountyDenom.length && <MembersTable rows={membersInCountyDenom} height="265px" csvDownload />}
+                  </Box>
+                </>
               </Box>
             </Card>
           </Box>

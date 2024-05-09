@@ -1,6 +1,5 @@
-import useMeasures from '@/api/useMeasures';
 import { Box, Rating, useTheme } from '@mui/material';
-import { IconCheck, IconCheckbox, IconStar, IconX, IconUserHeart } from '@tabler/icons-react';
+import { IconCheck, IconCheckbox, IconStar, IconUserHeart, IconX } from '@tabler/icons-react';
 import { Link } from 'react-router-dom';
 
 //function to add or subtract 10% of value
@@ -201,35 +200,33 @@ export const GapRenderer = (params) => {
   const theme = useTheme();
   const isDarkMode = theme.palette.mode === 'dark';
 
-  const individualGapScale = [10, 20, 30];
+  /* const individualGapScale = [10, 20, 30];
   const groupGapScale = [100, 200, 300];
-
   let gapScale = individualGapScale;
-  let totalGaps = 50; //just for halfway gradient
-
   if (params.value >= groupGapScale[0]) {
     gapScale = groupGapScale;
     totalGaps = 200;
-  }
+  } */
 
-  let color = '#5EAF52';
-  //let color = theme.palette.cardGreen;
+  let value = params.value;
+  //value = 9;
+
+  const blue = 'rgba(33,150,243,0.35)';
+
+  let color = '#2196f3';
+  let gradient = `linear-gradient(90deg, ${blue} 1%, rgba(237,235,235,0) ${(value / 10) * 100}%)`;
+  /* 
+  was for multiple colors
   let colorRgba = isDarkMode ? 'rgba(94,175,82,0.25)' : 'rgba(68,145,55,0.35)';
-  //let colorRgba = isDarkMode ? 'rgba(80,206,178,0.25)' : 'rgba(80,206,178,0.40)';
   if (params.value > gapScale[0]) {
-    //color = isDarkMode ? '#FDF26E' : '#E6C60D';
     color = theme.palette.cardYellow;
-    //colorRgba = isDarkMode ? 'rgba(253,242,110,0.15)' : 'rgba(253,218,13,0.40)';
     colorRgba = isDarkMode ? 'rgba(255,197,66,0.35)' : 'rgba(255,197,66,0.40)';
   }
   if (params.value > gapScale[1]) {
-    //color = '#CB4E4E';
     color = theme.palette.cardRed;
-    //colorRgba = isDarkMode ? 'rgba(203,78,78,0.15)' : 'rgba(179,15,15,0.25)';
     colorRgba = isDarkMode ? 'rgba(243,105,89,0.25)' : 'rgba(243,105,89,0.40)';
   }
-
-  let gradient = `linear-gradient(90deg, ${colorRgba} 10%, rgba(237,235,235,0) ${totalGaps + params.value - 10}%)`;
+  let gradient = `linear-gradient(90deg, ${colorRgba} 10%, rgba(237,235,235,0) ${totalGaps + params.value - 10}%)`; */
 
   /* if (params.value > 40) {
     gradient = `linear-gradient(90deg, rgba(28,179,15,1) 6%, rgba(206,201,120,1) 29%, rgba(214,44,44,1) 46%, rgba(237,235,235,0) 78%)`;
@@ -244,6 +241,33 @@ export const GapRenderer = (params) => {
         //filter: `drop-shadow(0px 0px 4px ${color})`,
         color: color,
         //background: `linear-gradient(90deg, rgba(237,235,235,0) ${totalGaps - params.value + 0}%, ${colorRgba} 85%)`
+        background: gradient
+      }}
+      px={2}
+    >
+      {params.value}
+    </Box>
+  );
+};
+
+export const GapRenderer2 = (params) => {
+  const theme = useTheme();
+  const isDarkMode = theme.palette.mode === 'dark';
+
+  let value = params.value;
+
+  const blue = 'rgba(33,150,243,0.35)';
+
+  let color = '#2196f3';
+  let gradient = `linear-gradient(90deg, ${blue} 1%, rgba(237,235,235,0) ${(value / 5) * 100}%)`;
+
+  return (
+    <Box
+      style={{
+        textDecoration: 'none',
+        fontWeight: 400,
+        fontSize: '1rem',
+        color: color,
         background: gradient
       }}
       px={2}

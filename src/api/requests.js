@@ -47,14 +47,17 @@ const distinctProviders = providerGroupsData
   .filter((value, index, self) => index === self.findIndex((t) => t.Provider === value.Provider))
   .map((p, i) => {
     const filteredMembers = members.filter((m) => m.provider === p.Provider);
-    const avgGapsPerMember = filteredMembers.reduce((sum, member) => sum + member.numberOfGaps, 0) / filteredMembers.length;
+    let avgGapsPerMember = filteredMembers.reduce((sum, member) => sum + member.numberOfGaps, 0) / filteredMembers.length;
+    avgGapsPerMember = parseFloat(avgGapsPerMember.toFixed(2));
     return { id: i + 1, label: p.Provider, value: p.Provider, avgGapsPerMember: avgGapsPerMember, providerGroup: p['Provider Group'] };
   });
 
 const providerGroups = providerGroupsData.map((p, i) => {
   const filteredMembers = members.filter((m) => m.providerGroup && m.providerGroup['Provider Group'] === p['Provider Group']);
 
-  const avgGapsPerMember = filteredMembers.reduce((sum, member) => sum + member.numberOfGaps, 0) / filteredMembers.length;
+  let avgGapsPerMember = filteredMembers.reduce((sum, member) => sum + member.numberOfGaps, 0) / filteredMembers.length;
+  avgGapsPerMember = parseFloat(avgGapsPerMember.toFixed(2));
+
   return { ...p, id: i + 1, avgGapsPerMember: avgGapsPerMember };
 });
 

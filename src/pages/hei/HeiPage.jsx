@@ -21,7 +21,7 @@ function inRange(x, min, max) {
   return (x - min) * (x - max) <= 0;
 }
 
-const filters = ['contract', 'providerGroup', 'srf', 'measureStatus'];
+const filters = ['contract', 'providerGroup', 'measureStatus'];
 
 export default function HeiPage() {
   //const UPDATE = useGlowPointer();
@@ -56,8 +56,8 @@ export default function HeiPage() {
         ];
       }
 
-      const closed = filteredMembers.filter((member) => member?.measuresClosed.includes(measure['Measure Name'])).length;
-      const open = filteredMembers.filter((member) => member?.measuresOpen.includes(measure['Measure Name'])).length;
+      const closed = filteredMembers.filter((member) => member.isSrf && member?.measuresClosed.includes(measure['Measure Name'])).length;
+      const open = filteredMembers.filter((member) => member.isSrf && member?.measuresOpen.includes(measure['Measure Name'])).length;
       const quotient = (closed / (closed + open)) * 100;
 
       let isCloseToNextThreshold = false;

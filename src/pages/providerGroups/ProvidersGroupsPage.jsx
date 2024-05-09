@@ -1,18 +1,13 @@
+import useContracts from '@/api/useContracts';
 import useFilteredMembers from '@/api/useFilteredMembers';
 import useMembers from '@/api/useMembers';
 import useProviders from '@/api/useProviders';
 import useProviderGroups from '@/api/useProvidersGroups';
 import Card from '@/components/Card';
 import AgGrid from '@/components/tables/AgGrid';
-import {
-  DecimalRenderer,
-  GapRenderer,
-  ProviderLinkRenderer,
-  TextRenderer,
-  TooltipRenderer,
-  getSparklineData
-} from '@/components/tables/CellRenderers';
+import { GapRenderer2, ProviderLinkRenderer, TextRenderer, TooltipRenderer, getSparklineData } from '@/components/tables/CellRenderers';
 import Top from '@/layout/Top';
+import { contractFilterState } from '@/state/contractFilterState';
 import { providerFilterState } from '@/state/providerFilterState';
 import { Box, Button, Container, Stack, Typography, useTheme } from '@mui/material';
 import { IconArrowDownRight, IconArrowUpRight } from '@tabler/icons-react';
@@ -35,12 +30,25 @@ export default function ProviderGroupsPage() {
   const { data: providers } = useProviders();
   const { data: providerGroups } = useProviderGroups();
   const { data: allMembers } = useMembers();
-  const membersWithoutProvider = useMemo(() => {
-    if (!allMembers) {
+  const contractId = useRecoilValue(contractFilterState);
+  const { data: contracts } = useContracts();
+
+  const contract = useMemo(() => {
+    if (!contracts) {
       return null;
     }
-    return allMembers.filter((member) => !member.providerGroup);
-  }, [allMembers]);
+    return contracts.find((contract) => {
+      return contract.id === contractId;
+    });
+  }, [contracts, contractId]);
+
+  const membersWithoutProvider = useMemo(() => {
+    if (!allMembers || !contract) {
+      return [];
+    }
+    return allMembers.filter((d) => d['CONTRACT'] === contract.label && !d.providerGroup);
+  }, [contract, allMembers]);
+
   const providerGroup = useMemo(() => {
     if (!providerGroups) {
       return null;
@@ -49,6 +57,7 @@ export default function ProviderGroupsPage() {
       return provider.id === selectedProvider;
     });
   }, [providerGroups, selectedProvider]);
+
   const rows = useMemo(() => {
     if (!providers.length || !memberData.length) {
       return [];
@@ -117,15 +126,14 @@ export default function ProviderGroupsPage() {
       enableRowGroup: true
       //hide: true
     },
-
     {
-      field: 'numberOfGaps',
-      headerName: 'Gaps-in-Care',
+      field: 'avgGapsPerMember',
+      headerName: 'Gaps per Member',
       type: 'numericColumn',
       chartDataType: 'series',
       filter: true,
       enableRowGroup: true,
-      cellRenderer: GapRenderer
+      cellRenderer: GapRenderer2
     },
     {
       field: 'chart',
@@ -149,13 +157,13 @@ export default function ProviderGroupsPage() {
       }
     },
     {
-      field: 'avgGapsPerMember',
-      headerName: 'Gaps per Member',
+      field: 'numberOfGaps',
+      headerName: 'Gaps-in-Care',
       type: 'numericColumn',
       chartDataType: 'series',
       filter: true,
       enableRowGroup: true,
-      cellRenderer: DecimalRenderer
+      cellRenderer: TextRenderer
     }
   ];
 

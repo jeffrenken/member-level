@@ -1,24 +1,16 @@
-import { fetchContracts } from '@/api/requests';
 import useContracts from '@/api/useContracts';
 import useMeasures from '@/api/useMeasures';
-import useMemberMeasures from '@/api/useMemberMeasures';
 import useMembers from '@/api/useMembers';
 import useProviderGroups from '@/api/useProvidersGroups';
 import { contractFilterState } from '@/state/contractFilterState';
 import { measureFilterState } from '@/state/measureFilterState';
+import { measureStatusFilterState } from '@/state/measureStatusFilterState';
 import { providerFilterState } from '@/state/providerFilterState';
 import { srfFilterState } from '@/state/srfFilterState';
-import { measureStatusFilterState } from '@/state/measureStatusFilterState';
-import { useQuery } from '@tanstack/react-query';
+import { useEffect, useMemo, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { useRecoilValue } from 'recoil';
-import providerGroups from '../../data/providerGroups.json';
-import { useState, useEffect, useMemo } from 'react';
 import useSrf from './useSrf';
-
-const randomBoolean = () => Math.random() > 0.5;
-const randomIntegerBetween = (min, max) => Math.floor(Math.random() * (max - min + 1) + min);
-const randomHalfNumberBetween = (min, max) => Math.floor(Math.random() * (max - min + 1) + min) / 2;
 
 export default function useFilteredMembers(filters) {
   const params = useParams();
@@ -33,7 +25,6 @@ export default function useFilteredMembers(filters) {
   const { data: members } = useMembers();
   const { data: providerGroups } = useProviderGroups();
   const { data: contracts } = useContracts();
-  const { data: memberMeasures } = useMemberMeasures();
   const { data: srfData } = useSrf();
 
   const [filteredMembers, setFilteredMembers] = useState([]);
@@ -56,14 +47,14 @@ export default function useFilteredMembers(filters) {
     });
   }, [providerGroups, providerId]);
 
-  const measure = useMemo(() => {
+  /* const measure = useMemo(() => {
     if (!measures) {
       return null;
     }
     return measures.find((measure) => {
       return measure.id === measureId;
     });
-  }, [measures, measureId]);
+  }, [measures, measureId]); */
 
   const srf = useMemo(() => {
     if (!srfData) {
@@ -92,7 +83,7 @@ export default function useFilteredMembers(filters) {
     }
 
     let filteredMeasures = [...measures];
-    if (measureStatus !== 'all') {
+    if (measureStatus !== 'all' && filters.includes('measureStatus')) {
       filteredMeasures = measures.filter((measure) => measure.status === measureStatus).map((d) => d['Measure Name']);
       filtered = filtered.map((d) => {
         return { ...d, filteredNumberOfGaps: d.measuresOpen.filter((m) => filteredMeasures.includes(m)).length };

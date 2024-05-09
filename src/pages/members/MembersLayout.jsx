@@ -170,7 +170,18 @@ export default function MembersLayout({ members: filteredMembers, title, filters
           chartDataType: 'series',
           filter: true,
           cellRenderer: SrfRenderer,
-          enableRowGroup: true
+          enableRowGroup: true,
+          valueFormatter: ({ value }) => {
+            console.log('value', value);
+            let valueDisplay = 'True';
+            if (value === 'false') {
+              valueDisplay = 'False';
+              console.log('valueDisplay', valueDisplay);
+            }
+            let text = `${srfOption} - ${valueDisplay} `;
+
+            return text;
+          }
         };
       })
     },
