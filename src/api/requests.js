@@ -8,7 +8,6 @@ import providerGroupsData from '../../data/providerGroups.json';
 
 const members = memberData.map((member, i) => {
   const measures = memberMeasures.find((m) => m['MEMBER ID'] === member['MEMBER ID']);
-
   const numberOfGaps = Object.keys(measures).filter((key) => measures?.[key] === 0).length;
   const srfOptions = ['Low Income Subsidy Copay Level', 'DUAL ELIGIBLE', 'DISABLED'];
 

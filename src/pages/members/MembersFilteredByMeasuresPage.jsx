@@ -47,6 +47,22 @@ export default function MembersFilteredByMeasuresPage() {
     return gapCounts;
   }, [members, measuresData]);
 
+  const membersPercentMoreThanOneGap = useMemo(() => {
+    if (!members?.all) {
+      return 0;
+    }
+    let val = members.all.filter((member) => member.filteredNumberOfGaps > 1).length / members.all.length;
+    return Math.round(val * 100) + '%';
+  }, [members]);
+
+  const membersPercentMoreThanThreeGaps = useMemo(() => {
+    if (!members?.all) {
+      return 0;
+    }
+    let val = members.all.filter((member) => member.filteredNumberOfGaps > 3).length / members.all.length;
+    return Math.round(val * 100) + '%';
+  }, [members]);
+
   if (isLoading) {
     return <div>Loading...</div>;
   }
@@ -72,8 +88,8 @@ export default function MembersFilteredByMeasuresPage() {
         </Grid>
         <Grid item md={12} lg={5}>
           <Stack direction="row" justifyContent={'center'} alignItems={'center'} spacing={2} pr={2}>
-            <HeiCard content={'82%'} title={'Members with >1 Gap'} color={theme.palette.cardRed} size="md" />
-            <HeiCard content={'43%'} title={'Members with 3+ Gaps'} color={theme.palette.cardRed} size="md" />
+            <HeiCard content={membersPercentMoreThanOneGap} title={'Members with >1 Gap'} color={theme.palette.cardRed} size="md" />
+            <HeiCard content={membersPercentMoreThanThreeGaps} title={'Members with 3+ Gaps'} color={theme.palette.cardRed} size="md" />
           </Stack>
         </Grid>
       </Grid>

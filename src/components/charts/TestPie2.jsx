@@ -5,6 +5,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useRecoilState } from 'recoil';
 import { measureFilterState } from '@/state/measureFilterState.js';
 import ProgressChart from './ProgressChart';
+import { motion } from 'framer-motion';
 
 const measure = {
   id: 1,
@@ -42,7 +43,7 @@ const PieChart2 = ({ measure, disabled, chart }) => {
   const value2InDegrees = (measure.denominator / total) * 360;
   const numeratorPercent = (measure.numerator / total) * 100;
   const denominatorPercent = (measure.denominator / total) * 100;
-  const quotient = ((measure.numerator / measure.denominator) * 100).toFixed(0);
+  const quotient = ((measure.numerator / total) * 100).toFixed(0);
 
   const background = theme.palette.background.semiTransparent;
 
@@ -128,7 +129,7 @@ const PieChart2 = ({ measure, disabled, chart }) => {
             textAlign: 'right'
           }}
         >
-          {measure.denominator}
+          {total}
         </Typography>
       </Stack>
     </>
@@ -173,19 +174,21 @@ const PieChart2 = ({ measure, disabled, chart }) => {
               boxShadow: 'inset 0px 4px 8px rgb(0 0 0 / 0.3)'
             })}
           >
-            <Typography
-              align="center"
-              sx={{
-                fontSize: '2.1rem',
-                fontWeight: 600,
-                lineHeight: 0.9,
-                letterSpacing: '-1px',
-                mt: '21px',
-                textShadow: '0px 2px 2px rgb(0 0 0 / 0.3)'
-              }}
-            >
-              {isNaN(quotient) ? '' : quotient}
-            </Typography>
+            <motion.div key={quotient} initial={{ opacity: 0, scale: 1 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 1.5 }}>
+              <Typography
+                align="center"
+                sx={{
+                  fontSize: '2.1rem',
+                  fontWeight: 600,
+                  lineHeight: 0.9,
+                  letterSpacing: '-1px',
+                  mt: '21px',
+                  textShadow: '0px 2px 2px rgb(0 0 0 / 0.3)'
+                }}
+              >
+                {isNaN(quotient) ? '' : quotient}
+              </Typography>
+            </motion.div>
           </Box>
         </Box>
         {chart === 'gradient' && gradientChart}

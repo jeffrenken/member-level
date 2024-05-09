@@ -4,6 +4,7 @@ import { useSrfScores } from '@/api/useSrfScores';
 import { Link, useSearchParams } from 'react-router-dom';
 import './measure-count-card.css';
 import { IconArrowRight } from '@tabler/icons-react';
+import { motion } from 'framer-motion';
 
 const lightBlue = 'rgb(222, 237, 252, 1)';
 
@@ -75,9 +76,16 @@ export default function MeasureCountCard({ label, measures, size = 'md', isLoadi
               )}
               <IconArrowRight size={16} />
             </Stack>
-            <Typography align="center" sx={{ fontSize: styles.fontSize, fontWeight: 600, lineHeight: styles.lineHeight, color: color }}>
-              {measures.length}
-            </Typography>
+            <motion.div
+              key={measures.length}
+              initial={{ opacity: 0, scale: 1 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 1 }}
+            >
+              <Typography align="center" sx={{ fontSize: styles.fontSize, fontWeight: 600, lineHeight: styles.lineHeight, color: color }}>
+                {measures.length}
+              </Typography>
+            </motion.div>
             <Typography sx={{ fontWeight: 500, fontSize: isLg ? '1.3rem' : '1rem' }} align="center">
               Measures
             </Typography>

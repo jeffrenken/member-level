@@ -3,6 +3,7 @@ import { useMemo, useState } from 'react';
 import { useSrfScores } from '@/api/useSrfScores';
 import { Link, useSearchParams } from 'react-router-dom';
 import { IconArrowRight } from '@tabler/icons-react';
+import { motion, AnimatePresence } from 'framer-motion';
 
 const lightBlue = 'rgb(222, 237, 252, 1)';
 
@@ -44,9 +45,20 @@ export default function HeiCard({ title, content, isLoading, color, size = 'md',
               </Typography>
             )}
           </Stack>
-          <Typography align="center" sx={{ fontSize: styles.fontSize, fontWeight: 600, lineHeight: styles.lineHeight, color: color }}>
-            {content}
-          </Typography>
+          <motion.div key={content} initial={{ opacity: 0, scale: 1 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 1.5 }}>
+            <Typography
+              align="center"
+              sx={{
+                fontSize: styles.fontSize,
+                fontWeight: 600,
+                lineHeight: styles.lineHeight,
+                color: color,
+                letterSpacing: '-2px'
+              }}
+            >
+              {content}
+            </Typography>
+          </motion.div>
           <Typography sx={{ fontWeight: 500, fontSize: '1rem' }} align="center">
             {' '}
           </Typography>
