@@ -30,8 +30,6 @@ const MeasuresPage = () => {
   const { data: measuresData } = useMeasures();
 
   const { filteredMembers } = useFilteredMembers(filters);
-  console.log('filteredMembers', filteredMembers);
-
   const sampleMeasure = {
     id: 1,
     abbreviation: 'EM',
@@ -56,8 +54,9 @@ const MeasuresPage = () => {
       const numerator = filteredMembers.filter((member) => member?.measuresClosed.includes(measure['Measure Name'])).length;
       const denominator = filteredMembers.filter((member) => member?.measuresOpen.includes(measure['Measure Name'])).length;
       splitMembers[i] = { ...measure };
-      splitMembers[i].numerator = numerator;
-      splitMembers[i].denominator = numerator + denominator;
+      splitMembers[i].closed = numerator;
+      splitMembers[i].open = denominator;
+      splitMembers[i].total = denominator + numerator;
       splitMembers[i].forecast = 'N/A';
     });
 

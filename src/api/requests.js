@@ -6,6 +6,9 @@ import srfData from '../../data/memberSrf.json';
 import memberData from '../../data/members.json';
 import providerGroupsData from '../../data/providerGroups.json';
 
+console.log(memberMeasures[0]);
+console.log(Object.keys(memberMeasures[0]).filter((key) => memberMeasures[0]?.[key] === 0));
+
 const members = memberData.map((member, i) => {
   const measures = memberMeasures.find((m) => m['MEMBER ID'] === member['MEMBER ID']);
   const numberOfGaps = Object.keys(measures).filter((key) => measures?.[key] === 0).length;
@@ -36,6 +39,8 @@ const members = memberData.map((member, i) => {
     measuresClosed: Object.keys(measures).filter((key) => measures?.[key] === 1)
   };
 });
+
+console.log(members[0]);
 
 //just assuming names are unique for testing
 const distinctProviders = providerGroupsData

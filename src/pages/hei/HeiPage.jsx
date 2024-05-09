@@ -56,9 +56,9 @@ export default function HeiPage() {
         ];
       }
 
-      const numerator = filteredMembers.filter((member) => member?.measuresClosed.includes(measure['Measure Name'])).length;
-      const denominator = filteredMembers.filter((member) => member?.measuresOpen.includes(measure['Measure Name'])).length;
-      const quotient = (numerator / (numerator + denominator)) * 100;
+      const closed = filteredMembers.filter((member) => member?.measuresClosed.includes(measure['Measure Name'])).length;
+      const open = filteredMembers.filter((member) => member?.measuresOpen.includes(measure['Measure Name'])).length;
+      const quotient = (closed / (closed + open)) * 100;
 
       let isCloseToNextThreshold = false;
       if (thresholdFilter) {
@@ -70,8 +70,9 @@ export default function HeiPage() {
       }
 
       splitMembers[i] = { ...measure };
-      splitMembers[i].numerator = numerator;
-      splitMembers[i].denominator = numerator + denominator;
+      splitMembers[i].closed = closed;
+      splitMembers[i].open = open;
+      splitMembers[i].total = closed + open;
       splitMembers[i].forecast = 'N/A';
       splitMembers[i].quotient = quotient;
       splitMembers[i].isCloseToNextThreshold = isCloseToNextThreshold;

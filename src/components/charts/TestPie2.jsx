@@ -38,12 +38,12 @@ const PieChart2 = ({ measure, disabled, chart }) => {
   const theme = useTheme();
   const navigate = useNavigate();
   const [measureState, setMeasureState] = useRecoilState(measureFilterState);
-  const total = measure.numerator + measure.denominator;
-  const value1InDegrees = (measure.numerator / total) * 360;
-  const value2InDegrees = (measure.denominator / total) * 360;
-  const numeratorPercent = (measure.numerator / total) * 100;
-  const denominatorPercent = (measure.denominator / total) * 100;
-  const quotient = ((measure.numerator / total) * 100).toFixed(0);
+  const total = measure.total;
+  const value1InDegrees = (measure.closed / total) * 360;
+  const value2InDegrees = (measure.open / total) * 360;
+  const closedPercent = (measure.closed / total) * 100;
+  const openPercent = (measure.open / total) * 100;
+  const quotient = ((measure.closed / total) * 100).toFixed(0);
 
   const background = theme.palette.background.semiTransparent;
 
@@ -98,9 +98,9 @@ const PieChart2 = ({ measure, disabled, chart }) => {
         sx={{
           boxShadow: '0px 4px 8px rgb(0 0 0 / 0.2)',
           borderRadius: '4px',
-          //background: `linear-gradient(90deg, rgba(34, 193, 168, 1) ${numeratorPercent}%, rgba(35, 93, 241, 1) ${denominatorPercent}%)`
-          //background: `linear-gradient(90deg, rgba(34, 193, 168, 1) ${numeratorPercent}%, rgba(35, 93, 241, 1) 100%)`
-          background: `linear-gradient(135deg, ${numColor} ${numeratorPercent - 25}%, ${denomColor} ${100 - denominatorPercent + 25}%)`
+          //background: `linear-gradient(90deg, rgba(34, 193, 168, 1) ${closedPercent}%, rgba(35, 93, 241, 1) ${openPercent}%)`
+          //background: `linear-gradient(90deg, rgba(34, 193, 168, 1) ${closedPercent}%, rgba(35, 93, 241, 1) 100%)`
+          background: `linear-gradient(135deg, ${numColor} ${closedPercent - 25}%, ${denomColor} ${100 - openPercent + 25}%)`
         }}
       >
         <Typography
@@ -115,7 +115,7 @@ const PieChart2 = ({ measure, disabled, chart }) => {
             textAlign: 'left'
           }}
         >
-          {measure.numerator}
+          {measure.closed}
         </Typography>
         <Typography
           sx={{
@@ -226,7 +226,7 @@ const PieChart2 = ({ measure, disabled, chart }) => {
             borderRadius: '4px'
           }}
         >
-          {measure.denominator}
+          {measure.open}
         </Box>
       </Stack> */}
       {/* <Typography align="center" sx={{ fontSize: '1.1rem' }} mt="4px">
