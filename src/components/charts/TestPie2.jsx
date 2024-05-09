@@ -1,11 +1,11 @@
 import React from 'react';
-import styled from 'styled-components';
+import styled, { keyframes } from 'styled-components';
 import { Box, Container, Grid, Stack, Tooltip, Typography, useTheme } from '@mui/material';
 import { Link, useNavigate } from 'react-router-dom';
 import { useRecoilState } from 'recoil';
 import { measureFilterState } from '@/state/measureFilterState.js';
 import ProgressChart from './ProgressChart';
-import { motion } from 'framer-motion';
+import { AnimatePresence, motion } from 'framer-motion';
 
 const measure = {
   id: 1,
@@ -21,13 +21,33 @@ const red = '#F36959';
 const numColor = green;
 const denomColor = red;
 
-const Slice2 = styled(`div`)`
+const Slice3 = styled(`div`)`
   width: 85px;
   height: 85px;
   border-radius: 50%;
-  background-image: ${(props) => `conic-gradient(${denomColor} ${props.slice1}deg, ${numColor} 0 ${props.slice2}deg)`};
+  box-shadow: 0px 4px 8px rgb(0 0 0 / 0.4);
+  margin: 0 auto;
+  background: ${(props) => `conic-gradient(${denomColor} ${props.slice1}deg, ${numColor} 0 ${props.slice2}deg)`};
+`;
+
+const rotateAnimation = keyframes`
+  from {
+    background-size: 200% 200%;
+  }
+  to {
+    background-size: 100% 100%;
+  }
+`;
+
+const Slice2 = styled.div`
+  width: 85px;
+  height: 85px;
+  border-radius: 50%;
   margin: 0 auto;
   box-shadow: 0px 4px 8px rgb(0 0 0 / 0.4);
+  background: ${(props) => `conic-gradient(${denomColor} ${props.slice1}deg, ${numColor} 0 ${props.slice2}deg)`};
+  background-size: 100% 100%; /* adjust this value based on the number of color stops */
+  animation: ${rotateAnimation} 1.5s linear 1 forwards; /* adjust animation duration as needed */
 `;
 
 function truncate(str, n) {
@@ -58,80 +78,86 @@ const PieChart2 = ({ measure, disabled, chart }) => {
 
   const gradientChart = (
     <>
-      <Stack direction="row" alignItems="space-between" justifyContent="space-between" spacing={1} px={2} mt={'-8px'}>
-        <Box
+      <AnimatePresence>
+        <Stack direction="row" alignItems="space-between" justifyContent="space-between" spacing={1} px={2} mt={'-8px'}>
+          <Box
+            sx={{
+              width: '100%',
+              height: '100%',
+              pl: '4px',
+              py: '2px',
+              fontSize: '0.7rem',
+              textAlign: 'left',
+              textShadow: '0px 2px 2px rgb(0 0 0 / 0.3)'
+            }}
+          >
+            Num
+          </Box>
+          <Box
+            sx={{
+              width: '100%',
+              height: '100%',
+              pl: '4px',
+              py: '2px',
+              fontSize: '0.7rem',
+              textAlign: 'right',
+              textShadow: '0px 2px 2px rgb(0 0 0 / 0.3)'
+            }}
+          >
+            Den
+          </Box>
+        </Stack>
+        <Stack
+          direction="row"
+          alignItems="space-between"
+          justifyContent="space-between"
+          spacing={1}
+          px={1}
+          mx={1}
+          mb="6px"
+          mt={'-3px'}
           sx={{
-            width: '100%',
-            height: '100%',
-            pl: '4px',
-            py: '2px',
-            fontSize: '0.7rem',
-            textAlign: 'left',
-            textShadow: '0px 2px 2px rgb(0 0 0 / 0.3)'
-          }}
-        >
-          Num
-        </Box>
-        <Box
-          sx={{
-            width: '100%',
-            height: '100%',
-            pl: '4px',
-            py: '2px',
-            fontSize: '0.7rem',
-            textAlign: 'right',
-            textShadow: '0px 2px 2px rgb(0 0 0 / 0.3)'
-          }}
-        >
-          Den
-        </Box>
-      </Stack>
-      <Stack
-        direction="row"
-        alignItems="space-between"
-        justifyContent="space-between"
-        spacing={1}
-        px={1}
-        mx={1}
-        mb="6px"
-        mt={'-3px'}
-        sx={{
-          boxShadow: '0px 4px 8px rgb(0 0 0 / 0.2)',
-          borderRadius: '4px',
-          //background: `linear-gradient(90deg, rgba(34, 193, 168, 1) ${closedPercent}%, rgba(35, 93, 241, 1) ${openPercent}%)`
-          //background: `linear-gradient(90deg, rgba(34, 193, 168, 1) ${closedPercent}%, rgba(35, 93, 241, 1) 100%)`
-          background: `linear-gradient(135deg, ${numColor} ${closedPercent - 25}%, ${denomColor} ${100 - openPercent + 25}%)`
-        }}
-      >
-        <Typography
-          sx={{
-            width: '100%',
-            height: '100%',
-            color: '#fff',
-            fontSize: '1.1rem',
-            pl: '4px',
-            py: '2px',
+            boxShadow: '0px 4px 8px rgb(0 0 0 / 0.2)',
             borderRadius: '4px',
-            textAlign: 'left'
+            //background: `linear-gradient(90deg, rgba(34, 193, 168, 1) ${closedPercent}%, rgba(35, 93, 241, 1) ${openPercent}%)`
+            //background: `linear-gradient(90deg, rgba(34, 193, 168, 1) ${closedPercent}%, rgba(35, 93, 241, 1) 100%)`
+            background: `linear-gradient(135deg, ${numColor} ${closedPercent - 25}%, ${denomColor} ${100 - openPercent + 25}%)`
           }}
         >
-          {measure.closed}
-        </Typography>
-        <Typography
-          sx={{
-            width: '100%',
-            height: '100%',
-            color: '#fff',
-            fontSize: '1.1rem',
-            pl: '4px',
-            py: '2px',
-            borderRadius: '4px',
-            textAlign: 'right'
-          }}
-        >
-          {total}
-        </Typography>
-      </Stack>
+          <motion.div key={measure?.closed} initial={{ x: 50 }} animate={{ x: 0 }} transition={{ duration: 1 }}>
+            <Typography
+              sx={{
+                width: '100%',
+                height: '100%',
+                color: '#fff',
+                fontSize: '1.1rem',
+                pl: '4px',
+                py: '2px',
+                borderRadius: '4px',
+                textAlign: 'left'
+              }}
+            >
+              {measure.closed}
+            </Typography>
+          </motion.div>
+          <motion.div key={total} initial={{ x: -50 }} animate={{ x: 0 }} transition={{ duration: 1 }}>
+            <Typography
+              sx={{
+                width: '100%',
+                height: '100%',
+                color: '#fff',
+                fontSize: '1.1rem',
+                pl: '4px',
+                py: '2px',
+                borderRadius: '4px',
+                textAlign: 'right'
+              }}
+            >
+              {total}
+            </Typography>
+          </motion.div>
+        </Stack>
+      </AnimatePresence>
     </>
   );
 

@@ -14,7 +14,11 @@
     "middle_third_upper_value": 72.4913,
     "top_third_lower_value": 72.4914,
     "top_third_upper_value": 100,
-    "id": 1
+    "id": 1,
+    "first_upper": 55,
+    "second_upper": 66,
+    "third_upper": 74,
+    "fourth_upper": 81
   },
   {
     "Measure Name": "Colorectal Cancer Screening",
@@ -31,17 +35,45 @@
     "middle_third_upper_value": 74.0165,
     "top_third_lower_value": 74.0166,
     "top_third_upper_value": 100,
-    "id": 2
+    "id": 2,
+    "first_upper": 52,
+    "second_upper": 63,
+    "third_upper": 74,
+    "fourth_upper": 81
   },
-  { "Measure Name": "COA - Medication Review", "Domain": "HEDIS", "Acronym": "COA-MR", "status": 1, "id": 3 },
-  { "Measure Name": "COA - Pain Assessment", "Domain": "HEDIS", "Acronym": "COA-PA", "status": 1, "id": 4 },
+  {
+    "Measure Name": "COA - Medication Review",
+    "Domain": "HEDIS",
+    "Acronym": "COA-MR",
+    "status": 1,
+    "id": 3,
+    "first_upper": 75,
+    "second_upper": 85,
+    "third_upper": 95,
+    "fourth_upper": 98
+  },
+  {
+    "Measure Name": "COA - Pain Assessment",
+    "Domain": "HEDIS",
+    "Acronym": "COA-PA",
+    "status": 1,
+    "id": 4,
+    "first_upper": 78,
+    "second_upper": 86,
+    "third_upper": 93,
+    "fourth_upper": 97
+  },
   {
     "Measure Name": "Osteo Mgmt in Women W Fracture",
     "Domain": "HEDIS",
     "Acronym": "OMW",
     "status": 1,
     "description": "The percentage of women 67–85 years of age who suffered a fracture and who had either a bone mineral density (BMD) test or prescription for a drug to treat osteoporosis in the 180 days (6 months) after the fracture.",
-    "id": 5
+    "id": 5,
+    "first_upper": 32.64,
+    "second_upper": 46,
+    "third_upper": 57.120000000000005,
+    "fourth_upper": 74.46000000000001
   },
   {
     "Measure Name": "Diabetes Care - Eye Exam",
@@ -58,7 +90,11 @@
     "middle_third_upper_value": 75.0258,
     "top_third_lower_value": 75.0259,
     "top_third_upper_value": 100,
-    "id": 6
+    "id": 6,
+    "first_upper": 54.06,
+    "second_upper": 66.3,
+    "third_upper": 75.48,
+    "fourth_upper": 82
   },
   {
     "Measure Name": "Diabetes Care - BSC",

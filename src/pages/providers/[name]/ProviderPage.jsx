@@ -1,7 +1,5 @@
-import useFilteredMembers from '@/api/useFilteredMembers';
 import useMeasures from '@/api/useMeasures';
 import useMembers from '@/api/useMembers';
-import useProviderGroups from '@/api/useProvidersGroups';
 import AgGrid from '@/components/tables/AgGrid';
 import {
   GapRenderer,
@@ -98,8 +96,8 @@ export default function ProviderPage() {
       cellRenderer: SrfRenderer
     },
     {
-      field: 'numberOfGaps',
-      headerName: 'Total Gaps-in-Care',
+      field: 'filteredNumberOfGaps',
+      headerName: 'Gaps-in-Care',
       type: 'numericColumn',
       chartDataType: 'series',
       filter: true,

@@ -11,15 +11,15 @@ import { contractFilterState } from '@/state/contractFilterState';
 import { providerFilterState } from '@/state/providerFilterState';
 import { srfFilterState } from '@/state/srfFilterState';
 import { Box, Grid, IconButton, Stack, Typography, useTheme } from '@mui/material';
+import { IconX } from '@tabler/icons-react';
 import mapboxgl from 'mapbox-gl';
 import 'mapbox-gl/dist/mapbox-gl.css';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { useRecoilState } from 'recoil';
-import countiesData from '../../../fakeData/gz_2010_us_050_00_5m.json';
 import memberData from '../../../data/members.json';
+import countiesData from '../../../fakeData/gz_2010_us_050_00_5m.json';
 import stateToNumber from '../../../fakeData/stateToNumber.json';
 import statesBoundingBoxes from '../../../fakeData/statesBoundingBoxes.json';
-import { IconX } from '@tabler/icons-react';
 
 /* const st = s.features.map((item) => {
   let statePet = pets.find((pet) => pet.state === item.properties.NAME);
@@ -71,6 +71,8 @@ export default function Map() {
 
   const style = darkMode ? 'mapbox://styles/mapbox/dark-v11' : 'mapbox://styles/mapbox/light-v11';
   const stepArray = [0, 25, 30, 35, 50, 70, 100, 1000000];
+  let colorArray = [0, 55, 66, 74, 81, 100]; //kind of a default
+
   const mapData = countyDataWithCount;
 
   const { data: measures } = useMeasures();
@@ -104,23 +106,7 @@ export default function Map() {
         source: 'countiesData',
         sourceLayer: 'countiesData',
         paint: {
-          'fill-color': [
-            'step',
-            ['get', 'percent'],
-            '#EAF3B6',
-            stepArray[0],
-            '#c00000',
-            stepArray[1],
-            '#f0a0a0',
-            stepArray[2],
-            '#F8B474',
-            stepArray[3],
-            '#ffeda0',
-            110,
-            '#00aa00',
-            120,
-            '#00ff00'
-          ],
+          'fill-color': ['step', ['get', 'percent'], '#EAF3B6', 0, '#c00000', 25, '#00ff00', 30, '#3ed', 35, '#0000ff', 50, '#3ed'],
           'fill-opacity': 0.5
         }
       });
@@ -150,7 +136,7 @@ export default function Map() {
         setClickedCounty(e);
       });
 
-      const popup = new mapboxgl.Popup({
+      /* const popup = new mapboxgl.Popup({
         id: 'popup',
         closeButton: false,
         closeOnClick: false
@@ -158,20 +144,18 @@ export default function Map() {
 
       map.current.on('mousemove', 'counties-fill', (event) => {
         map.current.getCanvas().style.cursor = 'pointer';
-        // Set constants equal to the current feature's magnitude, location, and time
         const name = event.features[0].properties.NAME;
         const percent = event.features[0].properties.percent ? event.features[0].properties.percent.toFixed(2) : '-';
 
-        //display in popup
-        //if (percent) {
+        if (percent) {
         popup.setLngLat(event.lngLat).setHTML(`<div class="text-lg font-bold">${name}</div><div>${percent}%</div>`).addTo(map.current);
-        //}
+        }
       });
 
       map.current.on('mouseleave', 'counties-fill', () => {
         map.current.getCanvas().style.cursor = '';
         popup.remove();
-      });
+      }); */
     });
 
     map.current.on('move', () => {
@@ -283,6 +267,62 @@ export default function Map() {
       map.current.getSource('countiesData').setData({
         type: 'FeatureCollection',
         features: updatedCountyData
+      });
+      if (selectedMeasureOption?.first_upper) {
+        colorArray = [
+          0,
+          selectedMeasureOption?.first_upper,
+          selectedMeasureOption?.second_upper,
+          selectedMeasureOption?.third_upper,
+          selectedMeasureOption?.fourth_upper,
+          100
+        ]; //kind of a default
+      }
+      map.current.setPaintProperty('counties-fill', 'fill-color', [
+        'step',
+        ['get', 'percent'],
+        '#ccc',
+        colorArray[0],
+        '#9B2323',
+        colorArray[1],
+        '#C46060',
+        colorArray[2],
+        '#F8CD6D',
+        colorArray[3],
+        '#71BE6D',
+        colorArray[4],
+        '#20701C',
+        colorArray[5],
+        '#ccc'
+      ]);
+
+      const popup2 = new mapboxgl.Popup({
+        id: 'popup2',
+        closeButton: false,
+        closeOnClick: false
+      });
+
+      map.current.on('mousemove', 'counties-fill', (event) => {
+        map.current.getCanvas().style.cursor = 'pointer';
+        // Set constants equal to the current feature's magnitude, location, and time
+        const name = event.features[0].properties.NAME;
+        const percent = event.features[0].properties.percent ? event.features[0].properties.percent.toFixed(2) : '-';
+
+        //display in popup
+        //if (percent) {
+        popup2
+          //.addClassName('mapboxgl-popup')
+          .setLngLat(event.lngLat)
+          .setHTML(
+            `<div style="font-size:18px;color:#222">${name} County</div><div style="font-size:14px;color:#222;text-align:center">${percent}%</div>`
+          )
+          .addTo(map.current);
+        //}
+      });
+
+      map.current.on('mouseleave', 'counties-fill', () => {
+        map.current.getCanvas().style.cursor = '';
+        popup2.remove();
       });
     }
 

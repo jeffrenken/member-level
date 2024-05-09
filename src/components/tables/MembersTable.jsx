@@ -1,23 +1,15 @@
 import AgGrid from '@/components/tables/AgGrid';
-import React from 'react';
 import { GapRenderer, LinkRenderer, SrfRenderer } from './CellRenderers';
 
-const randomBoolean = () => Math.random() > 0.5;
-const randomIntegerBetween = (min, max) => Math.floor(Math.random() * (max - min + 1) + min);
-const randomHalfNumberBetween = (min, max) => Math.floor(Math.random() * (max - min + 1) + min) / 2;
-
-const MemoizedAgGrid = React.memo(function AgGrid({ columnDefs, rowData }) {
-  return <AgGrid columnDefs={columnDefs} rowData={rowData} sidebar={false} />;
-});
-
 export default function MembersTable({ rows, csvDownload, height }) {
+  console.log('rows', rows);
   const members = rows.map((member) => {
     return {
       name: member['FIRST NAME'] + ' ' + member['LAST NAME'],
       id: member['MEMBER ID'],
       srf: member.isSrf,
       numberOfGaps: member.numberOfGaps,
-      starRating: randomHalfNumberBetween(0, 10),
+      filteredNumberOfGaps: member.filteredNumberOfGaps,
       url: `/members/${member['MEMBER ID']}`
     };
   });
@@ -33,8 +25,8 @@ export default function MembersTable({ rows, csvDownload, height }) {
       maxWidth: 100
     },
     {
-      field: 'numberOfGaps',
-      headerName: 'Total Gaps-in-Care',
+      field: 'filteredNumberOfGaps',
+      headerName: 'Gaps-in-Care',
       type: 'numericColumn',
       chartDataType: 'series',
       filter: true,
