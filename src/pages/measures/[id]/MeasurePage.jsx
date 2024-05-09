@@ -6,11 +6,10 @@ import PieChart2 from '@/components/charts/TestPie2';
 import MembersByMeasureTable from '@/components/tables/MembersByMeasureTable';
 import Top from '@/layout/Top';
 import { measureFilterState } from '@/state/measureFilterState';
-import { srfFilterState } from '@/state/srfFilterState';
 import { Box, Container, Stack, Typography } from '@mui/material';
-import { useEffect, useMemo } from 'react';
+import { useMemo } from 'react';
 import { useParams } from 'react-router-dom';
-import { useRecoilState, useRecoilValue } from 'recoil';
+import { useRecoilValue } from 'recoil';
 
 const filters = ['providerGroup', 'contract', 'measure'];
 export default function Measure() {
@@ -18,8 +17,7 @@ export default function Measure() {
   const id = parseInt(params.id);
   const { data: measuresData, isLoading } = useMeasures();
   const measureFilterId = useRecoilValue(measureFilterState);
-  const [srf, setSrf] = useRecoilState(srfFilterState);
-  const measureId = id || measureFilterId;
+  const measureId = measureFilterId || id;
   //const [chartData, setChartData] = useState({});
   const { filteredMembers } = useFilteredMembers(filters);
 
@@ -35,21 +33,17 @@ export default function Measure() {
   }, [measuresData, measureId]);
 
   const { members, chartData } = useMembersFilteredByMeasures(filteredMembers, measures);
-
-  useEffect(() => {
-    setSrf(0);
-  }, []);
-
   const measureWithData = useMemo(() => {
     if (!measuresData || !members) {
       return null;
     }
     let measureCopy = { ...measures[0] };
-    measureCopy.numerator = members.numerator.length;
-    measureCopy.denominator = members.denominator.length + members.numerator.length;
+    measureCopy.closed = members.closed.length;
+    measureCopy.open = members.open.length;
+    measureCopy.total = members.open.length + members.closed.length;
     measureCopy.forecast = 'N/A';
     return measureCopy;
-  }, [measuresData, measureId, members]);
+  }, [measuresData, members, measures]);
 
   if (isLoading) {
     return <div>Loading...</div>;
@@ -87,7 +81,7 @@ export default function Measure() {
          */}{' '}
       </Stack>
       <Box mt={3} />
-      <MembersByMeasureTable rows={members?.denominator} />
+      <MembersByMeasureTable rows={members?.open} />
     </Container>
   );
 }

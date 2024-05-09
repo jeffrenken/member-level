@@ -18,8 +18,7 @@ export default function MembersFilteredByMeasuresPage() {
   const theme = useTheme();
   const { data: measuresData, isLoading } = useFilteredMeasures();
   const measureIds = useRecoilValue(measuresFilterState);
-  const [srf, setSrf] = useRecoilState(srfFilterState);
-  //const [chartData, setChartData] = useState({});
+
   const { filteredMembers } = useFilteredMembers(filters);
 
   const measures = useMemo(() => {
@@ -30,10 +29,6 @@ export default function MembersFilteredByMeasuresPage() {
   }, [measuresData, measureIds]);
 
   const { members } = useMembersFilteredByMeasures(filteredMembers, measures);
-
-  useEffect(() => {
-    setSrf(0);
-  }, []);
 
   const chartData = useMemo(() => {
     if (!members?.all || !measuresData.length) {
@@ -96,7 +91,7 @@ export default function MembersFilteredByMeasuresPage() {
 
       <Box mt={5} />
       <MeasuresAutocomplete measures={measuresData} />
-      {members?.denominator && <MembersByMeasureTable rows={members?.denominator} />}
+      {members?.open && <MembersByMeasureTable rows={members?.open} />}
     </Container>
   );
 }

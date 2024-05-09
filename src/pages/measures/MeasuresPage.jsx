@@ -30,14 +30,6 @@ const MeasuresPage = () => {
   const { data: measuresData } = useMeasures();
 
   const { filteredMembers } = useFilteredMembers(filters);
-  const sampleMeasure = {
-    id: 1,
-    abbreviation: 'EM',
-    label: 'Example Measure',
-    numerator: 'Numerator',
-    denominator: 'Denominator',
-    forecast: 'something'
-  };
 
   const measures = useMemo(() => {
     if (!filteredMembers.length) {
@@ -51,21 +43,21 @@ const MeasuresPage = () => {
 
     let splitMembers = [];
     filtered.forEach((measure, i) => {
-      const numerator = filteredMembers.filter((member) => member?.measuresClosed.includes(measure['Measure Name'])).length;
-      const denominator = filteredMembers.filter((member) => member?.measuresOpen.includes(measure['Measure Name'])).length;
+      const closed = filteredMembers.filter((member) => member?.measuresClosed.includes(measure['Measure Name'])).length;
+      const open = filteredMembers.filter((member) => member?.measuresOpen.includes(measure['Measure Name'])).length;
       splitMembers[i] = { ...measure };
-      splitMembers[i].closed = numerator;
-      splitMembers[i].open = denominator;
-      splitMembers[i].total = denominator + numerator;
+      splitMembers[i].closed = closed;
+      splitMembers[i].open = open;
+      splitMembers[i].total = open + closed;
       splitMembers[i].forecast = 'N/A';
     });
 
     return splitMembers.sort((a, b) => b.abbreviation - a.abbreviation);
   }, [filteredMembers, measureStatus, measuresData]);
 
-  const onTrack4 = measures.slice(0, 4);
-  const onTrack5 = measures.slice(4, 8);
-  const offTrack = measures.slice(8, measures.length);
+  const onTrack4 = measures.slice(0, measures.length / 3);
+  const onTrack5 = measures.slice(measures.length / 4, (measures.length * 2) / 4);
+  const offTrack = measures.slice((measures.length * 2) / 3, measures.length);
 
   return (
     <Container maxWidth="xl" sx={{ marginBottom: '100px', marginTop: '20px' }}>

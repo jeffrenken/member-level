@@ -24,11 +24,11 @@ export default function useMembersFilteredByMeasures(members, measures) {
     splitMembers.all = m;
 
     if (measureNames.length) {
-      splitMembers.numerator = m.filter((member) => measureNames.every((m) => member?.measuresClosed.includes(m)));
-      splitMembers.denominator = m.filter((member) => measureNames.every((m) => member?.measuresOpen.includes(m)));
+      splitMembers.closed = m.filter((member) => measureNames.every((m) => member?.measuresClosed.includes(m)));
+      splitMembers.open = m.filter((member) => measureNames.every((m) => member?.measuresOpen.includes(m)));
     } else {
-      splitMembers.numerator = m.filter((member) => member.measuresClosed.length);
-      splitMembers.denominator = m.filter((member) => member.measuresOpen.length);
+      splitMembers.closed = m.filter((member) => member.measuresClosed.length);
+      splitMembers.open = m.filter((member) => member.measuresOpen.length);
     }
 
     let chartScale = [
@@ -46,7 +46,7 @@ export default function useMembersFilteredByMeasures(members, measures) {
         [measure?.top_third_upper_value / 100, '#a1d99e']
       ];
     }
-    const starsValue = splitMembers.numerator.length / (splitMembers.denominator.length + splitMembers.numerator.length);
+    const starsValue = splitMembers.closed.length / (splitMembers.open.length + splitMembers.closed.length);
     const heiValue = members.filter((member) => member.isSrf).length / members.length;
     const chartData = {
       scale: chartScale,
