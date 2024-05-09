@@ -35,8 +35,6 @@ const srfOptions = ['Low Income Subsidy Copay Level', 'DUAL ELIGIBLE', 'DISABLED
 
 export default function MembersLayout({ members: filteredMembers, title, filters }) {
   const { data: measures } = useFilteredMeasures();
-  console.log('measures', measures);
-
   const starsMeasures = useMemo(() => {
     if (!measures.length) {
       return [];
@@ -172,11 +170,9 @@ export default function MembersLayout({ members: filteredMembers, title, filters
           cellRenderer: SrfRenderer,
           enableRowGroup: true,
           valueFormatter: ({ value }) => {
-            console.log('value', value);
-            let valueDisplay = 'True';
+            let valueDisplay = 'Yes';
             if (value === 'false') {
-              valueDisplay = 'False';
-              console.log('valueDisplay', valueDisplay);
+              valueDisplay = 'No';
             }
             let text = `${srfOption} - ${valueDisplay} `;
 
