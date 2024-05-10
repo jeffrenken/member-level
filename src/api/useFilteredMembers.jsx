@@ -65,6 +65,18 @@ export default function useFilteredMembers(filters) {
     });
   }, [srfData, srfId]);
 
+  function filterSrf(members) {
+    if (!srf) {
+      return members;
+    }
+    if (srf.label === 'SRF Only') {
+      return members.filter((d) => d.isSrf);
+    }
+    if (srf.label === 'Non-SRF Only') {
+      return members.filter((d) => !d.isSrf);
+    }
+  }
+
   useEffect(() => {
     if (!members || !measures) {
       return;
@@ -78,10 +90,6 @@ export default function useFilteredMembers(filters) {
       filtered = filtered.filter((d) => d['CONTRACT'] === contract.label);
     }
 
-    if (contract && filters.includes('contract')) {
-      filtered = filtered.filter((d) => d['CONTRACT'] === contract.label);
-    }
-
     let filteredMeasures = [...measures];
     if (measureStatus !== 0 && filters.includes('measureStatus')) {
       filteredMeasures = measures.filter((measure) => measure.status === measureStatus).map((d) => d['Measure Name']);
@@ -89,25 +97,12 @@ export default function useFilteredMembers(filters) {
         return { ...d, filteredNumberOfGaps: d.measuresOpen.filter((m) => filteredMeasures.includes(m)).length };
       });
     }
-    //let withMember = [];
-
-    /* filtered = filtered.map((d) => {
-        return data.find((m) => m['MEMBER ID'] === d['MEMBER ID']);
-      }); */
 
     if (srf && filters.includes('srf')) {
-      if (srf.label === 'SRF Only') {
-        //shitty way to know if they have an srf category
-        filtered = filtered.filter((d) => d.isSrf);
-      }
-      if (srf.label === 'Non-SRF Only') {
-        //shitty way to know if they have an srf category
-        filtered = filtered.filter((d) => !d.isSrf);
-      }
-      //filtered = filtered.filter((d) => d['SRF Score'] === srf.label);
+      filtered = filterSrf(filtered);
     }
     setFilteredMembers(filtered);
-  }, [providerGroup, contract, members, srf, filters, measureStatus]);
+  }, [providerGroup, contract, members, srf, filters, measures, measureStatus]);
 
-  return { filteredMembers: filteredMembers, isLoading };
+  return { filteredMembers: filteredMembers, isLoading, filterSrf: filterSrf };
 }

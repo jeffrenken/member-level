@@ -45,6 +45,7 @@ const countyDataWithCount = { type: 'FeatureCollection', features: cd };
 mapboxgl.accessToken = import.meta.env.VITE_MAPBOX_TOKEN;
 
 const filters = ['contract', 'srf'];
+const filtersForMembers = ['contract'];
 
 export default function Map() {
   const theme = useTheme();
@@ -64,10 +65,11 @@ export default function Map() {
   const [srfState, setSrfState] = useRecoilState(srfFilterState);
   const [mapReady, setMapReady] = useState(false);
   const [chartData, setChartData] = useState({});
-  const [membersInCounty, setMembersInCounty] = useState([]);
+  const [filteredMembersInCounty, setFilteredMembersInCounty] = useState([]);
   const [membersInCountyNumerator, setMembersInCountyNumerator] = useState([]);
   const [membersInCountyDenom, setMembersInCountyDenom] = useState([]);
-  const { filteredMembers } = useFilteredMembers(filters);
+  const [membersInCounty, setMembersInCounty] = useState([]);
+  const { filteredMembers, filterSrf } = useFilteredMembers(filtersForMembers);
 
   const style = darkMode ? 'mapbox://styles/mapbox/dark-v11' : 'mapbox://styles/mapbox/light-v11';
   const stepArray = [0, 25, 30, 35, 50, 70, 100, 1000000];
@@ -179,13 +181,15 @@ export default function Map() {
       return;
     }
 
+    let membersWithAllFilters = filterSrf(filteredMembers);
+
     const selectedMeasure = selectedMeasureOption;
-    let membersInDenom = [...filteredMembers];
-    let membersInNumerator = [...filteredMembers];
+    let membersInDenom = [...membersWithAllFilters];
+    let membersInNumerator = [...membersWithAllFilters];
 
     if (selectedMeasure) {
-      membersInDenom = filteredMembers.filter((member) => member.measuresOpen.includes(selectedMeasure['Measure Name']));
-      membersInNumerator = filteredMembers.filter((member) => member.measuresClosed.includes(selectedMeasure['Measure Name']));
+      membersInDenom = membersWithAllFilters.filter((member) => member.measuresOpen.includes(selectedMeasure['Measure Name']));
+      membersInNumerator = membersWithAllFilters.filter((member) => member.measuresClosed.includes(selectedMeasure['Measure Name']));
 
       let chartScale = [
         [75 / 100, '#d27e6f'],
@@ -200,7 +204,7 @@ export default function Map() {
           [selectedMeasure?.top_third_upper_value / 100, '#a1d99e']
         ];
       }
-      const starsValue = membersInDenom.length / (filteredMembers.length + membersInDenom.length);
+      const starsValue = membersInDenom.length / (membersWithAllFilters.length + membersInDenom.length);
       const heiValue = starsValue * 0.4;
       setChartData({
         scale: chartScale,
@@ -209,14 +213,14 @@ export default function Map() {
       });
     } else {
       //members with any open
-      membersInDenom = filteredMembers.filter((member) => member.measuresOpen.length);
+      membersInDenom = membersWithAllFilters.filter((member) => member.measuresOpen.length);
 
       const chartScale = [
         [75 / 100, '#d27e6f'],
         [82 / 100, '#dcb05c'],
         [100 / 100, '#a1d99e']
       ];
-      const starsValue = membersInDenom.length / (filteredMembers.length + membersInDenom.length);
+      const starsValue = membersInDenom.length / (membersWithAllFilters.length + membersInDenom.length);
       const heiValue = starsValue * 0.4;
       setChartData({
         scale: chartScale,
@@ -230,7 +234,7 @@ export default function Map() {
 
     const updatedCountyData = countyDataWithCount.features.map((item) => {
       let itemCopy = { ...item };
-      let membersInCounty = filteredMembers.filter(
+      let membersInCounty = membersWithAllFilters.filter(
         (member) => member.COUNTY === item.properties.NAME && member.STATE === item.properties.stateAbbreviation
       );
       let membersInCountyDenom = membersInCounty.filter((member) => member.measuresOpen.length);
@@ -252,7 +256,7 @@ export default function Map() {
       const percent = (membersInCountyNumerator.length / (membersInCountyNumerator.length + membersInCountyDenom.length)) * 100;
 
       /* let countInCountyDenom = membersInCountyDenom.length;
-      let countTotalInCounty = filteredMembers.filter(
+      let countTotalInCounty = membersWithAllFilters.filter(
         (member) => member.COUNTY === item.properties.NAME && member.STATE === item.properties.stateAbbreviation
       ).length;
       let percent = (countInCountyDenom / countTotalInCounty) * 100; */
@@ -347,6 +351,9 @@ export default function Map() {
         membersInDenom.filter((member) => member.COUNTY === selectedCounty.NAME && member.STATE === selectedCounty.stateAbbreviation)
       );
 
+      setFilteredMembersInCounty(
+        membersWithAllFilters.filter((member) => member.COUNTY === selectedCounty.NAME && member.STATE === selectedCounty.stateAbbreviation)
+      );
       setMembersInCounty(
         filteredMembers.filter((member) => member.COUNTY === selectedCounty.NAME && member.STATE === selectedCounty.stateAbbreviation)
       );
@@ -397,6 +404,7 @@ export default function Map() {
                   <AutocompleteButton
                     defaultLabel="Measure"
                     label={measureState ? (measures.find((p) => p.id === measureState) || {}).label : 'Measure'}
+                    withAllOption="All Measures"
                     autocompleteProps={{
                       id: 'measureState',
                       options: measures,
@@ -410,6 +418,7 @@ export default function Map() {
                   />
                   <AutocompleteButton
                     label={srfState ? (srf.find((s) => s.id === srfState) || {}).label : 'Members'}
+                    withAllOption={'All Members'}
                     autocompleteProps={{
                       id: 'srfState',
                       options: srf,
