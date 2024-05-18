@@ -131,7 +131,6 @@ export default function Top({ filters }) {
             {filters.includes('measure') && (
               <AutocompleteButton
                 defaultLabel="Measure"
-                withAllOption="All Measures"
                 label={measureState ? (measures.find((p) => p.id === measureState) || {}).label : 'Measure'}
                 autocompleteProps={{
                   id: 'measureState',
@@ -149,6 +148,7 @@ export default function Top({ filters }) {
               <AutocompleteButton
                 defaultLabel="Measures"
                 label={'Measures'}
+                withAllOption="All Measures"
                 autocompleteProps={{
                   id: 'measuresState',
                   options: measures,

@@ -4,14 +4,14 @@ import { AgGridReact } from 'ag-grid-react';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 //import './ag-grid.css';
 
-export default function AgGrid({ rowData, columnDefs, sideBar2, csvDownload, saveFiltersButton, height = '100%', ...props }) {
-  const gridRef = useRef();
+export default function AgGrid({ rowData, columnDefs, sideBar2, csvDownload, saveFiltersButton, height = '100%', tableRef, ...props }) {
+  //const gridRef = useRef();
   const theme = useTheme();
   const darkMode = theme.palette.mode === 'dark';
   const [checked, setChecked] = useState(false);
   const [filters, setFilters] = useState([]);
   const [rows, setRows] = useState(rowData);
-
+  const gridRef = tableRef ? tableRef : useRef();
   useEffect(() => {
     let f = localStorage.getItem('filters', JSON.stringify(filters));
     if (f) {
@@ -197,7 +197,7 @@ export default function AgGrid({ rowData, columnDefs, sideBar2, csvDownload, sav
         style={{ height: height, width: '100%' }} // the grid will fill the size of the parent container
       >
         <AgGridReact
-          key={rows}
+          //key={rows}
           ref={gridRef}
           rowData={rows}
           onRowDataUpdated={columnDefs.length > 6 && autoSizeAll}

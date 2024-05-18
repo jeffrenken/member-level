@@ -2,7 +2,6 @@ import AgGrid from '@/components/tables/AgGrid';
 import { GapRenderer, LinkRenderer, SrfRenderer } from './CellRenderers';
 
 export default function MembersTable({ rows, csvDownload, height }) {
-  console.log('rows', rows);
   const members = rows.map((member) => {
     return {
       name: member['FIRST NAME'] + ' ' + member['LAST NAME'],

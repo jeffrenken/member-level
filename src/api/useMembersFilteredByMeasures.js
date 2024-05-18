@@ -1,10 +1,16 @@
 import { useMemo } from 'react';
+import dayjs from 'dayjs';
+function getRandomDate() {
+  const d = new Date(2015 + Math.floor(Math.random() * 7), 1 + Math.floor(Math.random() * 12), 1 + Math.floor(Math.random() * 30));
+  return dayjs(d).format('YYYY-MM-DD');
+}
 
 export default function useMembersFilteredByMeasures(members, measures) {
   const info = useMemo(() => {
     if (!members.length) {
       return {};
     }
+    const measureNames = measures.map((m) => m['Measure Name']);
 
     let m = members.map((member) => {
       return {
@@ -14,18 +20,32 @@ export default function useMembersFilteredByMeasures(members, measures) {
         srf: member.isSrf,
         numberOfGaps: member.measuresOpen.length,
         url: `/members/${member['MEMBER ID']}`,
-        date: '2024-01-01'
+        date: '2024-01-01',
+        totalGapsInSelectedMeasures: member.measuresOpen.filter((m) => measureNames.includes(m)).length
       };
     });
 
-    const measureNames = measures.map((m) => m['Measure Name']);
-
     let splitMembers = {};
     splitMembers.all = m;
-
     if (measureNames.length) {
-      splitMembers.closed = m.filter((member) => measureNames.every((m) => member?.measuresClosed.includes(m)));
-      splitMembers.open = m.filter((member) => measureNames.every((m) => member?.measuresOpen.includes(m)));
+      //filter needing all checked- splitMembers.closed = m.filter((member) => measureNames.every((m) => member?.measuresClosed.includes(m)));
+      //filter needing all checked-splitMembers.open = m.filter((member) => measureNames.every((m) => member?.measuresOpen.includes(m)));
+      splitMembers.closed = m.filter((member) => measureNames.some((m) => member?.measuresClosed.includes(m)));
+      splitMembers.open = m.filter((member) => measureNames.some((m) => member?.measuresOpen.includes(m)));
+
+      splitMembers.open = splitMembers.open.map((member) => {
+        //use member.memberMeasures if we only want thier info
+        //could use all measures
+        let datesArray = Object.keys(member.memberMeasures).map((key) => {
+          return { [key + '_date']: getRandomDate() };
+        });
+
+        return {
+          ...member,
+          ...member.memberMeasures,
+          ...Object.assign({}, ...datesArray)
+        };
+      });
     } else {
       splitMembers.closed = m.filter((member) => member.measuresClosed.length);
       splitMembers.open = m.filter((member) => member.measuresOpen.length);

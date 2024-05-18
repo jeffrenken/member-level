@@ -14,10 +14,10 @@ import { useRecoilValue } from 'recoil';
 const filters = ['providerGroup', 'contract', 'measure'];
 export default function Measure() {
   const params = useParams();
-  const id = parseInt(params.id);
+  const id = params.id ? parseInt(params.id) : undefined;
   const { data: measuresData, isLoading } = useMeasures();
   const measureFilterId = useRecoilValue(measureFilterState);
-  const measureId = measureFilterId || id;
+  const measureId = measureFilterId !== null ? measureFilterId : id;
   //const [chartData, setChartData] = useState({});
   const { filteredMembers } = useFilteredMembers(filters);
 

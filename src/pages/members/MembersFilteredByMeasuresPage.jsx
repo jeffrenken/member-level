@@ -4,21 +4,27 @@ import useMembersFilteredByMeasures from '@/api/useMembersFilteredByMeasures';
 import MeasuresAutocomplete from '@/components/MeasuresAutocomplete';
 import HeiCard from '@/components/cards/HeiCard';
 import BarChart from '@/components/charts/BarChart';
+import { GapRenderer, LinkRenderer, MeasureRenderer, SrfRenderer, TextRenderer } from '@/components/tables/CellRenderers';
 import MembersByMeasureTable from '@/components/tables/MembersByMeasureTable';
 import Top from '@/layout/Top';
 import { measuresFilterState } from '@/state/measuresFilterState';
-import { srfFilterState } from '@/state/srfFilterState';
 import { Box, Container, Grid, Stack, Typography, useTheme } from '@mui/material';
-import { useEffect, useMemo } from 'react';
-import { useRecoilState, useRecoilValue } from 'recoil';
+import { useEffect, useMemo, useRef } from 'react';
+import { useRecoilValue } from 'recoil';
+import dayjs from 'dayjs';
 
 const filters = ['providerGroup', 'contract', 'measureStatus'];
 
+function getRandomDate() {
+  const d = new Date(2015 + Math.floor(Math.random() * 7), 1 + Math.floor(Math.random() * 12), 1 + Math.floor(Math.random() * 30));
+  return dayjs(d).format('YYYY-MM-DD');
+}
+
 export default function MembersFilteredByMeasuresPage() {
   const theme = useTheme();
+  const tableRef = useRef();
   const { data: measuresData, isLoading } = useFilteredMeasures();
   const measureIds = useRecoilValue(measuresFilterState);
-
   const { filteredMembers } = useFilteredMembers(filters);
 
   const measures = useMemo(() => {
@@ -29,6 +35,14 @@ export default function MembersFilteredByMeasuresPage() {
   }, [measuresData, measureIds]);
 
   const { members } = useMembersFilteredByMeasures(filteredMembers, measures);
+
+  useEffect(() => {
+    if (!measures.length || !tableRef.current?.api) {
+      return;
+    }
+
+    tableRef.current.api.setGridOption('columnDefs', getColumns());
+  }, [measures, tableRef]);
 
   const chartData = useMemo(() => {
     if (!members?.all || !measuresData.length) {
@@ -62,6 +76,96 @@ export default function MembersFilteredByMeasuresPage() {
     return <div>Loading...</div>;
   }
 
+  const columnDefs = [
+    {
+      field: 'name',
+      filter: true,
+      chartDataType: 'category',
+      //maxWidth: 200,
+      headerCheckboxSelection: true,
+      checkboxSelection: true,
+      cellRenderer: LinkRenderer
+    },
+    {
+      field: 'srf',
+      headerName: 'SRF',
+      type: 'numericColumn',
+      maxWidth: 100,
+      chartDataType: 'series',
+      filter: true,
+      cellRenderer: SrfRenderer
+    },
+
+    {
+      field: 'filteredNumberOfGaps',
+      headerName: 'Gaps-in-Care',
+      type: 'numericColumn',
+      //maxWidth: 180,
+      chartDataType: 'series',
+      filter: true,
+      cellRenderer: GapRenderer
+    }
+  ];
+
+  function getColumns() {
+    if (!measures.length) {
+      return columnDefs;
+    }
+    const measureColumns = [];
+
+    measures.forEach((measure, i) => {
+      measureColumns.push({
+        field: measure['Measure Name'],
+        headerName: measure.abbreviation + ' - ' + measure['Measure Name'],
+        type: 'numericColumn',
+        chartDataType: 'series',
+        filter: true,
+        cellRenderer: MeasureRenderer,
+        enableRowGroup: true,
+        valueFormatter: ({ value }) => {
+          let gaps = 'N/A';
+          if (value === '0') {
+            gaps = 'Open';
+          }
+          if (value === '1') {
+            gaps = 'Closed';
+          }
+          let text = `${measure['Acronym']} - ${gaps}`;
+
+          return text;
+        }
+      });
+
+      measureColumns.push({
+        field: measure['Measure Name'] + '_date',
+        headerName: measure.abbreviation + ' - Last Num Date',
+        chartDataType: 'series',
+        filter: true,
+        //cellRenderer: MeasureRenderer,
+        enableRowGroup: true
+        /* valueFormatter: ({ value }) => {
+          return getRandomDate();
+        } */
+      });
+    });
+
+    const allColumns = [];
+    allColumns.push(columnDefs[0]);
+    allColumns.push(columnDefs[1]);
+    allColumns.push(...measureColumns);
+    allColumns.push({
+      field: 'totalGapsInSelectedMeasures',
+      headerName: 'Total Gaps in Selected Measures',
+      type: 'numericColumn',
+      //maxWidth: 180,
+      chartDataType: 'series',
+      filter: true,
+      cellRenderer: GapRenderer
+    });
+    allColumns.push(columnDefs[2]);
+
+    return allColumns;
+  }
   return (
     <Container maxWidth="lg" sx={{ marginTop: '20px', marginBottom: '50px' }}>
       <Top filters={filters} />
@@ -91,7 +195,7 @@ export default function MembersFilteredByMeasuresPage() {
 
       <Box mt={5} />
       <MeasuresAutocomplete measures={measuresData} />
-      {members?.open && <MembersByMeasureTable rows={members?.open} />}
+      {members?.open && <MembersByMeasureTable rows={members?.open} columns={getColumns()} tableRef={tableRef} />}
     </Container>
   );
 }

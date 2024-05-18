@@ -7,9 +7,8 @@ import { useRecoilState } from 'recoil';
 
 export default function MeasuresAutocomplete({ measures }) {
   const [measuresState, setMeasuresState] = useRecoilState(measuresFilterState);
-
   useEffect(() => {
-    if (measuresState.length) {
+    if (measuresState.length && measures.length) {
       //filter any measures that are not in the list
       const filteredMeasures = measures.filter((m) => measuresState.includes(m.id));
       setMeasuresState(filteredMeasures.map((m) => m.id));
