@@ -89,6 +89,8 @@ export default function Member() {
                 </Link>
               </Typography>
               <Typography sx={{ fontSize: '1rem' }}>Contract Entity: {member?.providerGroup?.['Provider Group']}</Typography>
+              <Typography sx={{ fontSize: '1rem' }}>Care Supervisor: {member?.supervisor}</Typography>
+              <Typography sx={{ fontSize: '1rem' }}>Care Manager: {member?.careManager}</Typography>
             </Box>
           </>
         </Card>

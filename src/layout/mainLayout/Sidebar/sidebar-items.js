@@ -82,6 +82,14 @@ export const items = [
         url: '/provider-groups',
         icon: IconTable,
         breadcrumbs: false
+      },
+      {
+        id: 'careTable',
+        title: 'Care',
+        type: 'item',
+        url: '/care',
+        icon: IconTable,
+        breadcrumbs: false
       }
       /* {
         id: 'table',

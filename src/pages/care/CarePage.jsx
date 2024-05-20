@@ -1,8 +1,10 @@
+import useCareManagers from '@/api/useCareManagers';
 import useContracts from '@/api/useContracts';
 import useFilteredMembers from '@/api/useFilteredMembers';
 import useMembers from '@/api/useMembers';
 import useProviders from '@/api/useProviders';
 import useProviderGroups from '@/api/useProvidersGroups';
+import useSupervisors from '@/api/useSupervisors';
 import Card from '@/components/Card';
 import AgGrid from '@/components/tables/AgGrid';
 import { GapRenderer2, ProviderLinkRenderer, TextRenderer, TooltipRenderer, getSparklineData } from '@/components/tables/CellRenderers';
@@ -21,12 +23,15 @@ function getRandomNumberBetween(min = 0, max = 2) {
   return Math.floor(Math.random() * (max - min + 1) + min);
 }
 
-const filters = ['contract', 'providerGroup', 'measureStatus'];
+const filters = ['contract', 'measureStatus'];
 
-export default function ProviderGroupsPage() {
+export default function CarePage() {
   const theme = useTheme();
   const selectedProvider = useRecoilValue(providerFilterState);
   const { filteredMembers: memberData } = useFilteredMembers(filters);
+  const { data: careManagers } = useCareManagers();
+  const { data: supervisors } = useSupervisors();
+  console.log('supervisors', supervisors);
   const { data: providers } = useProviders();
   const { data: providerGroups } = useProviderGroups();
   const { data: allMembers } = useMembers();
@@ -46,44 +51,29 @@ export default function ProviderGroupsPage() {
     if (!allMembers || !contract) {
       return [];
     }
-    return allMembers.filter((d) => d['CONTRACT'] === contract.label && !d.providerGroup);
+    return allMembers.filter((d) => d['CONTRACT'] === contract.label && careManagers.find((m) => m['MEMBER ID'] === d['MEMBER ID']));
   }, [contract, allMembers]);
-
-  const providerGroup = useMemo(() => {
-    if (!providerGroups) {
-      return null;
-    }
-    return providerGroups.find((provider) => {
-      return provider.id === selectedProvider;
-    });
-  }, [providerGroups, selectedProvider]);
 
   const rows = useMemo(() => {
     if (!providers.length || !memberData.length) {
       return [];
     }
-    let filteredProviders = [...providers];
-    console.log('filteredProviders', filteredProviders);
-    if (providerGroup) {
-      filteredProviders = filteredProviders.filter((provider) => provider.providerGroup === providerGroup.label);
-    }
 
-    return filteredProviders.map((provider) => {
-      const providerMembers = memberData.filter((member) => member.providerGroup && member.providerGroup.Provider === provider.value);
+    return careManagers.map((cm) => {
+      const cmMembers = memberData.filter((member) => member.careManager && member.careManager === cm.value);
       let memberGaps = 0;
-      providerMembers.forEach((member) => {
+      cmMembers.forEach((member) => {
         memberGaps = memberGaps + member.filteredNumberOfGaps;
       });
       return {
-        ...provider,
-        providerGroupName: provider.providerGroup,
+        ...cm,
+        supervisorName: cm.supervisor,
         numberOfGaps: memberGaps,
         starRating: randomHalfNumberBetween(0, 10),
-        providerUrl: `/providers/${provider.value}`
+        providerUrl: `/care-managers/${cm.value}`
       };
     });
-  }, [providers, memberData, providerGroup]);
-  console.log(rows);
+  }, [providers, memberData, careManagers]);
 
   const topProviderGroups = useMemo(() => {
     if (!providerGroups.length) {
@@ -109,8 +99,8 @@ export default function ProviderGroupsPage() {
 
   const columnDefs = [
     {
-      field: 'providerGroupName',
-      headerName: 'Provider Group',
+      field: 'supervisorName',
+      headerName: 'Supervisor',
       filter: true,
       chartDataType: 'category',
       maxWidth: 200,
@@ -121,7 +111,7 @@ export default function ProviderGroupsPage() {
 
     {
       field: 'label',
-      headerName: 'Provider',
+      headerName: 'Care Manager',
       filter: true,
       chartDataType: 'series',
       cellRenderer: ProviderLinkRenderer,
@@ -177,11 +167,11 @@ export default function ProviderGroupsPage() {
 
       <Stack direction="row" alignItems={'center'} justifyContent={'space-between'} spacing={3} sx={{ marginTop: '20px' }}>
         <Typography variant="h2" mt={3} pr={6}>
-          Providers
+          Care Title
         </Typography>
-        <Button component={Link} to="/members/unattributed" variant="contained" sx={{ borderRadius: '16px' }}>
+        {/* <Button component={Link} to="/members/unattributed" variant="contained" sx={{ borderRadius: '16px' }}>
           View Unattributed Members ({membersWithoutProvider.length})
-        </Button>
+        </Button> */}
         {/* <HeiCard
           content={membersWithoutProvider.length}
           title={'Members Unattributed'}
@@ -204,7 +194,7 @@ export default function ProviderGroupsPage() {
           </Typography>
           <table style={{ width: '100%' }}>
             <tbody>
-              {providerGroups
+              {supervisors
                 .sort((a, b) => a.avgGapsPerMember - b.avgGapsPerMember)
                 .slice(0, 10)
                 .map((item) => (
@@ -233,7 +223,7 @@ export default function ProviderGroupsPage() {
           </Typography>
           <table style={{ width: '100%' }}>
             <tbody>
-              {providerGroups
+              {supervisors
                 .sort((a, b) => b.avgGapsPerMember - a.avgGapsPerMember)
                 .slice(0, 10)
                 .map((item) => (
@@ -256,14 +246,14 @@ export default function ProviderGroupsPage() {
           style={{ overflowY: 'auto', border: `2px solid #aaa`, backgroundColor: theme.palette.background.paper }}
         >
           <Typography variant="h4" mb={1} color={theme.palette.cardGreen}>
-            High Performing Providers
+            High Performing Care Managers
             <br />
             <span style={{ fontSize: '0.8rem', color: theme.palette.text.secondary }}>Avg Gaps per Member</span>
           </Typography>
 
           <table style={{ width: '100%' }}>
             <tbody style={{ overflowY: 'auto' }}>
-              {providers
+              {careManagers
                 .sort((a, b) => a.avgGapsPerMember - b.avgGapsPerMember)
                 .slice(0, 10)
                 .map((item) => (
@@ -286,14 +276,14 @@ export default function ProviderGroupsPage() {
           style={{ overflowY: 'auto', border: `2px solid #aaa`, backgroundColor: theme.palette.background.paper }}
         >
           <Typography variant="h4" mb={1} color={theme.palette.cardRed}>
-            Low Performing Providers
+            Low Performing Care Managers
             <br />
             <span style={{ fontSize: '0.8rem', color: theme.palette.text.secondary }}>Avg Gaps per Member</span>
           </Typography>
 
           <table style={{ width: '100%' }}>
             <tbody style={{ overflowY: 'auto' }}>
-              {providers
+              {careManagers
                 .sort((a, b) => b.avgGapsPerMember - a.avgGapsPerMember)
                 .slice(0, 10)
                 .map((item) => (

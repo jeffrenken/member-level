@@ -17,6 +17,8 @@ import Test from '@/pages/test/Test';
 import { createBrowserRouter } from 'react-router-dom';
 import { AuthGuard } from './AuthGuard';
 import MembersUnattributedPage from '@/pages/members/unattributed/MembersUnattributedPage';
+import CarePage from '@/pages/care/CarePage';
+import CareManagerPage from '@/pages/care-managers/[name]/CareManagerPage';
 
 export const router = createBrowserRouter([
   {
@@ -30,6 +32,14 @@ export const router = createBrowserRouter([
       {
         path: '/',
         element: <MeasuresPage />
+      },
+      {
+        path: '/care',
+        element: <CarePage />
+      },
+      {
+        path: '/care-managers/:name',
+        element: <CareManagerPage />
       },
       {
         path: '/map',

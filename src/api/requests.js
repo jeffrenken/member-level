@@ -5,6 +5,8 @@ import memberMeasures from '../../data/memberMeasures.json';
 import srfData from '../../data/memberSrf.json';
 import memberData from '../../data/members.json';
 import providerGroupsData from '../../data/providerGroups.json';
+import careData from '../../data/care.json';
+
 const members = memberData.map((member, i) => {
   const measures = memberMeasures.find((m) => m['MEMBER ID'] === member['MEMBER ID']);
   const numberOfGaps = Object.keys(measures).filter((key) => measures?.[key] === 0).length;
@@ -26,6 +28,8 @@ const members = memberData.map((member, i) => {
     id: member['MEMBER ID'],
     providerGroup: providerGroupsData.find((p) => p['MEMBER ID'] === member['MEMBER ID']),
     provider: providerGroupsData.find((p) => p['MEMBER ID'] === member['MEMBER ID'])?.Provider,
+    supervisor: careData.find((c) => c['MEMBER ID'] === member['MEMBER ID'])?.Supervisor,
+    careManager: careData.find((c) => c['MEMBER ID'] === member['MEMBER ID'])?.['Care Manager'],
     memberMeasures: measures,
     srf: srf,
     isSrf: isSrf,
@@ -45,9 +49,26 @@ const distinctProviders = providerGroupsData
     return { id: i + 1, label: p.Provider, value: p.Provider, avgGapsPerMember: avgGapsPerMember, providerGroup: p['Provider Group'] };
   });
 
+const distinctCareManagers = careData
+  .filter((value, index, self) => index === self.findIndex((t) => t['Care Manager'] === value['Care Manager']))
+  .map((p, i) => {
+    const filteredMembers = members.filter((m) => m.careManager === p['Care Manager']);
+    let avgGapsPerMember = filteredMembers.reduce((sum, member) => sum + member.numberOfGaps, 0) / filteredMembers.length;
+    avgGapsPerMember = parseFloat(avgGapsPerMember.toFixed(2));
+    return { id: i + 1, label: p['Care Manager'], value: p['Care Manager'], avgGapsPerMember: avgGapsPerMember, supervisor: p.Supervisor };
+  });
+
 const providerGroups = providerGroupsData.map((p, i) => {
   const filteredMembers = members.filter((m) => m.providerGroup && m.providerGroup['Provider Group'] === p['Provider Group']);
 
+  let avgGapsPerMember = filteredMembers.reduce((sum, member) => sum + member.numberOfGaps, 0) / filteredMembers.length;
+  avgGapsPerMember = parseFloat(avgGapsPerMember.toFixed(2));
+
+  return { ...p, id: i + 1, avgGapsPerMember: avgGapsPerMember };
+});
+
+const supervisors = careData.map((p, i) => {
+  const filteredMembers = members.filter((m) => m.supervisor === p['Provider Group']);
   let avgGapsPerMember = filteredMembers.reduce((sum, member) => sum + member.numberOfGaps, 0) / filteredMembers.length;
   avgGapsPerMember = parseFloat(avgGapsPerMember.toFixed(2));
 
@@ -102,6 +123,20 @@ const fakeProviderGroups = () => {
   return p;
 };
 
+const fakeSupervisors = () => {
+  const supervisorNames = supervisors
+    .map((d) => d['Supervisor'])
+    .filter((d) => Boolean(d))
+    .sort();
+  const distinctSupervisors = [...new Set(supervisorNames)];
+  const p = distinctSupervisors.map((p, i) => {
+    const filteredMembers = members.filter((m) => m.supervisor === p);
+    const avgGapsPerMember = filteredMembers.reduce((sum, member) => sum + member.numberOfGaps, 0) / filteredMembers.length;
+    return { name: p, id: i + 1, avgGapsPerMember: avgGapsPerMember, label: p, value: i + 1 };
+  });
+  return p;
+};
+
 const axiosClient = axios.create({
   //baseURL: 'https://jsonplaceholder.typicode.com',
   headers: {
@@ -124,6 +159,8 @@ mock.onGet('/plans').reply(200, fakePlans);
 mock.onGet('/ratings').reply(200, fakeRatings);
 mock.onGet('/measures').reply(200, fakeMeasures);
 mock.onGet('/member-measures').reply(200, memberMeasures);
+mock.onGet('/care-managers').reply(200, distinctCareManagers);
+mock.onGet('/supervisors').reply(200, fakeSupervisors());
 mock.onGet('/members').reply(200, members);
 mock.onGet('/members/1').reply(200, members[0]);
 mock.onPost('/srf-scores').reply((config) => {
@@ -174,6 +211,14 @@ export async function fetchProviders() {
 
 export async function fetchYears() {
   const res = await axiosClient.get('/years');
+  return res.data;
+}
+export async function fetchCareManagers() {
+  const res = await axiosClient.get('/care-managers');
+  return res.data;
+}
+export async function fetchSupervisors() {
+  const res = await axiosClient.get('/supervisors');
   return res.data;
 }
 
