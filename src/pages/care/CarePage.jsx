@@ -162,7 +162,7 @@ export default function CarePage() {
   const cardWidth = 250;
 
   return (
-    <Container maxWidth="xl" sx={{ marginTop: '20px', marginBottom: '100px' }}>
+    <Container maxWidth="lg" sx={{ marginTop: '20px', marginBottom: '100px' }}>
       <Top filters={filters} />
 
       <Stack direction="row" alignItems={'center'} justifyContent={'space-between'} spacing={3} sx={{ marginTop: '20px' }}>
@@ -188,7 +188,7 @@ export default function CarePage() {
           style={{ overflowY: 'auto', border: `2px solid #aaa`, backgroundColor: theme.palette.background.paper }}
         >
           <Typography variant="h4" mb={1} color={theme.palette.cardGreen}>
-            High Performing Provider Groups
+            High Performing Supervisors
             <br />
             <span style={{ fontSize: '0.8rem', color: theme.palette.text.secondary }}>Avg Gaps per Member</span>
           </Typography>
@@ -217,7 +217,7 @@ export default function CarePage() {
           style={{ overflowY: 'auto', border: `2px solid #aaa`, backgroundColor: theme.palette.background.paper }}
         >
           <Typography variant="h4" mb={1} color={theme.palette.cardRed}>
-            Low Performing Provider Groups
+            Low Performing Supervisors
             <br />
             <span style={{ fontSize: '0.8rem', color: theme.palette.text.secondary }}>Avg Gaps per Member</span>
           </Typography>
