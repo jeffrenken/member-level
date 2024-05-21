@@ -120,6 +120,8 @@ export default function MembersFilteredByMeasuresPage() {
         type: 'numericColumn',
         chartDataType: 'series',
         filter: true,
+        maxWidth: 160,
+
         cellRenderer: MeasureRenderer,
         enableRowGroup: true,
         valueFormatter: ({ value }) => {
@@ -141,6 +143,8 @@ export default function MembersFilteredByMeasuresPage() {
         headerName: measure.abbreviation + ' - Last Num Date',
         chartDataType: 'series',
         filter: true,
+        maxWidth: 160,
+
         //cellRenderer: MeasureRenderer,
         enableRowGroup: true
         /* valueFormatter: ({ value }) => {
@@ -155,9 +159,9 @@ export default function MembersFilteredByMeasuresPage() {
     allColumns.push(...measureColumns);
     allColumns.push({
       field: 'totalGapsInSelectedMeasures',
-      headerName: 'Total Gaps in Selected Measures',
+      headerName: 'Selected Gaps',
       type: 'numericColumn',
-      //maxWidth: 180,
+      maxWidth: 180,
       chartDataType: 'series',
       filter: true,
       cellRenderer: GapRenderer

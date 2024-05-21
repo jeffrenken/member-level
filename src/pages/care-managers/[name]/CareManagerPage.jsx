@@ -182,10 +182,10 @@ export default function CareManagerPage() {
             {name}
           </Typography>
           <Typography variant="h4" mb={1}>
-            Total Gaps: {totalGapsRef.current}
+            Supervisor: {members && members[0].supervisor}
           </Typography>
           <Typography variant="h4" mb={1}>
-            Incentive value: {moneyFormat.format(totalGapsRef.current * worthPerGap)}
+            Total Gaps: {totalGapsRef.current}
           </Typography>
         </Box>
 

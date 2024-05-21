@@ -127,7 +127,7 @@ export default function HeiPage() {
         py: 0
       }}
     >
-      <DonutChart data={chartData} title={`Percentage of Pop.\nin Each Category`} />
+      <DonutChart data={chartData} title={`Percentage`} />
     </Box>
   ];
 
