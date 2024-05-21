@@ -81,7 +81,7 @@ export default function MembersFilteredByMeasuresPage() {
       field: 'name',
       filter: true,
       chartDataType: 'category',
-      //maxWidth: 200,
+      maxWidth: 200,
       headerCheckboxSelection: true,
       checkboxSelection: true,
       cellRenderer: LinkRenderer
@@ -100,7 +100,7 @@ export default function MembersFilteredByMeasuresPage() {
       field: 'filteredNumberOfGaps',
       headerName: 'Gaps-in-Care',
       type: 'numericColumn',
-      //maxWidth: 180,
+      maxWidth: 180,
       chartDataType: 'series',
       filter: true,
       cellRenderer: GapRenderer

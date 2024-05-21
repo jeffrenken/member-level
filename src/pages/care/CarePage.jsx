@@ -167,7 +167,7 @@ export default function CarePage() {
 
       <Stack direction="row" alignItems={'center'} justifyContent={'space-between'} spacing={3} sx={{ marginTop: '20px' }}>
         <Typography variant="h2" mt={3} pr={6}>
-          Care Title
+          Care Managers
         </Typography>
         {/* <Button component={Link} to="/members/unattributed" variant="contained" sx={{ borderRadius: '16px' }}>
           View Unattributed Members ({membersWithoutProvider.length})

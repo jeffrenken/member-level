@@ -32,49 +32,6 @@ export default function AgGrid({ rowData, columnDefs, sideBar2, csvDownload, sav
     return { color: 'black' };
   }
 
-  // Column Definitions: Defines the columns to be displayed.
-  /*   const columnDefs = [
-    {
-      field: 'symbol',
-      filter: true,
-      headerCheckboxSelection: true,
-      checkboxSelection: true,
-      maxWidth: 140
-    },
-    { field: 'name', filter: true, chartDataType: 'category' },
-    {
-      field: 'price',
-      headerName: 'Price w/ css',
-      type: 'numericColumn',
-      maxWidth: 140,
-      chartDataType: 'series',
-      filter: true,
-      cellStyle: (params) => {
-        return cellStyling(params);
-      }
-    },
-    { field: 'change', cellRenderer: 'agSparklineCellRenderer' },
-    {
-      field: 'change',
-      cellRenderer: 'agSparklineCellRenderer',
-      cellRendererParams: {
-        sparklineOptions: {
-          type: 'area',
-          fill: 'rgba(216, 204, 235, 0.3)',
-          line: {
-            stroke: 'rgb(119,77,185)'
-          },
-          highlightStyle: {
-            fill: 'rgb(143,185,77)'
-          },
-          axis: {
-            stroke: 'rgb(204, 204, 235)'
-          }
-        }
-      }
-    }
-  ]; */
-
   const gridOptions = {
     columnDefs: columnDefs,
     rowSelection: 'multiple',
@@ -206,7 +163,7 @@ export default function AgGrid({ rowData, columnDefs, sideBar2, csvDownload, sav
           enableRangeSelection={true}
           rowSelection="multiple"
           rowMultiSelectWithClick={true}
-          onGridReady={onGridReady}
+          //onGridReady={onGridReady}
           autoSizeStrategy={columnDefs.length > 6 && autoSizeStrategy}
           enableCharts
           domLayout={!rows.length || rows.length > 10 ? 'normal' : 'autoHeight'}

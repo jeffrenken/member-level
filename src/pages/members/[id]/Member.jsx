@@ -60,6 +60,7 @@ export default function Member() {
     }
   ];
 
+  console.log('member', member);
   if (!member) {
     return <div>Member not found</div>;
   }
@@ -88,9 +89,14 @@ export default function Member() {
                   {member?.providerGroup?.Provider}
                 </Link>
               </Typography>
-              <Typography sx={{ fontSize: '1rem' }}>Contract Entity: {member?.providerGroup?.['Provider Group']}</Typography>
+              <Typography sx={{ fontSize: '1rem' }}>Provider Group: {member?.providerGroup?.['Provider Group']}</Typography>
               <Typography sx={{ fontSize: '1rem' }}>Care Supervisor: {member?.supervisor}</Typography>
-              <Typography sx={{ fontSize: '1rem' }}>Care Manager: {member?.careManager}</Typography>
+              <Typography sx={{ fontSize: '1rem' }}>
+                Care Manager:{' '}
+                <Link to={`/care-managers/${member?.careManager}`} style={{ textDecoration: 'none', color: '#4d9fda' }}>
+                  {member?.careManager}
+                </Link>
+              </Typography>
             </Box>
           </>
         </Card>

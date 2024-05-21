@@ -1,4 +1,4 @@
-import { IconChartBar, IconLayoutGrid, IconMap, IconTable, IconTableHeart, IconUserHeart } from '@tabler/icons-react';
+import { IconChartBar, IconClipboardPlus, IconLayoutGrid, IconMap, IconTable, IconTableHeart, IconUserHeart } from '@tabler/icons-react';
 
 export const items = [
   {
@@ -85,10 +85,10 @@ export const items = [
       },
       {
         id: 'careTable',
-        title: 'Care',
+        title: 'Care Managers',
         type: 'item',
         url: '/care',
-        icon: IconTable,
+        icon: IconClipboardPlus,
         breadcrumbs: false
       }
       /* {
