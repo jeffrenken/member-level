@@ -122,16 +122,6 @@ export default function CareManagerPage() {
         return getSparklineData(params.data.numberOfGaps);
       }
     },
-    {
-      field: 'worth',
-      headerName: 'Incentive',
-      type: 'numericColumn',
-      chartDataType: 'series',
-      filter: true,
-      valueFormatter: ({ value }) => {
-        return moneyFormat.format(value);
-      }
-    },
 
     {
       field: 'starsMeasures',
