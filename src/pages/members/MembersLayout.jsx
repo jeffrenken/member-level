@@ -239,7 +239,7 @@ export default function MembersLayout({ members: filteredMembers, title, filters
   }
   return (
     <>
-      <Container maxWidth="xl" sx={{ mb: 3, mt: 3 }}>
+      <Container maxWidth="xl" sx={{ mb: 10, mt: 3 }}>
         <Top filters={filters} />
         <Typography variant="h2">{title}</Typography>
         <Typography>

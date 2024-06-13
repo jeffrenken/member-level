@@ -49,10 +49,10 @@ export default function HeiPage() {
         [82 - thresholdFilter, 82 + thresholdFilter]
       ];
 
-      if (measure?.bottom_third_upper_limit) {
+      if (measure?.bottom_third_upper_value) {
         ranges = [
-          [measure?.bottom_third_upper_limit - thresholdFilter, measure?.bottom_third_upper_limit + thresholdFilter],
-          [measure?.middle_third_upper_limit - thresholdFilter, measure?.middle_third_upper_limit + thresholdFilter]
+          [measure?.bottom_third_upper_value - thresholdFilter, measure?.bottom_third_upper_value + thresholdFilter],
+          [measure?.middle_third_upper_value - thresholdFilter, measure?.middle_third_upper_value + thresholdFilter]
         ];
       }
 

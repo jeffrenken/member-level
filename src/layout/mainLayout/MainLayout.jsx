@@ -1,13 +1,8 @@
-import ContractsAutocomplete from '@/components/inputs/ContractsAutocomplete';
-import StatesAutocomplete from '@/components/inputs/StatesAutocomplete';
-import { AppBar, Box, CssBaseline, IconButton, Paper, Stack, Toolbar, Tooltip, useMediaQuery } from '@mui/material';
+import { Box, CssBaseline, Typography, useMediaQuery } from '@mui/material';
 import { styled, useTheme } from '@mui/material/styles';
 import { useState } from 'react';
-import { Outlet } from 'react-router-dom';
+import { Outlet, useLocation } from 'react-router-dom';
 import Sidebar from './Sidebar/Sidebar';
-import Header from './header/Header2';
-import { IconPlus } from '@tabler/icons-react';
-import SaveToFavoritesDialog from '@/components/dialogs/SaveToFavoritesDialog';
 
 const drawerWidth = 110;
 
@@ -46,12 +41,15 @@ const Main = styled('main', { shouldForwardProp: (prop) => prop !== 'open' })(({
 
 const MainLayout = () => {
   const theme = useTheme();
+  const location = useLocation();
 
   const matchDownMd = useMediaQuery(theme.breakpoints.down('md'));
   const [leftDrawerOpened, setLeftDrawerOpened] = useState(true);
   const handleLeftDrawerToggle = () => {
     setLeftDrawerOpened(!leftDrawerOpened);
   };
+
+  const currentYear = new Date().getFullYear();
 
   return (
     <Box sx={{ display: 'flex' }}>
@@ -68,6 +66,11 @@ const MainLayout = () => {
       <Main theme={theme} open={leftDrawerOpened} sx={{ bgcolor: 'transparent' }}>
         <Box sx={{ display: 'block', width: '100%' }}>
           <Outlet />
+          {location.pathname !== '/map' && (
+            <Typography align="center" my={1} sx={{ backgroundColor: 'transparent', fontSize: '0.8rem' }}>
+              © {currentYear} EQO Health. All rights reserved.
+            </Typography>
+          )}
         </Box>
       </Main>
     </Box>
