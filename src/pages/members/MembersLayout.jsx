@@ -98,9 +98,9 @@ export default function MembersLayout({ members: filteredMembers, title, filters
       cellRenderer: SrfRenderer,
       enableRowGroup: true,
       valueFormatter: ({ value }) => {
-        let valueDisplay = 'SRF (true)';
+        let valueDisplay = 'SRF';
         if (value === 'false') {
-          valueDisplay = 'Non-SRF (false)';
+          valueDisplay = 'Non-SRF';
         }
         let text = `${valueDisplay} `;
         return text;
