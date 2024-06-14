@@ -68,6 +68,7 @@ const NavGroup = ({ item, drawerToggle }) => {
           height={30}
           mt={2}
           mb={2}
+          ml="6px"
           sx={{ display: { xs: 'block', md: 'block' }, flexGrow: 1, objectFit: 'contain' }}
         />
         <Stack direction="row" justifyContent="center" sx={{ width: '100%', mb: 'calc((30vh) / 2)' }}>

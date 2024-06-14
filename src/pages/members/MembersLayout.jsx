@@ -1,5 +1,4 @@
 import useFilteredMeasures from '@/api/useFilteredMeasures';
-import useMeasures from '@/api/useMeasures';
 import AgGrid from '@/components/tables/AgGrid';
 import {
   GapRenderer,
@@ -97,7 +96,15 @@ export default function MembersLayout({ members: filteredMembers, title, filters
       chartDataType: 'series',
       filter: true,
       cellRenderer: SrfRenderer,
-      enableRowGroup: true
+      enableRowGroup: true,
+      valueFormatter: ({ value }) => {
+        let valueDisplay = 'SRF (true)';
+        if (value === 'false') {
+          valueDisplay = 'Non-SRF (false)';
+        }
+        let text = `${valueDisplay} `;
+        return text;
+      }
     },
     {
       field: 'filteredNumberOfGaps',
@@ -219,7 +226,19 @@ export default function MembersLayout({ members: filteredMembers, title, filters
           chartDataType: 'series',
           filter: true,
           cellRenderer: MeasureRenderer,
-          enableRowGroup: true
+          enableRowGroup: true,
+          valueFormatter: ({ value }) => {
+            let gaps = 'N/A';
+            if (value === '0') {
+              gaps = 'Open';
+            }
+            if (value === '1') {
+              gaps = 'Closed';
+            }
+            let text = `${measure['Acronym']} - ${gaps}`;
+
+            return text;
+          }
         };
       })
     }
