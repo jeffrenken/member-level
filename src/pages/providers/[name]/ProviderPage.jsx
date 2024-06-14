@@ -36,13 +36,14 @@ export default function ProviderPage() {
       return measure.status === 1;
     });
   }, [measures]);
+  console.log('starsMeasures', starsMeasures);
 
   const displayMeasures = useMemo(() => {
     if (!measures.length) {
       return [];
     }
     return measures.filter((measure) => {
-      return measure.status === 'display';
+      return measure.status === 2;
     });
   }, [measures]);
 

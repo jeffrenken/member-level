@@ -47,7 +47,7 @@ export default function ProgressChart({ measure }) {
   series = [
     ...series,
     {
-      name: 'Progress',
+      name: 'Current Score',
       xAxisIndex: 1,
       yAxisIndex: 1,
       data: [measure?.quotient || 0],
@@ -111,7 +111,7 @@ export default function ProgressChart({ measure }) {
         offset: 0
       },
       {
-        name: 'Progress',
+        name: 'Current Score',
         show: false,
         type: 'value',
         min: 0,

@@ -49,7 +49,7 @@ export default function MembersLayout({ members: filteredMembers, title, filters
       return [];
     }
     return measures.filter((measure) => {
-      return measure.status === 'display';
+      return measure.status === 2;
     });
   }, [measures]);
 

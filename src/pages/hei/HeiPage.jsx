@@ -43,6 +43,10 @@ export default function HeiPage() {
     }
 
     let splitMembers = [];
+
+    let bottom_third_upper_value = 70;
+    let middle_third_upper_value = 82;
+
     filtered.forEach((measure, i) => {
       let ranges = [
         [70 - thresholdFilter, 70 + thresholdFilter],
@@ -50,6 +54,8 @@ export default function HeiPage() {
       ];
 
       if (measure?.bottom_third_upper_value) {
+        bottom_third_upper_value = measure?.bottom_third_upper_value;
+        middle_third_upper_value = measure?.middle_third_upper_value;
         ranges = [
           [measure?.bottom_third_upper_value - thresholdFilter, measure?.bottom_third_upper_value + thresholdFilter],
           [measure?.middle_third_upper_value - thresholdFilter, measure?.middle_third_upper_value + thresholdFilter]
@@ -59,14 +65,22 @@ export default function HeiPage() {
       const closed = filteredMembers.filter((member) => member.isSrf && member?.measuresClosed.includes(measure['Measure Name'])).length;
       const open = filteredMembers.filter((member) => member.isSrf && member?.measuresOpen.includes(measure['Measure Name'])).length;
       const quotient = (closed / (closed + open)) * 100;
+      console.log('quotient', quotient);
 
       let isCloseToNextThreshold = false;
       if (thresholdFilter) {
-        ranges.forEach((range) => {
+        if (quotient < bottom_third_upper_value && quotient + thresholdFilter >= bottom_third_upper_value) {
+          isCloseToNextThreshold = true;
+        }
+        if (quotient < middle_third_upper_value && quotient + thresholdFilter >= middle_third_upper_value) {
+          isCloseToNextThreshold = true;
+        }
+
+        /* ranges.forEach((range) => {
           if (inRange(quotient, range[0], range[1])) {
             isCloseToNextThreshold = true;
           }
-        });
+        }); */
       }
 
       splitMembers[i] = { ...measure };

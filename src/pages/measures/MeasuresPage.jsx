@@ -55,9 +55,18 @@ const MeasuresPage = () => {
     return splitMembers.sort((a, b) => b.abbreviation - a.abbreviation);
   }, [filteredMembers, measureStatus, measuresData]);
 
-  const onTrack4 = measures.slice(0, measures.length / 3);
-  const onTrack5 = measures.slice(measures.length / 4, (measures.length * 2) / 4);
-  const offTrack = measures.slice((measures.length * 2) / 3, measures.length);
+  const starsMeasures = useMemo(() => {
+    if (!measuresData.length) {
+      return [];
+    }
+    return measuresData.filter((measure) => {
+      return measure.status === 1;
+    });
+  }, [measuresData]);
+
+  const onTrack4 = starsMeasures.slice(0, starsMeasures.length / 3);
+  const onTrack5 = starsMeasures.slice(starsMeasures.length / 4, (starsMeasures.length * 2) / 4);
+  const offTrack = starsMeasures.slice((starsMeasures.length * 2) / 3, starsMeasures.length);
 
   return (
     <Container maxWidth="xl" sx={{ marginBottom: '100px', marginTop: '20px' }}>

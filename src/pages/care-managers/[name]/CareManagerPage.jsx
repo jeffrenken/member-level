@@ -42,7 +42,7 @@ export default function CareManagerPage() {
       return [];
     }
     return measures.filter((measure) => {
-      return measure.status === 'display';
+      return measure.status === 2;
     });
   }, [measures]);
 
