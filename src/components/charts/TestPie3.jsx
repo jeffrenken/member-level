@@ -1,4 +1,5 @@
-import { Box, Stack, Typography, useTheme } from '@mui/material';
+import { Box, Stack, Typography } from '@/components';
+import { useTheme } from '@/hooks';
 import styled from 'styled-components';
 
 const measure = {

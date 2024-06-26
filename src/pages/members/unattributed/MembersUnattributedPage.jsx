@@ -1,4 +1,4 @@
-import useFilteredMembers from '@/api/useFilteredMembers';
+import { useFilteredMembers } from '@/api';
 import { useMemo } from 'react';
 import MembersLayout from '../MembersLayout';
 

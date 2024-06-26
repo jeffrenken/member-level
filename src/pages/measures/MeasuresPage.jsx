@@ -1,11 +1,11 @@
-import useFilteredMembers from '@/api/useFilteredMembers';
-import useMeasures from '@/api/useMeasures';
+import { useFilteredMembers, useMeasures } from '@/api';
 import MeasureCountCard from '@/components/cards/MeasureCountCard';
 import PieChart2 from '@/components/charts/TestPie2';
 import Top from '@/layout/Top';
 import { measureStatusFilterState } from '@/state/measureStatusFilterState';
 import { srfFilterState } from '@/state/srfFilterState';
-import { Box, Container, Grid, Stack, Typography, useTheme } from '@mui/material';
+import { Box, Container, Grid, Stack, Typography } from '@/components';
+import { useTheme } from '@/hooks';
 import Grid2 from '@mui/material/Unstable_Grid2';
 import { useMemo } from 'react';
 import { useRecoilValue } from 'recoil';
@@ -28,6 +28,7 @@ const MeasuresPage = () => {
   const measureStatus = useRecoilValue(measureStatusFilterState);
   const srfId = useRecoilValue(srfFilterState);
   const { data: measuresData } = useMeasures();
+  console.log('measuresData', measuresData);
 
   const { filteredMembers } = useFilteredMembers(filters);
 
@@ -56,7 +57,7 @@ const MeasuresPage = () => {
   }, [filteredMembers, measureStatus, measuresData]);
 
   const starsMeasures = useMemo(() => {
-    if (!measuresData.length) {
+    if (!measuresData) {
       return [];
     }
     return measuresData.filter((measure) => {

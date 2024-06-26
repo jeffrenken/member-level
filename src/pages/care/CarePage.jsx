@@ -1,20 +1,12 @@
-import useCareManagers from '@/api/useCareManagers';
-import useContracts from '@/api/useContracts';
-import useFilteredMembers from '@/api/useFilteredMembers';
-import useMembers from '@/api/useMembers';
-import useProviders from '@/api/useProviders';
-import useProviderGroups from '@/api/useProvidersGroups';
-import useSupervisors from '@/api/useSupervisors';
-import Card from '@/components/Card';
+import { useCareManagers, useContracts, useFilteredMembers, useMembers, useProviders, useProviderGroups, useSupervisors } from '@/api';
+import { Box, Container, Stack, Typography, StyledCard } from '@/components';
 import AgGrid from '@/components/tables/AgGrid';
 import { GapRenderer2, ProviderLinkRenderer, TextRenderer, TooltipRenderer, getSparklineData } from '@/components/tables/CellRenderers';
+import { useTheme } from '@/hooks';
 import Top from '@/layout/Top';
 import { contractFilterState } from '@/state/contractFilterState';
-import { providerFilterState } from '@/state/providerFilterState';
-import { Box, Button, Container, Stack, Typography, useTheme } from '@mui/material';
 import { IconArrowDownRight, IconArrowUpRight } from '@tabler/icons-react';
 import { useMemo } from 'react';
-import { Link } from 'react-router-dom';
 import { useRecoilValue } from 'recoil';
 
 const randomHalfNumberBetween = (min, max) => Math.floor(Math.random() * (max - min + 1) + min) / 2;
@@ -25,9 +17,8 @@ function getRandomNumberBetween(min = 0, max = 2) {
 
 const filters = ['contract', 'measureStatus'];
 
-export default function CarePage() {
+export function CarePage() {
   const theme = useTheme();
-  const selectedProvider = useRecoilValue(providerFilterState);
   const { filteredMembers: memberData } = useFilteredMembers(filters);
   const { data: careManagers } = useCareManagers();
   const { data: supervisors } = useSupervisors();
@@ -181,7 +172,7 @@ export default function CarePage() {
         /> */}
       </Stack>
       <Stack direction="row" alignItems={'center'} justifyContent={'center'} spacing={2} sx={{ marginTop: '20px' }}>
-        <Card
+        <StyledCard
           height={cardWidth}
           width={cardWidth}
           p={1}
@@ -209,8 +200,8 @@ export default function CarePage() {
                 ))}
             </tbody>
           </table>
-        </Card>
-        <Card
+        </StyledCard>
+        <StyledCard
           height={cardWidth}
           width={cardWidth}
           p={1}
@@ -238,8 +229,8 @@ export default function CarePage() {
                 ))}
             </tbody>
           </table>
-        </Card>
-        <Card
+        </StyledCard>
+        <StyledCard
           height={cardWidth}
           width={cardWidth}
           p={1}
@@ -268,8 +259,8 @@ export default function CarePage() {
                 ))}
             </tbody>
           </table>
-        </Card>
-        <Card
+        </StyledCard>
+        <StyledCard
           height={cardWidth}
           width={cardWidth}
           p={1}
@@ -298,7 +289,7 @@ export default function CarePage() {
                 ))}
             </tbody>
           </table>
-        </Card>
+        </StyledCard>
       </Stack>
       <Box sx={{ height: 'calc(100vh - 250px)' }} mt={2}>
         <AgGrid columnDefs={columnDefs} rowData={rows} csvDownload={true} rowGroupPanelShow="always" groupDisplayType="groupRows" />

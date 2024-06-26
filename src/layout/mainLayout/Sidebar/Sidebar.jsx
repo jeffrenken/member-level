@@ -1,10 +1,9 @@
+import { useTheme } from '@/hooks';
 import { Box, Drawer, useMediaQuery } from '@mui/material';
-import { useTheme } from '@mui/material/styles';
 import PropTypes from 'prop-types';
 import { BrowserView, MobileView } from 'react-device-detect';
 import MenuList from './MenuList';
-import logoWhite from '@/assets/images/logoWhite.png';
-import logoDark from '@/assets/images/logoDark.png';
+
 const Sidebar = ({ drawerOpen, drawerToggle, drawerWidth, window }) => {
   const theme = useTheme();
   const isDarkMode = theme.palette.mode === 'dark';

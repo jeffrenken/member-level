@@ -4,7 +4,8 @@ import { RouterProvider } from 'react-router-dom';
 //import './App.css';
 import { SnackbarProvider } from 'notistack';
 
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { QueryClientProvider } from '@tanstack/react-query';
+import { queryClient } from '@/lib';
 
 // defaultTheme
 //import theme from './themes';
@@ -12,7 +13,6 @@ import { RecoilRoot } from 'recoil';
 import { RecoilURLSyncJSON } from 'recoil-sync';
 import { ThemeContextProvider } from './context/ThemeContextProvider';
 //import NavigationScroll from './layout/NavigationScroll.jsx';
-const queryClient = new QueryClient();
 
 function App() {
   return (

@@ -1,5 +1,5 @@
-import useMeasures from '@/api/useMeasures';
-import useMembers from '@/api/useMembers';
+import { useMeasures, useMembers } from '@/api';
+import { Box, Container, Typography } from '@/components';
 import AgGrid from '@/components/tables/AgGrid';
 import {
   GapRenderer,
@@ -9,7 +9,6 @@ import {
   TooltipRenderer,
   getSparklineData
 } from '@/components/tables/CellRenderers';
-import { Box, Container, Typography } from '@mui/material';
 import { useMemo, useRef } from 'react';
 import { useParams } from 'react-router-dom';
 

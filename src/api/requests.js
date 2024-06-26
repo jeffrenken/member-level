@@ -3,9 +3,16 @@ import MockAdapter from 'axios-mock-adapter';
 import measures from '../../data/measures.json';
 import memberMeasures from '../../data/memberMeasures.json';
 import srfData from '../../data/memberSrf.json';
-import memberData from '../../data/members.json';
+import memberData from '../../data/membersWithCensus.json';
 import providerGroupsData from '../../data/providerGroups.json';
 import careData from '../../data/care.json';
+
+function addLeadingZerosForLength(number, length) {
+  if (!number) return null;
+  var num = '' + number;
+  while (num.length < length) num = '0' + num;
+  return num;
+}
 
 const members = memberData.map((member, i) => {
   const measures = memberMeasures.find((m) => m['MEMBER ID'] === member['MEMBER ID']);
@@ -23,6 +30,10 @@ const members = memberData.map((member, i) => {
     });
   }
 
+  const statefp = addLeadingZerosForLength(member?.statefp, 2);
+  const countyfp = addLeadingZerosForLength(member?.countyfp, 3);
+  const tractce = addLeadingZerosForLength(member?.tractce, 6);
+
   return {
     ...member,
     id: member['MEMBER ID'],
@@ -36,7 +47,8 @@ const members = memberData.map((member, i) => {
     numberOfGaps: numberOfGaps,
     filteredNumberOfGaps: numberOfGaps,
     measuresOpen: Object.keys(measures).filter((key) => measures?.[key] === 0),
-    measuresClosed: Object.keys(measures).filter((key) => measures?.[key] === 1)
+    measuresClosed: Object.keys(measures).filter((key) => measures?.[key] === 1),
+    geoId: parseInt(`${statefp}${countyfp}${tractce}`)
   };
 });
 //just assuming names are unique for testing
@@ -137,7 +149,7 @@ const fakeSupervisors = () => {
   return p;
 };
 
-const axiosClient = axios.create({
+export const axiosClient = axios.create({
   //baseURL: 'https://jsonplaceholder.typicode.com',
   headers: {
     'Content-Type': 'application/json'

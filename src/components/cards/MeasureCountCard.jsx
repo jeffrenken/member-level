@@ -1,10 +1,9 @@
-import { Card, CardContent, Typography, Box, useTheme, Stack, Skeleton } from '@mui/material';
-import { useMemo, useState } from 'react';
-import { useSrfScores } from '@/api/useSrfScores';
-import { Link, useSearchParams } from 'react-router-dom';
-import './measure-count-card.css';
+import { Box, StyledCard, Skeleton, Stack, Typography } from '@/components';
+import { useTheme } from '@/hooks';
 import { IconArrowRight } from '@tabler/icons-react';
 import { motion } from 'framer-motion';
+import { useState } from 'react';
+import './measure-count-card.css';
 
 const lightBlue = 'rgb(222, 237, 252, 1)';
 
@@ -24,7 +23,7 @@ export default function MeasureCountCard({ label, measures, size = 'md', isLoadi
   const background = theme.palette.background.paper;
 
   /*   const things = (
-    <Card sx={{ width: width, height: width, backgroundColor: 'transparent' }}>
+    <StyledCard sx={{ width: width, height: width, backgroundColor: 'transparent' }}>
       <Box
         //className="front"
         sx={{
@@ -53,12 +52,12 @@ export default function MeasureCountCard({ label, measures, size = 'md', isLoadi
           </Typography>
         </Stack>
       </Box>
-    </Card>
+    </StyledCard>
   ); */
 
   const content = (
     <Box className="measure-count-card-page-container">
-      <Card
+      <StyledCard
         sx={{ width: styles.width, height: styles.width, backgroundColor: 'transparent', cursor: 'pointer' }}
         className={`measure-count-card-card-container ${isFlipped ? 'flipped' : ''}`}
         onClick={() => setIsFlipped(!isFlipped)}
@@ -101,14 +100,14 @@ export default function MeasureCountCard({ label, measures, size = 'md', isLoadi
           <Stack direction="column" sx={{ height: '100%' }} spacing={0.4} mt={0}>
             <ul style={{ paddingInlineStart: 20 }}>
               {measures.map((measure) => (
-                <li>
+                <li key={measure.id}>
                   <Typography sx={{ fontSize: '0.7rem' }}>{measure['Measure Name']}</Typography>
                 </li>
               ))}
             </ul>
           </Stack>
         </Box>
-      </Card>
+      </StyledCard>
     </Box>
   );
 

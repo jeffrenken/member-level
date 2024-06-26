@@ -1,4 +1,5 @@
-import { IconButton, Stack, Tooltip, useTheme } from '@mui/material';
+import { IconButton, Stack, Tooltip } from '@/components';
+import { useTheme } from '@/hooks';
 import { IconDeviceFloppy, IconFileTypeCsv } from '@tabler/icons-react';
 import { AgGridReact } from 'ag-grid-react';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
@@ -62,7 +63,8 @@ export default function AgGrid({ rowData, columnDefs, sideBar2, csvDownload, sav
   }
 
   const exportCsv = useCallback(() => {
-    gridRef.current.api.exportDataAsCsv();
+    //gridRef.current.api.exportDataAsCsv();
+    gridRef.current.api.exportDataAsExcel();
   }, []);
 
   function getContextMenuItems(params) {
@@ -133,18 +135,18 @@ export default function AgGrid({ rowData, columnDefs, sideBar2, csvDownload, sav
       {(csvDownload || saveFiltersButton) && (
         <Stack direction="row" spacing={1} p={0} my={1} justifyContent="flex-end">
           {csvDownload && (
-            <Tooltip title="Download CSV" placement="top">
-              <IconButton color="primary" onClick={exportCsv} aria-label="upload picture" component="label" sx={{ padding: 0 }}>
+            <IconButton color="primary" onClick={exportCsv} sx={{ padding: 0 }}>
+              <Tooltip title="Download CSV" placement="top">
                 <IconFileTypeCsv style={{ strokeWidth: 1.5 }} />
-              </IconButton>
-            </Tooltip>
+              </Tooltip>
+            </IconButton>
           )}
           {saveFiltersButton && (
-            <Tooltip title="Save Filters" placement="top">
-              <IconButton color="primary" onClick={exportCsv} aria-label="upload picture" component="label" sx={{ padding: 0 }}>
+            <IconButton color="primary" onClick={exportCsv} sx={{ padding: 0 }}>
+              <Tooltip title="Save Filters" placement="top">
                 <IconDeviceFloppy style={{ strokeWidth: 1.5 }} />
-              </IconButton>
-            </Tooltip>
+              </Tooltip>
+            </IconButton>
           )}
         </Stack>
       )}
@@ -170,6 +172,7 @@ export default function AgGrid({ rowData, columnDefs, sideBar2, csvDownload, sav
           defaultCsvExportParams={{
             fileName: 'member-level-export',
             processCellCallback: (cell) => {
+              console.log('cell', cell);
               //if value is an  object
               if (typeof cell.value === 'object') {
                 return '';

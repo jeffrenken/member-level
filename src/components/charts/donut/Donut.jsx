@@ -1,7 +1,8 @@
 // install (please try to align the version of installed @nivo packages)
 // yarn add @nivo/pie
 import { ResponsivePie } from '@nivo/pie';
-import { Box, useTheme } from '@mui/material';
+import { Box } from '@/components';
+import { useTheme } from '@/hooks';
 
 const data = [
   {

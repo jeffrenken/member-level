@@ -1,12 +1,8 @@
+import { StyledCard as Card } from '@/components';
+import RechartTest from '@/components/charts/ReChart';
+import MeasureAutocomplete from '@/components/inputs/MeasureAutocomplete';
 import { Box, Button, ButtonGroup, Container, Grid, Stack, Typography } from '@mui/material';
 import { useState } from 'react';
-import RechartBar from '../components/charts/RechartBar';
-import ContractsAutocomplete from '@/components/inputs/ContractsAutocomplete';
-import MeasureAutocomplete from '@/components/inputs/MeasureAutocomplete';
-import theme from '@/themes';
-import RechartTest from '@/components/charts/ReChart';
-import { useTheme } from '@mui/material-next';
-import Card from '@/components/Card';
 
 export default function Page2() {
   const [selectedValue, setSelectedValue] = useState(1);

@@ -1,12 +1,10 @@
-import useFilteredMembers from '@/api/useFilteredMembers';
-import useMeasures from '@/api/useMeasures';
-import useMembersFilteredByMeasures from '@/api/useMembersFilteredByMeasures';
+import { useFilteredMembers, useMeasures, useMembersFilteredByMeasures } from '@/api';
+import { Box, Container, Stack, Typography } from '@/components';
 import GaugeChart from '@/components/charts/GaugeChart';
 import PieChart2 from '@/components/charts/TestPie2';
 import MembersByMeasureTable from '@/components/tables/MembersByMeasureTable';
 import Top from '@/layout/Top';
 import { measureFilterState } from '@/state/measureFilterState';
-import { Box, Container, Stack, Typography } from '@mui/material';
 import { useMemo } from 'react';
 import { useParams } from 'react-router-dom';
 import { useRecoilValue } from 'recoil';

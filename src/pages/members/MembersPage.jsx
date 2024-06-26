@@ -1,4 +1,4 @@
-import useFilteredMembers from '@/api/useFilteredMembers';
+import { useFilteredMembers } from '@/api';
 import MembersLayout from './MembersLayout';
 
 const filters = ['contract', 'measureStatus'];

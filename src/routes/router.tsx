@@ -17,8 +17,9 @@ import Test from '@/pages/test/Test';
 import { createBrowserRouter } from 'react-router-dom';
 import { AuthGuard } from './AuthGuard';
 import MembersUnattributedPage from '@/pages/members/unattributed/MembersUnattributedPage';
-import CarePage from '@/pages/care/CarePage';
+import { CarePage } from '@/pages/care';
 import CareManagerPage from '@/pages/care-managers/[name]/CareManagerPage';
+import MapCensus from '@/pages/mapCensus/MapCensus';
 
 export const router = createBrowserRouter([
   {
@@ -44,6 +45,10 @@ export const router = createBrowserRouter([
       {
         path: '/map',
         element: <Map />
+      },
+      {
+        path: '/map-census',
+        element: <MapCensus />
       },
       {
         path: '/measures/:id',
@@ -115,6 +120,5 @@ export const router = createBrowserRouter([
         element: <BobPage />
       }
     ]
-  },
-
+  }
 ]);

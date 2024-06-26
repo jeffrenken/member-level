@@ -1,9 +1,7 @@
-import useMeasures from '@/api/useMeasures';
-import useMembers from '@/api/useMembers';
-import Card from '@/components/Card';
+import { useMeasures, useMembers } from '@/api';
+import { Box, Container, Typography, StyledCard } from '@/components';
 import AgGrid from '@/components/tables/AgGrid';
-import { LinkRenderer, MeasureRenderer, TextRenderer } from '@/components/tables/CellRenderers';
-import { Box, Container, Typography } from '@mui/material';
+import { LinkRenderer, MeasureRenderer } from '@/components/tables/CellRenderers';
 import { useMemo } from 'react';
 import { Link, useParams } from 'react-router-dom';
 
@@ -68,7 +66,7 @@ export default function Member() {
   return (
     <>
       <Container maxWidth="md">
-        <Card p={2} mt={2}>
+        <StyledCard p={2} mt={2}>
           <>
             <Box>
               <Typography variant="h3" mb={1} sx={{ fontSize: '1.75rem' }}>
@@ -99,7 +97,7 @@ export default function Member() {
               </Typography>
             </Box>
           </>
-        </Card>
+        </StyledCard>
         <Box sx={{ height: 'calc(100vh - 250px)' }} mt={2}>
           <AgGrid rowData={rows} columnDefs={columnDefs} />
         </Box>

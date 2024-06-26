@@ -1,20 +1,18 @@
-import useContracts from '@/api/useContracts';
-import useMeasures from '@/api/useMeasures';
-import useProviders from '@/api/useProvidersGroups';
+import { useContracts, useMeasures, useProviders, useSrf } from '@/api';
 import AutocompleteButton from '@/components/Autocomplete';
-import Card from '@/components/Card';
 import { ThemeContext } from '@/context/ThemeContextProvider';
 import { contractFilterState } from '@/state/contractFilterState';
 import { measureFilterState } from '@/state/measureFilterState';
 import { measuresFilterState } from '@/state/measuresFilterState';
 
-import useSrf from '@/api/useSrf';
 import { measureStatusFilterState } from '@/state/measureStatusFilterState';
 import { providerFilterState } from '@/state/providerFilterState';
 import { srfFilterState } from '@/state/srfFilterState';
 
 import { SearchDialog } from '@/components/SearchDialog';
-import { Box, ButtonBase, InputAdornment, Stack, TextField, useTheme } from '@mui/material';
+import { Box, ButtonBase, Stack, TextField, StyledCard } from '@/components';
+import { InputAdornment } from '@mui/material';
+import { useTheme } from '@/hooks';
 import { IconSearch } from '@tabler/icons-react';
 import { useContext, useMemo, useState } from 'react';
 import { useRecoilState } from 'recoil';
@@ -91,7 +89,7 @@ export default function Top({ filters }) {
   return (
     <>
       <SearchDialog open={searchOpen} onClose={() => setSearchOpen(false)} />
-      <Card px={1} mb={2}>
+      <StyledCard px={1} mb={2}>
         <Stack direction="row" justifyContent="space-between" alignItems="center" height={40}>
           <Stack direction="row" spacing={2} alignItems="center">
             {filters.includes('contract') && (
@@ -228,7 +226,7 @@ export default function Top({ filters }) {
             </IconButton> */}
           </Box>
         </Stack>
-      </Card>
+      </StyledCard>
     </>
   );
 }

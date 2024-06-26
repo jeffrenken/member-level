@@ -1,11 +1,12 @@
-import { useMemo } from 'react';
 import dayjs from 'dayjs';
+import { useMemo } from 'react';
+
 function getRandomDate() {
   const d = new Date(2015 + Math.floor(Math.random() * 7), 1 + Math.floor(Math.random() * 12), 1 + Math.floor(Math.random() * 30));
   return dayjs(d).format('YYYY-MM-DD');
 }
 
-export default function useMembersFilteredByMeasures(members, measures) {
+export function useMembersFilteredByMeasures(members, measures) {
   const info = useMemo(() => {
     if (!members.length) {
       return {};

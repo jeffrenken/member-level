@@ -1,4 +1,4 @@
-import { useTheme } from '@mui/material';
+import { useTheme } from '@/hooks';
 import ReactEcharts from 'echarts-for-react';
 // TODO CREATE CHART
 

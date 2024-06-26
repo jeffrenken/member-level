@@ -1,16 +1,12 @@
-import useContracts from '@/api/useContracts';
-import useFilteredMembers from '@/api/useFilteredMembers';
-import useMeasures from '@/api/useMeasures';
-import useProviders from '@/api/useProvidersGroups';
-import useSrf from '@/api/useSrf';
+import { useContracts, useFilteredMembers, useMeasures, useProviders, useSrf } from '@/api';
+import { Box, Grid, IconButton, Stack, Typography, StyledCard } from '@/components';
 import AutocompleteButton from '@/components/Autocomplete';
-import Card from '@/components/Card';
 import GaugeChart from '@/components/charts/GaugeChart';
 import MembersTable from '@/components/tables/MembersTable';
+import { useTheme } from '@/hooks';
 import { contractFilterState } from '@/state/contractFilterState';
 import { providerFilterState } from '@/state/providerFilterState';
 import { srfFilterState } from '@/state/srfFilterState';
-import { Box, Grid, IconButton, Stack, Typography, useTheme } from '@mui/material';
 import { IconX } from '@tabler/icons-react';
 import mapboxgl from 'mapbox-gl';
 import 'mapbox-gl/dist/mapbox-gl.css';
@@ -66,8 +62,8 @@ export default function Map() {
   const [mapReady, setMapReady] = useState(false);
   const [chartData, setChartData] = useState({});
   const [filteredMembersInCounty, setFilteredMembersInCounty] = useState([]);
-  const [membersInCountyNumerator, setMembersInCountyNumerator] = useState([]);
-  const [membersInCountyDenom, setMembersInCountyDenom] = useState([]);
+  const [membersInCountyWithClosed, setMembersInCountyWithClosed] = useState([]);
+  const [membersInCountyWithOpen, setMembersInCountyWithOpen] = useState([]);
   const [membersInCounty, setMembersInCounty] = useState([]);
   const { filteredMembers, filterSrf } = useFilteredMembers(filtersForMembers);
 
@@ -181,15 +177,14 @@ export default function Map() {
       return;
     }
 
-    let membersWithAllFilters = filterSrf(filteredMembers);
-
     const selectedMeasure = selectedMeasureOption;
-    let membersInDenom = [...membersWithAllFilters];
-    let membersInNumerator = [...membersWithAllFilters];
+    let membersWithOpen = filteredMembers.filter((member) => member.measuresOpen.length);
+    let membersWithClosed = filteredMembers.filter((member) => member.measuresClosed.length);
+    console.log('membersWithClosed', filteredMembers.length, membersWithClosed.length, membersWithOpen.length);
 
     if (selectedMeasure) {
-      membersInDenom = membersWithAllFilters.filter((member) => member.measuresOpen.includes(selectedMeasure['Measure Name']));
-      membersInNumerator = membersWithAllFilters.filter((member) => member.measuresClosed.includes(selectedMeasure['Measure Name']));
+      membersWithOpen = filteredMembers.filter((member) => member.measuresOpen.includes(selectedMeasure['Measure Name']));
+      membersWithClosed = filteredMembers.filter((member) => member.measuresClosed.includes(selectedMeasure['Measure Name']));
 
       let chartScale = [
         [75 / 100, '#d27e6f'],
@@ -204,47 +199,39 @@ export default function Map() {
           [selectedMeasure?.top_third_upper_value / 100, '#a1d99e']
         ];
       }
-      const starsValue = membersInDenom.length / (membersWithAllFilters.length + membersInDenom.length);
-      const heiValue = starsValue * 0.4;
       setChartData({
-        scale: chartScale,
-        starsValue: starsValue,
-        heiValue: heiValue
+        scale: chartScale
       });
     } else {
       //members with any open
-      membersInDenom = membersWithAllFilters.filter((member) => member.measuresOpen.length);
+      //membersWithOpen = filteredMembers.filter((member) => member.measuresOpen.length);
+      //membersWithClosed = filteredMembers.filter((member) => member.measuresClosed.length);
 
       const chartScale = [
         [75 / 100, '#d27e6f'],
         [82 / 100, '#dcb05c'],
         [100 / 100, '#a1d99e']
       ];
-      const starsValue = membersInDenom.length / (membersWithAllFilters.length + membersInDenom.length);
-      const heiValue = starsValue * 0.4;
       setChartData({
-        scale: chartScale,
-        starsValue: starsValue,
-        heiValue: heiValue
+        scale: chartScale
       });
     }
-    setAllMembersInDenom(membersInDenom);
 
     let uniqueStateAbbreviations = [];
 
     const updatedCountyData = countyDataWithCount.features.map((item) => {
       let itemCopy = { ...item };
-      let membersInCounty = membersWithAllFilters.filter(
+      let membersInCountyFiltered = filteredMembers.filter(
         (member) => member.COUNTY === item.properties.NAME && member.STATE === item.properties.stateAbbreviation
       );
-      let membersInCountyDenom = membersInCounty.filter((member) => member.measuresOpen.length);
-      let membersInCountyNumerator = membersInCounty.filter((member) => member.measuresClosed.length);
+      let membersInCountyNumerator = membersInCountyFiltered.filter((member) => member.measuresClosed.length);
+      let membersInCountyDenom = membersInCountyFiltered.filter((member) => member.measuresOpen.length);
 
       if (selectedMeasure) {
-        membersInCountyDenom = membersInCountyDenom.filter((member) => member.measuresOpen.includes(selectedMeasure['Measure Name']));
         membersInCountyNumerator = membersInCountyNumerator.filter((member) =>
           member.measuresClosed.includes(selectedMeasure['Measure Name'])
         );
+        membersInCountyDenom = membersInCountyDenom.filter((member) => member.measuresOpen.includes(selectedMeasure['Measure Name']));
       }
 
       if (!membersInCountyDenom.length) {
@@ -254,15 +241,8 @@ export default function Map() {
       }
 
       const percent = (membersInCountyNumerator.length / (membersInCountyNumerator.length + membersInCountyDenom.length)) * 100;
-
-      /* let countInCountyDenom = membersInCountyDenom.length;
-      let countTotalInCounty = membersWithAllFilters.filter(
-        (member) => member.COUNTY === item.properties.NAME && member.STATE === item.properties.stateAbbreviation
-      ).length;
-      let percent = (countInCountyDenom / countTotalInCounty) * 100; */
       let itemProperties = { ...item.properties, percent: percent };
       itemCopy.properties = itemProperties;
-
       uniqueStateAbbreviations = [...new Set(membersInCountyDenom.map((d) => d.STATE))];
       return itemCopy;
     });
@@ -344,15 +324,15 @@ export default function Map() {
     }
 
     if (selectedCounty) {
-      setMembersInCountyNumerator(
-        membersInNumerator.filter((member) => member.COUNTY === selectedCounty.NAME && member.STATE === selectedCounty.stateAbbreviation)
+      setMembersInCountyWithClosed(
+        membersWithClosed.filter((member) => member.COUNTY === selectedCounty.NAME && member.STATE === selectedCounty.stateAbbreviation)
       );
-      setMembersInCountyDenom(
-        membersInDenom.filter((member) => member.COUNTY === selectedCounty.NAME && member.STATE === selectedCounty.stateAbbreviation)
+      setMembersInCountyWithOpen(
+        membersWithOpen.filter((member) => member.COUNTY === selectedCounty.NAME && member.STATE === selectedCounty.stateAbbreviation)
       );
 
       setFilteredMembersInCounty(
-        membersWithAllFilters.filter((member) => member.COUNTY === selectedCounty.NAME && member.STATE === selectedCounty.stateAbbreviation)
+        filteredMembers.filter((member) => member.COUNTY === selectedCounty.NAME && member.STATE === selectedCounty.stateAbbreviation)
       );
       setMembersInCounty(
         filteredMembers.filter((member) => member.COUNTY === selectedCounty.NAME && member.STATE === selectedCounty.stateAbbreviation)
@@ -382,7 +362,7 @@ export default function Map() {
     <>
       <Box sx={{ position: 'relative' }}>
         <Box sx={{ position: 'absolute', top: '16px', left: '16px', zIndex: 2, width: '40%' }}>
-          <Card px={0} py={1}>
+          <StyledCard px={0} py={1}>
             <Stack direction="row" alignItems="center" justifyContent="flex-start" spacing={2} px={3}>
               {measures.length && contracts.length && srf.length && (
                 <>
@@ -433,11 +413,11 @@ export default function Map() {
                 </>
               )}
             </Stack>
-          </Card>
+          </StyledCard>
         </Box>
         {selectedCounty && (
           <Box sx={{ position: 'absolute', top: '20px', right: '16px', zIndex: 1001, width: '46%' }}>
-            <Card p={0} height="100%">
+            <StyledCard p={0} height="100%">
               <Grid container justifyContent="flex-end">
                 <IconButton sx={{ padding: 0.5 }} onClick={() => setSelectedCounty(null)}>
                   <IconX />
@@ -457,7 +437,7 @@ export default function Map() {
                             >
                               {selectedCounty.NAME} County, {selectedCounty.stateAbbreviation}
                             </Typography>
-                            <Typography sx={{ fontSize: '1.1rem' }}>Open Gaps: {membersInCountyDenom.length}</Typography>
+                            <Typography sx={{ fontSize: '1.1rem' }}>Open Gaps: {membersInCountyWithOpen.length}</Typography>
                           </Box>
                         </Stack>
                       </Stack>
@@ -471,7 +451,8 @@ export default function Map() {
                               <GaugeChart
                                 chartScale={chartData.scale}
                                 chartValue={
-                                  membersInCountyNumerator.length / (membersInCountyDenom.length + membersInCountyNumerator.length)
+                                  filterSrf(membersInCountyWithClosed).length /
+                                  (filterSrf(membersInCountyWithOpen).length + filterSrf(membersInCountyWithClosed).length)
                                 }
                               />
                             </Box>
@@ -496,12 +477,14 @@ export default function Map() {
                       </Stack>
                     </Grid>
                   </Grid>
-                  <Box sx={{ height: '290px' }}>
-                    {membersInCountyDenom.length && <MembersTable rows={membersInCountyDenom} height="265px" csvDownload />}
+                  <Box sx={{ maxHeight: '290px', height: '290px' }}>
+                    {membersInCountyWithOpen.length && (
+                      <MembersTable rows={filterSrf(membersInCountyWithClosed)} height="265px" csvDownload />
+                    )}
                   </Box>
                 </>
               </Box>
-            </Card>
+            </StyledCard>
           </Box>
         )}
       </Box>

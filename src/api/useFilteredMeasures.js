@@ -1,26 +1,18 @@
-import { fetchContracts } from '@/api/requests';
-import useContracts from '@/api/useContracts';
-import useMeasures from '@/api/useMeasures';
-import useMemberMeasures from '@/api/useMemberMeasures';
-import useMembers from '@/api/useMembers';
-import useProviderGroups from '@/api/useProvidersGroups';
+import { useContracts, useMeasures, useMemberMeasures, useMembers, useProviderGroups, useSrf } from '@/api';
 import { contractFilterState } from '@/state/contractFilterState';
 import { measureFilterState } from '@/state/measureFilterState';
+import { measureStatusFilterState } from '@/state/measureStatusFilterState';
 import { providerFilterState } from '@/state/providerFilterState';
 import { srfFilterState } from '@/state/srfFilterState';
-import { measureStatusFilterState } from '@/state/measureStatusFilterState';
-import { useQuery } from '@tanstack/react-query';
+import { useEffect, useMemo, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { useRecoilValue } from 'recoil';
-import providerGroups from '../../data/providerGroups.json';
-import { useState, useEffect, useMemo } from 'react';
-import useSrf from './useSrf';
 
 const randomBoolean = () => Math.random() > 0.5;
 const randomIntegerBetween = (min, max) => Math.floor(Math.random() * (max - min + 1) + min);
 const randomHalfNumberBetween = (min, max) => Math.floor(Math.random() * (max - min + 1) + min) / 2;
 
-export default function useFilteredMeasures() {
+export function useFilteredMeasures() {
   const params = useParams();
   const id = parseInt(params.id);
   const { data: measures, isLoading } = useMeasures();

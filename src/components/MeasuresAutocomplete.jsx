@@ -1,4 +1,3 @@
-import useMeasures from '@/api/useMeasures';
 import AutocompleteButton from '@/components/Autocomplete';
 import { measuresFilterState } from '@/state/measuresFilterState';
 import { useEffect } from 'react';

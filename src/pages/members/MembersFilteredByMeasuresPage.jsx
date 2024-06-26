@@ -1,17 +1,16 @@
-import useFilteredMeasures from '@/api/useFilteredMeasures';
-import useFilteredMembers from '@/api/useFilteredMembers';
-import useMembersFilteredByMeasures from '@/api/useMembersFilteredByMeasures';
+import { useFilteredMembers, useMembersFilteredByMeasures, useFilteredMeasures } from '@/api';
+import { Box, Container, Grid, Stack, Typography } from '@/components';
+import { useTheme } from '@/hooks';
 import MeasuresAutocomplete from '@/components/MeasuresAutocomplete';
 import HeiCard from '@/components/cards/HeiCard';
 import BarChart from '@/components/charts/BarChart';
-import { GapRenderer, LinkRenderer, MeasureRenderer, SrfRenderer, TextRenderer } from '@/components/tables/CellRenderers';
+import { GapRenderer, LinkRenderer, MeasureRenderer, SrfRenderer } from '@/components/tables/CellRenderers';
 import MembersByMeasureTable from '@/components/tables/MembersByMeasureTable';
 import Top from '@/layout/Top';
 import { measuresFilterState } from '@/state/measuresFilterState';
-import { Box, Container, Grid, Stack, Typography, useTheme } from '@mui/material';
+import dayjs from 'dayjs';
 import { useEffect, useMemo, useRef } from 'react';
 import { useRecoilValue } from 'recoil';
-import dayjs from 'dayjs';
 
 const filters = ['providerGroup', 'contract', 'measureStatus'];
 

@@ -4,7 +4,7 @@ import { useLocation, useNavigate } from 'react-router';
 
 // material-ui
 import { Collapse, List, ListItemButton, ListItemIcon, ListItemText, Typography } from '@mui/material';
-import { useTheme } from '@mui/material/styles';
+import { useTheme } from '@/hooks';
 
 // project imports
 import NavItem from '../NavItem';

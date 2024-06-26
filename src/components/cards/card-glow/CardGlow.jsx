@@ -4,8 +4,10 @@ import gsap from 'https://cdn.skypack.dev/gsap'; */
 import React from 'react';
 import './card-glow.css';
 
+import { Box, Stack, Typography } from '@/components';
+import { useTheme } from '@/hooks';
 import { measureFilterState } from '@/state/measureFilterState.js';
-import { Box, Stack, Typography, useTheme } from '@mui/material';
+
 import { Link, useNavigate } from 'react-router-dom';
 import { useRecoilState } from 'recoil';
 import styled, { keyframes } from 'styled-components';

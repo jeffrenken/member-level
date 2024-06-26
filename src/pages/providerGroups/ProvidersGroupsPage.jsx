@@ -1,15 +1,11 @@
-import useContracts from '@/api/useContracts';
-import useFilteredMembers from '@/api/useFilteredMembers';
-import useMembers from '@/api/useMembers';
-import useProviders from '@/api/useProviders';
-import useProviderGroups from '@/api/useProvidersGroups';
-import Card from '@/components/Card';
+import { useContracts, useFilteredMembers, useMembers, useProviderGroups, useProviders } from '@/api';
+import { Box, Button, Container, Stack, Typography, StyledCard } from '@/components';
 import AgGrid from '@/components/tables/AgGrid';
 import { GapRenderer2, ProviderLinkRenderer, TextRenderer, TooltipRenderer, getSparklineData } from '@/components/tables/CellRenderers';
+import { useTheme } from '@/hooks';
 import Top from '@/layout/Top';
 import { contractFilterState } from '@/state/contractFilterState';
 import { providerFilterState } from '@/state/providerFilterState';
-import { Box, Button, Container, Stack, Typography, useTheme } from '@mui/material';
 import { IconArrowDownRight, IconArrowUpRight } from '@tabler/icons-react';
 import { useMemo } from 'react';
 import { Link } from 'react-router-dom';
@@ -191,7 +187,7 @@ export default function ProviderGroupsPage() {
         /> */}
       </Stack>
       <Stack direction="row" alignItems={'center'} justifyContent={'center'} spacing={2} sx={{ marginTop: '20px' }}>
-        <Card
+        <StyledCard
           height={cardWidth}
           width={cardWidth}
           p={1}
@@ -219,8 +215,8 @@ export default function ProviderGroupsPage() {
                 ))}
             </tbody>
           </table>
-        </Card>
-        <Card
+        </StyledCard>
+        <StyledCard
           height={cardWidth}
           width={cardWidth}
           p={1}
@@ -248,8 +244,8 @@ export default function ProviderGroupsPage() {
                 ))}
             </tbody>
           </table>
-        </Card>
-        <Card
+        </StyledCard>
+        <StyledCard
           height={cardWidth}
           width={cardWidth}
           p={1}
@@ -278,8 +274,8 @@ export default function ProviderGroupsPage() {
                 ))}
             </tbody>
           </table>
-        </Card>
-        <Card
+        </StyledCard>
+        <StyledCard
           height={cardWidth}
           width={cardWidth}
           p={1}
@@ -308,7 +304,7 @@ export default function ProviderGroupsPage() {
                 ))}
             </tbody>
           </table>
-        </Card>
+        </StyledCard>
       </Stack>
       <Box sx={{ height: 'calc(100vh - 250px)' }} mt={2}>
         <AgGrid columnDefs={columnDefs} rowData={rows} csvDownload={true} rowGroupPanelShow="always" groupDisplayType="groupRows" />

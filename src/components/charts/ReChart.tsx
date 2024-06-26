@@ -1,4 +1,4 @@
-import { useTheme } from '@mui/material';
+import { useTheme } from '@/hooks';
 import { Bar, ComposedChart, Legend, Line, Rectangle, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts';
 //import { Config, ScreensConfig } from "tailwindcss/types/config";
 

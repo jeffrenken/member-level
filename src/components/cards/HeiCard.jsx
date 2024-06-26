@@ -1,9 +1,7 @@
-import { Card, CardContent, Typography, Box, useTheme, Stack, Skeleton } from '@mui/material';
-import { useMemo, useState } from 'react';
-import { useSrfScores } from '@/api/useSrfScores';
-import { Link, useSearchParams } from 'react-router-dom';
-import { IconArrowRight } from '@tabler/icons-react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { useTheme } from '@/hooks';
+import { Box, StyledCard, Skeleton, Stack, Typography } from '@/components';
+import { motion } from 'framer-motion';
+import { useState } from 'react';
 
 const lightBlue = 'rgb(222, 237, 252, 1)';
 
@@ -23,7 +21,7 @@ export default function HeiCard({ title, content, isLoading, color, size = 'md',
   const background = theme.palette.background.paper;
 
   const card = (
-    <Card {...props} sx={{ width: styles.width, height: styles.width, backgroundColor: 'transparent', textDecoration: 'none' }}>
+    <StyledCard {...props} sx={{ width: styles.width, height: styles.width, backgroundColor: 'transparent', textDecoration: 'none' }}>
       <Box
         //className="front"
 
@@ -64,7 +62,7 @@ export default function HeiCard({ title, content, isLoading, color, size = 'md',
           </Typography>
         </Stack>
       </Box>
-    </Card>
+    </StyledCard>
   );
 
   if (isLoading) {

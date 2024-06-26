@@ -1,7 +1,6 @@
-import React from 'react';
+import { useTheme } from '@/hooks';
+import { Box, Stack, Typography } from '@/components';
 import styled from 'styled-components';
-import { Box, Container, Grid, Stack, Typography, useTheme } from '@mui/material';
-import CardGlow from '../cards/card-glow/CardGlow';
 
 const measure = {
   id: 1,

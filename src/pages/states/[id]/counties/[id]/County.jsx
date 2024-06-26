@@ -1,6 +1,6 @@
 import { Link, useParams } from 'react-router-dom';
 
-import useMembers from '@/api/useMembers';
+import { useMembers } from '@/api';
 
 export default function County() {
   const { abbreviation, countyName } = useParams();

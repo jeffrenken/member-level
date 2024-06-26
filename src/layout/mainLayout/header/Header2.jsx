@@ -1,16 +1,13 @@
-import PropTypes from 'prop-types';
-import { Box, IconButton, Stack, Link as MuiLink, AppBar, Toolbar, Popover, Button, List, ListItem, ListItemButton } from '@mui/material';
-import { useTheme } from '@mui/material/styles';
-import { ThemeContext } from '@/context/ThemeContextProvider';
-import { SignedIn, SignedOut, UserButton } from '@clerk/clerk-react';
-import { IconChevronDown, IconMenu2, IconMoon, IconSun } from '@tabler/icons-react';
-import { useContext, useState } from 'react';
-import { Link, useLocation } from 'react-router-dom';
-import logoWhite from '@/assets/images/logoWhite.png';
-import logoDark from '@/assets/images/logoDark.png';
-import MeasureAutocomplete from '@/components/inputs/MeasureAutocomplete';
 import useMeasures from '@/api/useMeasures';
-import React from 'react';
+import logoDark from '@/assets/images/logoDark.png';
+import logoWhite from '@/assets/images/logoWhite.png';
+import { ThemeContext } from '@/context/ThemeContextProvider';
+import { useTheme } from '@/hooks';
+import { AppBar, Box, Button, IconButton, List, ListItemButton, Popover, Stack, Toolbar } from '@mui/material';
+import { IconChevronDown, IconMoon, IconSun } from '@tabler/icons-react';
+import PropTypes from 'prop-types';
+import React, { useContext, useState } from 'react';
+import { useLocation } from 'react-router-dom';
 
 const contracts = [
   { h_code: 'H1111', label: 'Health Plan 1' },

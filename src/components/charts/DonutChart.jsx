@@ -1,6 +1,4 @@
-import { useTheme } from '@mui/material';
-import { fontFamily, fontSize, fontWeight, grid } from '@mui/system';
-import { color } from 'echarts';
+import { useTheme } from '@/hooks';
 import ReactEcharts from 'echarts-for-react';
 // TODO CREATE CHART
 

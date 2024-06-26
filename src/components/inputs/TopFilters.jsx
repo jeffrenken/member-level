@@ -1,15 +1,13 @@
-import React from 'react';
-import { Paper, Stack, Box } from '@mui/material';
+import { Box, Stack, StyledCard } from '@/components';
+import SaveToFavoritesDialog from '@/components/dialogs/SaveToFavoritesDialog';
 import ContractsAutocomplete from '@/components/inputs/ContractsAutocomplete';
 import StatesAutocomplete from '@/components/inputs/StatesAutocomplete';
-import SaveToFavoritesDialog from '@/components/dialogs/SaveToFavoritesDialog';
-import Card from '../Card';
 import MeasureAutocomplete from './MeasureAutocomplete';
 import YearAutocomplete from './YearAutocomplete';
 
 export default function TopFilters() {
   return (
-    <Card height={100} p={2}>
+    <StyledCard height={100} p={2}>
       <Box>
         <Stack direction="row" spacing={2} p={1}>
           <StatesAutocomplete />
@@ -19,6 +17,6 @@ export default function TopFilters() {
           <SaveToFavoritesDialog />
         </Stack>
       </Box>
-    </Card>
+    </StyledCard>
   );
 }

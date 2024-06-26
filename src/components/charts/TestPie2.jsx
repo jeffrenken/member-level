@@ -1,11 +1,11 @@
-import React from 'react';
+import { Box, Stack, Tooltip, Typography } from '@/components';
+import { useTheme } from '@/hooks';
 import styled, { keyframes } from 'styled-components';
-import { Box, Container, Grid, Stack, Tooltip, Typography, useTheme } from '@mui/material';
-import { Link, useNavigate } from 'react-router-dom';
-import { useRecoilState } from 'recoil';
 import { measureFilterState } from '@/state/measureFilterState.js';
-import ProgressChart from './ProgressChart';
 import { AnimatePresence, motion } from 'framer-motion';
+import { useNavigate } from 'react-router-dom';
+import { useRecoilState } from 'recoil';
+import ProgressChart from './ProgressChart';
 
 const measure = {
   id: 1,

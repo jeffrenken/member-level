@@ -1,13 +1,12 @@
+import { useTheme } from '@/hooks';
+import { AppBar, Box, IconButton, Stack, Toolbar } from '@mui/material';
 import PropTypes from 'prop-types';
-import { Box, IconButton, Stack, Link as MuiLink, AppBar, Toolbar } from '@mui/material';
-import { useTheme } from '@mui/material/styles';
+import logoDark from '@/assets/images/logoDark.png';
+import logoWhite from '@/assets/images/logoWhite.png';
 import { ThemeContext } from '@/context/ThemeContextProvider';
-import { SignedIn, SignedOut, UserButton } from '@clerk/clerk-react';
 import { IconMenu2, IconMoon, IconSun } from '@tabler/icons-react';
 import { useContext } from 'react';
-import { Link, useLocation } from 'react-router-dom';
-import logoWhite from '@/assets/images/logoWhite.png';
-import logoDark from '@/assets/images/logoDark.png';
+import { useLocation } from 'react-router-dom';
 
 const Header = ({ handleLeftDrawerToggle, leftDrawerOpened }) => {
   const theme = useTheme();

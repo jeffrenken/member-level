@@ -1,5 +1,7 @@
 import { Box, CssBaseline, Typography, useMediaQuery } from '@mui/material';
-import { styled, useTheme } from '@mui/material/styles';
+import { styled } from '@mui/material/styles';
+import { useTheme } from '@/hooks';
+
 import { useState } from 'react';
 import { Outlet, useLocation } from 'react-router-dom';
 import Sidebar from './Sidebar/Sidebar';

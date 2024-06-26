@@ -1,4 +1,4 @@
-import Card from '@/components/Card';
+import { StyledCard } from '@/components';
 import BarChartExample from '@/components/charts/BarChart';
 import BarChartHorizontal from '@/components/charts/BarChartHorizontal';
 import LineChartExample from '@/components/charts/LineChart';
@@ -18,27 +18,27 @@ const Test = () => {
         <Grid container spacing={2} mt={1}>
           <Grid item sm={5} md={4}>
             <Stack spacing={2}>
-              <Card height={200} p={2}>
+              <StyledCard height={200} p={2}>
                 <Typography align="center" mt={-1}>
                   Historical current month scores
                 </Typography>
                 <BarChartHorizontal />
-              </Card>
-              <Card height={100} p={2}>
+              </StyledCard>
+              <StyledCard height={100} p={2}>
                 <Typography>Gaps and things</Typography>
-              </Card>
+              </StyledCard>
             </Stack>
           </Grid>
           <Grid item sm={7} md={8}>
-            <Card height={316} p={2}>
+            <StyledCard height={316} p={2}>
               <BarChartExample />
-            </Card>
+            </StyledCard>
           </Grid>
 
           <Grid item sm={12} md={12}>
-            <Card height={300} p={2}>
+            <StyledCard height={300} p={2}>
               <LineChartExample />
-            </Card>
+            </StyledCard>
           </Grid>
           {/* <Grid item sm={12} md={6}>
             {favorites.map((favorite) => (
@@ -48,10 +48,10 @@ const Test = () => {
             ))}
           </Grid> */}
           <Grid item sm={12} md={12}>
-            <Card p={2}>
+            <StyledCard p={2}>
               todo: style table
               <TableTest />
-            </Card>
+            </StyledCard>
           </Grid>
         </Grid>
       </Container>

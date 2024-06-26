@@ -1,28 +1,21 @@
-import * as React from 'react';
+import { useMembers, useProviderGroups, useProviders } from '@/api';
 import {
-  Button,
+  ButtonBase,
   Dialog,
-  DialogActions,
   DialogContent,
   DialogTitle,
-  TextField,
-  Typography,
+  InputAdornment,
   List,
   ListItem,
   ListItemText,
-  ListItemAvatar,
-  Avatar,
-  ListItemButton,
-  Divider,
-  ButtonBase,
-  useTheme,
-  InputAdornment
+  TextField,
+  Typography
 } from '@mui/material';
-import useMembers from '@/api/useMembers';
-import useProviderGroups from '@/api/useProvidersGroups';
-import { IconSearch, IconUser } from '@tabler/icons-react';
+import { useTheme } from '@/hooks';
+
+import { IconSearch } from '@tabler/icons-react';
+import * as React from 'react';
 import { Link } from 'react-router-dom';
-import useProviders from '@/api/useProviders';
 
 //create a dialog with an input from Mui components
 export function SearchDialog({ open, onClose }) {

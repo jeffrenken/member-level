@@ -1,4 +1,5 @@
-import useFilteredMeasures from '@/api/useFilteredMeasures';
+import { useFilteredMeasures } from '@/api';
+import { Box, Container, Typography } from '@/components';
 import AgGrid from '@/components/tables/AgGrid';
 import {
   GapRenderer,
@@ -11,7 +12,6 @@ import {
   getSparklineData
 } from '@/components/tables/CellRenderers';
 import Top from '@/layout/Top';
-import { Box, Container, Typography } from '@mui/material';
 import { useMemo } from 'react';
 
 const randomHalfNumberBetween = (min, max) => Math.floor(Math.random() * (max - min + 1) + min) / 2;
@@ -131,6 +131,9 @@ export default function MembersLayout({ members: filteredMembers, title, filters
       },
       minWidth: 200,
       valueGetter: (params) => {
+        if (!params.data) {
+          return null;
+        }
         return getSparklineData(params.data.numberOfGaps);
       }
     },
