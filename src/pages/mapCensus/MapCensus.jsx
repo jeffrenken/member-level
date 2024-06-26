@@ -63,13 +63,14 @@ function createColorMapping(data) {
 }
 
 function getColorForCount(count) {
-  // Define your color logic based on counts
   if (count === 1) {
-    return '#c00000';
+    return '#20701C';
   } else if (count === 2) {
-    return '#0000ff';
+    return '#F8CD6D';
   } else if (count === 3) {
-    return '#00ff00';
+    return 'orange';
+  } else if (count > 3) {
+    return '#9B2323';
   } else {
     return '#fff';
   }
@@ -192,12 +193,13 @@ export default function MapCensus() {
           layers: ['census-fill']
         });
         let geoId = features[0].id;
-
-        if (geoId) {
+        const count = filteredMembers.filter((member) => member.geoId === geoId).length;
+        const label = count > 1 ? 'Members' : 'Member';
+        if (count) {
           popup
             .setLngLat(e.lngLat)
             .setHTML(
-              `<div style="font-size:18px;color:#222">GEO ID</div><div style="font-size:14px;color:#222;text-align:center">${geoId}</div>`
+              `<div style="font-size:18px;color:#222;text-align:center">${count}</div><div style="font-size:14px;color:#222;text-align:center">${label}</div>`
             )
             .addTo(map.current);
         }
@@ -216,8 +218,10 @@ export default function MapCensus() {
 
   useEffect(() => {
     //handleMeasureChange(0);
-    setupMap();
-  }, []);
+    if (filteredMembers.length) {
+      setupMap();
+    }
+  }, [filteredMembers]);
 
   useEffect(() => {
     if (map.current) {
@@ -230,18 +234,21 @@ export default function MapCensus() {
       return;
     }
 
-    let newItems = [];
-    const geoIdCounts = filteredMembers.reduce((counts, member) => {
-      //const newItem = { id: 38019951100, count: (counts[member.geoid] || 0) + 1 };
-      const newItem = { id: member.geoId, count: (counts[member.geoId] || 0) + 1 };
-      if (parseInt(newItem.id)) {
-        newItems.push(newItem);
-      }
-      //newItem[member.geoid] = (counts[member.geoid] || 0) + 1;
-      //newItem[38019951100] = (counts[member.geoid] || 0) + 1;
-      return newItem;
-    });
-    fetchClientDataAndUpdateMap(newItems, map.current);
+    const mapped = filteredMembers.map((f) => ({ geoId: f.geoId }));
+    const validGeoidArray = mapped.filter((obj) => obj.geoId !== null && obj.geoId !== undefined);
+
+    // Step 1: Count the occurrences of each geoid
+    const countMap = validGeoidArray.reduce((acc, obj) => {
+      acc[obj.geoId] = (acc[obj.geoId] || 0) + 1;
+      return acc;
+    }, {});
+
+    // Step 2: Transform the result into an array of objects
+    const resultArray = Object.entries(countMap).map(([geoId, count]) => ({
+      id: parseInt(geoId), // Ensure the geoId is an integer
+      count
+    }));
+    fetchClientDataAndUpdateMap(resultArray, map.current);
   }, [selectedMeasureOption, filteredMembers, mapReady, selectedCounty]);
 
   useEffect(() => {
