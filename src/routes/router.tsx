@@ -20,6 +20,7 @@ import MembersUnattributedPage from '@/pages/members/unattributed/MembersUnattri
 import { CarePage } from '@/pages/care';
 import CareManagerPage from '@/pages/care-managers/[name]/CareManagerPage';
 import MapCensus from '@/pages/mapCensus/MapCensus';
+import MapZipCodes from '@/pages/mapZipCodes/MapZipCodes';
 
 export const router = createBrowserRouter([
   {
@@ -49,6 +50,10 @@ export const router = createBrowserRouter([
       {
         path: '/map-census',
         element: <MapCensus />
+      },
+      {
+        path: '/map-zipcodes',
+        element: <MapZipCodes />
       },
       {
         path: '/measures/:id',

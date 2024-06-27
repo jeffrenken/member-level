@@ -28,6 +28,7 @@ export function CarePage() {
   const { data: allMembers } = useMembers();
   const contractId = useRecoilValue(contractFilterState);
   const { data: contracts } = useContracts();
+  console.log('here', JSON.stringify(allMembers[0]));
 
   const contract = useMemo(() => {
     if (!contracts) {

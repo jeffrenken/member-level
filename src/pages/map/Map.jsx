@@ -16,6 +16,7 @@ import memberData from '../../../data/members.json';
 import countiesData from '../../../fakeData/gz_2010_us_050_00_5m.json';
 import stateToNumber from '../../../fakeData/stateToNumber.json';
 import statesBoundingBoxes from '../../../fakeData/statesBoundingBoxes.json';
+import MapViewsButton from './components/MapViewsButton';
 
 /* const st = s.features.map((item) => {
   let statePet = pets.find((pet) => pet.state === item.properties.NAME);
@@ -409,7 +410,8 @@ export default function Map() {
                       onChange: (event, newValue) => setSrfState(newValue.id),
                       isOptionEqualToValue: (option, value) => option.id === value.id
                     }}
-                  />{' '}
+                  />
+                  <MapViewsButton />
                 </>
               )}
             </Stack>

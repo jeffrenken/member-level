@@ -36,52 +36,37 @@ const filters = ['contract', 'srf'];
 const filtersForMembers = ['contract'];
 
 async function fetchClientDataAndUpdateMap(geoIdCounts, map) {
-  // Fetch client data (example: from an API)
-  //const clientData = await fetch('https://api.example.com/client-data').then((response) => response.json());
-
-  // Process the data to create a color mapping
-  const fakeData = [
-    { tractId: 1, count: 1 },
-    { tractId: 2, count: 2 },
-    { tractId: 3, count: 3 }
-  ];
   const colorMapping = createColorMapping(geoIdCounts);
-
-  // Update the fill layer colors based on the client data
   updateFillLayerColors(map, colorMapping);
 }
 
 function createColorMapping(data) {
   // Create a color mapping based on the client data
-  // This is just an example, adjust based on your data structure
   const colorMapping = {};
   data.forEach((item) => {
-    //colorMapping[key] = getColorForCount(data[key]);
-
     colorMapping[item.id] = getColorForCount(item.count);
   });
   return colorMapping;
 }
 
 function getColorForCount(count) {
-  if (count === 1) {
-    return '#20701C';
-  } else if (count === 2) {
-    return '#F8CD6D';
-  } else if (count === 3) {
-    return 'orange';
-  } else if (count > 3) {
+  if (count > 30) {
     return '#9B2323';
+  } else if (count > 20) {
+    return '#F8CD6D';
+  } else if (count > 0) {
+    return '#20701C';
   } else {
     return '#fff';
   }
 }
 
 function updateFillLayerColors(map, colorMapping) {
+  //id on map = zip code
   const colorEntries = Object.entries(colorMapping).flatMap(([key, value]) => [parseInt(key), value]);
 
   // Use 'setPaintProperty' to update the fill-color based on data-driven styling
-  map.setPaintProperty('census-fill', 'fill-color', [
+  map.setPaintProperty('zip-fill', 'fill-color', [
     'match',
     ['id'],
 
@@ -90,7 +75,7 @@ function updateFillLayerColors(map, colorMapping) {
   ]);
 }
 
-export default function MapCensus() {
+export default function MapZipCodes() {
   const theme = useTheme();
   const darkMode = theme.palette.mode === 'dark';
   const mapContainer = useRef(null);
@@ -140,19 +125,19 @@ export default function MapCensus() {
     map.current.setSty;
 
     map.current.on('load', () => {
-      map.current.addSource('census-source', {
+      map.current.addSource('zip-source', {
         type: 'vector',
         // Use any Mapbox-hosted tileset using its tileset id.
         // Learn more about where to find a tileset id:
         // https://docs.mapbox.com/help/glossary/tileset-id/
-        url: 'mapbox://d452ds54.6y7bz4ho'
+        url: 'mapbox://d452ds54.7a1zn0p2'
       });
       map.current.addLayer(
         {
-          id: 'census-line',
+          id: 'zip-line',
           type: 'line',
-          source: 'census-source',
-          'source-layer': 'tractsclippedbystate', //name from the mapbox tileset style layer
+          source: 'zip-source',
+          'source-layer': 'zips', //name from the mapbox tileset style layer
           layout: {
             'line-join': 'round',
             'line-cap': 'round'
@@ -165,19 +150,19 @@ export default function MapCensus() {
         'road-label-simple' // Add layer below labels
       );
       map.current.addLayer({
-        id: 'census-fill',
+        id: 'zip-fill',
         type: 'fill',
-        source: 'census-source',
-        'source-layer': 'tractsclippedbystate',
+        source: 'zip-source',
+        'source-layer': 'zips',
         paint: {
           //'fill-color': ['step', ['get', 'geoIdCount'], '#EAF3B6', 0, '#c00000', 25, '#00ff00', 30, '#3ed', 35, '#0000ff', 50, '#3ed'],
           'fill-opacity': 0.5
         }
       });
       // Add click event listener to inspect properties
-      map.current.on('click', 'census-fill', function (e) {
+      map.current.on('click', 'zip-fill', function (e) {
         const features = map.current.queryRenderedFeatures(e.point, {
-          layers: ['census-fill']
+          layers: ['zip-fill']
         });
         setSelectedGeoId(features[0].id);
       });
@@ -188,25 +173,26 @@ export default function MapCensus() {
         closeOnClick: false
       });
 
-      map.current.on('mousemove', 'census-fill', (e) => {
+      map.current.on('mousemove', 'zip-fill', (e) => {
         map.current.getCanvas().style.cursor = 'pointer';
         const features = map.current.queryRenderedFeatures(e.point, {
-          layers: ['census-fill']
+          layers: ['zip-fill']
         });
-        let geoId = features[0].id;
-        const count = filteredMembers.filter((member) => member.geoId === geoId).length;
+        let zip = features[0].id;
+        const count = filteredMembers.filter((member) => member.zipCode === zip).length;
         const label = count > 1 ? 'Members' : 'Member';
         if (count) {
           popup
             .setLngLat(e.lngLat)
             .setHTML(
-              `<div style="font-size:18px;color:#222;text-align:center">${count}</div><div style="font-size:14px;color:#222;text-align:center">${label}</div>`
+              `<div style="font-size:18px;color:#222;text-align:center">${zip}</div>
+              <div style="font-size:18px;color:#222;text-align:center">${count}</div><div style="font-size:14px;color:#222;text-align:center">${label}</div>`
             )
             .addTo(map.current);
         }
       });
 
-      map.current.on('mouseleave', 'census-fill', () => {
+      map.current.on('mouseleave', 'zip-fill', () => {
         map.current.getCanvas().style.cursor = '';
         popup.remove();
       });
@@ -235,26 +221,69 @@ export default function MapCensus() {
       return;
     }
 
-    const mapped = filteredMembers.map((f) => ({ geoId: f.geoId }));
-    const validGeoidArray = mapped.filter((obj) => obj.geoId !== null && obj.geoId !== undefined);
+    const mapped = filteredMembers.map((f) => ({ id: f.zipCode }));
+    const validIdArray = mapped.filter((obj) => obj.id !== null && obj.id !== undefined);
 
     // Step 1: Count the occurrences of each geoid
-    const countMap = validGeoidArray.reduce((acc, obj) => {
-      acc[obj.geoId] = (acc[obj.geoId] || 0) + 1;
+    const countMap = validIdArray.reduce((acc, obj) => {
+      acc[obj.id] = (acc[obj.id] || 0) + 1;
       return acc;
     }, {});
 
     // Step 2: Transform the result into an array of objects
-    const resultArray = Object.entries(countMap).map(([geoId, count]) => ({
-      id: parseInt(geoId), // Ensure the geoId is an integer
+    const resultArray = Object.entries(countMap).map(([id, count]) => ({
+      id: parseInt(id), // Ensure the id is an integer
       count
     }));
     fetchClientDataAndUpdateMap(resultArray, map.current);
-  }, [selectedMeasureOption, filteredMembers, mapReady, selectedCounty]);
+
+    if (selectedGeoId) {
+      const selectedMeasure = selectedMeasureOption;
+      let membersWithOpen = filteredMembers.filter((member) => member.measuresOpen.length);
+      let membersWithClosed = filteredMembers.filter((member) => member.measuresClosed.length);
+
+      if (selectedMeasure) {
+        membersWithOpen = filteredMembers.filter((member) => member.measuresOpen.includes(selectedMeasure['Measure Name']));
+        membersWithClosed = filteredMembers.filter((member) => member.measuresClosed.includes(selectedMeasure['Measure Name']));
+
+        let chartScale = [
+          [75 / 100, '#d27e6f'],
+          [82 / 100, '#dcb05c'],
+          [100 / 100, '#a1d99e']
+        ];
+
+        if (selectedMeasure?.bottom_third_upper_value) {
+          chartScale = [
+            [selectedMeasure?.bottom_third_upper_value / 100, '#d27e6f'],
+            [selectedMeasure?.middle_third_upper_value / 100, '#dcb05c'],
+            [selectedMeasure?.top_third_upper_value / 100, '#a1d99e']
+          ];
+        }
+        setChartData({
+          scale: chartScale
+        });
+      } else {
+        const chartScale = [
+          [75 / 100, '#d27e6f'],
+          [82 / 100, '#dcb05c'],
+          [100 / 100, '#a1d99e']
+        ];
+        setChartData({
+          scale: chartScale
+        });
+      }
+
+      setMembersInCountyWithClosed(membersWithClosed.filter((member) => member.zipCode === selectedGeoId));
+      setMembersInCountyWithOpen(membersWithOpen.filter((member) => member.zipCode === selectedGeoId));
+
+      setFilteredMembersInCounty(filteredMembers.filter((member) => member.zipCode === selectedGeoId));
+      setMembersInCounty(filteredMembers.filter((member) => member.zipCode === selectedGeoId));
+    }
+  }, [selectedMeasureOption, filteredMembers, mapReady, selectedGeoId]);
 
   useEffect(() => {
     if (!selectedGeoId) return;
-    setRows(filteredMembers.filter((member) => member.geoId === selectedGeoId));
+    setRows(filteredMembers.filter((member) => member.zipCode === selectedGeoId));
   }, [selectedGeoId]);
 
   const handleMeasureChange = (value) => {
@@ -340,9 +369,9 @@ export default function MapCensus() {
                               //component={Link}
                               to={`/states/${rows[0]?.STATE}/counties/${rows[0]?.COUNTY}`}
                             >
-                              {rows[0]?.fake_address}
+                              {selectedGeoId}
                             </Typography>
-                            <Typography sx={{ fontSize: '1.1rem' }}>Open Gaps: {rows.length}</Typography>
+                            <Typography sx={{ fontSize: '1.1rem' }}>Open Gaps: {membersInCountyWithOpen.length}</Typography>
                           </Box>
                         </Stack>
                       </Stack>
@@ -355,7 +384,10 @@ export default function MapCensus() {
                             <Box minWidth={140} height={100}>
                               <GaugeChart
                                 chartScale={chartData.scale}
-                                chartValue={filterSrf(rows).length / (filterSrf(rows).length + filterSrf(rows).length)}
+                                chartValue={
+                                  filterSrf(membersInCountyWithClosed).length /
+                                  (filterSrf(membersInCountyWithOpen).length + filterSrf(membersInCountyWithClosed).length)
+                                }
                               />
                             </Box>
                             <Typography sx={{ fontSize: '0.7rem', marginTop: '-8px' }} align="center">
@@ -366,7 +398,10 @@ export default function MapCensus() {
                         <Box>
                           <>
                             <Box minWidth={140} height={100}>
-                              <GaugeChart chartScale={chartData.scale} chartValue={rows.filter((m) => m.isSrf).length / rows.length} />
+                              <GaugeChart
+                                chartScale={chartData.scale}
+                                chartValue={membersInCounty.filter((m) => m.isSrf).length / membersInCounty.length}
+                              />
                             </Box>
                             <Typography sx={{ fontSize: '0.7rem', marginTop: '-8px' }} align="center">
                               Health Equity Performance

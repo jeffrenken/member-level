@@ -48,7 +48,8 @@ const members = memberData.map((member, i) => {
     filteredNumberOfGaps: numberOfGaps,
     measuresOpen: Object.keys(measures).filter((key) => measures?.[key] === 0),
     measuresClosed: Object.keys(measures).filter((key) => measures?.[key] === 1),
-    geoId: parseInt(`${statefp}${countyfp}${tractce}`)
+    geoId: parseInt(`${statefp}${countyfp}${tractce}`),
+    zipCode: member['ZIP CODE']
   };
 });
 //just assuming names are unique for testing
