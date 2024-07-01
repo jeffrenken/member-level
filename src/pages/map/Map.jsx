@@ -181,7 +181,6 @@ export default function Map() {
     const selectedMeasure = selectedMeasureOption;
     let membersWithOpen = filteredMembers.filter((member) => member.measuresOpen.length);
     let membersWithClosed = filteredMembers.filter((member) => member.measuresClosed.length);
-    console.log('membersWithClosed', filteredMembers.length, membersWithClosed.length, membersWithOpen.length);
 
     if (selectedMeasure) {
       membersWithOpen = filteredMembers.filter((member) => member.measuresOpen.includes(selectedMeasure['Measure Name']));
@@ -241,7 +240,10 @@ export default function Map() {
         return itemCopy;
       }
 
-      const percent = (membersInCountyNumerator.length / (membersInCountyNumerator.length + membersInCountyDenom.length)) * 100;
+      const percent =
+        (filterSrf(membersInCountyNumerator).length /
+          (filterSrf(membersInCountyNumerator).length + filterSrf(membersInCountyDenom).length)) *
+        100;
       let itemProperties = { ...item.properties, percent: percent };
       itemCopy.properties = itemProperties;
       uniqueStateAbbreviations = [...new Set(membersInCountyDenom.map((d) => d.STATE))];
@@ -278,7 +280,7 @@ export default function Map() {
         colorArray[4],
         '#20701C',
         colorArray[5],
-        '#ccc'
+        '#9B2323'
       ]);
 
       const popup2 = new mapboxgl.Popup({
@@ -339,7 +341,7 @@ export default function Map() {
         filteredMembers.filter((member) => member.COUNTY === selectedCounty.NAME && member.STATE === selectedCounty.stateAbbreviation)
       );
     }
-  }, [selectedMeasureOption, filteredMembers, mapReady, selectedCounty]);
+  }, [selectedMeasureOption, filteredMembers, mapReady, selectedCounty, srfState]);
 
   useEffect(() => {
     if (!clickedCounty) return;
@@ -356,7 +358,7 @@ export default function Map() {
 
   const handleMeasureChange = (value) => {
     setMeasureState(value);
-    setSelectedMeasureOption(measures.find((m) => m.id === value));
+    setSelectedMeasureOption(measures?.find((m) => m.id === value));
   };
 
   return (
@@ -365,7 +367,7 @@ export default function Map() {
         <Box sx={{ position: 'absolute', top: '16px', left: '16px', zIndex: 2, width: '40%' }}>
           <StyledCard px={0} py={1}>
             <Stack direction="row" alignItems="center" justifyContent="flex-start" spacing={2} px={3}>
-              {measures.length && contracts.length && srf.length && (
+              {measures?.length && contracts?.length && srf?.length && (
                 <>
                   <AutocompleteButton
                     defaultLabel="Contracts"
