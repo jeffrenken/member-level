@@ -1,4 +1,4 @@
-import { useContracts, useMeasures, useProviders, useSrf } from '@/api';
+import { useContracts, useMeasures, useProviderGroups, useProviders, useSrf } from '@/api';
 import AutocompleteButton from '@/components/Autocomplete';
 import { ThemeContext } from '@/context/ThemeContextProvider';
 import { contractFilterState } from '@/state/contractFilterState';
@@ -27,7 +27,7 @@ export default function Top({ filters }) {
   const { switchColorMode } = useContext(ThemeContext);
   const { data: measures } = useMeasures();
   const { data: contractsData } = useContracts();
-  const { data: providersData } = useProviders();
+  const { data: providersData } = useProviderGroups();
   const { data: srf } = useSrf();
   const [measureState, setMeasureState] = useRecoilState(measureFilterState);
   const [measuresState, setMeasuresState] = useRecoilState(measuresFilterState);
