@@ -441,7 +441,9 @@ export default function Map() {
                             >
                               {selectedCounty.NAME} County, {selectedCounty.stateAbbreviation}
                             </Typography>
-                            <Typography sx={{ fontSize: '1.1rem' }}>Open Gaps: {membersInCountyWithOpen.length}</Typography>
+                            <Typography sx={{ fontSize: '1.1rem' }}>
+                              Open Gaps: {filterSrf(membersInCountyWithOpen).reduce((a, b) => a + b.numberOfGaps, 0)}
+                            </Typography>
                           </Box>
                         </Stack>
                       </Stack>
@@ -483,7 +485,7 @@ export default function Map() {
                   </Grid>
                   <Box sx={{ maxHeight: '290px', height: '290px' }}>
                     {membersInCountyWithOpen.length && (
-                      <MembersTable rows={filterSrf(membersInCountyWithClosed)} height="265px" csvDownload />
+                      <MembersTable rows={filterSrf(membersInCountyWithOpen)} height="265px" csvDownload />
                     )}
                   </Box>
                 </>
