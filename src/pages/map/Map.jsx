@@ -280,7 +280,7 @@ export default function Map() {
         colorArray[4],
         '#20701C',
         colorArray[5],
-        '#9B2323'
+        '#ccc'
       ]);
 
       const popup2 = new mapboxgl.Popup({
@@ -441,9 +441,7 @@ export default function Map() {
                             >
                               {selectedCounty.NAME} County, {selectedCounty.stateAbbreviation}
                             </Typography>
-                            <Typography sx={{ fontSize: '1.1rem' }}>
-                              Open Gaps: {filterSrf(membersInCountyWithOpen).reduce((a, b) => a + b.numberOfGaps, 0)}
-                            </Typography>
+                            <Typography sx={{ fontSize: '1.1rem' }}>Open Gaps: {filterSrf(membersInCountyWithOpen).length}</Typography>
                           </Box>
                         </Stack>
                       </Stack>
