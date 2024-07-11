@@ -28,10 +28,10 @@ const filters = ['contract', 'providerGroup', 'measureStatus'];
 function HeiPage() {
   //const UPDATE = useGlowPointer();
   const theme = useTheme();
-  const measureStatus = useRecoilValue(measureStatusFilterState);
   const thresholdFilter = useRecoilValue(thresholdFilterState);
   const srf = useRecoilValue(srfFilterState);
   const providerGroupId = useRecoilValue(providerFilterState);
+  const measureStatus = useRecoilValue(measureStatusFilterState);
   const { data: measuresData } = useMeasuresWithStats({ srf, measureStatus, providerGroupId });
 
   const { filteredMembers } = useFilteredMembers(filters);

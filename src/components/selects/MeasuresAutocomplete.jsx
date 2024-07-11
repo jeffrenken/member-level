@@ -55,7 +55,7 @@ export default function MeasuresAutocomplete({ measures }) {
       autocompleteProps={{
         id: 'measuresStateFilter',
         options: measures,
-        getOptionLabel: (option) => (option.label ? option.label : ''),
+        getOptionLabel: (option) => (option.name ? option.name : ''),
         autoHighlight: true,
         openOnFocus: true,
         value: measuresState,

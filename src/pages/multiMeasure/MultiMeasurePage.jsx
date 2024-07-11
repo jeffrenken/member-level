@@ -55,7 +55,6 @@ function MultiMeasurePage() {
     });
     return gapCounts;
   }, [members, measuresData]);
-  console.log('chartData', chartData);
 
   const membersPercentMoreThanOneGap = useMemo(() => {
     if (!members?.all) {

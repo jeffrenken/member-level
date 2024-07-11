@@ -136,6 +136,8 @@ function AutocompletePopper({ handleClose, props }) {
         <Listbox {...getListboxProps()}>
           {groupedOptions.map((option, index) => {
             const { key, ...rest } = getOptionProps({ option, index });
+            const label = otherProps.getOptionLabel(option) || option.label;
+
             return (
               <Option key={key} {...rest} aria-selected={isSelected(option)} name={option?.name}>
                 {otherProps.multiple ? (
@@ -145,10 +147,10 @@ function AutocompletePopper({ handleClose, props }) {
                     ) : (
                       <IconSquare size={18} style={{ margin: '1px 6px 1px 0px', minWidth: '18px' }} />
                     )}
-                    {option.label}
+                    {label}
                   </>
                 ) : (
-                  <>{option.label}</>
+                  <>{label}</>
                 )}
               </Option>
             );
@@ -159,6 +161,8 @@ function AutocompletePopper({ handleClose, props }) {
         <Listbox {...getListboxProps()}>
           {props.options.map((option, index) => {
             const { key, ...rest } = getOptionProps({ option, index });
+            const label = otherProps.getOptionLabel(option) || option.label;
+
             return (
               <Option key={key} {...rest} ariaSelected={isSelected(option)} name={option?.name}>
                 {otherProps.multiple ? (
@@ -168,10 +172,10 @@ function AutocompletePopper({ handleClose, props }) {
                     ) : (
                       <IconSquare size={18} style={{ margin: '1px 6px 1px 0px', minWidth: '18px' }} />
                     )}
-                    {option.label}
+                    {label}
                   </>
                 ) : (
-                  <>{option.label}</>
+                  <>{label}</>
                 )}
               </Option>
             );
