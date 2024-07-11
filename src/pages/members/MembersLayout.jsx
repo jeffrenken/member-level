@@ -1,5 +1,4 @@
-import { useFilteredMeasures } from '@/api';
-import { Box, Container, Typography } from '@/components/ui';
+import Navbar from '@/components/layouts/Navbar';
 import AgGrid from '@/components/tables/AgGrid';
 import {
   GapRenderer,
@@ -11,8 +10,11 @@ import {
   TooltipRenderer,
   getSparklineData
 } from '@/components/tables/CellRenderers';
-import Navbar from '@/components/layouts/Navbar';
+import { Box, Container, Typography } from '@/components/ui';
+import { measureStatusFilterState } from '@/state/measureStatusFilterState';
 import { useMemo } from 'react';
+import { useRecoilValue } from 'recoil';
+import { useMeasuresWithStats } from '../../api/useMeasuresWithStats';
 
 const randomHalfNumberBetween = (min, max) => Math.floor(Math.random() * (max - min + 1) + min) / 2;
 
@@ -33,24 +35,11 @@ const memberInfoColumns = [
 const srfOptions = ['Low Income Subsidy Copay Level', 'DUAL ELIGIBLE', 'DISABLED'];
 
 export default function MembersLayout({ members: filteredMembers, title, filters }) {
-  const { data: measures } = useFilteredMeasures();
-  const starsMeasures = useMemo(() => {
-    if (!measures.length) {
-      return [];
-    }
-    return measures.filter((measure) => {
-      return measure.status === 1;
-    });
-  }, [measures]);
+  const measureStatus = useRecoilValue(measureStatusFilterState);
+  const { data: measures } = useMeasuresWithStats({ measureStatus });
 
-  const displayMeasures = useMemo(() => {
-    if (!measures.length) {
-      return [];
-    }
-    return measures.filter((measure) => {
-      return measure.status === 2;
-    });
-  }, [measures]);
+  const starsMeasures = measures ? measures.filter((measure) => measure.category === 'stars') : [];
+  const displayMeasures = measures ? measures.filter((measure) => measure.category === 'display') : [];
 
   const members = useMemo(() => {
     if (!filteredMembers) {

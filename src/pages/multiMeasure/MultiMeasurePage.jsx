@@ -1,22 +1,29 @@
-import { useFilteredMeasures, useFilteredMembers, useMembersFilteredByMeasures } from '@/api';
+import { useFilteredMembers, useMembersFilteredByMeasures } from '@/api';
 import HeiCard from '@/components/cards/HeiCard';
 import BarChart from '@/components/charts/BarChart';
+import Navbar from '@/components/layouts/Navbar';
 import MeasuresAutocomplete from '@/components/selects/MeasuresAutocomplete';
 import { GapRenderer, LinkRenderer, MeasureRenderer, SrfRenderer } from '@/components/tables/CellRenderers';
 import MembersByMeasureTable from '@/components/tables/MembersByMeasureTable';
 import { Box, Container, Grid, Stack, Typography } from '@/components/ui';
 import { useTheme } from '@/hooks';
-import Navbar from '@/components/layouts/Navbar';
 import { measuresFilterState } from '@/state/measuresFilterState';
+import { measureStatusFilterState } from '@/state/measureStatusFilterState';
+import { providerFilterState } from '@/state/providerFilterState';
+import { srfFilterState } from '@/state/srfFilterState';
 import { useEffect, useMemo, useRef } from 'react';
 import { useRecoilValue } from 'recoil';
+import { useMeasuresWithStats } from '../../api/useMeasuresWithStats';
 
 const filters = ['providerGroup', 'contract', 'measureStatus'];
 
 function MultiMeasurePage() {
   const theme = useTheme();
   const tableRef = useRef();
-  const { data: measuresData, isLoading } = useFilteredMeasures();
+  const measureStatus = useRecoilValue(measureStatusFilterState);
+  const srf = useRecoilValue(srfFilterState);
+  const providerGroupId = useRecoilValue(providerFilterState);
+  const { data: measuresData, isLoading } = useMeasuresWithStats({ srf, measureStatus, providerGroupId });
   const measureIds = useRecoilValue(measuresFilterState);
   const { filteredMembers } = useFilteredMembers(filters);
 
@@ -48,6 +55,7 @@ function MultiMeasurePage() {
     });
     return gapCounts;
   }, [members, measuresData]);
+  console.log('chartData', chartData);
 
   const membersPercentMoreThanOneGap = useMemo(() => {
     if (!members?.all) {
