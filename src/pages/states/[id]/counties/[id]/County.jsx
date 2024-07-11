@@ -2,7 +2,7 @@ import { Link, useParams } from 'react-router-dom';
 
 import { useMembers } from '@/api';
 
-export default function County() {
+function County() {
   const { abbreviation, countyName } = useParams();
   const { data } = useMembers();
   const members = data.filter((member) => member['STATE'] === abbreviation && member['COUNTY'] === countyName);
@@ -42,3 +42,5 @@ export default function County() {
     </>
   );
 }
+
+export const Component = County;

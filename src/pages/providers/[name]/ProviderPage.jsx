@@ -1,5 +1,5 @@
 import { useMeasures, useMembers } from '@/api';
-import { Box, Container, Typography } from '@/components';
+import { Box, Container, Typography } from '@/components/ui';
 import AgGrid from '@/components/tables/AgGrid';
 import {
   GapRenderer,
@@ -19,7 +19,7 @@ let moneyFormat = new Intl.NumberFormat('en-US', {
 
 const randomHalfNumberBetween = (min, max) => Math.floor(Math.random() * (max - min + 1) + min) / 2;
 const worthPerGap = 25;
-export default function ProviderPage() {
+function ProviderPage() {
   const { name } = useParams();
   const totalGapsRef = useRef(0);
   //const id = parseInt(params.id);
@@ -35,7 +35,6 @@ export default function ProviderPage() {
       return measure.status === 1;
     });
   }, [measures]);
-  console.log('starsMeasures', starsMeasures);
 
   const displayMeasures = useMemo(() => {
     if (!measures.length) {
@@ -138,8 +137,8 @@ export default function ProviderPage() {
       headerName: 'Stars Measures',
       children: starsMeasures.map((measure) => {
         return {
-          field: measure['Measure Name'],
-          headerName: measure['Measure Name'],
+          field: measure.name,
+          headerName: measure.name,
           type: 'numericColumn',
           chartDataType: 'series',
           filter: true,
@@ -153,8 +152,8 @@ export default function ProviderPage() {
       headerName: 'Display Measures',
       children: displayMeasures.map((measure) => {
         return {
-          field: measure['Measure Name'],
-          headerName: measure['Measure Name'],
+          field: measure.name,
+          headerName: measure.name,
           type: 'numericColumn',
           chartDataType: 'series',
           filter: true,
@@ -196,3 +195,5 @@ export default function ProviderPage() {
     </>
   );
 }
+
+export const Component = ProviderPage;

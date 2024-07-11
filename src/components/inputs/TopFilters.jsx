@@ -1,4 +1,4 @@
-import { Box, Stack, StyledCard } from '@/components';
+import { Box, Stack, StyledCard } from '@/components/ui';
 import SaveToFavoritesDialog from '@/components/dialogs/SaveToFavoritesDialog';
 import ContractsAutocomplete from '@/components/inputs/ContractsAutocomplete';
 import StatesAutocomplete from '@/components/inputs/StatesAutocomplete';

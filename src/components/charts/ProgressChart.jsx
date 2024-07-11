@@ -2,7 +2,7 @@ import { useTheme } from '@/hooks';
 import ReactEcharts from 'echarts-for-react';
 // TODO CREATE CHART
 
-export default function ProgressChart({ measure }) {
+export default function ProgressChart({ measure, quotient }) {
   const theme = useTheme();
 
   let chartScale = [70, 12, 18];
@@ -50,7 +50,7 @@ export default function ProgressChart({ measure }) {
       name: 'Current Score',
       xAxisIndex: 1,
       yAxisIndex: 1,
-      data: [measure?.quotient || 0],
+      data: [quotient || 0],
       type: 'bar',
       symbol: 'none',
       barWidth: 8,

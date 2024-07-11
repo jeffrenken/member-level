@@ -1,7 +1,7 @@
 import { useMeasures, useMembers } from '@/api';
-import { Box, Container, Typography, StyledCard } from '@/components';
 import AgGrid from '@/components/tables/AgGrid';
 import { LinkRenderer, MeasureRenderer } from '@/components/tables/CellRenderers';
+import { Box, Container, StyledCard, Typography } from '@/components/ui';
 import { useMemo } from 'react';
 import { Link, useParams } from 'react-router-dom';
 
@@ -15,7 +15,7 @@ function getValue(value) {
   }
 }
 
-export default function Member() {
+function Member() {
   const { id } = useParams();
   const { data } = useMembers();
   const { data: measuresData } = useMeasures();
@@ -36,8 +36,8 @@ export default function Member() {
     }
     let measures = measuresData.map((measure) => {
       return {
-        label: measure['Measure Name'],
-        value: getValue(member.memberMeasures[measure['Measure Name']]),
+        label: measure.name,
+        value: getValue(member.memberMeasures[measure.name]),
         url: `/measures/${measure.id}`
       };
     });
@@ -58,7 +58,6 @@ export default function Member() {
     }
   ];
 
-  console.log('member', member);
   if (!member) {
     return <div>Member not found</div>;
   }
@@ -98,10 +97,12 @@ export default function Member() {
             </Box>
           </>
         </StyledCard>
-        <Box sx={{ height: 'calc(100vh - 250px)' }} mt={2}>
+        <Box sx={{ height: 'calc(100vh - 300px)' }} mt={2}>
           <AgGrid rowData={rows} columnDefs={columnDefs} />
         </Box>
       </Container>
     </>
   );
 }
+
+export const Component = Member;

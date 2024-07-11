@@ -1,13 +1,13 @@
-import { useFilteredMembers, useMeasures } from '@/api';
+import { useMeasures } from '@/api';
+import { useMeasuresWithStats } from '@/api/useMeasuresWithStats';
+import { Box, Container, Grid, Stack, Typography } from '@/components/ui';
 import MeasureCountCard from '@/components/cards/MeasureCountCard';
 import PieChart2 from '@/components/charts/TestPie2';
-import Top from '@/layout/Top';
+import Navbar from '@/components/layouts/Navbar';
 import { measureStatusFilterState } from '@/state/measureStatusFilterState';
+import { providerFilterState } from '@/state/providerFilterState';
 import { srfFilterState } from '@/state/srfFilterState';
-import { Box, Container, Grid, Stack, Typography } from '@/components';
-import { useTheme } from '@/hooks';
 import Grid2 from '@mui/material/Unstable_Grid2';
-import { useMemo } from 'react';
 import { useRecoilValue } from 'recoil';
 
 const redGlowBoxShadow =
@@ -24,28 +24,29 @@ const filters = ['contract', 'providerGroup', 'srf', 'measureStatus'];
 
 const MeasuresPage = () => {
   //const UPDATE = useGlowPointer();
-  const theme = useTheme();
+  //const theme = useTheme();
   const measureStatus = useRecoilValue(measureStatusFilterState);
-  const srfId = useRecoilValue(srfFilterState);
+  const providerGroupId = useRecoilValue(providerFilterState);
+  const srf = useRecoilValue(srfFilterState);
   const { data: measuresData } = useMeasures();
-  console.log('measuresData', measuresData);
+  const { data: measuresWithStats } = useMeasuresWithStats({ measureStatus, providerGroupId, srf });
+  //const { filteredMembers } = useFilteredMembers(filters);
 
-  const { filteredMembers } = useFilteredMembers(filters);
-
-  const measures = useMemo(() => {
-    if (!filteredMembers.length) {
+  const starsMeasures = measuresData ? measuresData.filter((measure) => measure.category === 'stars') : [];
+  /*   const measures = useMemo(() => {
+    if (!filteredMembers.length || !measuresWithStats) {
       return [];
     }
 
-    let filtered = [...measuresData];
+      let filtered = [...measuresData];
     if (measureStatus !== 0) {
       filtered = filtered.filter((measure) => measure.status === measureStatus);
-    }
+      } 
 
     let splitMembers = [];
-    filtered.forEach((measure, i) => {
-      const closed = filteredMembers.filter((member) => member?.measuresClosed.includes(measure['Measure Name'])).length;
-      const open = filteredMembers.filter((member) => member?.measuresOpen.includes(measure['Measure Name'])).length;
+    measuresWithStats.forEach((measure, i) => {
+      const closed = filteredMembers.filter((member) => member?.measuresClosed.includes(measure.name)).length;
+      const open = filteredMembers.filter((member) => member?.measuresOpen.includes(measure.name)).length;
       splitMembers[i] = { ...measure };
       splitMembers[i].closed = closed;
       splitMembers[i].open = open;
@@ -54,7 +55,7 @@ const MeasuresPage = () => {
     });
 
     return splitMembers.sort((a, b) => b.abbreviation - a.abbreviation);
-  }, [filteredMembers, measureStatus, measuresData]);
+  }, [filteredMembers, measuresWithStats]);
 
   const starsMeasures = useMemo(() => {
     if (!measuresData) {
@@ -63,22 +64,21 @@ const MeasuresPage = () => {
     return measuresData.filter((measure) => {
       return measure.status === 1;
     });
-  }, [measuresData]);
-
+  }, [measuresData, measuresWithStats]); */
   const onTrack4 = starsMeasures.slice(0, starsMeasures.length / 3);
   const onTrack5 = starsMeasures.slice(starsMeasures.length / 4, (starsMeasures.length * 2) / 4);
   const offTrack = starsMeasures.slice((starsMeasures.length * 2) / 3, starsMeasures.length);
 
   return (
     <Container maxWidth="xl" sx={{ marginBottom: '100px', marginTop: '20px' }}>
-      <Top filters={filters} />
+      <Navbar filters={filters} />
 
       <Stack direction="row" alignItems="center" justifyContent="space-around" mb={4} px={0} mt={4}>
         <Stack direction="row" alignItems="center" justifyContent="space-around" spacing={3} mx={0}>
           <Stack direction="row" alignItems="center" justifyContent="space-around" spacing={1} pt={8}>
-            <MeasureCountCard measures={onTrack4} label={'On Track - 4 Stars'} color={green} />
-            <MeasureCountCard measures={onTrack5} label={'On Track - 5 Stars'} color={green} />
-            <MeasureCountCard measures={offTrack} label={'Off Track'} color={red} />
+            <MeasureCountCard measures={onTrack4} label={'On Track - 4 Stars'} color={green} id="onTrack4Card" />
+            <MeasureCountCard measures={onTrack5} label={'On Track - 5 Stars'} color={green} id="onTrack5Card" />
+            <MeasureCountCard measures={offTrack} label={'Off Track'} color={red} id="offTrackCard" />
           </Stack>
           <Box px={0}>
             <Typography align="center" my={2} ml={2} variant="h2">
@@ -129,7 +129,7 @@ const MeasuresPage = () => {
         </Box>
       </Stack>
       <Grid2 container sx={{ margin: '0 auto', mb: 3 }} direction="row" justifyContent={'center'} alignItems="center">
-        {measures?.map((measure) => (
+        {measuresWithStats?.map((measure) => (
           <Grid key={measure.id} m={1}>
             <PieChart2 measure={measure} chart="gradient" />
           </Grid>
@@ -139,6 +139,6 @@ const MeasuresPage = () => {
   );
 };
 
-export default MeasuresPage;
+export const Component = MeasuresPage;
 
 /*  <Card2 measure={measure} key={measure.id} colors={selectRandomColor()} /> */

@@ -4,7 +4,7 @@ import gsap from 'https://cdn.skypack.dev/gsap'; */
 import React from 'react';
 import './card-glow.css';
 
-import { Box, Stack, Typography } from '@/components';
+import { Box, Stack, Typography } from '@/components/ui';
 import { useTheme } from '@/hooks';
 import { measureFilterState } from '@/state/measureFilterState.js';
 

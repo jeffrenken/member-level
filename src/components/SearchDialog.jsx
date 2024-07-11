@@ -16,6 +16,7 @@ import { useTheme } from '@/hooks';
 import { IconSearch } from '@tabler/icons-react';
 import * as React from 'react';
 import { Link } from 'react-router-dom';
+import { NAVBAR_SELECTORS } from '@/root/e2e/constants/selectors';
 
 //create a dialog with an input from Mui components
 export function SearchDialog({ open, onClose }) {
@@ -74,6 +75,7 @@ export function SearchDialog({ open, onClose }) {
       maxWidth="xs"
       fullWidth
       scroll="paper"
+      data-testid={NAVBAR_SELECTORS.searchDialog}
       PaperProps={{
         sx: {
           minHeight: '40%',

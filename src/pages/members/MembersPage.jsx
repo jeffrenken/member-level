@@ -3,7 +3,7 @@ import MembersLayout from './MembersLayout';
 
 const filters = ['contract', 'measureStatus'];
 
-export default function MembersPage() {
+function MembersPage() {
   const { filteredMembers } = useFilteredMembers(filters);
 
   return (
@@ -12,3 +12,5 @@ export default function MembersPage() {
     </>
   );
 }
+
+export const Component = MembersPage;

@@ -11,7 +11,7 @@ function truncate(str, n) {
   return str.length > n ? str.substr(0, n - 1) + '...' : str;
 }
 
-export default function AutocompleteButton({ label, onChange, withAllOption, buttonProps, autocompleteProps }) {
+export default function AutocompleteButton({ label, onChange, withAllOption, buttonProps, autocompleteProps, id: buttonId }) {
   const [anchorEl, setAnchorEl] = React.useState(null);
 
   const handleClick = (event) => {
@@ -23,7 +23,8 @@ export default function AutocompleteButton({ label, onChange, withAllOption, but
   };
 
   const open = Boolean(anchorEl);
-  const id = open ? 'simple-popper' : undefined;
+  //const id = open ? buttonId + '-open' : buttonId;
+  const id = buttonId;
 
   const listOptions = withAllOption
     ? [{ id: 0, label: withAllOption, value: 0, name: 'all' }, ...autocompleteProps.options]
@@ -36,6 +37,7 @@ export default function AutocompleteButton({ label, onChange, withAllOption, but
       <div>
         <Button
           aria-describedby={id}
+          id={id}
           type="button"
           color="neutral"
           onClick={handleClick}
@@ -132,42 +134,49 @@ function AutocompletePopper({ handleClose, props }) {
       </Root>
       {groupedOptions.length > 0 && (
         <Listbox {...getListboxProps()}>
-          {groupedOptions.map((option, index) => (
-            <Option {...getOptionProps({ option, index })} aria-selected={isSelected(option)} name={option?.name}>
-              {otherProps.multiple ? (
-                <>
-                  {isSelected(option) ? (
-                    <IconCheckbox size={18} style={{ margin: '1px 6px 1px 0px', minWidth: '18px' }} />
-                  ) : (
-                    <IconSquare size={18} style={{ margin: '1px 6px 1px 0px', minWidth: '18px' }} />
-                  )}
-                  {option.label}
-                </>
-              ) : (
-                <>{option.label}</>
-              )}
-            </Option>
-          ))}
+          {groupedOptions.map((option, index) => {
+            const { key, ...rest } = getOptionProps({ option, index });
+            return (
+              <Option key={key} {...rest} aria-selected={isSelected(option)} name={option?.name}>
+                {otherProps.multiple ? (
+                  <>
+                    {isSelected(option) ? (
+                      <IconCheckbox size={18} style={{ margin: '1px 6px 1px 0px', minWidth: '18px' }} />
+                    ) : (
+                      <IconSquare size={18} style={{ margin: '1px 6px 1px 0px', minWidth: '18px' }} />
+                    )}
+                    {option.label}
+                  </>
+                ) : (
+                  <>{option.label}</>
+                )}
+              </Option>
+            );
+          })}
         </Listbox>
       )}
       {groupedOptions.length === 0 && props.options.length > 0 && Boolean(!inputValue) && (
         <Listbox {...getListboxProps()}>
-          {props.options.map((option, index) => (
-            <Option {...getOptionProps({ option, index })} ariaSelected={isSelected(option)} name={option?.name}>
-              {otherProps.multiple ? (
-                <>
-                  {isSelected(option) ? (
-                    <IconCheckbox size={18} style={{ margin: '1px 6px 1px 0px', minWidth: '18px' }} />
-                  ) : (
-                    <IconSquare size={18} style={{ margin: '1px 6px 1px 0px', minWidth: '18px' }} />
-                  )}
-                  {option.label}
-                </>
-              ) : (
-                <>{option.label}</>
-              )}
-            </Option>
-          ))}
+          {props.options.map((option, index) => {
+            const { key, ...rest } = getOptionProps({ option, index });
+            return (
+              <Option key={key} {...rest} ariaSelected={isSelected(option)} name={option?.name}>
+                {otherProps.multiple ? (
+                  <>
+                    {isSelected(option) ? (
+                      <IconCheckbox size={18} style={{ margin: '1px 6px 1px 0px', minWidth: '18px' }} />
+                    ) : (
+                      <IconSquare size={18} style={{ margin: '1px 6px 1px 0px', minWidth: '18px' }} />
+                    )}
+                    {option.label}
+                  </>
+                ) : (
+                  <>{option.label}</>
+                )}
+              </Option>
+            );
+          })}
+          ;
         </Listbox>
       )}
       {groupedOptions.length === 0 && Boolean(inputValue) && (
@@ -334,4 +343,4 @@ const NoOptions = styled('li')`
   cursor: default;
 `;
 
-// Top 100 films as rated by IMDb users. http://www.imdb.com/chart/top
+// Navbar 100 films as rated by IMDb users. http://www.imdb.com/chart/top

@@ -1,5 +1,5 @@
 import { useContracts, useFilteredMembers, useMeasures, useProviders, useSrf } from '@/api';
-import { Box, Grid, IconButton, Stack, Typography, StyledCard } from '@/components';
+import { Box, Grid, IconButton, Stack, Typography, StyledCard } from '@/components/ui';
 import AutocompleteButton from '@/components/Autocomplete';
 import GaugeChart from '@/components/charts/GaugeChart';
 import MembersTable from '@/components/tables/MembersTable';
@@ -75,7 +75,7 @@ function updateFillLayerColors(map, colorMapping) {
   ]);
 }
 
-export default function MapZipCodes() {
+function MapZipCodes() {
   const theme = useTheme();
   const darkMode = theme.palette.mode === 'dark';
   const mapContainer = useRef(null);
@@ -243,8 +243,8 @@ export default function MapZipCodes() {
       let membersWithClosed = filteredMembers.filter((member) => member.measuresClosed.length);
 
       if (selectedMeasure) {
-        membersWithOpen = filteredMembers.filter((member) => member.measuresOpen.includes(selectedMeasure['Measure Name']));
-        membersWithClosed = filteredMembers.filter((member) => member.measuresClosed.includes(selectedMeasure['Measure Name']));
+        membersWithOpen = filteredMembers.filter((member) => member.measuresOpen.includes(selectedMeasure.name));
+        membersWithClosed = filteredMembers.filter((member) => member.measuresClosed.includes(selectedMeasure.name));
 
         let chartScale = [
           [75 / 100, '#d27e6f'],
@@ -306,7 +306,7 @@ export default function MapZipCodes() {
                     autocompleteProps={{
                       id: 'contractState',
                       options: contracts,
-                      getOptionLabel: (option) => option.label,
+                      getOptionLabel: (option) => (option.label ? option.label : ''),
                       autoHighlight: true,
                       openOnFocus: true,
                       value: contractState,
@@ -321,7 +321,7 @@ export default function MapZipCodes() {
                     autocompleteProps={{
                       id: 'measureState',
                       options: measures,
-                      getOptionLabel: (option) => option.label,
+                      getOptionLabel: (option) => (option.label ? option.label : ''),
                       autoHighlight: true,
                       openOnFocus: true,
                       value: measureState,
@@ -335,7 +335,7 @@ export default function MapZipCodes() {
                     autocompleteProps={{
                       id: 'srfState',
                       options: srf,
-                      getOptionLabel: (option) => option.label,
+                      getOptionLabel: (option) => (option.label ? option.label : ''),
                       autoHighlight: true,
                       openOnFocus: true,
                       value: srfState,
@@ -426,3 +426,5 @@ export default function MapZipCodes() {
     </>
   );
 }
+
+export const Component = MapZipCodes;

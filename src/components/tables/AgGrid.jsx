@@ -1,18 +1,21 @@
-import { IconButton, Stack, Tooltip } from '@/components';
+import { IconButton, Stack, Tooltip } from '@/components/ui';
 import { useTheme } from '@/hooks';
 import { IconDeviceFloppy, IconFileTypeCsv } from '@tabler/icons-react';
 import { AgGridReact } from 'ag-grid-react';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 //import './ag-grid.css';
 
-export default function AgGrid({ rowData, columnDefs, sideBar2, csvDownload, saveFiltersButton, height = '100%', tableRef, ...props }) {
+export default function AgGrid({ rowData, columnDefs, csvDownload, saveFiltersButton, height = '100%', tableRef, ...props }) {
   //const gridRef = useRef();
   const theme = useTheme();
   const darkMode = theme.palette.mode === 'dark';
-  const [checked, setChecked] = useState(false);
   const [filters, setFilters] = useState([]);
   const [rows, setRows] = useState(rowData);
-  const gridRef = tableRef ? tableRef : useRef();
+  let gridRef = useRef();
+  if (tableRef) {
+    gridRef = tableRef;
+  }
+
   useEffect(() => {
     let f = localStorage.getItem('filters', JSON.stringify(filters));
     if (f) {
@@ -24,43 +27,12 @@ export default function AgGrid({ rowData, columnDefs, sideBar2, csvDownload, sav
     setRows(rowData);
   }, [rowData]);
 
-  function cellStyling(params) {
-    if (checked && params.value > 1000000) {
-      //mark police cells as red
-      return { color: 'green' };
-    }
-    //have to explicitly reset the value
-    return { color: 'black' };
-  }
-
-  const gridOptions = {
-    columnDefs: columnDefs,
-    rowSelection: 'multiple',
-    rowMultiSelectWithClick: true,
-    enableRangeSelection: true
-  };
-
   const defaultColDef = useMemo(() => {
     return {
       flex: 1,
       minWidth: 100
     };
   }, []);
-
-  const onGridReady = useCallback((event) => {
-    //gridRef.current.autoSizeAllColumns();
-    /* fetch('https://www.ag-grid.com/example-assets/olympic-winners.json')
-          .then((resp) => resp.json())
-          .then((data) => setRowData(data)); */
-  }, []);
-
-  function processCell(cell) {
-    var cellVal = cell.value;
-    if (cell?.column?.colDef?.cellRenderer) {
-      cellVal = cell.column.colDef.cellRenderer({ value: cell.value });
-    }
-    return cellVal;
-  }
 
   const exportCsv = useCallback(() => {
     //gridRef.current.api.exportDataAsCsv();
@@ -72,26 +44,6 @@ export default function AgGrid({ rowData, columnDefs, sideBar2, csvDownload, sav
 
     return result;
   }
-
-  const handleChange = (event) => {
-    setChecked(event.target.checked);
-  };
-
-  const saveFilters = () => {
-    const filters = gridRef.current.api.getFilterModel();
-    const current = localStorage.getItem('filters', filters);
-    if (!current) {
-      setFilters([current]);
-      localStorage.setItem('filters', JSON.stringify([filters]));
-    } else {
-      setFilters([...current, filters]);
-      localStorage.setItem('filters', JSON.stringify([...current, filters]));
-    }
-  };
-
-  const handleChangeFilter = (event) => {
-    gridRef.current.api.setFilterModel(event.target.value);
-  };
 
   const sideBar = useMemo(() => {
     return {
@@ -168,21 +120,15 @@ export default function AgGrid({ rowData, columnDefs, sideBar2, csvDownload, sav
           //onGridReady={onGridReady}
           autoSizeStrategy={columnDefs.length > 6 && autoSizeStrategy}
           enableCharts
-          domLayout={!rows.length || rows.length > 10 ? 'normal' : 'autoHeight'}
+          domLayout={!rows.length || rows.length > 5 ? 'normal' : 'autoHeight'}
           defaultCsvExportParams={{
             fileName: 'member-level-export',
             processCellCallback: (cell) => {
-              console.log('cell', cell);
               //if value is an  object
               if (typeof cell.value === 'object') {
                 return '';
               }
               return cell.value;
-              var cellVal = cell.value;
-              if (cell?.column?.colDef?.cellRenderer) {
-                cellVal = cell.column.colDef.cellRenderer({ value: cell.value });
-              }
-              return cellVal;
             }
           }}
           getContextMenuItems={getContextMenuItems}

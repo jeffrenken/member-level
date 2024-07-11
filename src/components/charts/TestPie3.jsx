@@ -1,4 +1,4 @@
-import { Box, Stack, Typography } from '@/components';
+import { Box, Stack, Typography } from '@/components/ui';
 import { useTheme } from '@/hooks';
 import styled from 'styled-components';
 

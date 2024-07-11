@@ -11,7 +11,7 @@ export function useMembersFilteredByMeasures(members, measures) {
     if (!members.length) {
       return {};
     }
-    const measureNames = measures.map((m) => m['Measure Name']);
+    const measureNames = measures.map((m) => m.name);
 
     let m = members.map((member) => {
       return {

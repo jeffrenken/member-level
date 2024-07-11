@@ -1,5 +1,5 @@
 import { useTheme } from '@/hooks';
-import { Box, Stack, Typography } from '@/components';
+import { Box, Stack, Typography } from '@/components/ui';
 import styled from 'styled-components';
 
 const measure = {

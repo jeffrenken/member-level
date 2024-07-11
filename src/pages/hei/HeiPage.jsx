@@ -1,11 +1,11 @@
 import { useFilteredMembers, useMeasures } from '@/api';
-import { Box, Container, Grid, Stack, Typography } from '@/components';
+import { Box, Container, Grid, Stack, Typography } from '@/components/ui';
 import HeiCard from '@/components/cards/HeiCard';
 import MeasureCountCard from '@/components/cards/MeasureCountCard';
 import DonutChart from '@/components/charts/DonutChart';
 import PieChart2 from '@/components/charts/TestPie2';
 import { useTheme } from '@/hooks';
-import Top from '@/layout/Top';
+import Navbar from '@/components/layouts/Navbar';
 import { measureStatusFilterState } from '@/state/measureStatusFilterState';
 import { srfFilterState } from '@/state/srfFilterState';
 import { thresholdFilterState } from '@/state/thresholdFilterState';
@@ -13,27 +13,30 @@ import Grid2 from '@mui/material/Unstable_Grid2';
 import { useMemo } from 'react';
 import { useRecoilValue } from 'recoil';
 import ThresholdSelect from './components/ThresholdSelect';
+import { useMeasuresWithStats } from '../../api/useMeasuresWithStats';
+import { providerFilterState } from '@/state/providerFilterState';
 
-const green = '#50CEB2';
+/* const green = '#50CEB2';
 const red = '#F36959';
 
 function inRange(x, min, max) {
   return (x - min) * (x - max) <= 0;
-}
+} */
 
 const filters = ['contract', 'providerGroup', 'measureStatus'];
 
-export default function HeiPage() {
+function HeiPage() {
   //const UPDATE = useGlowPointer();
   const theme = useTheme();
   const measureStatus = useRecoilValue(measureStatusFilterState);
   const thresholdFilter = useRecoilValue(thresholdFilterState);
-  const srfId = useRecoilValue(srfFilterState);
-  const { data: measuresData } = useMeasures();
+  const srf = useRecoilValue(srfFilterState);
+  const providerGroupId = useRecoilValue(providerFilterState);
+  const { data: measuresData } = useMeasuresWithStats({ srf, measureStatus, providerGroupId });
 
   const { filteredMembers } = useFilteredMembers(filters);
   const measures = useMemo(() => {
-    if (!filteredMembers.length) {
+    if (!filteredMembers.length || !measuresData) {
       return [];
     }
 
@@ -48,24 +51,23 @@ export default function HeiPage() {
     let middle_third_upper_value = 82;
 
     filtered.forEach((measure, i) => {
-      let ranges = [
+      /* let ranges = [
         [70 - thresholdFilter, 70 + thresholdFilter],
         [82 - thresholdFilter, 82 + thresholdFilter]
-      ];
+      ]; */
 
       if (measure?.bottom_third_upper_value) {
         bottom_third_upper_value = measure?.bottom_third_upper_value;
         middle_third_upper_value = measure?.middle_third_upper_value;
-        ranges = [
+        /* ranges = [
           [measure?.bottom_third_upper_value - thresholdFilter, measure?.bottom_third_upper_value + thresholdFilter],
           [measure?.middle_third_upper_value - thresholdFilter, measure?.middle_third_upper_value + thresholdFilter]
-        ];
+        ]; */
       }
 
-      const closed = filteredMembers.filter((member) => member.isSrf && member?.measuresClosed.includes(measure['Measure Name'])).length;
-      const open = filteredMembers.filter((member) => member.isSrf && member?.measuresOpen.includes(measure['Measure Name'])).length;
+      const closed = filteredMembers.filter((member) => member.isSrf && member?.measuresClosed.includes(measure.name)).length;
+      const open = filteredMembers.filter((member) => member.isSrf && member?.measuresOpen.includes(measure.name)).length;
       const quotient = (closed / (closed + open)) * 100;
-      console.log('quotient', quotient);
 
       let isCloseToNextThreshold = false;
       if (thresholdFilter) {
@@ -84,7 +86,8 @@ export default function HeiPage() {
       }
 
       splitMembers[i] = { ...measure };
-      splitMembers[i].closed = closed;
+      splitMembers[i].gaps_closed_count = closed;
+      splitMembers[i].gaps_open_count = open;
       splitMembers[i].open = open;
       splitMembers[i].total = closed + open;
       splitMembers[i].forecast = 'N/A';
@@ -96,7 +99,7 @@ export default function HeiPage() {
     }
 
     return splitMembers.sort((a, b) => b.abbreviation - a.abbreviation);
-  }, [filteredMembers, srfId, measureStatus, measuresData, thresholdFilter]);
+  }, [filteredMembers, srf, measureStatus, measuresData, thresholdFilter]);
 
   const top = measures.slice(0, 2);
   const middle = measures.slice(3, 6);
@@ -112,7 +115,7 @@ export default function HeiPage() {
     },
     {
       value: (top.length / measures.length) * 100,
-      name: 'Top Third'
+      name: 'Navbar Third'
     }
   ];
 
@@ -125,7 +128,7 @@ export default function HeiPage() {
   const gridCards1 = [
     <MeasureCountCard measures={lower} label={'Bottom Third'} color={theme.palette.cardRed} size="md" />,
     <MeasureCountCard measures={middle} label={'Middle Third'} color={theme.palette.cardYellow} size="md" />,
-    <MeasureCountCard measures={top} label={'Top Third'} color={theme.palette.cardGreen} size="md" />
+    <MeasureCountCard measures={top} label={'Navbar Third'} color={theme.palette.cardGreen} size="md" />
   ];
   const gridCards2 = [
     <HeiCard content={srfPercent} title={'SRF Percentage'} color={theme.palette.text.primary} />,
@@ -147,7 +150,7 @@ export default function HeiPage() {
 
   return (
     <Container maxWidth="xl" sx={{ marginBottom: '100px', marginTop: '20px' }}>
-      <Top filters={filters} />
+      <Navbar filters={filters} />
       <Grid container justifyContent={'center'} alignItems={'center'} spacing={2} sx={{ margin: '0 auto' }}>
         <Grid item md={12} lg={5}>
           <Box>
@@ -186,13 +189,13 @@ export default function HeiPage() {
         <Grid item md={12} lg={7}>
           <Box>
             <Stack direction="row" alignItems="flex-start" justifyContent="center" spacing={1}>
-              {gridCards1?.map((card) => (
-                <Box>{card}</Box>
+              {gridCards1?.map((card, i) => (
+                <Box key={i + 'card1'}>{card}</Box>
               ))}
             </Stack>
             <Stack direction="row" alignItems="center" justifyContent="center" spacing={1} pt={1}>
-              {gridCards2?.map((card) => (
-                <Box>{card}</Box>
+              {gridCards2?.map((card, i) => (
+                <Box key={i + 'card2'}>{card}</Box>
               ))}
             </Stack>
           </Box>
@@ -223,3 +226,5 @@ export default function HeiPage() {
     </Container>
   );
 }
+
+export const Component = HeiPage;

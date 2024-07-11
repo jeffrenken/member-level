@@ -1,23 +1,35 @@
 import { useFilteredMembers, useMeasures, useMembersFilteredByMeasures } from '@/api';
-import { Box, Container, Stack, Typography } from '@/components';
+import { useMeasureWithStats } from '@/api/useMeasureWithStats';
+import { Box, Container, Stack, Typography } from '@/components/ui';
 import GaugeChart from '@/components/charts/GaugeChart';
 import PieChart2 from '@/components/charts/TestPie2';
 import MembersByMeasureTable from '@/components/tables/MembersByMeasureTable';
-import Top from '@/layout/Top';
+import Navbar from '@/components/layouts/Navbar';
 import { measureFilterState } from '@/state/measureFilterState';
+import { measureStatusFilterState } from '@/state/measureStatusFilterState';
+import { providerFilterState } from '@/state/providerFilterState';
+import { srfFilterState } from '@/state/srfFilterState';
 import { useMemo } from 'react';
 import { useParams } from 'react-router-dom';
 import { useRecoilValue } from 'recoil';
 
 const filters = ['providerGroup', 'contract', 'measure'];
-export default function Measure() {
+function Measure() {
   const params = useParams();
   const id = params.id ? parseInt(params.id) : undefined;
-  const { data: measuresData, isLoading } = useMeasures();
+  const measureStatus = useRecoilValue(measureStatusFilterState);
+  const providerGroupId = useRecoilValue(providerFilterState);
+  const srf = useRecoilValue(srfFilterState);
+  const { data: measuresData, isLoading: isLoadingMeasures } = useMeasures();
   const measureFilterId = useRecoilValue(measureFilterState);
   const measureId = measureFilterId !== null ? measureFilterId : id;
   //const [chartData, setChartData] = useState({});
   const { filteredMembers } = useFilteredMembers(filters);
+  const { data: measureWithStats, isLoading: isLoadingMeasureWithStats } = useMeasureWithStats(measureId, {
+    measureStatus,
+    providerGroupId,
+    srf
+  });
 
   const measures = useMemo(() => {
     if (!measuresData) {
@@ -29,9 +41,9 @@ export default function Measure() {
 
     return [m];
   }, [measuresData, measureId]);
-
   const { members, chartData } = useMembersFilteredByMeasures(filteredMembers, measures);
-  const measureWithData = useMemo(() => {
+
+  /*   const measureWithData = useMemo(() => {
     if (!measuresData || !members) {
       return null;
     }
@@ -41,7 +53,9 @@ export default function Measure() {
     measureCopy.total = members.open.length + members.closed.length;
     measureCopy.forecast = 'N/A';
     return measureCopy;
-  }, [measuresData, members, measures]);
+  }, [measuresData, members, measures]); */
+
+  const isLoading = isLoadingMeasures || isLoadingMeasureWithStats;
 
   if (isLoading) {
     return <div>Loading...</div>;
@@ -49,12 +63,12 @@ export default function Measure() {
 
   return (
     <Container maxWidth="lg" sx={{ marginTop: '20px', marginBottom: '20px' }}>
-      <Top filters={filters} />
+      <Navbar filters={filters} />
       <Stack direction="row" justifyContent="space-around" alignItems={'center'} spacing={4}>
         <Box>
-          <Typography variant="h1">{measureWithData?.label}</Typography>
+          <Typography variant="h1">{measureWithStats?.name}</Typography>
           <Typography>Members with Open Gaps</Typography>
-          <Typography mt={2}>{measureWithData?.description}</Typography>
+          <Typography mt={2}>{measureWithStats?.description}</Typography>
         </Box>
         <Stack direction="row" justifyContent={'flex-end'} alignItems={'center'} spacing={3} pr={2}>
           <Box>
@@ -74,7 +88,7 @@ export default function Measure() {
             </Typography>
           </Box>
         </Stack>
-        <Box>{measureWithData && <PieChart2 measure={measureWithData} disabled chart="gradient" />}</Box>
+        <Box>{measureWithStats && <PieChart2 measure={measureWithStats} disabled chart="gradient" />}</Box>
         {/*         <CardGlow measure={measureWithData} colors={[background]} disabled />}</Box>
          */}{' '}
       </Stack>
@@ -83,3 +97,5 @@ export default function Measure() {
     </Container>
   );
 }
+
+export const Component = Measure;

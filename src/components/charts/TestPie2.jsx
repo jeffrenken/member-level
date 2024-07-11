@@ -1,4 +1,4 @@
-import { Box, Stack, Tooltip, Typography } from '@/components';
+import { Box, Stack, Tooltip, Typography } from '@/components/ui';
 import { useTheme } from '@/hooks';
 import styled, { keyframes } from 'styled-components';
 import { measureFilterState } from '@/state/measureFilterState.js';
@@ -6,6 +6,7 @@ import { AnimatePresence, motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
 import { useRecoilState } from 'recoil';
 import ProgressChart from './ProgressChart';
+import { MEASURE_SELECTORS } from '@/root/e2e/constants/selectors';
 
 const measure = {
   id: 1,
@@ -21,15 +22,6 @@ const red = '#F36959';
 const numColor = green;
 const denomColor = red;
 
-const Slice3 = styled(`div`)`
-  width: 85px;
-  height: 85px;
-  border-radius: 50%;
-  box-shadow: 0px 4px 8px rgb(0 0 0 / 0.4);
-  margin: 0 auto;
-  background: ${(props) => `conic-gradient(${denomColor} ${props.slice1}deg, ${numColor} 0 ${props.slice2}deg)`};
-`;
-
 const rotateAnimation = keyframes`
   from {
     background-size: 200% 200%;
@@ -39,7 +31,7 @@ const rotateAnimation = keyframes`
   }
 `;
 
-const Slice2 = styled.div`
+const Slice2 = styled(({ slice1, slice2, color, ...rest }) => <div {...rest} />)`
   width: 85px;
   height: 85px;
   border-radius: 50%;
@@ -51,6 +43,9 @@ const Slice2 = styled.div`
 `;
 
 function truncate(str, n) {
+  if (!str || str.length <= n) {
+    return str;
+  }
   return str.length > n ? str.substr(0, n - 1) + '...' : str;
 }
 
@@ -58,12 +53,12 @@ const PieChart2 = ({ measure, disabled, chart }) => {
   const theme = useTheme();
   const navigate = useNavigate();
   const [measureState, setMeasureState] = useRecoilState(measureFilterState);
-  const total = measure.total;
-  const value1InDegrees = (measure.closed / total) * 360;
-  const value2InDegrees = (measure.open / total) * 360;
-  const closedPercent = (measure.closed / total) * 100;
-  const openPercent = (measure.open / total) * 100;
-  const quotient = ((measure.closed / total) * 100).toFixed(0);
+  const total = measure.gaps_open_count + measure.gaps_closed_count;
+  const value1InDegrees = (measure.gaps_closed_count / total) * 360;
+  const value2InDegrees = (measure.gaps_open_count / total) * 360;
+  const closedPercent = (measure.gaps_closed_count / total) * 100;
+  const openPercent = (measure.gaps_open_count / total) * 100;
+  const quotient = ((measure.gaps_closed_count / total) * 100).toFixed(0);
 
   const background = theme.palette.background.semiTransparent;
 
@@ -79,7 +74,15 @@ const PieChart2 = ({ measure, disabled, chart }) => {
   const gradientChart = (
     <>
       <AnimatePresence>
-        <Stack direction="row" alignItems="space-between" justifyContent="space-between" spacing={1} px={2} mt={'-8px'}>
+        <Stack
+          direction="row"
+          alignItems="space-between"
+          justifyContent="space-between"
+          spacing={1}
+          px={2}
+          mt={'-8px'}
+          key={measure?.id + 'stack'}
+        >
           <Box
             sx={{
               width: '100%',
@@ -124,7 +127,7 @@ const PieChart2 = ({ measure, disabled, chart }) => {
             background: `linear-gradient(135deg, ${numColor} ${closedPercent - 25}%, ${denomColor} ${100 - openPercent + 25}%)`
           }}
         >
-          <motion.div key={measure?.closed} initial={{ x: 50 }} animate={{ x: 0 }} transition={{ duration: 1 }}>
+          <motion.div key={measure?.id + 'closed'} initial={{ x: 50 }} animate={{ x: 0 }} transition={{ duration: 1 }}>
             <Typography
               sx={{
                 width: '100%',
@@ -136,11 +139,12 @@ const PieChart2 = ({ measure, disabled, chart }) => {
                 borderRadius: '4px',
                 textAlign: 'left'
               }}
+              data-testid={MEASURE_SELECTORS.measureChartCardNum}
             >
-              {measure.closed}
+              {measure.gaps_closed_count}
             </Typography>
           </motion.div>
-          <motion.div key={total} initial={{ x: -50 }} animate={{ x: 0 }} transition={{ duration: 1 }}>
+          <motion.div key={measure?.id + 'total'} initial={{ x: -50 }} animate={{ x: 0 }} transition={{ duration: 1 }}>
             <Typography
               sx={{
                 width: '100%',
@@ -152,6 +156,7 @@ const PieChart2 = ({ measure, disabled, chart }) => {
                 borderRadius: '4px',
                 textAlign: 'right'
               }}
+              data-testid={MEASURE_SELECTORS.measureChartCardDen}
             >
               {total}
             </Typography>
@@ -174,19 +179,19 @@ const PieChart2 = ({ measure, disabled, chart }) => {
         cursor: !disabled ? 'pointer' : 'default'
       }}
       onClick={handleClick}
+      data-testid={MEASURE_SELECTORS.measureChartCard}
     >
       <Stack direction="column" justifyContent="space-between" sx={{ height: '100%' }} spacing={0}>
         <Typography align="center" sx={{ fontSize: '1.4rem', lineHeight: 1, fontWeight: 600, textShadow: '0px 2px 2px rgb(0 0 0 / 0.3)' }}>
           {measure.abbreviation}
         </Typography>
-        <Tooltip placement="top" title={measure.label}>
-          <Typography align="center" sx={{ fontSize: '0.7rem', lineHeight: 1, mb: '4px' }}>
-            {truncate(measure.label, 50)}
-          </Typography>
-        </Tooltip>
+        <Typography align="center" sx={{ fontSize: '0.7rem', lineHeight: 1, mb: '4px' }}>
+          {truncate(measure.name, 50)}
+        </Typography>
 
         <Box sx={{ position: 'relative' }}>
           <Slice2 slice1={value2InDegrees} slice2={value1InDegrees} />
+
           <Box
             sx={(theme) => ({
               position: 'absolute',
@@ -200,7 +205,12 @@ const PieChart2 = ({ measure, disabled, chart }) => {
               boxShadow: 'inset 0px 4px 8px rgb(0 0 0 / 0.3)'
             })}
           >
-            <motion.div key={quotient} initial={{ opacity: 0, scale: 1 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 1.5 }}>
+            <motion.div
+              key={measure?.id + 'quotient'}
+              initial={{ opacity: 0, scale: 1 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 1.5 }}
+            >
               <Typography
                 align="center"
                 sx={{
@@ -211,6 +221,7 @@ const PieChart2 = ({ measure, disabled, chart }) => {
                   mt: '21px',
                   textShadow: '0px 2px 2px rgb(0 0 0 / 0.3)'
                 }}
+                data-testid={MEASURE_SELECTORS.measureChartCardQuotient}
               >
                 {isNaN(quotient) ? '' : quotient}
               </Typography>
@@ -220,7 +231,7 @@ const PieChart2 = ({ measure, disabled, chart }) => {
         {chart === 'gradient' && gradientChart}
         {chart === 'progress' && (
           <Box sx={{ height: '130px', width: '100%', mt: '0px' }}>
-            <ProgressChart measure={measure} />
+            <ProgressChart measure={measure} quotient={quotient} />
           </Box>
         )}
       </Stack>

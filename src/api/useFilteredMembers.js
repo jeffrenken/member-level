@@ -73,7 +73,12 @@ export function useFilteredMembers(filters) {
 
     let filteredMeasures = [...measures];
     if (measureStatus !== 0 && filters.includes('measureStatus')) {
-      filteredMeasures = measures.filter((measure) => measure.status === measureStatus).map((d) => d['Measure Name']);
+      let measureCategory = 'stars';
+      if (measureStatus === 2) {
+        measureCategory = 'display';
+      }
+
+      filteredMeasures = measures.filter((measure) => measure.category === measureCategory).map((d) => d.name);
       filtered = filtered.map((d) => {
         return { ...d, filteredNumberOfGaps: d.measuresOpen.filter((m) => filteredMeasures.includes(m)).length };
       });

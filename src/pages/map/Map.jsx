@@ -1,5 +1,5 @@
 import { useContracts, useFilteredMembers, useMeasures, useProviders, useSrf } from '@/api';
-import { Box, Grid, IconButton, Stack, Typography, StyledCard } from '@/components';
+import { Box, Grid, IconButton, Stack, Typography, StyledCard } from '@/components/ui';
 import AutocompleteButton from '@/components/Autocomplete';
 import GaugeChart from '@/components/charts/GaugeChart';
 import MembersTable from '@/components/tables/MembersTable';
@@ -44,7 +44,7 @@ mapboxgl.accessToken = import.meta.env.VITE_MAPBOX_TOKEN;
 const filters = ['contract', 'srf'];
 const filtersForMembers = ['contract'];
 
-export default function Map() {
+function Map() {
   const theme = useTheme();
   const darkMode = theme.palette.mode === 'dark';
   const mapContainer = useRef(null);
@@ -183,8 +183,8 @@ export default function Map() {
     let membersWithClosed = filteredMembers.filter((member) => member.measuresClosed.length);
 
     if (selectedMeasure) {
-      membersWithOpen = filteredMembers.filter((member) => member.measuresOpen.includes(selectedMeasure['Measure Name']));
-      membersWithClosed = filteredMembers.filter((member) => member.measuresClosed.includes(selectedMeasure['Measure Name']));
+      membersWithOpen = filteredMembers.filter((member) => member.measuresOpen.includes(selectedMeasure.name));
+      membersWithClosed = filteredMembers.filter((member) => member.measuresClosed.includes(selectedMeasure.name));
 
       let chartScale = [
         [75 / 100, '#d27e6f'],
@@ -228,10 +228,8 @@ export default function Map() {
       let membersInCountyDenom = membersInCountyFiltered.filter((member) => member.measuresOpen.length);
 
       if (selectedMeasure) {
-        membersInCountyNumerator = membersInCountyNumerator.filter((member) =>
-          member.measuresClosed.includes(selectedMeasure['Measure Name'])
-        );
-        membersInCountyDenom = membersInCountyDenom.filter((member) => member.measuresOpen.includes(selectedMeasure['Measure Name']));
+        membersInCountyNumerator = membersInCountyNumerator.filter((member) => member.measuresClosed.includes(selectedMeasure.name));
+        membersInCountyDenom = membersInCountyDenom.filter((member) => member.measuresOpen.includes(selectedMeasure.name));
       }
 
       if (!membersInCountyDenom.length) {
@@ -376,7 +374,7 @@ export default function Map() {
                     autocompleteProps={{
                       id: 'contractState',
                       options: contracts,
-                      getOptionLabel: (option) => option.label,
+                      getOptionLabel: (option) => (option.label ? option.label : ''),
                       autoHighlight: true,
                       openOnFocus: true,
                       value: contractState,
@@ -391,7 +389,7 @@ export default function Map() {
                     autocompleteProps={{
                       id: 'measureState',
                       options: measures,
-                      getOptionLabel: (option) => option.label,
+                      getOptionLabel: (option) => (option.label ? option.label : ''),
                       autoHighlight: true,
                       openOnFocus: true,
                       value: measureState,
@@ -405,7 +403,7 @@ export default function Map() {
                     autocompleteProps={{
                       id: 'srfState',
                       options: srf,
-                      getOptionLabel: (option) => option.label,
+                      getOptionLabel: (option) => (option.label ? option.label : ''),
                       autoHighlight: true,
                       openOnFocus: true,
                       value: srfState,
@@ -498,3 +496,5 @@ export default function Map() {
     </>
   );
 }
+
+export const Component = Map;

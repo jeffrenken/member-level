@@ -3,6 +3,40 @@ import { z } from 'zod';
 //also supervisors, check on who this is all for
 //providers
 //providerGroups
+
+export const MeasureWithStatsSchema = z.object({
+  id: z.number(),
+  name: z.string(),
+  domain: z.string().optional(),
+  category: z.string(),
+  abbreviation: z.string(),
+  gaps_closed_count: z.number().optional(),
+  gaps_open_count: z.number().optional(),
+  status: z.number(),
+  hl_code: z.string().optional(),
+  measure_id: z.string().optional(),
+  description: z.string().optional(),
+  bottom_third_lower_value: z.number().optional(),
+  bottom_third_upper_value: z.number().optional(),
+  middle_third_lower_value: z.number().optional(),
+  middle_third_upper_value: z.number().optional(),
+  top_third_lower_value: z.number().optional(),
+  top_third_upper_value: z.number().optional(),
+  first_upper: z.number().optional(),
+  second_upper: z.number().optional(),
+  third_upper: z.number().optional(),
+  fourth_upper: z.number().optional()
+});
+
+export const MeasureSchema = z.object({
+  id: z.number(),
+  name: z.string(),
+  domain: z.string().optional(),
+  abbreviation: z.string(),
+  category: z.string(),
+  hl_code: z.string().optional()
+});
+
 const careManager = z.object({
   id: z.number(),
   label: z.string(),

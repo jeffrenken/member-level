@@ -1,4 +1,4 @@
-export default function SocialRiskFactors() {
+function SocialRiskFactors() {
   return (
     <>
       <div>
@@ -12,3 +12,5 @@ export default function SocialRiskFactors() {
     </>
   );
 }
+
+export const Component = SocialRiskFactors;

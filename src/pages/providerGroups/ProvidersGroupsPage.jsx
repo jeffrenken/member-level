@@ -1,9 +1,9 @@
 import { useContracts, useFilteredMembers, useMembers, useProviderGroups, useProviders } from '@/api';
-import { Box, Button, Container, Stack, Typography, StyledCard } from '@/components';
+import { Box, Button, Container, Stack, Typography, StyledCard } from '@/components/ui';
 import AgGrid from '@/components/tables/AgGrid';
 import { GapRenderer2, ProviderLinkRenderer, TextRenderer, TooltipRenderer, getSparklineData } from '@/components/tables/CellRenderers';
 import { useTheme } from '@/hooks';
-import Top from '@/layout/Top';
+import Navbar from '@/components/layouts/Navbar';
 import { contractFilterState } from '@/state/contractFilterState';
 import { providerFilterState } from '@/state/providerFilterState';
 import { IconArrowDownRight, IconArrowUpRight } from '@tabler/icons-react';
@@ -19,7 +19,7 @@ function getRandomNumberBetween(min = 0, max = 2) {
 
 const filters = ['contract', 'providerGroup', 'measureStatus'];
 
-export default function ProviderGroupsPage() {
+function ProviderGroupsPage() {
   const theme = useTheme();
   const selectedProvider = useRecoilValue(providerFilterState);
   const { filteredMembers: memberData } = useFilteredMembers(filters);
@@ -59,7 +59,6 @@ export default function ProviderGroupsPage() {
       return [];
     }
     let filteredProviders = [...providers];
-    console.log('filteredProviders', filteredProviders);
     if (providerGroup) {
       filteredProviders = filteredProviders.filter((provider) => provider.providerGroup === providerGroup.label);
     }
@@ -79,7 +78,6 @@ export default function ProviderGroupsPage() {
       };
     });
   }, [providers, memberData, providerGroup]);
-  console.log(rows);
 
   const topProviderGroups = useMemo(() => {
     if (!providerGroups.length) {
@@ -169,7 +167,7 @@ export default function ProviderGroupsPage() {
 
   return (
     <Container maxWidth="xl" sx={{ marginTop: '20px', marginBottom: '100px' }}>
-      <Top filters={filters} />
+      <Navbar filters={filters} />
 
       <Stack direction="row" alignItems={'center'} justifyContent={'space-between'} spacing={3} sx={{ marginTop: '20px' }}>
         <Typography variant="h2" mt={3} pr={6}>
@@ -312,3 +310,5 @@ export default function ProviderGroupsPage() {
     </Container>
   );
 }
+
+export const Component = ProviderGroupsPage;

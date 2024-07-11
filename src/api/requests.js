@@ -7,6 +7,17 @@ import memberData from '../../data/membersWithCensus.json';
 import providerGroupsData from '../../data/providerGroups.json';
 import careData from '../../data/care.json';
 
+const contracts = [
+  {
+    id: 1,
+    name: 'H1111'
+  },
+  {
+    id: 2,
+    name: 'H2222'
+  }
+];
+
 function addLeadingZerosForLength(number, length) {
   if (!number) return null;
   var num = '' + number;
@@ -88,12 +99,45 @@ const supervisors = careData.map((p, i) => {
   return { ...p, id: i + 1, avgGapsPerMember: avgGapsPerMember };
 });
 
+const measuresWithStats = (body, params) => {
+  const contract = contracts.find((c) => c.id === body.contractId);
+  let filteredMeasures = [...measures];
+  let filteredMembers = members.filter((member) => member.CONTRACT === contract.name);
+  if (params.measureStatus !== 0) {
+    filteredMeasures = measures.filter((measure) => measure.status === params.measureStatus);
+  }
+  if (params.providerGroupId) {
+    filteredMembers = filteredMembers.filter((member) => member.providerGroup && member.providerGroup.id === params.providerGroupId);
+  }
+  if (params.srf === 1) {
+    filteredMembers = filteredMembers.filter((member) => member.isSrf);
+  }
+  if (params.srf === 2) {
+    filteredMembers = filteredMembers.filter((member) => !member.isSrf);
+  }
+
+  return filteredMeasures
+    .map((measure, i) => ({
+      ...measure,
+      //id: i + 1,
+      gaps_closed_count: filteredMembers.filter((member) => member?.measuresClosed.includes(measure['Measure Name'])).length,
+      gaps_open_count: filteredMembers.filter((member) => member?.measuresOpen.includes(measure['Measure Name'])).length,
+      name: measure['Measure Name'],
+      label: measure['Measure Name'],
+      value: measure['Acronym'],
+      abbreviation: measure['Acronym'],
+      domain: measure['Domain']
+    }))
+    .sort((a, b) => b.abbreviation - a.abbreviation);
+};
+
 const fakeMeasures = measures.map((measure, i) => ({
   ...measure,
   //id: i + 1,
   label: measure['Measure Name'],
   value: measure['Acronym'],
-  abbreviation: measure['Acronym']
+  abbreviation: measure['Acronym'],
+  name: measure['Measure Name']
 }));
 
 const fakeContracts = () => {
@@ -171,10 +215,35 @@ mock.onGet('/years').reply(200, fakeYears);
 mock.onGet('/plans').reply(200, fakePlans);
 mock.onGet('/ratings').reply(200, fakeRatings);
 mock.onGet('/measures').reply(200, fakeMeasures);
+
+mock.onPost('/measures-filtered').reply((config) => {
+  const data = JSON.parse(config.data);
+  return [200, measuresWithStats(data.body, data?.params)];
+});
+
 mock.onGet('/member-measures').reply(200, memberMeasures);
 mock.onGet('/care-managers').reply(200, distinctCareManagers);
 mock.onGet('/supervisors').reply(200, fakeSupervisors());
 mock.onGet('/members').reply(200, members);
+
+mock.onPost('/members-paginated').reply((config) => {
+  const body = JSON.parse(config.data);
+  let membersData = [...members];
+  if (body.sortModel.length) {
+    const ascOrDesc = body.sortModel[0].sort === 'asc' ? 1 : -1;
+    membersData = membersData.sort((a, b) => (a[body.sortModel[0].colId] > b[body.sortModel[0].colId] ? 1 : -1) * ascOrDesc);
+  }
+
+  if (body.rowGroupCols.length) {
+    //group by this column
+    membersData = Object.groupBy(membersData, (member) => member[body.rowGroupCols[0].id]);
+  } else {
+    membersData = { rows: membersData.slice(body.startRow, body.endRow), lastRow: members.length };
+  }
+
+  return [200, membersData];
+});
+
 mock.onGet('/members/1').reply(200, members[0]);
 mock.onPost('/srf-scores').reply((config) => {
   const body = JSON.parse(config.data);
@@ -246,7 +315,7 @@ export async function fetchRatings() {
 }
 
 export async function fetchMeasures() {
-  const res = await axiosClient.get('/measures');
+  const res = await axiosClient.get('/measures', { params: { filter: 'SRF' } });
   return res.data;
 }
 
@@ -257,6 +326,11 @@ export async function fetchMemberMeasures() {
 
 export async function fetchMembers() {
   const res = await axiosClient.get('/members');
+  return res.data;
+}
+
+export async function fetchMembersPaginated() {
+  const res = await axiosClient.post('/members-paginated');
   return res.data;
 }
 

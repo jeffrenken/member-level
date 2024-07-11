@@ -3,7 +3,7 @@ import { useMemo } from 'react';
 import MembersLayout from '../MembersLayout';
 
 const filters = ['contract', 'measureStatus'];
-export default function MembersUnattributedPage() {
+function MembersUnattributedPage() {
   const { filteredMembers } = useFilteredMembers(filters);
   const members = useMemo(() => {
     if (!filteredMembers) {
@@ -17,3 +17,5 @@ export default function MembersUnattributedPage() {
     </>
   );
 }
+
+export const Component = MembersUnattributedPage;

@@ -30,7 +30,7 @@ export default function MapViewsButton() {
       autocompleteProps={{
         id: 'map-views',
         options: views,
-        getOptionLabel: (option) => option.label,
+        getOptionLabel: (option) => (option.label ? option.label : ''),
         autoHighlight: true,
         openOnFocus: true,
         value: selectedView,

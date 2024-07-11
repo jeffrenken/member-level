@@ -1,4 +1,4 @@
-import { Box, StyledCard, Skeleton, Stack, Typography } from '@/components';
+import { Box, StyledCard, Skeleton, Stack, Typography } from '@/components/ui';
 import { useTheme } from '@/hooks';
 import { IconArrowRight } from '@tabler/icons-react';
 import { motion } from 'framer-motion';
@@ -13,7 +13,7 @@ const sizeStyles = {
   lg: { width: 300, fontSize: '10rem', lineHeight: '5rem' }
 };
 
-export default function MeasureCountCard({ label, measures, size = 'md', isLoading, color }) {
+export default function MeasureCountCard({ label, measures, size = 'md', isLoading, color, id }) {
   const [isFlipped, setIsFlipped] = useState(false);
   const theme = useTheme();
 
@@ -56,7 +56,7 @@ export default function MeasureCountCard({ label, measures, size = 'md', isLoadi
   ); */
 
   const content = (
-    <Box className="measure-count-card-page-container">
+    <Box className="measure-count-card-page-container" data-testid={id}>
       <StyledCard
         sx={{ width: styles.width, height: styles.width, backgroundColor: 'transparent', cursor: 'pointer' }}
         className={`measure-count-card-card-container ${isFlipped ? 'flipped' : ''}`}
@@ -101,7 +101,7 @@ export default function MeasureCountCard({ label, measures, size = 'md', isLoadi
             <ul style={{ paddingInlineStart: 20 }}>
               {measures.map((measure) => (
                 <li key={measure.id}>
-                  <Typography sx={{ fontSize: '0.7rem' }}>{measure['Measure Name']}</Typography>
+                  <Typography sx={{ fontSize: '0.7rem' }}>{measure.name}</Typography>
                 </li>
               ))}
             </ul>

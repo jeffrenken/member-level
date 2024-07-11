@@ -1,5 +1,5 @@
 import { useTheme } from '@/hooks';
-import { Box, StyledCard, Skeleton, Stack, Typography } from '@/components';
+import { Box, StyledCard, Skeleton, Stack, Typography } from '@/components/ui';
 import { motion } from 'framer-motion';
 import { useState } from 'react';
 

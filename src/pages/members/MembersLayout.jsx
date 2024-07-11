@@ -1,5 +1,5 @@
 import { useFilteredMeasures } from '@/api';
-import { Box, Container, Typography } from '@/components';
+import { Box, Container, Typography } from '@/components/ui';
 import AgGrid from '@/components/tables/AgGrid';
 import {
   GapRenderer,
@@ -11,7 +11,7 @@ import {
   TooltipRenderer,
   getSparklineData
 } from '@/components/tables/CellRenderers';
-import Top from '@/layout/Top';
+import Navbar from '@/components/layouts/Navbar';
 import { useMemo } from 'react';
 
 const randomHalfNumberBetween = (min, max) => Math.floor(Math.random() * (max - min + 1) + min) / 2;
@@ -196,8 +196,8 @@ export default function MembersLayout({ members: filteredMembers, title, filters
       headerName: 'Stars Measures',
       children: starsMeasures.map((measure) => {
         return {
-          field: measure['Measure Name'],
-          headerName: measure.abbreviation + ' - ' + measure['Measure Name'],
+          field: measure.name,
+          headerName: measure.abbreviation + ' - ' + measure.name,
           type: 'numericColumn',
           chartDataType: 'series',
           filter: true,
@@ -211,7 +211,7 @@ export default function MembersLayout({ members: filteredMembers, title, filters
             if (value === '1') {
               gaps = 'Closed';
             }
-            let text = `${measure['Acronym']} - ${gaps}`;
+            let text = `${measure.abreviation} - ${gaps}`;
 
             return text;
           }
@@ -223,8 +223,8 @@ export default function MembersLayout({ members: filteredMembers, title, filters
       headerName: 'Display Measures',
       children: displayMeasures.map((measure) => {
         return {
-          field: measure['Measure Name'],
-          headerName: measure.abbreviation + ' - ' + measure['Measure Name'],
+          field: measure.name,
+          headerName: measure.abbreviation + ' - ' + measure.name,
           type: 'numericColumn',
           chartDataType: 'series',
           filter: true,
@@ -238,7 +238,7 @@ export default function MembersLayout({ members: filteredMembers, title, filters
             if (value === '1') {
               gaps = 'Closed';
             }
-            let text = `${measure['Acronym']} - ${gaps}`;
+            let text = `${measure.abreviation} - ${gaps}`;
 
             return text;
           }
@@ -262,7 +262,7 @@ export default function MembersLayout({ members: filteredMembers, title, filters
   return (
     <>
       <Container maxWidth="xl" sx={{ mb: 10, mt: 3 }}>
-        <Top filters={filters} />
+        <Navbar filters={filters} />
         <Typography variant="h2">{title}</Typography>
         <Typography>
           Instructions: To navigate this screen, simply drag and drop column headers to the grouping area at the top to organize and analyze

@@ -1,5 +1,5 @@
 import { useContracts, useFilteredMembers, useMeasures, useProviders, useSrf } from '@/api';
-import { Box, Grid, IconButton, Stack, Typography, StyledCard } from '@/components';
+import { Box, Grid, IconButton, Stack, Typography, StyledCard } from '@/components/ui';
 import AutocompleteButton from '@/components/Autocomplete';
 import GaugeChart from '@/components/charts/GaugeChart';
 import MembersTable from '@/components/tables/MembersTable';
@@ -90,7 +90,7 @@ function updateFillLayerColors(map, colorMapping) {
   ]);
 }
 
-export default function MapCensus() {
+function MapCensus() {
   const theme = useTheme();
   const darkMode = theme.palette.mode === 'dark';
   const mapContainer = useRef(null);
@@ -277,7 +277,7 @@ export default function MapCensus() {
                     autocompleteProps={{
                       id: 'contractState',
                       options: contracts,
-                      getOptionLabel: (option) => option.label,
+                      getOptionLabel: (option) => (option.label ? option.label : ''),
                       autoHighlight: true,
                       openOnFocus: true,
                       value: contractState,
@@ -292,7 +292,7 @@ export default function MapCensus() {
                     autocompleteProps={{
                       id: 'measureState',
                       options: measures,
-                      getOptionLabel: (option) => option.label,
+                      getOptionLabel: (option) => (option.label ? option.label : ''),
                       autoHighlight: true,
                       openOnFocus: true,
                       value: measureState,
@@ -306,7 +306,7 @@ export default function MapCensus() {
                     autocompleteProps={{
                       id: 'srfState',
                       options: srf,
-                      getOptionLabel: (option) => option.label,
+                      getOptionLabel: (option) => (option.label ? option.label : ''),
                       autoHighlight: true,
                       openOnFocus: true,
                       value: srfState,
@@ -391,3 +391,5 @@ export default function MapCensus() {
     </>
   );
 }
+
+export const Component = MapCensus;
