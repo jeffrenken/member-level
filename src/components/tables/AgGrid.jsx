@@ -30,7 +30,9 @@ export default function AgGrid({ rowData, columnDefs, csvDownload, saveFiltersBu
   const defaultColDef = useMemo(() => {
     return {
       flex: 1,
-      minWidth: 100
+      minWidth: 100,
+      suppressHeaderFilterButton: true,
+      suppressHeaderMenuButton: true
     };
   }, []);
 
@@ -120,6 +122,7 @@ export default function AgGrid({ rowData, columnDefs, csvDownload, saveFiltersBu
           //onGridReady={onGridReady}
           autoSizeStrategy={columnDefs.length > 6 && autoSizeStrategy}
           enableCharts
+          suppressHeaderMenuButton={true}
           domLayout={!rows.length || rows.length > 5 ? 'normal' : 'autoHeight'}
           defaultCsvExportParams={{
             fileName: 'member-level-export',
