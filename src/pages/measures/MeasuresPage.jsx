@@ -30,41 +30,9 @@ const MeasuresPage = () => {
   const srf = useRecoilValue(srfFilterState);
   const { data: measuresData } = useMeasures();
   const { data: measuresWithStats } = useMeasuresWithStats({ measureStatus, providerGroupId, srf });
-  //const { filteredMembers } = useFilteredMembers(filters);
 
   const starsMeasures = measuresData ? measuresData.filter((measure) => measure.category === 'stars') : [];
-  /*   const measures = useMemo(() => {
-    if (!filteredMembers.length || !measuresWithStats) {
-      return [];
-    }
 
-      let filtered = [...measuresData];
-    if (measureStatus !== 0) {
-      filtered = filtered.filter((measure) => measure.status === measureStatus);
-      } 
-
-    let splitMembers = [];
-    measuresWithStats.forEach((measure, i) => {
-      const closed = filteredMembers.filter((member) => member?.measuresClosed.includes(measure.name)).length;
-      const open = filteredMembers.filter((member) => member?.measuresOpen.includes(measure.name)).length;
-      splitMembers[i] = { ...measure };
-      splitMembers[i].closed = closed;
-      splitMembers[i].open = open;
-      splitMembers[i].total = open + closed;
-      splitMembers[i].forecast = 'N/A';
-    });
-
-    return splitMembers.sort((a, b) => b.abbreviation - a.abbreviation);
-  }, [filteredMembers, measuresWithStats]);
-
-  const starsMeasures = useMemo(() => {
-    if (!measuresData) {
-      return [];
-    }
-    return measuresData.filter((measure) => {
-      return measure.status === 1;
-    });
-  }, [measuresData, measuresWithStats]); */
   const onTrack4 = starsMeasures.slice(0, starsMeasures.length / 3);
   const onTrack5 = starsMeasures.slice(starsMeasures.length / 4, (starsMeasures.length * 2) / 4);
   const offTrack = starsMeasures.slice((starsMeasures.length * 2) / 3, starsMeasures.length);

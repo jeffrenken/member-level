@@ -46,18 +46,18 @@ export default function TestPage() {
 
   // Column Definitions: Defines the columns to be displayed.
   const [colDefs, setColDefs] = useState([
-    { field: 'FIRST NAME' },
-    { field: 'LAST NAME' },
+    { field: 'firstName' },
+    { field: 'lastName' },
     { field: 'CITY', enableRowGroup: true },
     { field: 'COUNTY', enableRowGroup: true },
     { field: 'STATE', enableRowGroup: true },
-    { field: 'ZIP CODE', enableRowGroup: true },
-    { field: 'PHONE NUMBER' },
-    { field: 'EMAIL ADDRESS' },
+    { field: 'zipCode', enableRowGroup: true },
+    { field: 'phoneNumber' },
+    { field: 'email' },
     { field: 'SEX' },
     { field: 'RACE' },
     { field: 'ETHNICITY' },
-    { field: 'PRIMARY LANGUAGE' }
+    { field: 'primaryLanguage' }
   ]);
 
   const getData = () => {

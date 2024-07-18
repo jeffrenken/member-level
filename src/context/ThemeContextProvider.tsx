@@ -2,6 +2,7 @@ import themes from '@/themes';
 import { useMediaQuery } from '@mui/material';
 import { StyledEngineProvider, ThemeProvider } from '@mui/material/styles';
 import { ReactNode, createContext, useMemo, useState } from 'react';
+import { Toaster } from 'react-hot-toast';
 
 type ThemeContextType = {
   switchColorMode: () => void;
@@ -41,6 +42,15 @@ export function ThemeContextProvider({ children }: ThemeProviderProps) {
   return (
     <StyledEngineProvider injectFirst>
       <ThemeContext.Provider value={{ switchColorMode }}>
+        <Toaster
+          position="bottom-right"
+          toastOptions={{
+            style: {
+              backgroundColor: theme.palette.background.paper,
+              color: theme.palette.text.primary
+            }
+          }}
+        />
         <ThemeProvider theme={theme}>{children}</ThemeProvider>
       </ThemeContext.Provider>
     </StyledEngineProvider>

@@ -16,11 +16,11 @@ export function useMembersFilteredByMeasures(members, measures) {
     let m = members.map((member) => {
       return {
         ...member,
-        name: member['FIRST NAME'] + ' ' + member['LAST NAME'],
-        id: member['MEMBER ID'],
+        name: member.firstName + ' ' + member.lastName,
+        id: member.memberId,
         srf: member.isSrf,
         numberOfGaps: member.measuresOpen.length,
-        url: `/members/${member['MEMBER ID']}`,
+        url: `/members/${member.memberId}`,
         date: '2024-01-01',
         totalGapsInSelectedMeasures: member.measuresOpen.filter((m) => measureNames.includes(m)).length
       };

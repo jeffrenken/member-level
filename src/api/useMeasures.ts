@@ -6,6 +6,7 @@ import { MeasureSchema } from '@/api/schemas';
 
 export async function fetchMeasures() {
   const res = await axiosClient.get('/measures');
+  console.log('res', res);
   //return res.data;
   return z.array(MeasureSchema).safeParse(res.data);
 }

@@ -60,7 +60,17 @@ const members = memberData.map((member, i) => {
     measuresOpen: Object.keys(measures).filter((key) => measures?.[key] === 0),
     measuresClosed: Object.keys(measures).filter((key) => measures?.[key] === 1),
     geoId: parseInt(`${statefp}${countyfp}${tractce}`),
-    zipCode: member['ZIP CODE']
+    zipCode: member['ZIP CODE'],
+    phoneNumber: member['PHONE NUMBER'],
+    email: member['EMAIL ADDRESS'],
+    memberId: member['MEMBER ID'],
+    firstName: member['FIRST NAME'],
+    lastName: member['LAST NAME'],
+    dateOfBirth: member['DATE OF BIRTH'],
+    primaryLanguage: member['PRIMARY LANGUAGE'],
+    address: member['ADDRESS'],
+    city: member['CITY'],
+    state: member['STATE']
   };
 });
 //just assuming names are unique for testing

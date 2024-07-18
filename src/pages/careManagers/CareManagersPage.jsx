@@ -41,7 +41,7 @@ function CarePage() {
     if (!allMembers || !contract) {
       return [];
     }
-    return allMembers.filter((d) => d['CONTRACT'] === contract.label && careManagers.find((m) => m['MEMBER ID'] === d['MEMBER ID']));
+    return allMembers.filter((d) => d['CONTRACT'] === contract.label && careManagers.find((m) => m.memberId === d.memberId));
   }, [contract, allMembers]);
 
   const rows = useMemo(() => {

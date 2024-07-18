@@ -1,9 +1,6 @@
+import { Box, Skeleton, Stack, StyledCard, Typography } from '@/components/ui';
 import { useTheme } from '@/hooks';
-import { Box, StyledCard, Skeleton, Stack, Typography } from '@/components/ui';
 import { motion } from 'framer-motion';
-import { useState } from 'react';
-
-const lightBlue = 'rgb(222, 237, 252, 1)';
 
 const sizeStyles = {
   sm: { width: 160, fontSize: '3.5rem', lineHeight: '4rem' },
@@ -11,11 +8,18 @@ const sizeStyles = {
   lg: { width: 300, fontSize: '10rem', lineHeight: '5rem' }
 };
 
-export default function HeiCard({ title, content, isLoading, color, size = 'md', ...props }) {
-  const [isFlipped, setIsFlipped] = useState(false);
+//types for props
+type Props = {
+  title: string;
+  content: string;
+  isLoading: boolean;
+  color: string;
+  size: 'sm' | 'md' | 'lg';
+};
+
+export default function HeiCard({ title, content, isLoading, color, size = 'md', ...props }: Props) {
   const theme = useTheme();
 
-  const isLg = size === 'lg';
   const styles = sizeStyles[size];
 
   const background = theme.palette.background.paper;

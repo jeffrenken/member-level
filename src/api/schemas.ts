@@ -28,6 +28,8 @@ export const MeasureWithStatsSchema = z.object({
   fourth_upper: z.number().optional()
 });
 
+export type MeasureWithStatsType = z.infer<typeof MeasureWithStatsSchema>;
+
 export const MeasureSchema = z.object({
   id: z.number(),
   name: z.string(),
@@ -35,6 +37,71 @@ export const MeasureSchema = z.object({
   abbreviation: z.string(),
   category: z.string(),
   hl_code: z.string().optional()
+});
+
+const providerGroupSchema = z.object({
+  CONTRACT: z.string(),
+  'MEMBER ID': z.number(),
+  Provider: z.string(),
+  'Provider Group': z.string(),
+  id: z.number()
+});
+
+const memberMeasuresSchema = z.object({
+  CONTRACT: z.string(),
+  'MEMBER ID': z.number(),
+  'Colorectal Cancer Screening': z.number(),
+  'Diabetes Care - Eye Exam': z.number(),
+  'Continuous Beta Blocker Treatment': z.number(),
+  'Pharmacotherapy Management of COPD Exacerbation – Systemic Corticosteroid': z.number(),
+  'Engagement of Substance Use Disorder Treatment': z.number(),
+  'Social Needs Screening': z.number()
+});
+
+const srfSchema = z.object({
+  'Low Income Subsidy Copay Level': z.boolean(),
+  'DUAL ELIGIBLE': z.boolean(),
+  DISABLED: z.boolean()
+});
+
+const mainSchema = z.object({
+  CONTRACT: z.string(),
+  memberId: z.number(),
+  address: z.string(),
+  city: z.string(),
+  COUNTY: z.string(),
+  state: z.string(),
+  email: z.string().email(),
+  SEX: z.string(),
+  RACE: z.string(),
+  ETHNICITY: z.string(),
+  fake_address: z.string(),
+  coordinates: z.string(),
+  unsure: z.number(),
+  unsure_2: z.string(),
+  statefp: z.number(),
+  countyfp: z.number(),
+  tractce: z.number(),
+  unsure_3: z.number(),
+  id: z.number(),
+  providerGroup: providerGroupSchema,
+  provider: z.string(),
+  memberMeasures: memberMeasuresSchema,
+  srf: srfSchema,
+  isSrf: z.boolean(),
+  numberOfGaps: z.number(),
+  filteredNumberOfGaps: z.number(),
+  measuresOpen: z.array(z.string()),
+  measuresClosed: z.array(z.string()),
+  geoId: z.number(),
+  zipCode: z.number(),
+  phoneNumber: z.string(),
+  firstName: z.string(),
+  lastName: z.string(),
+  dateOfBirth: z.string().refine((val) => !isNaN(Date.parse(val)), {
+    message: 'Invalid date format'
+  }),
+  primaryLanguage: z.string()
 });
 
 const careManager = z.object({
@@ -48,7 +115,6 @@ const careManager = z.object({
 const member = z.object({
   CONTRACT: z.string(),
   'MEMBER ID': z.number(),
-  'FIRST NAME': z.string(),
   'LAST NAME': z.string(),
   'DATE OF BIRTH': z.string(),
   ADDRESS: z.string(),

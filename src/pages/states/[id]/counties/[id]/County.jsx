@@ -29,8 +29,8 @@ function County() {
           {members.map((member) => (
             <tr key={member.id}>
               <td>
-                <Link to={`/members/${member['MEMBER ID']}`}>
-                  {member['FIRST NAME']} {member['LAST NAME']}
+                <Link to={`/members/${member.memberId}`}>
+                  {member.firstName} {member.lastName}
                 </Link>
               </td>
               <td>{member['COUNTY']}</td>

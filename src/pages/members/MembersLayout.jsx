@@ -19,22 +19,23 @@ import { useMeasuresWithStats } from '../../api/useMeasuresWithStats';
 const randomHalfNumberBetween = (min, max) => Math.floor(Math.random() * (max - min + 1) + min) / 2;
 
 const memberInfoColumns = [
-  'MEMBER ID',
+  'memberId',
   'CITY',
   'COUNTY',
   'STATE',
-  'ZIP CODE',
-  'PHONE NUMBER',
-  'EMAIL ADDRESS',
+  'zipCode',
+  'phoneNumber',
+  'email',
   'SEX',
   'RACE',
   'ETHNICITY',
-  'PRIMARY LANGUAGE'
+  'primaryLanguage'
 ];
 
 const srfOptions = ['Low Income Subsidy Copay Level', 'DUAL ELIGIBLE', 'DISABLED'];
 
 export default function MembersLayout({ members: filteredMembers, title, filters }) {
+  console.log('filteredMembers', filteredMembers);
   const measureStatus = useRecoilValue(measureStatusFilterState);
   const { data: measures } = useMeasuresWithStats({ measureStatus });
 
@@ -48,13 +49,13 @@ export default function MembersLayout({ members: filteredMembers, title, filters
 
     return filteredMembers.map((member) => {
       return {
-        firstName: member['FIRST NAME'],
-        lastName: member['LAST NAME'],
+        firstName: member.firstName,
+        lastName: member.lastName,
         srfCell: member.isSrf,
         starRating: randomHalfNumberBetween(0, 10),
         providerGroupName: member.providerGroup?.['Provider Group'] || '',
         providerName: member.providerGroup?.['Provider'] || '',
-        url: `/members/${member['MEMBER ID']}`,
+        url: `/members/${member.memberId}`,
         providerUrl: member.providerGroup ? `/providers/${member.providerGroup['Provider']}` : '',
         ...member.srf,
         ...member.memberMeasures,
@@ -62,6 +63,7 @@ export default function MembersLayout({ members: filteredMembers, title, filters
       };
     });
   }, [filteredMembers]);
+  console.log('filteredMembers', members[0]);
 
   const columnDefs = [
     {
@@ -200,7 +202,7 @@ export default function MembersLayout({ members: filteredMembers, title, filters
             if (value === '1') {
               gaps = 'Closed';
             }
-            let text = `${measure.abreviation} - ${gaps}`;
+            let text = `${measure.abbreviation} - ${gaps}`;
 
             return text;
           }
@@ -227,7 +229,7 @@ export default function MembersLayout({ members: filteredMembers, title, filters
             if (value === '1') {
               gaps = 'Closed';
             }
-            let text = `${measure.abreviation} - ${gaps}`;
+            let text = `${measure.abbreviation} - ${gaps}`;
 
             return text;
           }

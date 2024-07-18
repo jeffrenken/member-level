@@ -35,11 +35,11 @@ export default function ProviderPage() {
       .filter((member) => (member.providerGroup.id = providerId))
       .map((member) => {
         return {
-          name: member['FIRST NAME'] + ' ' + member['LAST NAME'],
-          id: member['MEMBER ID'],
+          name: member.firstName + ' ' + member.lastName,
+          id: member.memberId,
           srf: member.isSrf,
           numberOfGaps: member.numberOfGaps,
-          url: `/members/${member['MEMBER ID']}`
+          url: `/members/${member.memberId}`
         };
       });
   }, [data, provider]);

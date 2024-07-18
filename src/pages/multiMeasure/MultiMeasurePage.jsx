@@ -23,7 +23,8 @@ function MultiMeasurePage() {
   const measureStatus = useRecoilValue(measureStatusFilterState);
   const srf = useRecoilValue(srfFilterState);
   const providerGroupId = useRecoilValue(providerFilterState);
-  const { data: measuresData, isLoading } = useMeasuresWithStats({ srf, measureStatus, providerGroupId });
+  const { data: measuresData, isLoading, isError } = useMeasuresWithStats({ srf, measureStatus, providerGroupId });
+
   const measureIds = useRecoilValue(measuresFilterState);
   const { filteredMembers } = useFilteredMembers(filters);
 
@@ -45,7 +46,7 @@ function MultiMeasurePage() {
   }, [measures, tableRef]);
 
   const chartData = useMemo(() => {
-    if (!members?.all || !measuresData.length) {
+    if (!members?.all || !measuresData) {
       return [];
     }
     let gapCounts = [];
@@ -132,7 +133,7 @@ function MultiMeasurePage() {
           if (value === '1') {
             gaps = 'Closed';
           }
-          let text = `${measure.abreviation} - ${gaps}`;
+          let text = `${measure.abbreviation} - ${gaps}`;
 
           return text;
         }

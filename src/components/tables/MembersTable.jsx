@@ -4,12 +4,12 @@ import { GapRenderer, LinkRenderer, SrfRenderer } from './CellRenderers';
 export default function MembersTable({ rows, csvDownload, height }) {
   const members = rows.map((member) => {
     return {
-      name: member['FIRST NAME'] + ' ' + member['LAST NAME'],
-      id: member['MEMBER ID'],
+      name: member.firstName + ' ' + member.lastName,
+      id: member.memberId,
       srf: member.isSrf,
       numberOfGaps: member.numberOfGaps,
       filteredNumberOfGaps: member.filteredNumberOfGaps,
-      url: `/members/${member['MEMBER ID']}`
+      url: `/members/${member.memberId}`
     };
   });
   const columnDefs = [

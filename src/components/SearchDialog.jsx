@@ -43,11 +43,11 @@ export function SearchDialog({ open, onClose }) {
     members.length &&
       members.forEach((member) => {
         items.push({
-          id: member['MEMBER ID'],
+          id: member.memberId,
           category: 'Member',
-          value: member['FIRST NAME'] + member['LAST NAME'],
-          url: `/members/${member['MEMBER ID']}`,
-          label: member['FIRST NAME'] + ' ' + member['LAST NAME']
+          value: member.firstName + member.lastName,
+          url: `/members/${member.memberId}`,
+          label: member.firstName + ' ' + member.lastName
         });
       });
 

@@ -4,8 +4,8 @@ import { RouterProvider } from 'react-router-dom';
 //import './App.css';
 import { SnackbarProvider } from 'notistack';
 
-import { QueryClientProvider } from '@tanstack/react-query';
 import { queryClient } from '@/lib';
+import { QueryClientProvider } from '@tanstack/react-query';
 
 // defaultTheme
 //import theme from './themes';

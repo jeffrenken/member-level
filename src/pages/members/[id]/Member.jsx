@@ -26,7 +26,7 @@ function Member() {
     }
 
     return data.find((member) => {
-      return member['MEMBER ID'] === parseInt(id);
+      return member.memberId === parseInt(id);
     });
   }, [data, id]);
 
@@ -42,7 +42,7 @@ function Member() {
       };
     });
 
-    return measures.filter((measure) => measure.label !== 'CONTRACT' && measure.label !== 'MEMBER ID');
+    return measures.filter((measure) => measure.label !== 'CONTRACT' && measure.label !== 'memberId');
   }, [member, measuresData]);
 
   const columnDefs = [
@@ -69,14 +69,14 @@ function Member() {
           <>
             <Box>
               <Typography variant="h3" mb={1} sx={{ fontSize: '1.75rem' }}>
-                {member['FIRST NAME']} {member['LAST NAME']}
+                {member.firstName} {member.lastName}
               </Typography>
-              <Typography sx={{ fontSize: '1rem' }}>{member['ADDRESS']}</Typography>
+              <Typography sx={{ fontSize: '1rem' }}>{member.address}</Typography>
               <Typography sx={{ fontSize: '1rem' }}>
-                {member['CITY']}, {member['STATE']}
+                {member.city}, {member.state}
               </Typography>
               <Typography mt={2} sx={{ fontSize: '1rem' }}>
-                Date of Birth: {member['DATE OF BIRTH']}
+                Date of Birth: {member.dateOfBirth}
               </Typography>
             </Box>
             <Box>

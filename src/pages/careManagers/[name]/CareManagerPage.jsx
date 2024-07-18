@@ -58,14 +58,14 @@ function CareManagerPage() {
         totalGapsRef.current += numberOfGaps;
 
         return {
-          firstName: member['FIRST NAME'],
-          lastName: member['LAST NAME'],
-          id: member['MEMBER ID'],
+          firstName: member.firstName,
+          lastName: member.lastName,
+          id: member.memberId,
           srfCell: member.isSrf,
           numberOfGaps: numberOfGaps,
           worth: numberOfGaps * worthPerGap,
           starRating: randomHalfNumberBetween(0, 10),
-          url: `/members/${member['MEMBER ID']}`,
+          url: `/members/${member.memberId}`,
           ...member.memberMeasures,
           ...member
         };

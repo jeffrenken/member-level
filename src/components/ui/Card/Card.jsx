@@ -5,7 +5,7 @@ export function Card(props) {
   return <MuiCard {...props} />;
 }
 
-export function StyledCard({ children, height = '100%', style, ...props }) {
+export function StyledCard({ children, height = '100%', style = {}, ...props }) {
   return (
     <Box
       height={height}
