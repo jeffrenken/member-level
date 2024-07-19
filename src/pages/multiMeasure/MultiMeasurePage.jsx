@@ -23,9 +23,10 @@ function MultiMeasurePage() {
   const measureStatus = useRecoilValue(measureStatusFilterState);
   const srf = useRecoilValue(srfFilterState);
   const providerGroupId = useRecoilValue(providerFilterState);
-  const { data: measuresData, isLoading, isError } = useMeasuresWithStats({ srf, measureStatus, providerGroupId });
+  const { data: measuresData, isLoading } = useMeasuresWithStats({ srf, measureStatus, providerGroupId });
 
   const measureIds = useRecoilValue(measuresFilterState);
+
   const { filteredMembers } = useFilteredMembers(filters);
 
   const measures = useMemo(() => {

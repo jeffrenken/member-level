@@ -5,6 +5,7 @@ const filters = ['contract', 'measureStatus'];
 
 function MembersPage() {
   const { filteredMembers } = useFilteredMembers(filters);
+  console.log('filteredMembers', filteredMembers);
 
   return (
     <>
