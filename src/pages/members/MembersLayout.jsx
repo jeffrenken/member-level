@@ -250,6 +250,7 @@ export default function MembersLayout({ members: filteredMembers, title, filters
   if (!members) {
     return <div>Loading...</div>;
   }
+  console.log('members', members);
   return (
     <>
       <Container maxWidth="xl" sx={{ mb: 10, mt: 3 }}>
