@@ -19,17 +19,17 @@ import { useMeasuresWithStats } from '../../api/useMeasuresWithStats';
 const randomHalfNumberBetween = (min, max) => Math.floor(Math.random() * (max - min + 1) + min) / 2;
 
 const memberInfoColumns = [
-  'memberId',
-  'CITY',
-  'COUNTY',
-  'STATE',
-  'zipCode',
-  'phoneNumber',
-  'email',
-  'SEX',
-  'RACE',
-  'ETHNICITY',
-  'primaryLanguage'
+  { label: 'Member ID', field: 'memberId' },
+  { label: 'City', field: 'CITY' },
+  { label: 'County', field: 'COUNTY' },
+  { label: 'State', field: 'STATE' },
+  { label: 'ZIP', field: 'zipCode' },
+  { label: 'Phone', field: 'phoneNumber' },
+  { label: 'Email', field: 'email' },
+  { label: 'Sex', field: 'SEX' },
+  { label: 'Race', field: 'RACE' },
+  { label: 'Ethnicity', field: 'ETHNICITY' },
+  { label: 'Primary Language', field: 'primaryLanguage' }
 ];
 
 const srfOptions = ['Low Income Subsidy Copay Level', 'DUAL ELIGIBLE', 'DISABLED'];
@@ -147,8 +147,8 @@ export default function MembersLayout({ members: filteredMembers, title, filters
       headerName: 'Member Info',
       children: memberInfoColumns.map((infoColumn) => {
         return {
-          field: infoColumn,
-          headerName: infoColumn,
+          field: infoColumn.field,
+          headerName: infoColumn.label,
           type: 'numericColumn',
           chartDataType: 'series',
           filter: true,
