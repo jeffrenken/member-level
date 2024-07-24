@@ -34,7 +34,7 @@ function CareManagerPage() {
       return [];
     }
     return measures.filter((measure) => {
-      return measure.status === 1;
+      return measure.category === 'stars';
     });
   }, [measures]);
 
@@ -43,7 +43,7 @@ function CareManagerPage() {
       return [];
     }
     return measures.filter((measure) => {
-      return measure.status === 2;
+      return measure.category === 'display';
     });
   }, [measures]);
 
