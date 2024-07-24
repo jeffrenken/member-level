@@ -30,7 +30,7 @@ function CareManagerPage() {
   const { data: measures } = useMeasures();
 
   const starsMeasures = useMemo(() => {
-    if (!measures.length) {
+    if (!measures) {
       return [];
     }
     return measures.filter((measure) => {
@@ -39,7 +39,7 @@ function CareManagerPage() {
   }, [measures]);
 
   const displayMeasures = useMemo(() => {
-    if (!measures.length) {
+    if (!measures) {
       return [];
     }
     return measures.filter((measure) => {
@@ -173,7 +173,7 @@ function CareManagerPage() {
             {name}
           </Typography>
           <Typography variant="h4" mb={1}>
-            Supervisor: {members && members[0].supervisor}
+            Supervisor: {members && members[0]?.supervisor}
           </Typography>
           <Typography variant="h4" mb={1}>
             Total Gaps: {totalGapsRef.current}

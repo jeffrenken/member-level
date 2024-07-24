@@ -117,9 +117,10 @@ function ProviderGroupsPage() {
       field: 'label',
       headerName: 'Provider',
       filter: true,
-      chartDataType: 'series',
+      chartDataType: 'category',
       cellRenderer: ProviderLinkRenderer,
       enableRowGroup: true
+
       //hide: true
     },
     {

@@ -28,7 +28,7 @@ function ProviderPage() {
   const { data: measures } = useMeasures();
 
   const starsMeasures = useMemo(() => {
-    if (!measures.length) {
+    if (!measures) {
       return [];
     }
     return measures.filter((measure) => {
@@ -37,7 +37,7 @@ function ProviderPage() {
   }, [measures]);
 
   const displayMeasures = useMemo(() => {
-    if (!measures.length) {
+    if (!measures) {
       return [];
     }
     return measures.filter((measure) => {

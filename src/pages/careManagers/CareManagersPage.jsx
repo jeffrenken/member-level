@@ -103,7 +103,7 @@ function CarePage() {
       field: 'label',
       headerName: 'Care Manager',
       filter: true,
-      chartDataType: 'series',
+      chartDataType: 'category',
       cellRenderer: ProviderLinkRenderer,
       enableRowGroup: true
       //hide: true
