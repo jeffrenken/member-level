@@ -115,7 +115,7 @@ function HeiPage() {
     },
     {
       value: (top.length / measures.length) * 100,
-      name: 'Navbar Third'
+      name: 'Top Third'
     }
   ];
 
@@ -128,7 +128,7 @@ function HeiPage() {
   const gridCards1 = [
     <MeasureCountCard measures={lower} label={'Bottom Third'} color={theme.palette.cardRed} size="md" />,
     <MeasureCountCard measures={middle} label={'Middle Third'} color={theme.palette.cardYellow} size="md" />,
-    <MeasureCountCard measures={top} label={'Navbar Third'} color={theme.palette.cardGreen} size="md" />
+    <MeasureCountCard measures={top} label={'Top Third'} color={theme.palette.cardGreen} size="md" />
   ];
   const gridCards2 = [
     <HeiCard content={srfPercent} title={'SRF Percentage'} color={theme.palette.text.primary} />,
@@ -189,14 +189,10 @@ function HeiPage() {
         <Grid item md={12} lg={7}>
           <Box>
             <Stack direction="row" alignItems="flex-start" justifyContent="center" spacing={1}>
-              {gridCards1?.map((card, i) => (
-                <Box key={i + 'card1'}>{card}</Box>
-              ))}
+              {gridCards1?.map((card, i) => <Box key={i + 'card1'}>{card}</Box>)}
             </Stack>
             <Stack direction="row" alignItems="center" justifyContent="center" spacing={1} pt={1}>
-              {gridCards2?.map((card, i) => (
-                <Box key={i + 'card2'}>{card}</Box>
-              ))}
+              {gridCards2?.map((card, i) => <Box key={i + 'card2'}>{card}</Box>)}
             </Stack>
           </Box>
         </Grid>
