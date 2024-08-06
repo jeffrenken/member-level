@@ -2,7 +2,7 @@ import { useTheme } from '@/hooks';
 import { Box, Drawer, useMediaQuery } from '@mui/material';
 import PropTypes from 'prop-types';
 import { BrowserView, MobileView } from 'react-device-detect';
-import MenuList from './MenuList';
+import SidebarItems from './SidebarItems';
 
 const Sidebar = ({ drawerOpen, drawerToggle, drawerWidth, window }) => {
   const theme = useTheme();
@@ -12,12 +12,10 @@ const Sidebar = ({ drawerOpen, drawerToggle, drawerWidth, window }) => {
   const drawer = (
     <>
       <BrowserView>
-        <MenuList drawerToggle={drawerToggle} />
+        <SidebarItems drawerToggle={drawerToggle} />
       </BrowserView>
       <MobileView>
-        <Box sx={{ px: 2 }}>
-          <MenuList drawerToggle={drawerToggle} />
-        </Box>
+        <Box sx={{ px: 2 }}></Box>
       </MobileView>
     </>
   );

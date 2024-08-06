@@ -101,7 +101,31 @@
     "statefp": 9,
     "countyfp": 3,
     "tractce": 515200,
-    "unsure_3": 2002
+    "unsure_3": 2002,
+    "prescriptions": [
+      {
+        "adherence_category": "Statins",
+        "drug_name": "ATORVASTATIN TAB 20MG",
+        "fill_date": "2024-08-04",
+        "last_coverage_date": "2024-03-01",
+        "quantity": 30,
+        "days_supply": 30,
+        "covered_days": 158,
+        "prescriber_name": "Dr. Kevin Johnson",
+        "claim_number": 123456
+      },
+      {
+        "adherence_category": "Ras",
+        "drug_name": "LOSARTAN POT TAB 25MG",
+        "fill_date": "2024-08-20",
+        "last_coverage_date": "2024-08-01",
+        "quantity": 30,
+        "days_supply": 30,
+        "covered_days": 158,
+        "prescriber_name": "Dr. Kevin Johnson",
+        "claim_number": 123456
+      }
+    ]
   },
   {
     "CONTRACT": "H1111",

@@ -70,7 +70,8 @@ const members = memberData.map((member, i) => {
     primaryLanguage: member['PRIMARY LANGUAGE'],
     address: member['ADDRESS'],
     city: member['CITY'],
-    state: member['STATE']
+    state: member['STATE'],
+    prescriptions: member?.prescriptions || []
   };
 });
 //just assuming names are unique for testing

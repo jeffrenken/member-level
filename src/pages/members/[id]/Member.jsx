@@ -1,9 +1,13 @@
 import { useMeasures, useMembers } from '@/api';
 import AgGrid from '@/components/tables/AgGrid';
 import { LinkRenderer, MeasureRenderer } from '@/components/tables/CellRenderers';
-import { Box, Container, StyledCard, Typography } from '@/components/ui';
-import { useMemo } from 'react';
+import { Box, Container, Grid, IconButton, StyledCard, Typography } from '@/components/ui';
+import { IconCalendar } from '@tabler/icons-react';
+import { useMemo, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
+import { CalendarDialog } from './components/CalendarDialog';
+import { useMember } from '@/api/useMember';
+import { Chip } from '@mui/material';
 
 function getValue(value) {
   if (value === 1) {
@@ -17,10 +21,13 @@ function getValue(value) {
 
 function Member() {
   const { id } = useParams();
-  const { data } = useMembers();
+  const { data: member } = useMember(id);
+  //const { data } = useMembers();
   const { data: measuresData } = useMeasures();
+  const [calendarOpen, setCalendarOpen] = useState(false);
+  const [selectedDrugName, setSelectedDrugName] = useState('');
 
-  const member = useMemo(() => {
+  /*   const member = useMemo(() => {
     if (!data) {
       return null;
     }
@@ -28,7 +35,7 @@ function Member() {
     return data.find((member) => {
       return member.memberId === parseInt(id);
     });
-  }, [data, id]);
+  }, [data, id]); */
 
   const rows = useMemo(() => {
     if (!member || !measuresData.length) {
@@ -64,37 +71,66 @@ function Member() {
 
   return (
     <>
+      <CalendarDialog
+        open={Boolean(selectedDrugName)}
+        onClose={() => {
+          setSelectedDrugName('');
+        }}
+        member={member}
+        selectedDrugName={selectedDrugName}
+      />
       <Container maxWidth="md">
         <StyledCard p={2} mt={2}>
           <>
-            <Box>
-              <Typography variant="h3" mb={1} sx={{ fontSize: '1.75rem' }}>
-                {member.firstName} {member.lastName}
-              </Typography>
-              <Typography sx={{ fontSize: '1rem' }}>{member.address}</Typography>
-              <Typography sx={{ fontSize: '1rem' }}>
-                {member.city}, {member.state}
-              </Typography>
-              <Typography mt={2} sx={{ fontSize: '1rem' }}>
-                Date of Birth: {member.dateOfBirth}
-              </Typography>
-            </Box>
-            <Box>
-              <Typography sx={{ fontSize: '1rem' }}>
-                Primary Care Physician:{' '}
-                <Link to={`/providers/${member?.providerGroup?.Provider}`} style={{ textDecoration: 'none', color: '#4d9fda' }}>
-                  {member?.providerGroup?.Provider}
-                </Link>
-              </Typography>
-              <Typography sx={{ fontSize: '1rem' }}>Provider Group: {member?.providerGroup?.['Provider Group']}</Typography>
-              <Typography sx={{ fontSize: '1rem' }}>Care Supervisor: {member?.supervisor}</Typography>
-              <Typography sx={{ fontSize: '1rem' }}>
-                Care Manager:{' '}
-                <Link to={`/care-managers/${member?.careManager}`} style={{ textDecoration: 'none', color: '#4d9fda' }}>
-                  {member?.careManager}
-                </Link>
-              </Typography>
-            </Box>
+            <Grid container spacing={2}>
+              <Grid item xs={7}>
+                <Box>
+                  <Typography variant="h3" mb={1} sx={{ fontSize: '1.75rem' }}>
+                    {member.firstName} {member.lastName}
+                  </Typography>
+                  <Typography sx={{ fontSize: '1rem' }}>{member.address}</Typography>
+                  <Typography sx={{ fontSize: '1rem' }}>
+                    {member.city}, {member.state}
+                  </Typography>
+                  <Typography mt={2} sx={{ fontSize: '1rem' }}>
+                    Date of Birth: {member.dateOfBirth}
+                  </Typography>
+                </Box>
+                <Box>
+                  <Typography sx={{ fontSize: '1rem' }}>
+                    Primary Care Physician:{' '}
+                    <Link to={`/providers/${member?.providerGroup?.Provider}`} style={{ textDecoration: 'none', color: '#4d9fda' }}>
+                      {member?.providerGroup?.Provider}
+                    </Link>
+                  </Typography>
+                  <Typography sx={{ fontSize: '1rem' }}>Provider Group: {member?.providerGroup?.['Provider Group']}</Typography>
+                  <Typography sx={{ fontSize: '1rem' }}>Care Supervisor: {member?.supervisor}</Typography>
+                  <Typography sx={{ fontSize: '1rem' }}>
+                    Care Manager:{' '}
+                    <Link to={`/care-managers/${member?.careManager}`} style={{ textDecoration: 'none', color: '#4d9fda' }}>
+                      {member?.careManager}
+                    </Link>
+                  </Typography>
+                </Box>
+              </Grid>
+              <Grid item xs={5}>
+                <Grid container spacing={1}>
+                  {member.prescriptions.map((prescription) => {
+                    return (
+                      <Grid item xs={12} key={prescription.drug_name}>
+                        <Chip
+                          label={prescription.drug_name}
+                          onClick={() => {
+                            setSelectedDrugName(prescription.drug_name);
+                          }}
+                          size="small"
+                        />
+                      </Grid>
+                    );
+                  })}
+                </Grid>
+              </Grid>
+            </Grid>
           </>
         </StyledCard>
         <Box sx={{ height: 'calc(100vh - 300px)' }} mt={2}>

@@ -69,7 +69,18 @@
     "SEX": "Male",
     "RACE": "White",
     "ETHNICITY": "Not Hispanic or Latino",
-    "PRIMARY LANGUAGE": "English"
+    "PRIMARY LANGUAGE": "English",
+    "prescriptions": {
+      "adherence_category": "Statins",
+      "drug_name": "ATORVASTATIN TAB 20MG",
+      "fill_date": "2024-08-04",
+      "last_coverage_date": "2024-03-01",
+      "quantity": 30,
+      "days_supply": 30,
+      "covered_days": 158,
+      "prescriber_name": "Dr. Kevin Johnson",
+      "claim_number": 123456
+    }
   },
   {
     "CONTRACT": "H1111",

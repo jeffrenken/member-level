@@ -35,7 +35,6 @@ const memberInfoColumns = [
 const srfOptions = ['Low Income Subsidy Copay Level', 'DUAL ELIGIBLE', 'DISABLED'];
 
 export default function MembersLayout({ members: filteredMembers, title, filters }) {
-  console.log('filteredMembers', filteredMembers);
   const measureStatus = useRecoilValue(measureStatusFilterState);
   const { data: measures } = useMeasuresWithStats({ measureStatus });
 
@@ -63,7 +62,6 @@ export default function MembersLayout({ members: filteredMembers, title, filters
       };
     });
   }, [filteredMembers]);
-  console.log('filteredMembers', members[0]);
 
   const columnDefs = [
     {

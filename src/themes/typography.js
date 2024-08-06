@@ -5,7 +5,7 @@
 
 export default function themeTypography(theme) {
   return {
-    //fontFamily: 'Roboto',
+    fontFamily: [`Inter`],
     //fontFamily: `Avenir, Montserrat, Corbel, 'URW Gothic', source-sans-pro, 'sans-serif'`,
     h6: {
       fontWeight: 500,

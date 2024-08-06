@@ -24,7 +24,7 @@ export default function BarChart({ data, title }) {
       text: title,
       left: 'center',
       textStyle: {
-        fontFamily: 'Roboto',
+        fontFamily: 'Inter',
         fontSize: 18,
         fontWeight: 'bold',
         color: theme.palette.text.primary

@@ -36,7 +36,7 @@ export default function DonutChart({ data, title = '' }) {
       text: title,
       left: '4%',
       textStyle: {
-        fontFamily: 'Roboto',
+        fontFamily: 'Inter',
         fontSize: 14,
         fontWeight: 'bold',
         color: theme.palette.text.primary

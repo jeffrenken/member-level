@@ -1,13 +1,11 @@
-import PropTypes from 'prop-types';
-import { forwardRef, useEffect } from 'react';
-import { Link, useLocation } from 'react-router-dom';
-import { Avatar, ButtonBase, Chip, ListItemButton, ListItemIcon, ListItemText, Typography, useMediaQuery, Box, Stack } from '@mui/material';
+import { Avatar, Box, Chip, Stack, Typography, useMediaQuery } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
+import { forwardRef } from 'react';
+import { Link } from 'react-router-dom';
 
-export const NavItemStacked = ({ item, level, drawerToggle }) => {
+export const SidebarItem = ({ item, level, drawerToggle }) => {
   const theme = useTheme();
   //const dispatch = useDispatch();
-  const { pathname } = useLocation();
   const customization = {}; //useSelector((state) => state.customization);
   const matchesSM = useMediaQuery(theme.breakpoints.down('md'));
 
@@ -31,18 +29,6 @@ export const NavItemStacked = ({ item, level, drawerToggle }) => {
       drawerToggle();
     }
   };
-
-  // active menu item on page load
-  useEffect(() => {
-    /* const currentIndex = document.location.pathname
-      .toString()
-      .split('/')
-      .findIndex((id) => id === item.id);
-    if (currentIndex > -1) {
-      dispatch({ type: MENU_OPEN, id: item.id });
-    } */
-    // eslint-disable-next-line
-  }, [pathname]);
 
   return (
     <Stack
