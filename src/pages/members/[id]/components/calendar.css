@@ -1,9 +1,11 @@
 .fc .fc-button {
     border-radius: 15em;
+    padding: 3px 8px;
+    font-size: 0.9em;
 }
 
 .fc .fc-daygrid-day.fc-day-today {
-    background-color: rgba(150, 150, 150, 0.4);
+    background-color: rgba(150, 150, 150, 0.2);
 }
 
 .fc-theme-standard td {
@@ -11,6 +13,7 @@
 }
 .fc-theme-standard th{
     border: none !important;
+    border-bottom: 0.5px solid #4c4c4d !important;
 }
 table {
     border: none !important;

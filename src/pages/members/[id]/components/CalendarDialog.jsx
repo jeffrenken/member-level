@@ -41,12 +41,12 @@ export function CalendarDialog({ open, onClose, member, selectedDrugName }) {
     const { pageX, pageY } = jsEvent; // Use pageX and pageY for positioning
 
     const content = (
-      <Paper elevation={3} variant="outlined" square={false} sx={{ padding: '10px' }}>
+      <>
         <Typography variant="h6" sx={{ fontSize: '1rem' }}>
           Prescibing Physician: {event.extendedProps.physician}
         </Typography>
         <Typography sx={{ fontSize: '1rem' }}>Claim Number: {event.extendedProps.claim_number}</Typography>
-      </Paper>
+      </>
     );
     setTooltip({
       display: 'block',
@@ -61,7 +61,20 @@ export function CalendarDialog({ open, onClose, member, selectedDrugName }) {
   };
 
   return (
-    <Dialog open={open} onClose={onClose} maxWidth="md" fullWidth sx={{ height: '70%' }}>
+    <Dialog
+      open={open}
+      onClose={onClose}
+      maxWidth="md"
+      fullWidth
+      sx={{
+        height: '70%'
+      }}
+      PaperProps={{
+        sx: {
+          backgroundColor: theme.palette.background.default
+        }
+      }}
+    >
       <DialogContent>
         <Stack direction="column" spacing={2}>
           <div style={{ position: 'relative' }}>
@@ -74,18 +87,21 @@ export function CalendarDialog({ open, onClose, member, selectedDrugName }) {
               height={500}
               //eventBorderColor={'#000000'}
             />
-            <div
-              className="calendar-tooltip"
-              style={{
+            <Paper
+              variant="outlined"
+              square={false}
+              sx={{
                 display: tooltip.display,
                 top: tooltip.top,
                 left: tooltip.left,
-                position: 'fixed', // Use fixed positioning
-                zIndex: 7
+                position: 'fixed',
+                zIndex: 7,
+                padding: '10px',
+                boxShadow: '0px 0px 10px rgba(0, 0, 0, 0.2)'
               }}
             >
               {tooltip.content}
-            </div>
+            </Paper>
           </div>
         </Stack>
       </DialogContent>

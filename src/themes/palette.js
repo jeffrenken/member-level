@@ -87,7 +87,7 @@ export default function themePalette(theme) {
      */
     background: {
       paper: theme.paper,
-      default: theme.backgroundDefault,
+      default: theme.background,
       semiTransparent: theme.backgroundSemiTransparent,
       semiTransparent2: theme.backgroundSemiTransparent2
     }
