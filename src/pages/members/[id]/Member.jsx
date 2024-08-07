@@ -1,13 +1,19 @@
 import { useMeasures, useMembers } from '@/api';
 import AgGrid from '@/components/tables/AgGrid';
 import { LinkRenderer, MeasureRenderer } from '@/components/tables/CellRenderers';
-import { Box, Container, Grid, IconButton, StyledCard, Typography } from '@/components/ui';
+import { Box, Container, Grid, IconButton, StyledCard, Typography, Stack } from '@/components/ui';
 import { IconCalendar } from '@tabler/icons-react';
 import { useMemo, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import { CalendarDialog } from './components/CalendarDialog';
 import { useMember } from '@/api/useMember';
 import { Chip } from '@mui/material';
+import { TipTapEditor } from '@/root/src/components/tiptap/TipTapEditor';
+import { useRecoilValue } from 'recoil';
+import { TipTapProvider } from '@/root/src/components/tiptap/TipTapProvider';
+import { commentTestState } from '@/state/commentTestState';
+import { Comment } from './components/Comment';
+import { NewComment } from './components/NewComment';
 
 function getValue(value) {
   if (value === 1) {
@@ -24,8 +30,8 @@ function Member() {
   const { data: member } = useMember(id);
   //const { data } = useMembers();
   const { data: measuresData } = useMeasures();
-  const [calendarOpen, setCalendarOpen] = useState(false);
   const [selectedDrugName, setSelectedDrugName] = useState('');
+  const comments = useRecoilValue(commentTestState);
 
   /*   const member = useMemo(() => {
     if (!data) {
@@ -79,63 +85,81 @@ function Member() {
         member={member}
         selectedDrugName={selectedDrugName}
       />
-      <Container maxWidth="md">
-        <StyledCard p={2} mt={2}>
-          <>
-            <Grid container spacing={2}>
-              <Grid item xs={7}>
-                <Box>
-                  <Typography variant="h3" mb={1} sx={{ fontSize: '1.75rem' }}>
-                    {member.firstName} {member.lastName}
-                  </Typography>
-                  <Typography sx={{ fontSize: '1rem' }}>{member.address}</Typography>
-                  <Typography sx={{ fontSize: '1rem' }}>
-                    {member.city}, {member.state}
-                  </Typography>
-                  <Typography mt={2} sx={{ fontSize: '1rem' }}>
-                    Date of Birth: {member.dateOfBirth}
-                  </Typography>
-                </Box>
-                <Box>
-                  <Typography sx={{ fontSize: '1rem' }}>
-                    Primary Care Physician:{' '}
-                    <Link to={`/providers/${member?.providerGroup?.Provider}`} style={{ textDecoration: 'none', color: '#4d9fda' }}>
-                      {member?.providerGroup?.Provider}
-                    </Link>
-                  </Typography>
-                  <Typography sx={{ fontSize: '1rem' }}>Provider Group: {member?.providerGroup?.['Provider Group']}</Typography>
-                  <Typography sx={{ fontSize: '1rem' }}>Care Supervisor: {member?.supervisor}</Typography>
-                  <Typography sx={{ fontSize: '1rem' }}>
-                    Care Manager:{' '}
-                    <Link to={`/care-managers/${member?.careManager}`} style={{ textDecoration: 'none', color: '#4d9fda' }}>
-                      {member?.careManager}
-                    </Link>
-                  </Typography>
-                </Box>
-              </Grid>
-              <Grid item xs={5}>
-                <Grid container spacing={1}>
-                  {member.prescriptions.map((prescription) => {
-                    return (
-                      <Grid item xs={12} key={prescription.drug_name}>
-                        <Chip
-                          label={prescription.drug_name}
-                          onClick={() => {
-                            setSelectedDrugName(prescription.drug_name);
-                          }}
-                          size="small"
-                        />
-                      </Grid>
-                    );
-                  })}
+      <Container maxWidth="xl">
+        <Grid container spacing={2}>
+          <Grid item xs={7}>
+            <StyledCard p={2} mt={2} style={{ height: 'fit-content' }}>
+              <Grid container spacing={2}>
+                <Grid item xs={7}>
+                  <Box>
+                    <Typography variant="h3" mb={1} sx={{ fontSize: '1.75rem' }}>
+                      {member.firstName} {member.lastName}
+                    </Typography>
+                    <Typography sx={{ fontSize: '1rem' }}>{member.address}</Typography>
+                    <Typography sx={{ fontSize: '1rem' }}>
+                      {member.city}, {member.state}
+                    </Typography>
+                    <Typography mt={2} sx={{ fontSize: '1rem' }}>
+                      Date of Birth: {member.dateOfBirth}
+                    </Typography>
+                  </Box>
+                  <Box>
+                    <Typography sx={{ fontSize: '1rem' }}>
+                      Primary Care Physician:{' '}
+                      <Link to={`/providers/${member?.providerGroup?.Provider}`} style={{ textDecoration: 'none', color: '#4d9fda' }}>
+                        {member?.providerGroup?.Provider}
+                      </Link>
+                    </Typography>
+                    <Typography sx={{ fontSize: '1rem' }}>Provider Group: {member?.providerGroup?.['Provider Group']}</Typography>
+                    <Typography sx={{ fontSize: '1rem' }}>Care Supervisor: {member?.supervisor}</Typography>
+                    <Typography sx={{ fontSize: '1rem' }}>
+                      Care Manager:{' '}
+                      <Link to={`/care-managers/${member?.careManager}`} style={{ textDecoration: 'none', color: '#4d9fda' }}>
+                        {member?.careManager}
+                      </Link>
+                    </Typography>
+                  </Box>
+                </Grid>
+                <Grid item xs={5}>
+                  <Grid container spacing={1}>
+                    {member.prescriptions.map((prescription) => {
+                      return (
+                        <Grid item xs={12} key={prescription.drug_name}>
+                          <Chip
+                            label={prescription.drug_name}
+                            onClick={() => {
+                              setSelectedDrugName(prescription.drug_name);
+                            }}
+                            size="small"
+                          />
+                        </Grid>
+                      );
+                    })}
+                  </Grid>
                 </Grid>
               </Grid>
-            </Grid>
-          </>
-        </StyledCard>
-        <Box sx={{ height: 'calc(100vh - 300px)' }} mt={2}>
-          <AgGrid rowData={rows} columnDefs={columnDefs} />
-        </Box>
+            </StyledCard>
+            <Box sx={{ height: 'calc(100vh - 300px)' }} mt={2}>
+              <AgGrid rowData={rows} columnDefs={columnDefs} />
+            </Box>
+          </Grid>
+          <Grid item xs={5}>
+            <Typography variant="h3" my={1} align="center">
+              Comments
+            </Typography>
+            <Stack spacing={2} mt={2}>
+              {comments &&
+                comments
+                  .filter((comment) => comment.memberId === member.memberId)
+                  .map((comment) => {
+                    return <Comment key={comment?.createdAt} comment={comment} />;
+                  })}
+            </Stack>
+            <Box mt={2}>
+              <NewComment memberId={member.memberId} />
+            </Box>
+          </Grid>
+        </Grid>
       </Container>
     </>
   );

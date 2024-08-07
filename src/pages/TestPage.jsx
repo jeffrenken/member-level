@@ -4,10 +4,10 @@ import { axiosClient } from '@/api/requests';
 import { AgGridReact } from 'ag-grid-react';
 import 'ag-grid-community/styles/ag-grid.css'; // Mandatory CSS required by the Data Grid
 import 'ag-grid-community/styles/ag-theme-quartz.css'; // Optional Theme applied to the Data Grid
-import { useRef, useState, useCallback } from 'react';
+import { useRef, useState, useCallback, useMemo } from 'react';
 import { Container } from '@/components/ui';
 
-export default function TestPage() {
+function TestPage() {
   const gridRef = useRef();
   const { data: members } = useMembersPaginated();
 
@@ -27,26 +27,12 @@ export default function TestPage() {
           console.error(error);
           params.failCallback();
         });
-
-      /* fetch('./olympicWinners/', {
-        method: 'post',
-        body: JSON.stringify(params.request),
-        headers: { 'Content-Type': 'application/json; charset=utf-8' }
-      })
-        .then((httpResponse) => httpResponse.json())
-        .then((response) => {
-          params.successCallback(response.rows, response.lastRow);
-        })
-        .catch((error) => {
-          console.error(error);
-          params.failCallback();
-        }); */
     }
   };
 
   // Column Definitions: Defines the columns to be displayed.
   const [colDefs, setColDefs] = useState([
-    { field: 'firstName' },
+    { field: 'firstName', filter: 'agTextColumnFilter' },
     { field: 'lastName' },
     { field: 'CITY', enableRowGroup: true },
     { field: 'COUNTY', enableRowGroup: true },
@@ -82,6 +68,40 @@ export default function TestPage() {
     };
   };
 
+  const sideBar = useMemo(() => {
+    return {
+      toolPanels: [
+        {
+          id: 'columns',
+          labelDefault: 'Columns',
+          labelKey: 'columns',
+          iconKey: 'columns',
+          toolPanel: 'agColumnsToolPanel',
+          toolPanelParams: {
+            suppressRowGroups: false,
+            suppressValues: false
+          }
+        },
+        {
+          id: 'filters',
+          labelDefault: 'Filters',
+          labelKey: 'filters',
+          iconKey: 'filter',
+          toolPanel: 'agFiltersToolPanel'
+        }
+      ]
+    };
+  }, []);
+
+  const defaultColDef = useMemo(() => {
+    return {
+      flex: 1,
+      minWidth: 200,
+      suppressHeaderFilterButton: false,
+      suppressHeaderMenuButton: false
+    };
+  }, []);
+
   const onGridReady = useCallback((params) => {
     // create datasource with a reference to the fake server
     var datasource = getData();
@@ -99,12 +119,16 @@ export default function TestPage() {
         <AgGridReact
           ref={gridRef}
           columnDefs={colDefs}
+          defaultColDef={defaultColDef}
           rowModelType={'serverSide'}
           onGridReady={onGridReady}
           rowGroupPanelShow="always"
           groupDisplayType="groupRows"
+          sideBar={sideBar}
         />
       </div>
     </Container>
   );
 }
+
+export const Component = TestPage;
