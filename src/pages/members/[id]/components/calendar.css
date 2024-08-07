@@ -14,11 +14,4 @@
 }
 table {
     border: none !important;
-} */
-
-.calendar-tooltip {
-  position: absolute;
-  z-index: 1000;
-  pointer-events: none;
-  white-space: nowrap;
-}
+} 

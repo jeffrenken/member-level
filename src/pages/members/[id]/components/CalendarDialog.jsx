@@ -50,9 +50,9 @@ export function CalendarDialog({ open, onClose, member, selectedDrugName }) {
     );
     setTooltip({
       display: 'block',
-      top: pageY - 90, // Offset from cursor
-      left: pageX, // Offset from cursor
-      content: content // Or any other event property you want to show
+      top: pageY - 75, // Offset from cursor
+      left: pageX - 60, // Offset from cursor
+      content: content
     });
   };
 
@@ -80,7 +80,8 @@ export function CalendarDialog({ open, onClose, member, selectedDrugName }) {
                 display: tooltip.display,
                 top: tooltip.top,
                 left: tooltip.left,
-                position: 'fixed' // Use fixed positioning
+                position: 'fixed', // Use fixed positioning
+                zIndex: 7
               }}
             >
               {tooltip.content}
