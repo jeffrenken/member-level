@@ -147,7 +147,7 @@ function Member() {
           </Grid>
           <Grid item xs={5}>
             <Typography variant="h3" my={1} align="center">
-              Comments
+              Notes
             </Typography>
             <CommentList comments={comments ? comments.filter((comment) => comment.memberId === member.memberId) : []} />
 

@@ -11,7 +11,7 @@ const defaultValue = [
           type: 'paragraph',
           content: [
             { type: 'text', text: 'This is the first ' },
-            { type: 'text', marks: [{ type: 'italic' }], text: 'comment' },
+            { type: 'text', marks: [{ type: 'italic' }], text: 'note' },
             { type: 'text', text: ' about this person. ' },
             { type: 'text', marks: [{ type: 'bold' }], text: 'Gonna style this somehow.' }
           ]
