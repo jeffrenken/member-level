@@ -10,7 +10,7 @@ import { Fade, FadeToggle } from '@/root/src/components/Fade';
 import { AnimatePresence, motion } from 'framer-motion';
 import { fontWeight } from '@mui/system';
 
-export function Comment({ comment }) {
+export function Comment({ comment, isAddingComment }) {
   const theme = useTheme();
   const isDarkMode = theme.palette.mode === 'dark';
   const [comments, setComments] = useRecoilState(commentTestState);
@@ -48,9 +48,9 @@ export function Comment({ comment }) {
   const margin = isAuthUser ? '0px 0px 0px 24px' : '0px 24px 0px 0px';
   console.log('margin', margin);
 
-  let background = isDarkMode ? '#333' : '#ddd';
+  let background = isDarkMode ? '#474747' : '#ddd';
   if (isAuthUser) {
-    background = theme.palette.background.paper;
+    background = '#28313f';
   }
 
   const handleMouseEnter = () => {
@@ -65,7 +65,8 @@ export function Comment({ comment }) {
         style={{
           padding: '2px 12px 6px 12px',
           height: 'fit-content',
-          backgroundColor: background
+          backgroundColor: background,
+          boxShadow: displayControls && theme.palette.shadowBlue
         }}
       >
         <Stack direction="row" alignItems="center" justifyContent="space-between">

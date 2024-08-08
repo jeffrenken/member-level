@@ -55,6 +55,9 @@
   h6 { 
     font-size: 1rem; 
   }
+  p {
+    font-size: 0.8rem;
+  }
 
   /* Code and preformatted text styles */
   code {

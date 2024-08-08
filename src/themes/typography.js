@@ -3,6 +3,8 @@
  * @param {JsonObject} theme theme customization object
  */
 
+import { fontSize } from '@mui/system';
+
 export default function themeTypography(theme) {
   return {
     fontFamily: [`Inter`],
@@ -25,7 +27,7 @@ export default function themeTypography(theme) {
     h3: {
       fontSize: '1.25rem',
       color: theme.heading,
-      fontWeight: 600
+      fontWeight: 300
     },
     h2: {
       fontSize: '1.6rem',
@@ -58,6 +60,13 @@ export default function themeTypography(theme) {
       lineHeight: '1.1em'
     },
     body2: {
+      letterSpacing: '0em',
+      fontWeight: 400,
+      lineHeight: '1.5em',
+      color: theme.textPrimary
+    },
+    body4: {
+      fontSize: '0.875rem',
       letterSpacing: '0em',
       fontWeight: 400,
       lineHeight: '1.5em',

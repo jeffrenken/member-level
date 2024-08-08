@@ -14,7 +14,8 @@ export default function themePalette(theme) {
       main: theme.colors?.primaryMain,
       dark: theme.colors?.primaryDark,
       200: theme.colors?.primary200,
-      800: theme.colors?.primary800
+      800: theme.colors?.primary800,
+      contrastText: '#fff'
     },
     secondary: {
       light: theme.colors?.secondaryLight,
@@ -82,6 +83,7 @@ export default function themePalette(theme) {
       focus: theme.colors?.grey100
     },
     border: theme.mode === 'dark' ? '0.5px solid rgba(255, 255, 255, 0.2)' : '0.5px solid rgba(30, 30, 30, 0.2)',
+    shadowBlue: 'rgba(98, 174, 255, 0.25) 0px 9px 17px -5px, rgba(0, 0, 0, 0.3) 0px 8px 16px -8px;',
 
     /*     main gradient bg set is compStyleOverride.js
      */

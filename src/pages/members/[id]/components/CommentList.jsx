@@ -2,7 +2,7 @@ import { Stack } from '@/components/ui';
 import { AnimatePresence, motion } from 'framer-motion';
 import { Comment } from './Comment';
 
-export function CommentList({ comments }) {
+export function CommentList({ comments, isAddingComment }) {
   if (!comments) {
     return null;
   }
@@ -15,10 +15,10 @@ export function CommentList({ comments }) {
               key={comment.id}
               initial={{ opacity: 0, x: 0 }} // Start with invisible and slightly off-screen
               animate={{ opacity: 1, x: 0 }} // Fade in and move to the correct position
-              exit={{ opacity: 0, x: 200 }} // Fade out and move slightly off-screen
+              exit={{ opacity: 0, x: -200 }} // Fade out and move slightly off-screen
               transition={{ duration: 0.4 }}
             >
-              <Comment key={comment?.createdAt} comment={comment} />
+              <Comment key={comment?.createdAt} comment={comment} isAddingComment={isAddingComment} />
             </motion.div>
           ))}
       </AnimatePresence>

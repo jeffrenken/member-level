@@ -2,11 +2,9 @@ import { Button, Box } from '@/components/ui';
 import { TipTapEditor } from '@/root/src/components/tiptap/TipTapEditor';
 import { useState } from 'react';
 import { useTheme } from '@/root/src/hooks';
-import { border } from '@mui/system';
 
-export function NewComment({ memberId }) {
+export function NewComment({ memberId, isNewComment, setIsNewComment }) {
   const theme = useTheme();
-  const [isNewComment, setIsNewComment] = useState(false);
 
   const handleNewCommentClick = () => {
     setIsNewComment(true);
@@ -18,8 +16,8 @@ export function NewComment({ memberId }) {
   return (
     <>
       {!isNewComment && (
-        <Button variant="contained" size="small" onClick={handleNewCommentClick} sx={{ float: 'right' }}>
-          Add Comment
+        <Button variant="contained" size="small" onClick={handleNewCommentClick} color="primary">
+          New Note
         </Button>
       )}
       {isNewComment && (
@@ -28,7 +26,8 @@ export function NewComment({ memberId }) {
             border: theme.palette.border,
             padding: '0px 10px 10px 10px',
             borderRadius: '12px',
-            backgroundColor: theme.palette.background.paper
+            backgroundColor: theme.palette.background.paper,
+            boxShadow: theme.palette.shadowBlue
           }}
         >
           <TipTapEditor memberId={memberId} handleCancel={handleCancelClick} />
