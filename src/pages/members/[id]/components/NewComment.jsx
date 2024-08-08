@@ -23,7 +23,14 @@ export function NewComment({ memberId }) {
         </Button>
       )}
       {isNewComment && (
-        <Box sx={{ border: theme.palette.border, padding: '0px 10px 10px 10px', borderRadius: '12px' }}>
+        <Box
+          sx={{
+            border: theme.palette.border,
+            padding: '0px 10px 10px 10px',
+            borderRadius: '12px',
+            backgroundColor: theme.palette.background.paper
+          }}
+        >
           <TipTapEditor memberId={memberId} handleCancel={handleCancelClick} />
         </Box>
       )}

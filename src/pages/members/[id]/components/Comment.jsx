@@ -6,6 +6,9 @@ import { TipTapEditor } from '@/root/src/components/tiptap/TipTapEditor';
 import { useTheme } from '@/root/src/hooks';
 import { commentTestState } from '@/state/commentTestState';
 import { useRecoilState } from 'recoil';
+import { Fade, FadeToggle } from '@/root/src/components/Fade';
+import { AnimatePresence, motion } from 'framer-motion';
+import { fontWeight } from '@mui/system';
 
 export function Comment({ comment }) {
   const theme = useTheme();
@@ -17,7 +20,7 @@ export function Comment({ comment }) {
   let userName;
 
   if (user === 1) {
-    userName = 'Cyndi Lauper';
+    userName = 'You';
   } else if (user === 2) {
     userName = 'Johnny Cash';
   }
@@ -28,6 +31,7 @@ export function Comment({ comment }) {
 
   const handleCancelEdit = () => {
     setIsEditing(false);
+    setDisplayControls(false);
   };
 
   const handleCommentDelete = () => {
@@ -49,39 +53,51 @@ export function Comment({ comment }) {
     background = theme.palette.background.paper;
   }
 
+  const handleMouseEnter = () => {
+    if (isAuthUser) {
+      setDisplayControls(true);
+    }
+  };
+
   return (
-    <Box sx={{ padding: margin }} onMouseEnter={() => setDisplayControls(true)} onMouseLeave={() => setDisplayControls(false)}>
+    <Box sx={{ padding: margin }} onMouseEnter={handleMouseEnter} onMouseLeave={() => setDisplayControls(false)}>
       <StyledCard
         style={{
-          padding: '0px 12px 6px 12px',
+          padding: '2px 12px 6px 12px',
           height: 'fit-content',
           backgroundColor: background
         }}
       >
         <Stack direction="row" alignItems="center" justifyContent="space-between">
-          <Box mb={1}>
-            <Typography display="inline">{userName}</Typography>{' '}
+          <Box>
+            <Typography display="inline" sx={{ fontWeight: 600 }}>
+              {userName}
+            </Typography>{' '}
             <Typography display="inline" variant="caption">
               {' '}
               at {comment.createdAt}
             </Typography>
           </Box>
-          {displayControls && (
-            <Stack direction="row" alignItems="center" justifyContent="space-between">
-              <IconButton sx={{ padding: '0px', marginRight: '8px' }} onClick={handleEditClick}>
+          <Fade isVisible={displayControls && !isEditing}>
+            <Stack direction="row" alignItems="center" justifyContent="flex-end" spacing={1}>
+              <IconButton sx={{ padding: '0px' }} onClick={handleEditClick}>
                 <IconPencil size={16} color={theme.palette.primary.main} />
               </IconButton>
               <IconButton sx={{ padding: '0px' }} onClick={handleCommentDelete}>
                 <IconTrash size={16} color="#c80000" />
               </IconButton>
             </Stack>
-          )}
+          </Fade>
         </Stack>
-        {isEditing ? (
-          <TipTapEditor memberId={comment.memberId} content={comment.content} commentId={comment.id} handleCancel={handleCancelEdit} />
-        ) : (
-          <TipTapProvider content={comment.content} />
-        )}
+        <Box pt={'8px'} />
+        <FadeToggle
+          duration={0.3}
+          showFirst={!isEditing}
+          firstContent={<TipTapProvider content={comment.content} />}
+          secondContent={
+            <TipTapEditor memberId={comment.memberId} content={comment.content} commentId={comment.id} handleCancel={handleCancelEdit} />
+          }
+        />
       </StyledCard>
     </Box>
   );

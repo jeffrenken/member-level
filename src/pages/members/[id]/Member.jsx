@@ -14,6 +14,8 @@ import { TipTapProvider } from '@/root/src/components/tiptap/TipTapProvider';
 import { commentTestState } from '@/state/commentTestState';
 import { Comment } from './components/Comment';
 import { NewComment } from './components/NewComment';
+import { AnimatePresence, motion } from 'framer-motion';
+import { CommentList } from './components/CommentList';
 
 function getValue(value) {
   if (value === 1) {
@@ -147,14 +149,8 @@ function Member() {
             <Typography variant="h3" my={1} align="center">
               Comments
             </Typography>
-            <Stack spacing={2} mt={2}>
-              {comments &&
-                comments
-                  .filter((comment) => comment.memberId === member.memberId)
-                  .map((comment) => {
-                    return <Comment key={comment?.createdAt} comment={comment} />;
-                  })}
-            </Stack>
+            <CommentList comments={comments ? comments.filter((comment) => comment.memberId === member.memberId) : []} />
+
             <Box mt={2}>
               <NewComment memberId={member.memberId} />
             </Box>

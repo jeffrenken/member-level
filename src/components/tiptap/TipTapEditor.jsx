@@ -10,6 +10,8 @@ import { useTheme } from '@/hooks';
 import { useRecoilState } from 'recoil';
 import { commentTestState } from '@/state/commentTestState';
 import dayjs from 'dayjs';
+import { ButtonGroup } from '@mui/material';
+import { border } from '@mui/system';
 
 const MenuBar = ({ editor }) => {
   const theme = useTheme();
@@ -19,14 +21,23 @@ const MenuBar = ({ editor }) => {
 
   return (
     <div>
-      <Box sx={{ marginBottom: '4px' }}>
-        <IconButton onClick={() => editor.chain().focus().toggleBold().run()} sx={{ padding: '0px', marginRight: '8px' }}>
+      <Box
+        sx={{
+          marginBottom: '4px',
+          backgroundColor: theme.palette.background.default,
+          width: 'fit-content',
+          borderRadius: '12px',
+          padding: '4px 8px',
+          border: theme.palette.border
+        }}
+      >
+        <IconButton onClick={() => editor.chain().focus().toggleBold().run()} sx={{ padding: '0px', marginRight: '10px' }}>
           <IconBold color={editor.isActive('bold') ? theme.palette.primary.main : theme.palette.text.secondary} size={16} />
         </IconButton>
-        <IconButton onClick={() => editor.chain().focus().toggleItalic().run()} sx={{ padding: '0px', marginRight: '8px' }}>
+        <IconButton onClick={() => editor.chain().focus().toggleItalic().run()} sx={{ padding: '0px', marginRight: '10px' }}>
           <IconItalic color={editor.isActive('italic') ? theme.palette.primary.main : theme.palette.text.secondary} size={16} />
         </IconButton>
-        <IconButton onClick={() => editor.chain().focus().toggleUnderline().run()} sx={{ padding: '0px', marginRight: '8px' }}>
+        <IconButton onClick={() => editor.chain().focus().toggleUnderline().run()} sx={{ padding: '0px' }}>
           <IconUnderline color={editor.isActive('underline') ? theme.palette.primary.main : theme.palette.text.secondary} size={16} />
         </IconButton>
       </Box>
@@ -45,7 +56,7 @@ export function TipTapEditor({ memberId, content = '', handleCancel, commentId }
 
   const handleSave = () => {
     const body = {
-      commentId: comments.length + 1,
+      id: comments.length + 1,
       userId: 1,
       content: editor.getJSON(),
       createdAt: dayjs().format('YYYY-MM-DD HH:mm:ss'),
@@ -75,7 +86,10 @@ export function TipTapEditor({ memberId, content = '', handleCancel, commentId }
   return (
     <>
       <Box sx={{ borderRadius: '12px', padding: '0px 12px', height: 'fit-content' }}>
+        <Box pt={'8px'} />
+
         <MenuBar editor={editor} />
+        <Box pt={'8px'} />
         <EditorContent editor={editor} />
       </Box>
       <Stack direction="row" alignItems="center" justifyContent="flex-end" spacing={0} sx={{ marginTop: '8px' }}>
