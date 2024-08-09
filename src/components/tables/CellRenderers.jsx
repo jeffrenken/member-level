@@ -1,4 +1,4 @@
-import { Box, Rating, useTheme } from '@mui/material';
+import { Box, Chip, Rating, useTheme, Stack } from '@mui/material';
 import { IconCheck, IconCheckbox, IconStar, IconUserHeart, IconX } from '@tabler/icons-react';
 import { Link } from 'react-router-dom';
 
@@ -177,6 +177,23 @@ export const ProviderLinkRenderer = (params) => {
     >
       {params.value}
     </Box>
+  );
+};
+
+export const PillRenderer = (params, backgroundColor) => {
+  if (!params.value) {
+    return undefined;
+  }
+
+  return (
+    <Chip
+      label={params.value}
+      size="small"
+      sx={(theme) => ({
+        backgroundColor: backgroundColor,
+        color: '#fff'
+      })}
+    />
   );
 };
 

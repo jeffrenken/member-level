@@ -5,9 +5,9 @@ import { LinkRenderer, MeasureRenderer } from '@/components/tables/CellRenderers
 import { Box, Container, Grid, StyledCard, Typography } from '@/components/ui';
 import { useTheme } from '@/hooks';
 import { commentTestState } from '@/state/commentTestState';
-import { Chip, Tab, Tabs } from '@mui/material';
+import { Tab, Tabs } from '@mui/material';
 import { useMemo, useState } from 'react';
-import { Link, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import { useRecoilValue } from 'recoil';
 import { CalendarDialog } from './components/CalendarDialog';
 import { CommentSection } from './components/CommentSection';

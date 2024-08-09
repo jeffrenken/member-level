@@ -3,7 +3,13 @@ import { IconButton } from '@/root/src/components/ui';
 import { IconCalendar } from '@tabler/icons-react';
 import { CalendarDialog } from './CalendarDialog';
 import { useState } from 'react';
-import { maxWidth } from '@mui/system';
+import { PillRenderer } from '@/root/src/components/tables/CellRenderers';
+
+export const medicationCategoryColors = {
+  Diabetes: '#696cb5',
+  RAS: '#297e8f',
+  Statins: '#f08a5b'
+};
 
 export function MedicationTable({ medications, member }) {
   const [selectedDrugName, setSelectedDrugName] = useState('');
@@ -24,7 +30,13 @@ export function MedicationTable({ medications, member }) {
       }
     },
     { field: 'drug_name', headerName: 'Name', filter: true, chartDataType: 'category' },
-    { field: 'adherence_category', headerName: 'Adherence Category', filter: true, chartDataType: 'category' },
+    {
+      field: 'adherence_category',
+      headerName: 'Adherence Category',
+      filter: true,
+      chartDataType: 'category',
+      cellRenderer: (params) => PillRenderer(params, medicationCategoryColors[params.value])
+    },
     { field: 'fill_date', headerName: 'Fill Date', filter: true, chartDataType: 'category' },
     { field: 'last_coverage_date', headerName: 'Last Coverage Date', filter: true, chartDataType: 'category' },
     { field: 'quantity', headerName: 'Quantity', filter: true, chartDataType: 'category' },
