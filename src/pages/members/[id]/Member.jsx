@@ -49,16 +49,20 @@ function Member() {
     if (!member || !measuresData.length) {
       return [];
     }
-    let measures = measuresData.map((measure) => {
-      return {
-        label: measure.name,
-        value: getValue(member.memberMeasures[measure.name]),
-        url: `/measures/${measure.id}`
-      };
-    });
+    let measures = measuresData
+      //.filter((measure) => measure.status)
+      .map((measure) => {
+        return {
+          label: measure.name,
+          value: getValue(member.memberMeasures[measure.name]),
+          url: `/measures/${measure.id}`
+        };
+      })
+      .filter((measure) => measure.value !== undefined);
 
     return measures.filter((measure) => measure.label !== 'CONTRACT' && measure.label !== 'memberId');
   }, [member, measuresData]);
+  console.log('rows', rows);
 
   const columnDefs = [
     { field: 'label', headerName: 'Measure', filter: true, chartDataType: 'category', maxWidth: 500, cellRenderer: LinkRenderer },
@@ -117,7 +121,7 @@ function Member() {
               </Tabs>
             </Box>
             {tab === 0 && (
-              <Box sx={{ height: 'calc(100vh - 110px)' }} mt={2}>
+              <Box sx={{ height: 'calc(100vh - 310px)' }} mt={2}>
                 <AgGrid rowData={rows} columnDefs={columnDefs} />
               </Box>
             )}
