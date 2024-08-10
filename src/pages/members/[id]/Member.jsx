@@ -24,12 +24,17 @@ function getValue(value) {
   }
 }
 
+function capitalizeFirstLetter(string) {
+  return string.charAt(0).toUpperCase() + string.slice(1);
+}
+
 function Member() {
   const theme = useTheme();
   const { id } = useParams();
   const { data: member } = useMember(id);
   //const { data } = useMembers();
   const { data: measuresData } = useMeasures();
+  console.log('measuresData', measuresData);
   const [selectedDrugName, setSelectedDrugName] = useState('');
   const comments = useRecoilValue(commentTestState);
   const [tab, setTab] = useState(0);
@@ -53,6 +58,7 @@ function Member() {
       //.filter((measure) => measure.status)
       .map((measure) => {
         return {
+          ...measure,
           label: measure.name,
           value: getValue(member.memberMeasures[measure.name]),
           url: `/measures/${measure.id}`
@@ -74,6 +80,14 @@ function Member() {
       type: 'numericColumn',
       filter: true,
       cellRenderer: MeasureRenderer
+    },
+    {
+      field: 'category',
+      headerName: 'Measure Type',
+      maxWidth: 150,
+      chartDataType: 'category',
+      filter: true,
+      cellRenderer: ({ value }) => capitalizeFirstLetter(value) + ' Measure'
     }
   ];
 
@@ -122,7 +136,7 @@ function Member() {
             </Box>
             {tab === 0 && (
               <Box sx={{ height: 'calc(100vh - 310px)' }} mt={2}>
-                <AgGrid rowData={rows} columnDefs={columnDefs} />
+                <AgGrid rowData={rows} columnDefs={columnDefs} hideColumns hideFilters />
               </Box>
             )}
             {tab === 1 && (
