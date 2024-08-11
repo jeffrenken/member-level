@@ -4,12 +4,13 @@ import { axiosClient } from '@/api/requests';
 import { AgGridReact } from 'ag-grid-react';
 import 'ag-grid-community/styles/ag-grid.css'; // Mandatory CSS required by the Data Grid
 import 'ag-grid-community/styles/ag-theme-quartz.css'; // Optional Theme applied to the Data Grid
-import { useRef, useState, useCallback, useMemo } from 'react';
+import { useRef, useState, useCallback, useMemo, useEffect } from 'react';
 import { Button, Container } from '@/components/ui';
 
 function TestPage() {
   const gridRef = useRef();
   const { data: members } = useMembersPaginated();
+  const [count, setCount] = useState(0);
 
   const datasource = {
     getRows(params) {
@@ -113,6 +114,14 @@ function TestPage() {
   const handleThrowError = () => {
     throw new Error('This is an error');
   };
+  const onClick = () => {
+    setCount(count + 1);
+  };
+  useEffect(() => {
+    if (count === 2) {
+      throw new Error('I crashed!');
+    }
+  });
 
   return (
     // wrapping container with theme & size
@@ -122,6 +131,7 @@ function TestPage() {
         style={{ height: 500, marginTop: 20 }} // the Data Grid will fill the size of the parent container
       >
         <Button onClick={handleThrowError}>Throw error</Button>
+        <button onClick={onClick}>Click twice to crash</button>
         <AgGridReact
           ref={gridRef}
           columnDefs={colDefs}
