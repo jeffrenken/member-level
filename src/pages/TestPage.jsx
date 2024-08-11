@@ -5,7 +5,7 @@ import { AgGridReact } from 'ag-grid-react';
 import 'ag-grid-community/styles/ag-grid.css'; // Mandatory CSS required by the Data Grid
 import 'ag-grid-community/styles/ag-theme-quartz.css'; // Optional Theme applied to the Data Grid
 import { useRef, useState, useCallback, useMemo } from 'react';
-import { Container } from '@/components/ui';
+import { Button, Container } from '@/components/ui';
 
 function TestPage() {
   const gridRef = useRef();
@@ -109,6 +109,11 @@ function TestPage() {
     // register the datasource with the grid
     params.api.setGridOption('serverSideDatasource', datasource);
   }, []);
+
+  const handleThrowError = () => {
+    throw new Error('This is an error');
+  };
+
   return (
     // wrapping container with theme & size
     <Container maxWidth="lg">
@@ -116,6 +121,7 @@ function TestPage() {
         className="ag-theme-quartz" // applying the Data Grid theme
         style={{ height: 500, marginTop: 20 }} // the Data Grid will fill the size of the parent container
       >
+        <Button onClick={handleThrowError}>Throw error</Button>
         <AgGridReact
           ref={gridRef}
           columnDefs={colDefs}
