@@ -45,7 +45,7 @@ export function CalendarDialog({ open, onClose, member, selectedDrugName }) {
     const content = (
       <Box>
         <Typography sx={{ fontSize: '0.9rem' }}>{event.extendedProps.drug_name}</Typography>
-        <Typography sx={{ fontSize: '0.8rem' }}>Days Covered: 89%</Typography>
+        <Typography sx={{ fontSize: '0.8rem' }}>PDC: 89%</Typography>
         <Typography sx={{ fontSize: '0.8rem' }}>Prescibing Physician: {event.extendedProps.physician}</Typography>
         <Typography sx={{ fontSize: '0.8rem' }}>Claim Number: {event.extendedProps.claim_number}</Typography>
       </Box>
