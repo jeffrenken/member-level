@@ -1,9 +1,9 @@
 export default function componentStyleOverrides(theme) {
   const borderRadius = 8;
   const isDarkMode = theme.mode === 'dark';
-  const backgroundGradient = isDarkMode
+  /*   const backgroundGradient = isDarkMode
     ? `linear-gradient(38deg, rgba(23,41,47,1) 0%, rgba(21,32,43,1) 50%)`
-    : `linear-gradient(90deg, rgba(230,230,230,1) 9%, rgba(250,250,250,1) 100%)`;
+    : `linear-gradient(90deg, rgba(230,230,230,1) 9%, rgba(250,250,250,1) 100%)`; */
   //? `linear-gradient(120deg, rgba(18,18,18,1) 0%, rgba(40,40,40,1) 100%)`
   //;
 

@@ -88,15 +88,8 @@ const MeasuresPage = () => {
       <Typography align="center" mt={3} ml={2} variant="h2">
         Current Measure Performance
       </Typography>
-      <Stack direction="row" alignItems="center" justifyContent="center" spacing={3} mb={3} mt={1}>
-        <Box sx={{ backgroundColor: green, borderRadius: '6px', color: '#fff' }} px={2} py={0.7}>
-          <Typography>Numerator</Typography>
-        </Box>
-        <Box sx={{ backgroundColor: red, borderRadius: '6px', color: '#fff' }} px={2} py={0.7}>
-          <Typography>Denominator</Typography>
-        </Box>
-      </Stack>
-      <Grid2 container sx={{ margin: '0 auto', mb: 3 }} direction="row" justifyContent={'center'} alignItems="center">
+
+      <Grid2 container sx={{ margin: '0 auto', mb: 3, mt: 2 }} direction="row" justifyContent={'center'} alignItems="center">
         {measuresWithStats?.map((measure) => (
           <Grid key={measure.id} m={1}>
             <PieChart2 measure={measure} chart="gradient" />

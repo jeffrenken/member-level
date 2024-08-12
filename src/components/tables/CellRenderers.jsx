@@ -207,14 +207,16 @@ export const PillRenderer = (params, backgroundColor) => {
   }
 
   return (
-    <Chip
-      label={params.value}
-      size="small"
-      sx={(theme) => ({
-        backgroundColor: backgroundColor,
-        color: '#fff'
-      })}
-    />
+    <Box sx={{ margin: '0 auto', width: 'fit-content' }}>
+      <Chip
+        label={params.value.toUpperCase()}
+        size="small"
+        sx={(theme) => ({
+          backgroundColor: backgroundColor,
+          color: '#fff'
+        })}
+      />
+    </Box>
   );
 };
 
