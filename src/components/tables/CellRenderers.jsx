@@ -81,7 +81,7 @@ export const MeasureTypeRenderer = (params) => {
     );
   }
 
-  return <Box pt={0.5}>{capitalizeFirstLetter(params.value)}</Box>;
+  return <Box>{capitalizeFirstLetter(params.value)}</Box>;
 };
 
 export const RatingRenderer = (params) => {
@@ -177,6 +177,8 @@ export const LinkRenderer = (params) => {
 };
 
 export const ProviderLinkRenderer = (params) => {
+  const theme = useTheme();
+  const isDarkMode = theme.palette.mode === 'dark';
   if (!params.value) {
     return undefined;
   }
@@ -187,11 +189,11 @@ export const ProviderLinkRenderer = (params) => {
       to={url}
       px={0}
       sx={(theme) => ({
-        backgroundColor: '#0C1C2F',
+        backgroundColor: isDarkMode ? '#0C1C2F' : theme.palette.primary.main,
         padding: '6px 10px',
         borderRadius: '16px',
         textDecoration: 'none',
-        color: '#ddd'
+        color: isDarkMode ? '#ddd' : '#fff'
       })}
     >
       {params.value}

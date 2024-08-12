@@ -64,6 +64,14 @@ function Member() {
   }, [member, measuresData]);
 
   const columnDefs = [
+    {
+      field: 'category',
+      headerName: 'Measure Type',
+      maxWidth: 150,
+      chartDataType: 'category',
+      filter: true,
+      cellRenderer: MeasureTypeRenderer
+    },
     { field: 'label', headerName: 'Measure', filter: true, chartDataType: 'category', maxWidth: 500, cellRenderer: LinkRenderer },
     {
       field: 'value',
@@ -73,14 +81,6 @@ function Member() {
       type: 'numericColumn',
       filter: true,
       cellRenderer: MeasureRenderer
-    },
-    {
-      field: 'category',
-      headerName: 'Measure Type',
-      maxWidth: 150,
-      chartDataType: 'category',
-      filter: true,
-      cellRenderer: MeasureTypeRenderer
     }
   ];
 
