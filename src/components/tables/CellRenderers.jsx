@@ -56,14 +56,14 @@ export const MeasureRenderer = (params) => {
   }
   if (params.value) {
     return (
-      <Box pt={0.5}>
+      <Box pt={0.5} sx={{ margin: '0 auto', width: 'fit-content' }}>
         <IconCheck color="#4caf50" />
       </Box>
     );
   }
 
   return (
-    <Box pt={0.5}>
+    <Box pt={0.5} sx={{ margin: '0 auto', width: 'fit-content' }}>
       <IconX color="#f44336" />
     </Box>
   );
@@ -75,13 +75,13 @@ export const MeasureTypeRenderer = (params) => {
   }
   if (params.value === 'stars') {
     return (
-      <Box pt={0.5}>
+      <Box pt={0.5} sx={{ margin: '0 auto', width: 'fit-content' }}>
         <IconStar size={20} />
       </Box>
     );
   }
 
-  return <Box>{capitalizeFirstLetter(params.value)}</Box>;
+  return <Box sx={{ margin: '0 auto', width: 'fit-content' }}>{capitalizeFirstLetter(params.value)}</Box>;
 };
 
 export const RatingRenderer = (params) => {

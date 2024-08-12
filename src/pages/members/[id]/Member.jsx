@@ -34,16 +34,6 @@ function Member() {
   const comments = useRecoilValue(commentTestState);
   const [tab, setTab] = useState(0);
 
-  /*   const member = useMemo(() => {
-    if (!data) {
-      return null;
-    }
-
-    return data.find((member) => {
-      return member.memberId === parseInt(id);
-    });
-  }, [data, id]); */
-
   const rows = useMemo(() => {
     if (!member || !measuresData.length) {
       return [];
