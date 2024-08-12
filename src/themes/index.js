@@ -18,6 +18,7 @@ export const theme = (mode) => {
     colors: color,
     heading: mode === 'dark' ? color.darkTextPrimary : color.textPrimary,
     paper: mode === 'dark' ? color.darkPaper : color.paper,
+    paper2: mode === 'dark' ? '#28313f' : '#ddd',
     //backgroundDefault: backgroundGradient, //mode === 'dark' ? color.darkPaper : '#3ed3ed',
     //background: mode === 'dark' ? color.darkBackground : color.background,
     backgroundSemiTransparent: mode === 'dark' ? 'rgba(16, 27, 38, 0.5)' : 'rgba(255, 255, 255, 0.9)',

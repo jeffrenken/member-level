@@ -1,9 +1,9 @@
-import { Dialog, DialogActions, DialogContent, DialogTitle, Stack, Typography, useTheme, Paper, Box } from '@mui/material';
-import { useEffect, useState } from 'react';
-import FullCalendar from '@fullcalendar/react';
 import dayGridPlugin from '@fullcalendar/daygrid';
-import './calendar.css';
+import FullCalendar from '@fullcalendar/react';
+import { Box, Dialog, DialogContent, Paper, Stack, Typography, useTheme } from '@mui/material';
 import dayjs from 'dayjs';
+import { useEffect, useState } from 'react';
+import './calendar.css';
 import { medicationCategoryColors } from './MedicationTable';
 
 export function CalendarDialog({ open, onClose, member, selectedDrugName }) {
@@ -45,13 +45,18 @@ export function CalendarDialog({ open, onClose, member, selectedDrugName }) {
     const content = (
       <Box>
         <Typography sx={{ fontSize: '0.9rem' }}>{event.extendedProps.drug_name}</Typography>
+        <Typography sx={{ fontSize: '0.8rem' }}>Days Covered: 89%</Typography>
         <Typography sx={{ fontSize: '0.8rem' }}>Prescibing Physician: {event.extendedProps.physician}</Typography>
         <Typography sx={{ fontSize: '0.8rem' }}>Claim Number: {event.extendedProps.claim_number}</Typography>
       </Box>
     );
+
+    const contentHeight = content.props.children.length * 20;
+
     setTooltip({
       display: 'block',
-      top: pageY - 65, // Offset from cursor
+      top: pageY - contentHeight, // Offset from cursor
+      bottom: pageY + 65, // Offset from cursor
       left: pageX - 60, // Offset from cursor
       content: content
     });
@@ -100,7 +105,8 @@ export function CalendarDialog({ open, onClose, member, selectedDrugName }) {
                 position: 'fixed',
                 zIndex: 7,
                 padding: '8px',
-                boxShadow: '0px 0px 10px rgba(0, 0, 0, 0.2)'
+                boxShadow: '0px 0px 10px rgba(0, 0, 0, 0.2)',
+                pointerEvents: 'none'
               }}
             >
               {tooltip.content}

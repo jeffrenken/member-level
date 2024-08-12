@@ -1,4 +1,4 @@
-import { Box, Chip, Rating, useTheme, Stack } from '@mui/material';
+import { Box, Chip, Rating, useTheme } from '@mui/material';
 import { IconCheck, IconCheckbox, IconStar, IconUserHeart, IconX } from '@tabler/icons-react';
 import { Link } from 'react-router-dom';
 
@@ -15,6 +15,10 @@ function addOrSubractValue(value) {
   }
 
   return Math.ceil(returnVal);
+}
+
+function capitalizeFirstLetter(string) {
+  return string.charAt(0).toUpperCase() + string.slice(1);
 }
 
 export function getSparklineData(finalNumberOfGaps) {
@@ -63,6 +67,21 @@ export const MeasureRenderer = (params) => {
       <IconX color="#f44336" />
     </Box>
   );
+};
+
+export const MeasureTypeRenderer = (params) => {
+  if (params.value === undefined) {
+    return undefined;
+  }
+  if (params.value === 'stars') {
+    return (
+      <Box pt={0.5}>
+        <IconStar size={20} />
+      </Box>
+    );
+  }
+
+  return <Box pt={0.5}>{capitalizeFirstLetter(params.value)}</Box>;
 };
 
 export const RatingRenderer = (params) => {

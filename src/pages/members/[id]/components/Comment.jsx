@@ -1,14 +1,12 @@
-import { TipTapProvider } from '@/root/src/components/tiptap/TipTapProvider';
-import { Card, StyledCard, Typography, Box, Stack, IconButton } from '@/components/ui';
-import { IconPencil, IconTrash } from '@tabler/icons-react';
-import { useState } from 'react';
+import { Box, IconButton, Stack, StyledCard, Typography } from '@/components/ui';
+import { Fade, FadeToggle } from '@/root/src/components/Fade';
 import { TipTapEditor } from '@/root/src/components/tiptap/TipTapEditor';
+import { TipTapProvider } from '@/root/src/components/tiptap/TipTapProvider';
 import { useTheme } from '@/root/src/hooks';
 import { commentTestState } from '@/state/commentTestState';
+import { IconPencil, IconTrash } from '@tabler/icons-react';
+import { useState } from 'react';
 import { useRecoilState } from 'recoil';
-import { Fade, FadeToggle } from '@/root/src/components/Fade';
-import { AnimatePresence, motion } from 'framer-motion';
-import { fontWeight } from '@mui/system';
 
 export function Comment({ comment, isAddingComment }) {
   const theme = useTheme();
@@ -35,7 +33,6 @@ export function Comment({ comment, isAddingComment }) {
   };
 
   const handleCommentDelete = () => {
-    console.log('handleCommentDelete');
     let commentIndex = comments.findIndex((c) => c.id === comment.id);
     let commentsCopy = [...comments];
 
@@ -46,11 +43,10 @@ export function Comment({ comment, isAddingComment }) {
   const isAuthUser = user === 1;
 
   const margin = isAuthUser ? '0px 0px 0px 24px' : '0px 24px 0px 0px';
-  console.log('margin', margin);
 
   let background = isDarkMode ? '#474747' : '#ddd';
   if (isAuthUser) {
-    background = '#28313f';
+    background = theme.palette.paper2;
   }
 
   const handleMouseEnter = () => {

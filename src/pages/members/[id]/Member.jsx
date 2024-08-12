@@ -1,7 +1,7 @@
 import { useMeasures } from '@/api';
 import { useMember } from '@/api/useMember';
 import AgGrid from '@/components/tables/AgGrid';
-import { LinkRenderer, MeasureRenderer } from '@/components/tables/CellRenderers';
+import { LinkRenderer, MeasureRenderer, MeasureTypeRenderer } from '@/components/tables/CellRenderers';
 import { Box, Container, Grid, StyledCard, Typography } from '@/components/ui';
 import { useTheme } from '@/hooks';
 import { commentTestState } from '@/state/commentTestState';
@@ -24,21 +24,15 @@ function getValue(value) {
   }
 }
 
-function capitalizeFirstLetter(string) {
-  return string.charAt(0).toUpperCase() + string.slice(1);
-}
-
 function Member() {
   const theme = useTheme();
   const { id } = useParams();
   const { data: member } = useMember(id);
   //const { data } = useMembers();
   const { data: measuresData } = useMeasures();
-  console.log('measuresData', measuresData);
   const [selectedDrugName, setSelectedDrugName] = useState('');
   const comments = useRecoilValue(commentTestState);
   const [tab, setTab] = useState(0);
-  console.log('tab', tab);
 
   /*   const member = useMemo(() => {
     if (!data) {
@@ -68,7 +62,6 @@ function Member() {
 
     return measures.filter((measure) => measure.label !== 'CONTRACT' && measure.label !== 'memberId');
   }, [member, measuresData]);
-  console.log('rows', rows);
 
   const columnDefs = [
     { field: 'label', headerName: 'Measure', filter: true, chartDataType: 'category', maxWidth: 500, cellRenderer: LinkRenderer },
@@ -87,7 +80,7 @@ function Member() {
       maxWidth: 150,
       chartDataType: 'category',
       filter: true,
-      cellRenderer: ({ value }) => capitalizeFirstLetter(value) + ' Measure'
+      cellRenderer: MeasureTypeRenderer
     }
   ];
 
@@ -112,7 +105,7 @@ function Member() {
               p={2}
               mt={2}
               mx={2}
-              style={{ height: 'fit-content', boxShadow: theme.palette.shadowBlue, backgroundColor: '#28313f' }}
+              style={{ height: 'fit-content', boxShadow: theme.palette.shadowBlue, backgroundColor: theme.palette.paper2 }}
             >
               <MemberSection member={member} />
             </StyledCard>
