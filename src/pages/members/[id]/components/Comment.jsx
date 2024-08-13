@@ -2,6 +2,8 @@ import { Box, IconButton, Stack, StyledCard, Typography } from '@/components/ui'
 import { Fade, FadeToggle } from '@/root/src/components/Fade';
 import { TipTapEditor } from '@/root/src/components/tiptap/TipTapEditor';
 import { TipTapProvider } from '@/root/src/components/tiptap/TipTapProvider';
+import Mention from '@tiptap/extension-mention';
+
 import { useTheme } from '@/root/src/hooks';
 import { commentTestState } from '@/state/commentTestState';
 import { IconPencil, IconTrash } from '@tabler/icons-react';

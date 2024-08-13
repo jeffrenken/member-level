@@ -1,14 +1,18 @@
+import { useRouteError } from 'react-router-dom';
 import { Container, Grid, Typography } from './ui';
 
 const isDev = window.location.hostname === 'localhost';
 
-export const ErrorFallback = ({ error }) => {
+export const ErrorFallback = ({ error: pageError }) => {
+  const routeError = useRouteError();
+  const error = pageError ?? routeError;
+
   if (isDev) {
     return (
       <div style={{ marginTop: '20px' }}>
         <h3>Error Details (Development Mode):</h3>
-        <pre style={{ whiteSpace: 'pre-wrap', wordBreak: 'break-word' }}>{error.message}</pre>
-        <pre>{error.stack}</pre>
+        <pre style={{ whiteSpace: 'pre-wrap', wordBreak: 'break-word' }}>{error?.message}</pre>
+        <pre>{error?.stack}</pre>
       </div>
     );
   }

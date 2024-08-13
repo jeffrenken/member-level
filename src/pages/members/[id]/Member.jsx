@@ -90,7 +90,7 @@ function Member() {
       />
       <Container maxWidth="lg">
         <Grid container spacing={4}>
-          <Grid item xs={12} sm={12} md={4}>
+          <Grid item xs={12} sm={12} md={8}>
             <StyledCard
               p={2}
               mt={2}
@@ -99,6 +99,25 @@ function Member() {
             >
               <MemberSection member={member} />
             </StyledCard>
+
+            <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
+              <Tabs value={tab} onChange={(e, value) => setTab(value)} aria-label="basic tabs example">
+                <Tab label="Measures" />
+                <Tab label="Medications" />
+              </Tabs>
+            </Box>
+            {tab === 0 && (
+              <Box sx={{ height: 'calc(100vh - 360px)' }} mt={2}>
+                <AgGrid rowData={rows} columnDefs={columnDefs} hideColumns hideFilters />
+              </Box>
+            )}
+            {tab === 1 && (
+              <Box sx={{ height: 'calc(100vh - 360px)' }} mt={2}>
+                <MedicationTable medications={member.prescriptions} member={member} />
+              </Box>
+            )}
+          </Grid>
+          <Grid item xs={12} sm={12} md={4}>
             <Box mt={4} />
             <Typography variant="h3" my={1} align="center">
               Notes
@@ -109,24 +128,6 @@ function Member() {
                 member={member}
               />
             </Box>
-          </Grid>
-          <Grid item xs={12} sm={12} md={8}>
-            <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
-              <Tabs value={tab} onChange={(e, value) => setTab(value)} aria-label="basic tabs example">
-                <Tab label="Measures" />
-                <Tab label="Medications" />
-              </Tabs>
-            </Box>
-            {tab === 0 && (
-              <Box sx={{ height: 'calc(100vh - 110px)' }} mt={2}>
-                <AgGrid rowData={rows} columnDefs={columnDefs} hideColumns hideFilters />
-              </Box>
-            )}
-            {tab === 1 && (
-              <Box sx={{ height: 'calc(100vh - 110px)' }} mt={2}>
-                <MedicationTable medications={member.prescriptions} member={member} />
-              </Box>
-            )}
           </Grid>
         </Grid>
       </Container>

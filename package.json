@@ -24,10 +24,12 @@
     "@sentry/react": "^8.25.0",
     "@tabler/icons-react": "^2.46.0",
     "@tanstack/react-query": "^5.28.4",
+    "@tiptap/extension-mention": "^2.6.1",
     "@tiptap/extension-underline": "^2.5.9",
     "@tiptap/pm": "^2.5.9",
     "@tiptap/react": "^2.5.9",
     "@tiptap/starter-kit": "^2.5.9",
+    "@tiptap/suggestion": "^2.6.1",
     "ag-grid-enterprise": "^32.0.1",
     "ag-grid-react": "^32.0.1",
     "axios": "^1.6.8",
@@ -48,6 +50,7 @@
     "recoil": "^0.7.7",
     "recoil-sync": "^0.2.0",
     "styled-components": "^6.1.8",
+    "tippy.js": "^6.3.7",
     "zod": "^3.23.8"
   },
   "devDependencies": {

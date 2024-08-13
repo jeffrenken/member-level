@@ -10,6 +10,9 @@ import { commentTestState } from '@/state/commentTestState';
 import { IconBold, IconItalic, IconUnderline } from '@tabler/icons-react';
 import dayjs from 'dayjs';
 import { useRecoilState } from 'recoil';
+import Mention from '@tiptap/extension-mention';
+import suggestion from '../../pages/members/[id]/components/suggestion';
+import { useState } from 'react';
 
 const MenuBar = ({ editor }) => {
   const theme = useTheme();
@@ -46,8 +49,19 @@ const MenuBar = ({ editor }) => {
 export function TipTapEditor({ memberId, content = '', handleCancel, commentId }) {
   const theme = useTheme();
   const [comments, setComments] = useRecoilState(commentTestState);
+  const [mentionItems, setMentionItems] = useState([]);
+
   const editor = useEditor({
-    extensions: [StarterKit, Underline],
+    extensions: [
+      StarterKit,
+      Underline,
+      Mention.configure({
+        HTMLAttributes: {
+          class: 'mention'
+        },
+        suggestion
+      })
+    ],
     content: content,
     autofocus: true
   });
@@ -60,6 +74,8 @@ export function TipTapEditor({ memberId, content = '', handleCancel, commentId }
       createdAt: dayjs().format('YYYY-MM-DD HH:mm:ss'),
       memberId: memberId
     };
+
+    console.log(body);
 
     if (commentId) {
       const commentIndex = comments.findIndex((comment) => comment.id === commentId);
