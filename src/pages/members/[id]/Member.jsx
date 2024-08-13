@@ -91,12 +91,7 @@ function Member() {
       <Container maxWidth="lg">
         <Grid container spacing={4}>
           <Grid item xs={12} sm={12} md={8}>
-            <StyledCard
-              p={2}
-              mt={2}
-              mx={2}
-              style={{ height: 'fit-content', boxShadow: theme.palette.shadowBlue, backgroundColor: theme.palette.paper2 }}
-            >
+            <StyledCard p={2} mt={2} style={{ height: 'fit-content', backgroundColor: theme.palette.paper }}>
               <MemberSection member={member} />
             </StyledCard>
 

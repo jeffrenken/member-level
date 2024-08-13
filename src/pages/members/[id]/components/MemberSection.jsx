@@ -40,7 +40,7 @@ export function MemberSection({ member }) {
     let isRecent = isDateInLast365Days(date);
 
     return (
-      <Typography variant="subtitle2">
+      <Typography sx={{ fontSize: '1rem' }}>
         Last AWV: <span style={{ color: isRecent ? '#15cab6' : '#ff0000' }}>{dayjs(date).format('YYYY-MM-DD')}</span>
       </Typography>
     );
@@ -48,28 +48,28 @@ export function MemberSection({ member }) {
 
   return (
     <div>
-      <Box sx={{ textAlign: 'center' }}>
-        <Typography variant="h3" mb={1} align="center" sx={{ fontSize: '1.5rem' }}>
+      <Box>
+        <Typography mb={1} sx={{ fontSize: '1.75rem' }}>
           {member.firstName} {member.lastName}
         </Typography>
-        <Typography variant="body2">{member.address}</Typography>
-        <Typography variant="body2">
+        <Typography sx={{ fontSize: '1rem' }}>{member.address}</Typography>
+        <Typography sx={{ fontSize: '1rem' }}>
           {member.city}, {member.state}
         </Typography>
       </Box>
       <Box>
-        <Typography mt={2} variant="subtitle2">
+        <Typography mt={2} sx={{ fontSize: '1rem' }}>
           Date of Birth: {member.dateOfBirth}
         </Typography>
-        <Typography variant="subtitle2">
+        <Typography sx={{ fontSize: '1rem' }}>
           Primary Care Physician:{' '}
           <Link to={`/providers/${member?.providerGroup?.Provider}`} style={{ textDecoration: 'none', color: '#4d9fda' }}>
             {member?.providerGroup?.Provider}
           </Link>
         </Typography>
-        <Typography variant="subtitle2">Provider Group: {member?.providerGroup?.['Provider Group']}</Typography>
-        <Typography variant="subtitle2">Care Supervisor: {member?.supervisor}</Typography>
-        <Typography variant="subtitle2">
+        <Typography sx={{ fontSize: '1rem' }}>Provider Group: {member?.providerGroup?.['Provider Group']}</Typography>
+        <Typography sx={{ fontSize: '1rem' }}>Care Supervisor: {member?.supervisor}</Typography>
+        <Typography sx={{ fontSize: '1rem' }}>
           Care Manager:{' '}
           <Link to={`/care-managers/${member?.careManager}`} style={{ textDecoration: 'none', color: '#4d9fda' }}>
             {member?.careManager}
