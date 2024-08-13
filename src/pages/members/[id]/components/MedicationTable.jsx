@@ -4,6 +4,7 @@ import { IconCalendar } from '@tabler/icons-react';
 import { CalendarDialog } from './CalendarDialog';
 import { useState } from 'react';
 import { PillRenderer } from '@/root/src/components/tables/CellRenderers';
+import { useMemo } from 'react';
 
 export const medicationCategoryColors = {
   Diabetes: '#696cb5',
@@ -37,6 +38,7 @@ export function MedicationTable({ medications, member }) {
       chartDataType: 'category',
       cellRenderer: (params) => PillRenderer(params, medicationCategoryColors[params.value])
     },
+    { field: 'pdc', headerName: 'PDC', filter: true, chartDataType: 'series' },
     { field: 'fill_date', headerName: 'Fill Date', filter: true, chartDataType: 'category' },
     { field: 'last_coverage_date', headerName: 'Last Coverage Date', filter: true, chartDataType: 'category' },
     { field: 'quantity', headerName: 'Quantity', filter: true, chartDataType: 'category' },
@@ -46,12 +48,19 @@ export function MedicationTable({ medications, member }) {
     { field: 'claim_number', headerName: 'Claim Number', filter: true, chartDataType: 'category' }
   ];
 
-  const rows = medications.map((medication) => {
-    return {
-      ...medication,
-      drug_name: medication.drug_name
-    };
-  });
+  function getRandomNumber(min, max) {
+    return Math.floor(Math.random() * (max - min + 1)) + min;
+  }
+
+  const rows = useMemo(() => {
+    return medications.map((medication) => {
+      return {
+        ...medication,
+        drug_name: medication.drug_name,
+        pdc: getRandomNumber(0, 100) + '%'
+      };
+    });
+  }, [medications]);
 
   return (
     <div>
@@ -61,6 +70,7 @@ export function MedicationTable({ medications, member }) {
           setSelectedDrugName('');
         }}
         member={member}
+        medications={rows}
         selectedDrugName={selectedDrugName}
       />
       <AgGrid rowData={rows} columnDefs={columnDefs} hideColumns hideFilters />

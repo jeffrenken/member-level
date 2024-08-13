@@ -174,17 +174,18 @@ const holidays = [
   }
 ];
 
-export function CalendarDialog({ open, onClose, member, selectedDrugName }) {
+export function CalendarDialog({ open, onClose, member, selectedDrugName, medications }) {
+  console.log('medications', medications);
   const theme = useTheme();
   const [events, setEvents] = useState([]);
   const [tooltip, setTooltip] = useState({ display: 'none', top: 0, left: 0, content: '' });
 
   useEffect(() => {
-    if (member) {
+    if (medications) {
       const endDate = new Date(member.dateOfBirth);
       endDate.setFullYear(endDate.getFullYear() + 10);
 
-      let events = member.prescriptions
+      let events = medications
         //.filter((prescription) => prescription.drug_name === selectedDrugName)
         .map((prescription) => {
           const startDate = dayjs(prescription.fill_date);
@@ -199,7 +200,8 @@ export function CalendarDialog({ open, onClose, member, selectedDrugName }) {
             calendarId: 'cal1',
             claim_number: prescription.claim_number,
             physician: prescription.prescriber_name,
-            drug_name: prescription.drug_name
+            drug_name: prescription.drug_name,
+            pdc: prescription.pdc
           };
         });
 
@@ -233,7 +235,7 @@ export function CalendarDialog({ open, onClose, member, selectedDrugName }) {
     const content = (
       <Box>
         <Typography sx={{ fontSize: '0.9rem' }}>{event.extendedProps.drug_name}</Typography>
-        <Typography sx={{ fontSize: '0.8rem' }}>PDC: 89%</Typography>
+        <Typography sx={{ fontSize: '0.8rem' }}>PDC: {event.extendedProps.pdc}</Typography>
         <Typography sx={{ fontSize: '0.8rem' }}>Prescibing Physician: {event.extendedProps.physician}</Typography>
         <Typography sx={{ fontSize: '0.8rem' }}>Claim Number: {event.extendedProps.claim_number}</Typography>
       </Box>
