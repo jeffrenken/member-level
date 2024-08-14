@@ -3,11 +3,11 @@ import tippy from 'tippy.js';
 
 import { MentionList } from './MentionList.jsx';
 
+export const users = ['Dwight Schrute', 'Jim Halpert', 'Pam Beesly', 'Michael Scott'];
+
 export default {
   items: ({ query }) => {
-    return ['Johnny Cash', 'Dwight Schrute', 'Jim Halpert', 'Pam Beesly', 'Michael Scott']
-      .filter((item) => item.toLowerCase().startsWith(query.toLowerCase()))
-      .slice(0, 5);
+    return users.filter((item) => item.toLowerCase().startsWith(query.toLowerCase())).slice(0, 5);
   },
 
   render: () => {

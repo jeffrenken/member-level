@@ -57,6 +57,7 @@
   }
   p {
     font-size: 0.8rem;
+    line-height: 1.5;
   }
 
   /* Code and preformatted text styles */
@@ -97,11 +98,12 @@
   }
 
     .mention {
-    background-color: rgb(76, 90, 89);
+    background-color: rgb(77, 159, 218);
     border-radius: 0.4rem;
     box-decoration-break: clone;
     color: #fff;
     padding: 0.1rem 0.3rem;
+    white-space: nowrap !important;
   }
 
 }

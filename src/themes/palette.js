@@ -4,6 +4,7 @@
  */
 
 export default function themePalette(theme) {
+  const isDarkMode = theme.mode === 'dark';
   return {
     mode: theme.mode,
     common: {
@@ -76,7 +77,7 @@ export default function themePalette(theme) {
     },
     action: {
       active: theme.darkTextSecondary,
-      hover: theme.colors?.grey100,
+      hover: isDarkMode ? theme.colors?.grey600 : theme.colors?.grey100,
       selected: theme.colors?.primaryDark,
       disabled: theme.colors?.grey300,
       disabledBackground: theme.colors?.grey200,

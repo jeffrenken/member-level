@@ -4,6 +4,7 @@ const defaultValue = [
   {
     id: 1,
     userId: 1,
+    userName: 'Test User',
     content: {
       type: 'doc',
       content: [
@@ -11,9 +12,8 @@ const defaultValue = [
           type: 'paragraph',
           content: [
             { type: 'text', text: 'This is the first ' },
-            { type: 'text', marks: [{ type: 'italic' }], text: 'note' },
-            { type: 'text', text: ' about this person. ' },
-            { type: 'text', marks: [{ type: 'bold' }], text: 'Gonna style this somehow.' }
+            { type: 'text', marks: [{ type: 'italic' }, { type: 'bold' }], text: 'note' },
+            { type: 'text', text: ' about this person. ' }
           ]
         }
       ]
@@ -24,20 +24,42 @@ const defaultValue = [
   {
     id: 2,
     userId: 2,
+    userName: 'Dwight Schrute',
     content: {
       type: 'doc',
       content: [
         {
           type: 'paragraph',
           content: [
-            { type: 'text', text: "Here's " },
-            { type: 'text', marks: [{ type: 'underline' }], text: 'another' },
-            { type: 'text', text: ' one left by someone else.' }
+            { type: 'text', text: 'Can I get ' },
+            { type: 'mention', attrs: { id: 'Test User', label: null } },
+            { type: 'text', text: '  and ' },
+            { type: 'mention', attrs: { id: 'Jim Halpert', label: null } },
+            { type: 'text', text: '  to check this out?' }
           ]
         }
       ]
     },
     createdAt: '2024-08-07 15:12:12',
+    memberId: 954
+  },
+  {
+    id: 3,
+    userId: 3,
+    userName: 'Jim Halpert',
+    content: {
+      type: 'doc',
+      content: [
+        {
+          type: 'paragraph',
+          content: [
+            { type: 'mention', attrs: { id: 'Test User', label: null } },
+            { type: 'text', text: ' Please check the status of medications.' }
+          ]
+        }
+      ]
+    },
+    createdAt: '2024-08-13 09:53:32',
     memberId: 954
   }
 ];
@@ -56,6 +78,6 @@ const localStorageEffect =
 
 export const commentTestState = atom({
   key: 'commentTestState',
-  default: defaultValue,
-  effects: [localStorageEffect('commentTestState')]
+  default: defaultValue
+  //effects: [localStorageEffect('commentTestState')]
 });

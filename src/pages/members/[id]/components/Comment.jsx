@@ -3,6 +3,7 @@ import { Fade, FadeToggle } from '@/root/src/components/Fade';
 import { TipTapEditor } from '@/root/src/components/tiptap/TipTapEditor';
 import { TipTapProvider } from '@/root/src/components/tiptap/TipTapProvider';
 import Mention from '@tiptap/extension-mention';
+import { useSearchParams } from 'react-router-dom';
 
 import { useTheme } from '@/root/src/hooks';
 import { commentTestState } from '@/state/commentTestState';
@@ -11,6 +12,10 @@ import { useState } from 'react';
 import { useRecoilState } from 'recoil';
 
 export function Comment({ comment, isAddingComment }) {
+  console.log('comment', comment);
+  const [searchParams] = useSearchParams();
+  const notificationId = searchParams.get('notification');
+  console.log('notificationId', notificationId);
   const theme = useTheme();
   const isDarkMode = theme.palette.mode === 'dark';
   const [comments, setComments] = useRecoilState(commentTestState);
@@ -21,8 +26,8 @@ export function Comment({ comment, isAddingComment }) {
 
   if (user === 1) {
     userName = 'You';
-  } else if (user === 2) {
-    userName = 'Johnny Cash';
+  } else {
+    userName = comment.userName;
   }
 
   const handleEditClick = () => {
@@ -57,6 +62,8 @@ export function Comment({ comment, isAddingComment }) {
     }
   };
 
+  const borderColor = notificationId && notificationId == comment.id ? theme.palette.cardGreen : null;
+
   return (
     <Box sx={{ padding: margin }} onMouseEnter={handleMouseEnter} onMouseLeave={() => setDisplayControls(false)}>
       <StyledCard
@@ -64,7 +71,8 @@ export function Comment({ comment, isAddingComment }) {
           padding: '2px 12px 6px 12px',
           height: 'fit-content',
           backgroundColor: background,
-          boxShadow: displayControls && theme.palette.shadowBlue
+          boxShadow: displayControls && theme.palette.shadowBlue,
+          border: borderColor ? `2px solid ${borderColor}` : theme.palette.border
         }}
       >
         <Stack direction="row" alignItems="center" justifyContent="space-between">
