@@ -54,7 +54,7 @@ export const SidebarItem = ({ item, level, drawerToggle }) => {
     >
       <Box>{itemIcon}</Box>
       <Box>
-        <Typography variant={'body1'} color="inherit" align="center">
+        <Typography align="center" sx={{ fontSize: '0.8rem' }}>
           {item.title}
         </Typography>
       </Box>

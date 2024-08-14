@@ -2,11 +2,11 @@ import {
   Avatar,
   Badge,
   Box,
-  Button,
   IconButton,
   List,
   ListItem,
   ListItemAvatar,
+  ListItemIcon,
   ListItemText,
   Menu,
   MenuItem,
@@ -16,12 +16,11 @@ import {
   styled,
   useTheme
 } from '@mui/material';
-import { IconInbox, IconSettings } from '@tabler/icons-react';
+import { IconInbox, IconUserHeart } from '@tabler/icons-react';
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Stack } from './ui';
-import { padding } from '@mui/system';
-import { useMembers } from '../api';
+import { useMembers } from '@/api';
+import { Stack } from '@/components/ui';
 
 function findObjectsWithMentionAndName(data, name) {
   const result = [];
@@ -132,7 +131,7 @@ export default function NotificationList({ button }) {
           <Tab label={`General (1)`} />
         </Tabs>
         {tabValue === 0 && (
-          <List sx={{ width: '100%' }}>
+          <List sx={{ width: '100%', marginY: 0 }}>
             {notifications.map((notification, i) => {
               const member = members.find((member) => member.id === notification.typeId);
               return (
@@ -195,17 +194,21 @@ export default function NotificationList({ button }) {
           <List sx={{ width: '100%' }}>
             <MenuItem onClick={handleClose} disableGutters component={Link} to={`/hei`}>
               <ListItem dense alignItems="flex-start" secondaryAction={<Badge variant="dot" color="success" />}>
+                <ListItemIcon>
+                  <IconUserHeart />
+                </ListItemIcon>
                 <ListItemText
+                  sx={{ paddingTop: '8px' }}
                   primary={
                     <>
                       <Typography component="span" variant="body2" fontWeight="bold">
-                        Some new update to the HEI page!
+                        HEI: BCS-E dropped a threshold
                       </Typography>
                     </>
                   }
                 />
               </ListItem>
-            </MenuItem>{' '}
+            </MenuItem>
           </List>
         )}
       </Menu>
