@@ -114,14 +114,16 @@ export const RatingRenderer = (params) => {
 
 export const StarRenderer = (params) => {
   const wholeNumber = Math.floor(params.value);
+  const theme = useTheme();
+  const isDarkMode = theme.palette.mode === 'dark';
   return (
     <Box
       sx={{
-        px: 1,
+        //px: 1,
         //margin: '1px 4px 1px 4px',
         //background: 'linear-gradient(90deg, rgba(237,235,235,0) 35%, rgba(179,15,15,0.25) 85%)',
-        color: '#FDDA0D',
-        filter: 'drop-shadow(0px 0px 4px #FDDA0D)'
+        color: isDarkMode ? '#FDDA0D' : '#d1b40b',
+        filter: isDarkMode ? 'drop-shadow(0px 0px 4px #FDDA0D)' : 'drop-shadow(0px 0px 1px #d1b40b)'
       }}
     >
       {Array.from(Array(wholeNumber)).map(() => (

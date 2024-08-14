@@ -17,6 +17,7 @@ import { IconArrowDownRight, IconArrowUpRight } from '@tabler/icons-react';
 import { useMemo } from 'react';
 import { Link } from 'react-router-dom';
 import { useRecoilValue } from 'recoil';
+import { maxWidth } from '@mui/system';
 
 const randomHalfNumberBetween = (min, max) => Math.floor(Math.random() * (max - min + 1) + min) / 2;
 
@@ -142,10 +143,9 @@ function ProviderGroupsPage() {
     {
       field: 'starRating',
       headerName: 'Star Rating',
-      type: 'numericColumn',
-      maxWidth: 180,
-      chartDataType: 'series',
+      chartDataType: 'category',
       filter: true,
+      maxWidth: 130,
       cellRenderer: StarRenderer
     },
     {
