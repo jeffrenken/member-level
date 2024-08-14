@@ -55,6 +55,10 @@
   h6 { 
     font-size: 1rem; 
   }
+  p {
+    font-size: 0.8rem;
+    line-height: 1.5;
+  }
 
   /* Code and preformatted text styles */
   code {
@@ -92,4 +96,14 @@
     border-top: 1px solid #000;
     margin: 2rem 0;
   }
+
+    .mention {
+    background-color: rgb(77, 159, 218);
+    border-radius: 0.4rem;
+    box-decoration-break: clone;
+    color: #fff;
+    padding: 0.1rem 0.3rem;
+    white-space: nowrap !important;
+  }
+
 }

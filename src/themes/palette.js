@@ -4,6 +4,7 @@
  */
 
 export default function themePalette(theme) {
+  const isDarkMode = theme.mode === 'dark';
   return {
     mode: theme.mode,
     common: {
@@ -14,7 +15,8 @@ export default function themePalette(theme) {
       main: theme.colors?.primaryMain,
       dark: theme.colors?.primaryDark,
       200: theme.colors?.primary200,
-      800: theme.colors?.primary800
+      800: theme.colors?.primary800,
+      contrastText: '#fff'
     },
     secondary: {
       light: theme.colors?.secondaryLight,
@@ -75,13 +77,14 @@ export default function themePalette(theme) {
     },
     action: {
       active: theme.darkTextSecondary,
-      hover: theme.colors?.grey100,
+      hover: isDarkMode ? theme.colors?.grey600 : theme.colors?.grey100,
       selected: theme.colors?.primaryDark,
       disabled: theme.colors?.grey300,
       disabledBackground: theme.colors?.grey200,
       focus: theme.colors?.grey100
     },
     border: theme.mode === 'dark' ? '0.5px solid rgba(255, 255, 255, 0.2)' : '0.5px solid rgba(30, 30, 30, 0.2)',
+    shadowBlue: 'rgba(98, 174, 255, 0.25) 0px 9px 17px -5px, rgba(0, 0, 0, 0.3) 0px 8px 16px -8px;',
 
     /*     main gradient bg set is compStyleOverride.js
      */

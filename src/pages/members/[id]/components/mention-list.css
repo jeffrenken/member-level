@@ -1,0 +1,14 @@
+/* Dropdown menu */
+.dropdown-menu {
+  background: #fff;
+  border: 1px solid #ddd;
+  border-radius: 0.7rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.1rem;
+  overflow: auto;
+  padding: 0.4rem;
+  position: relative;
+
+  
+}

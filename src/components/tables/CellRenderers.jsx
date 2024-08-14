@@ -1,4 +1,4 @@
-import { Box, Rating, useTheme } from '@mui/material';
+import { Box, Chip, Rating, useTheme } from '@mui/material';
 import { IconCheck, IconCheckbox, IconStar, IconUserHeart, IconX } from '@tabler/icons-react';
 import { Link } from 'react-router-dom';
 
@@ -15,6 +15,10 @@ function addOrSubractValue(value) {
   }
 
   return Math.ceil(returnVal);
+}
+
+function capitalizeFirstLetter(string) {
+  return string.charAt(0).toUpperCase() + string.slice(1);
 }
 
 export function getSparklineData(finalNumberOfGaps) {
@@ -52,17 +56,32 @@ export const MeasureRenderer = (params) => {
   }
   if (params.value) {
     return (
-      <Box pt={0.5}>
+      <Box pt={0.5} sx={{ margin: '0 auto', width: 'fit-content' }}>
         <IconCheck color="#4caf50" />
       </Box>
     );
   }
 
   return (
-    <Box pt={0.5}>
+    <Box pt={0.5} sx={{ margin: '0 auto', width: 'fit-content' }}>
       <IconX color="#f44336" />
     </Box>
   );
+};
+
+export const MeasureTypeRenderer = (params) => {
+  if (params.value === undefined) {
+    return undefined;
+  }
+  if (params.value === 'stars') {
+    return (
+      <Box pt={0.5} sx={{ margin: '0 auto', width: 'fit-content' }}>
+        <IconStar size={20} />
+      </Box>
+    );
+  }
+
+  return <Box sx={{ margin: '0 auto', width: 'fit-content' }}>{capitalizeFirstLetter(params.value)}</Box>;
 };
 
 export const RatingRenderer = (params) => {
@@ -158,6 +177,8 @@ export const LinkRenderer = (params) => {
 };
 
 export const ProviderLinkRenderer = (params) => {
+  const theme = useTheme();
+  const isDarkMode = theme.palette.mode === 'dark';
   if (!params.value) {
     return undefined;
   }
@@ -168,14 +189,33 @@ export const ProviderLinkRenderer = (params) => {
       to={url}
       px={0}
       sx={(theme) => ({
-        backgroundColor: '#0C1C2F',
+        backgroundColor: isDarkMode ? '#0C1C2F' : theme.palette.primary.main,
         padding: '6px 10px',
         borderRadius: '16px',
         textDecoration: 'none',
-        color: '#ddd'
+        color: isDarkMode ? '#ddd' : '#fff'
       })}
     >
       {params.value}
+    </Box>
+  );
+};
+
+export const PillRenderer = (params, backgroundColor) => {
+  if (!params.value) {
+    return undefined;
+  }
+
+  return (
+    <Box sx={{ margin: '0 auto', width: 'fit-content' }}>
+      <Chip
+        label={params.value.toUpperCase()}
+        size="small"
+        sx={(theme) => ({
+          backgroundColor: backgroundColor,
+          color: '#fff'
+        })}
+      />
     </Box>
   );
 };

@@ -1,13 +1,22 @@
 import logoDark from '@/assets/images/logoDark.png';
 import logoWhite from '@/assets/images/logoWhite.png';
 import { ThemeContext } from '@/context/ThemeContextProvider';
-import { Box, Fade, IconButton, List, Stack } from '@mui/material';
+import { Box, Fade, IconButton, List, Stack, styled } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
-import { IconMoon, IconSun, IconUserCircle } from '@tabler/icons-react';
+import { IconMoon, IconSun, IconUserCircle, IconInbox } from '@tabler/icons-react';
 import { useContext } from 'react';
 import { useLocation } from 'react-router-dom';
 import { items } from './sidebar-items';
 import { SidebarItem } from './SidebarItem';
+import NotificationList from '../../../NotificationList';
+
+const StyledIconButton = styled(IconButton)(({ theme }) => ({
+  padding: '0px'
+}));
+
+const SidebarIcon = ({ IconComponent }) => {
+  return <IconComponent style={{ strokeWidth: 1 }} />;
+};
 
 const SidebarItems = ({ drawerToggle }) => {
   const theme = useTheme();
@@ -28,13 +37,14 @@ const SidebarItems = ({ drawerToggle }) => {
           ml="6px"
           sx={{ display: { xs: 'block', md: 'block' }, flexGrow: 1, objectFit: 'contain' }}
         />
-        <Stack direction="row" justifyContent="center" sx={{ width: '100%', mb: 'calc((30vh) / 2)' }}>
-          <IconButton color="neutral" onClick={switchColorMode}>
-            {isDarkMode ? <IconSun /> : <IconMoon />}
-          </IconButton>
-          <IconButton color="neutral">
-            <IconUserCircle style={{ strokeWidth: 1.5 }} />
-          </IconButton>
+        <Stack direction="row" justifyContent="center" spacing={0.5} sx={{ width: '100%', mb: 'calc((30vh) / 2)' }}>
+          <StyledIconButton color="neutral" onClick={switchColorMode}>
+            {isDarkMode ? <SidebarIcon IconComponent={IconSun} /> : <SidebarIcon IconComponent={IconMoon} />}
+          </StyledIconButton>
+          <StyledIconButton color="neutral">
+            <SidebarIcon IconComponent={IconUserCircle} />
+          </StyledIconButton>
+          <NotificationList />
         </Stack>
         <List>
           {items.map((item, i) => {

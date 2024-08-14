@@ -5,7 +5,17 @@ import { AgGridReact } from 'ag-grid-react';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 //import './ag-grid.css';
 
-export default function AgGrid({ rowData, columnDefs, csvDownload, saveFiltersButton, height = '100%', tableRef, ...props }) {
+export default function AgGrid({
+  rowData,
+  columnDefs,
+  csvDownload,
+  saveFiltersButton,
+  height = '100%',
+  tableRef,
+  hideColumns,
+  hideFilters,
+  ...props
+}) {
   //const gridRef = useRef();
   const theme = useTheme();
   const darkMode = theme.palette.mode === 'dark';
@@ -48,29 +58,38 @@ export default function AgGrid({ rowData, columnDefs, csvDownload, saveFiltersBu
   }
 
   const sideBar = useMemo(() => {
-    return {
-      toolPanels: [
-        {
-          id: 'columns',
-          labelDefault: 'Columns',
-          labelKey: 'columns',
-          iconKey: 'columns',
-          toolPanel: 'agColumnsToolPanel',
-          toolPanelParams: {
-            suppressRowGroups: false,
-            suppressValues: false
-          }
-        },
-        {
-          id: 'filters',
-          labelDefault: 'Filters',
-          labelKey: 'filters',
-          iconKey: 'filter',
-          toolPanel: 'agFiltersToolPanel'
+    let toolPanels = [
+      {
+        id: 'columns',
+        labelDefault: 'Columns',
+        labelKey: 'columns',
+        iconKey: 'columns',
+        toolPanel: 'agColumnsToolPanel',
+        toolPanelParams: {
+          suppressRowGroups: false,
+          suppressValues: false
         }
-      ]
+      },
+      {
+        id: 'filters',
+        labelDefault: 'Filters',
+        labelKey: 'filters',
+        iconKey: 'filter',
+        toolPanel: 'agFiltersToolPanel'
+      }
+    ];
+
+    if (hideColumns) {
+      toolPanels = toolPanels.filter((toolPanel) => toolPanel.id !== 'columns');
+    }
+
+    if (hideFilters) {
+      toolPanels = toolPanels.filter((toolPanel) => toolPanel.id !== 'filters');
+    }
+    return {
+      toolPanels: toolPanels
     };
-  }, []);
+  }, [hideColumns, hideFilters]);
 
   const autoSizeStrategy = {
     type: 'fitCellContents'

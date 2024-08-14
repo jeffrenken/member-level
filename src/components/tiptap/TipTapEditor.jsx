@@ -1,17 +1,18 @@
 import './tiptap-styles.css';
 
-import { EditorContent, useEditor, EditorProvider } from '@tiptap/react';
-import StarterKit from '@tiptap/starter-kit';
 import Underline from '@tiptap/extension-underline';
+import { EditorContent, useEditor } from '@tiptap/react';
+import StarterKit from '@tiptap/starter-kit';
 
-import { IconButton, Box, Button, Stack } from '@/components/ui';
-import { IconBold, IconItalic, IconUnderline } from '@tabler/icons-react';
+import { Box, Button, IconButton, Stack } from '@/components/ui';
 import { useTheme } from '@/hooks';
-import { useRecoilState } from 'recoil';
 import { commentTestState } from '@/state/commentTestState';
+import { IconBold, IconItalic, IconUnderline } from '@tabler/icons-react';
 import dayjs from 'dayjs';
-import { ButtonGroup } from '@mui/material';
-import { border } from '@mui/system';
+import { useRecoilState } from 'recoil';
+import Mention from '@tiptap/extension-mention';
+import suggestion from '../../pages/members/[id]/components/suggestion';
+import { useState } from 'react';
 
 const MenuBar = ({ editor }) => {
   const theme = useTheme();
@@ -48,8 +49,19 @@ const MenuBar = ({ editor }) => {
 export function TipTapEditor({ memberId, content = '', handleCancel, commentId }) {
   const theme = useTheme();
   const [comments, setComments] = useRecoilState(commentTestState);
+  const [mentionItems, setMentionItems] = useState([]);
+
   const editor = useEditor({
-    extensions: [StarterKit, Underline],
+    extensions: [
+      StarterKit,
+      Underline,
+      Mention.configure({
+        HTMLAttributes: {
+          class: 'mention'
+        },
+        suggestion
+      })
+    ],
     content: content,
     autofocus: true
   });
@@ -63,9 +75,10 @@ export function TipTapEditor({ memberId, content = '', handleCancel, commentId }
       memberId: memberId
     };
 
+    console.log(body);
+
     if (commentId) {
       const commentIndex = comments.findIndex((comment) => comment.id === commentId);
-      console.log('commentIndex', commentIndex);
       let commentsCopy = [...comments];
       let commentCopy = { ...commentsCopy[commentIndex] };
       commentCopy.content = editor.getJSON();

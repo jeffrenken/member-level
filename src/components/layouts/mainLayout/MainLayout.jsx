@@ -5,6 +5,8 @@ import { useTheme } from '@/hooks';
 import { useState } from 'react';
 import { Outlet, useLocation } from 'react-router-dom';
 import Sidebar from './Sidebar/Sidebar';
+import { ErrorBoundary } from 'react-error-boundary';
+import { ErrorFallback } from '@/components/ErrorFallback';
 
 const drawerWidth = 110;
 
@@ -67,7 +69,14 @@ const MainLayout = () => {
 
       <Main theme={theme} open={leftDrawerOpened} sx={{ bgcolor: 'transparent' }}>
         <Box sx={{ display: 'block', width: '100%' }}>
-          <Outlet />
+          <ErrorBoundary
+            FallbackComponent={ErrorFallback}
+            onReset={() => {
+              // Reset the state of your app so the error doesn't happen again
+            }}
+          >
+            <Outlet />
+          </ErrorBoundary>{' '}
           {!location.pathname.includes('map') && (
             <Typography align="center" my={1} sx={{ backgroundColor: 'transparent', fontSize: '0.8rem' }}>
               © {currentYear} EQO Health. All rights reserved.
