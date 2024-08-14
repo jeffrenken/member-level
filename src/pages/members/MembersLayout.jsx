@@ -258,7 +258,7 @@ export default function MembersLayout({ members: filteredMembers, title, filters
           your data by your preferred criteria. Customize filters, sort options, and groupings to tailor the view and uncover key member
           insights quickly.
         </Typography>
-        <Box sx={{ height: 'calc(100vh - 200px)' }}>
+        <Box sx={{ height: 'calc(100vh - 260px)' }}>
           <AgGrid
             columnDefs={columnDefs}
             rowData={members}
@@ -266,6 +266,7 @@ export default function MembersLayout({ members: filteredMembers, title, filters
             saveFiltersButton
             rowGroupPanelShow="always"
             groupDisplayType="groupRows"
+            autoHeight={false}
           />
         </Box>
       </Container>

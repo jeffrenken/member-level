@@ -181,7 +181,7 @@ function CareManagerPage() {
         </Box>
 
         <Box sx={{ height: 'calc(100vh - 300px)' }}>
-          <AgGrid rowData={members} columnDefs={columnDefs} csvDownload={true} />
+          <AgGrid rowData={members} columnDefs={columnDefs} csvDownload={true} autoHeight={false} />
         </Box>
       </Container>
     </>

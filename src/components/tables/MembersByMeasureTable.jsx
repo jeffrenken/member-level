@@ -49,6 +49,7 @@ export default function MembersByMeasureTable({ rows, columns, tableRef }) {
       csvDownload
       saveFiltersButton
       height={'calc(100vh - 200px)'}
+      autoHeight={false}
     />
   );
 }

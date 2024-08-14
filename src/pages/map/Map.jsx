@@ -481,7 +481,7 @@ function Map() {
                   </Grid>
                   <Box sx={{ maxHeight: '290px', height: '290px' }}>
                     {membersInCountyWithOpen.length && (
-                      <MembersTable rows={filterSrf(membersInCountyWithOpen)} height="265px" csvDownload />
+                      <MembersTable rows={filterSrf(membersInCountyWithOpen)} height="265px" csvDownload disableAutoHeight />
                     )}
                   </Box>
                 </>

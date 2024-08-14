@@ -1,7 +1,7 @@
 import AgGrid from '@/components/tables/AgGrid';
 import { GapRenderer, LinkRenderer, SrfRenderer } from './CellRenderers';
 
-export default function MembersTable({ rows, csvDownload, height }) {
+export default function MembersTable({ rows, csvDownload, height, disableAutoHeight }) {
   const members = rows.map((member) => {
     return {
       name: member.firstName + ' ' + member.lastName,
@@ -41,5 +41,5 @@ export default function MembersTable({ rows, csvDownload, height }) {
     } */
   ];
 
-  return <AgGrid columnDefs={columnDefs} rowData={members} sideBar={false} csvDownload={csvDownload} height={height} />;
+  return <AgGrid columnDefs={columnDefs} rowData={members} sideBar={false} csvDownload={csvDownload} height={height} autoHeight={false} />;
 }

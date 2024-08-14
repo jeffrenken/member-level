@@ -14,6 +14,7 @@ export default function AgGrid({
   tableRef,
   hideColumns,
   hideFilters,
+  autoHeight,
   ...props
 }) {
   //const gridRef = useRef();
@@ -142,7 +143,8 @@ export default function AgGrid({
           autoSizeStrategy={columnDefs.length > 6 && autoSizeStrategy}
           enableCharts
           suppressHeaderMenuButton={true}
-          domLayout={!rows.length || rows.length > 5 ? 'normal' : 'autoHeight'}
+          //domLayout={!rows.length || rows.length > 5 ? 'normal' : 'autoHeight'}
+          domLayout={autoHeight ? 'autoHeight' : 'normal'}
           defaultCsvExportParams={{
             fileName: 'member-level-export',
             processCellCallback: (cell) => {

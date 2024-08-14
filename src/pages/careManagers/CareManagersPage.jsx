@@ -291,7 +291,14 @@ function CarePage() {
         </StyledCard>
       </Stack>
       <Box sx={{ height: 'calc(100vh - 250px)' }} mt={2}>
-        <AgGrid columnDefs={columnDefs} rowData={rows} csvDownload={true} rowGroupPanelShow="always" groupDisplayType="groupRows" />
+        <AgGrid
+          columnDefs={columnDefs}
+          rowData={rows}
+          csvDownload={true}
+          rowGroupPanelShow="always"
+          groupDisplayType="groupRows"
+          autoHeight={false}
+        />
       </Box>
     </Container>
   );

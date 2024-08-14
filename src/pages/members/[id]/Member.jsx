@@ -103,7 +103,7 @@ function Member() {
             </Box>
             {tab === 0 && (
               <Box sx={{ height: 'calc(100vh - 360px)' }} mt={2}>
-                <AgGrid rowData={rows} columnDefs={columnDefs} hideColumns hideFilters />
+                <AgGrid rowData={rows} columnDefs={columnDefs} hideColumns hideFilters autoHeight={true} />
               </Box>
             )}
             {tab === 1 && (

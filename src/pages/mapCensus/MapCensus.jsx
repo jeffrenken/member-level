@@ -377,7 +377,7 @@ function MapCensus() {
                     </Grid>
                   </Grid>
                   <Box sx={{ maxHeight: '290px', height: '290px' }}>
-                    {rows.length && <MembersTable rows={filterSrf(rows)} height="265px" csvDownload />}
+                    {rows.length && <MembersTable rows={filterSrf(rows)} height="265px" csvDownload disableAutoHeight />}
                   </Box>
                 </>
               </Box>

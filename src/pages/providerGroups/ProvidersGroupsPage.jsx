@@ -1,7 +1,14 @@
 import { useContracts, useFilteredMembers, useMembers, useProviderGroups, useProviders } from '@/api';
 import { Box, Button, Container, Stack, Typography, StyledCard } from '@/components/ui';
 import AgGrid from '@/components/tables/AgGrid';
-import { GapRenderer2, ProviderLinkRenderer, TextRenderer, TooltipRenderer, getSparklineData } from '@/components/tables/CellRenderers';
+import {
+  GapRenderer2,
+  ProviderLinkRenderer,
+  TextRenderer,
+  TooltipRenderer,
+  getSparklineData,
+  StarRenderer
+} from '@/components/tables/CellRenderers';
 import { useTheme } from '@/hooks';
 import Navbar from '@/components/layouts/Navbar';
 import { contractFilterState } from '@/state/contractFilterState';
@@ -131,6 +138,15 @@ function ProviderGroupsPage() {
       filter: true,
       enableRowGroup: true,
       cellRenderer: GapRenderer2
+    },
+    {
+      field: 'starRating',
+      headerName: 'Star Rating',
+      type: 'numericColumn',
+      maxWidth: 180,
+      chartDataType: 'series',
+      filter: true,
+      cellRenderer: StarRenderer
     },
     {
       field: 'chart',
@@ -306,7 +322,14 @@ function ProviderGroupsPage() {
         </StyledCard>
       </Stack>
       <Box sx={{ height: 'calc(100vh - 250px)' }} mt={2}>
-        <AgGrid columnDefs={columnDefs} rowData={rows} csvDownload={true} rowGroupPanelShow="always" groupDisplayType="groupRows" />
+        <AgGrid
+          columnDefs={columnDefs}
+          rowData={rows}
+          csvDownload={true}
+          rowGroupPanelShow="always"
+          groupDisplayType="groupRows"
+          autoHeight={false}
+        />
       </Box>
     </Container>
   );

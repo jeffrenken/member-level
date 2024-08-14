@@ -73,7 +73,7 @@ export function MedicationTable({ medications, member }) {
         medications={rows}
         selectedDrugName={selectedDrugName}
       />
-      <AgGrid rowData={rows} columnDefs={columnDefs} hideColumns hideFilters />
+      <AgGrid rowData={rows} columnDefs={columnDefs} hideColumns hideFilters autoHeight={true} />
     </div>
   );
 }

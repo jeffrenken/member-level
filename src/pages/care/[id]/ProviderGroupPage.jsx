@@ -88,6 +88,7 @@ export default function ProviderPage() {
           csvDownload={true}
           rowGroupPanelShow="always"
           groupDisplayType="groupRows"
+          autoHeight={false}
         />
       </Box>
     </Container>
