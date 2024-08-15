@@ -10,7 +10,7 @@ export function StyledCard({ children, height = '100%', style = {}, ...props }) 
     <Box
       height={height}
       sx={(theme) => ({
-        bgcolor: theme.palette.background.semiTransparent2,
+        bgcolor: theme.palette.background.paper,
         borderRadius: '10px',
         border: theme.palette.border,
         ...style

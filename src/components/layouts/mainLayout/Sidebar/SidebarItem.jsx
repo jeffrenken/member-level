@@ -1,16 +1,23 @@
 import { Avatar, Box, Chip, Stack, Typography, useMediaQuery } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
 import { forwardRef } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 
 export const SidebarItem = ({ item, level, drawerToggle }) => {
   const theme = useTheme();
+  const location = useLocation();
+  const isDarkMode = theme.palette.mode === 'dark';
   //const dispatch = useDispatch();
   const customization = {}; //useSelector((state) => state.customization);
   const matchesSM = useMediaQuery(theme.breakpoints.down('md'));
+  const mainColor = isDarkMode
+    ? theme.palette.text.primary
+    : location.pathname === item.url
+    ? theme.palette.text.primary
+    : theme.palette.text.primary;
 
   const Icon = item.icon;
-  const itemIcon = item?.icon ? <Icon stroke={1.5} size="1.3rem" /> : null;
+  const itemIcon = item?.icon ? <Icon stroke={1.5} size="1.3rem" color={mainColor} /> : null;
 
   let itemTarget = '_self';
   if (item.target) {
@@ -54,7 +61,7 @@ export const SidebarItem = ({ item, level, drawerToggle }) => {
     >
       <Box>{itemIcon}</Box>
       <Box>
-        <Typography align="center" sx={{ fontSize: '0.8rem' }}>
+        <Typography align="center" sx={{ fontSize: '0.8rem', color: mainColor }}>
           {item.title}
         </Typography>
       </Box>

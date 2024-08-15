@@ -1,5 +1,5 @@
 import { useMeasures, useMembers } from '@/api';
-import { Box, Container, Typography } from '@/components/ui';
+import { Box, Container, Typography, Stack } from '@/components/ui';
 import AgGrid from '@/components/tables/AgGrid';
 import {
   GapRenderer,
@@ -11,6 +11,9 @@ import {
 } from '@/components/tables/CellRenderers';
 import { useMemo, useRef } from 'react';
 import { useParams } from 'react-router-dom';
+import { IconStar } from '@tabler/icons-react';
+import { useTheme } from '@/hooks';
+import { useProviders } from '@/api';
 
 let moneyFormat = new Intl.NumberFormat('en-US', {
   style: 'currency',
@@ -20,12 +23,26 @@ let moneyFormat = new Intl.NumberFormat('en-US', {
 const randomHalfNumberBetween = (min, max) => Math.floor(Math.random() * (max - min + 1) + min) / 2;
 const worthPerGap = 25;
 function ProviderPage() {
+  const theme = useTheme();
+  const isDarkMode = theme.palette.mode === 'dark';
   const { name } = useParams();
   const totalGapsRef = useRef(0);
   //const id = parseInt(params.id);
   //const { data: member } = useMember(id);
   const { data: membersData } = useMembers();
   const { data: measures } = useMeasures();
+  const { data: providers } = useProviders();
+  console.log('providers', providers);
+
+  const provider = useMemo(() => {
+    if (!providers) {
+      return null;
+    }
+    return providers.find((provider) => {
+      return provider.label === name;
+    });
+  }, [providers, name]);
+  console.log('provider', provider);
 
   const starsMeasures = useMemo(() => {
     if (!measures) {
@@ -177,9 +194,27 @@ function ProviderPage() {
     <>
       <Container maxWidth="xl">
         <Box my={2} mt={3}>
-          <Typography variant="h1" mb={1} sx={{ fontSize: '1.75rem' }}>
+          <Typography variant="h1" mb={0} sx={{ fontSize: '1.75rem' }}>
             {name}
           </Typography>
+          <Stack direction="row" alignItems="center" spacing={1} mb>
+            <Typography variant="h4">Current Rating:</Typography>
+            {provider?.starRating > 0 && (
+              <Box
+                sx={{
+                  //px: 1,
+                  //margin: '1px 4px 1px 4px',
+                  //background: 'linear-gradient(90deg, rgba(237,235,235,0) 35%, rgba(179,15,15,0.25) 85%)',
+                  color: isDarkMode ? '#FDDA0D' : '#d1b40b',
+                  filter: isDarkMode ? 'drop-shadow(0px 0px 4px #FDDA0D)' : 'drop-shadow(0px 0px 1px #d1b40b)'
+                }}
+              >
+                {Array.from(Array(provider?.starRating)).map(() => (
+                  <IconStar size={12} />
+                ))}
+              </Box>
+            )}
+          </Stack>
           <Typography variant="h4" mb={1}>
             Total Gaps: {totalGapsRef.current}
           </Typography>

@@ -74,6 +74,10 @@ const members = memberData.map((member, i) => {
     prescriptions: member?.prescriptions || []
   };
 });
+
+const randomHalfNumberBetween = (min, max) => Math.floor(Math.random() * (max - min + 1) + min) / 2;
+const randomIntBetween = (min, max) => Math.floor(Math.random() * (max - min + 1) + min);
+
 //just assuming names are unique for testing
 const distinctProviders = providerGroupsData
   .filter((value, index, self) => index === self.findIndex((t) => t.Provider === value.Provider))
@@ -81,7 +85,15 @@ const distinctProviders = providerGroupsData
     const filteredMembers = members.filter((m) => m.provider === p.Provider);
     let avgGapsPerMember = filteredMembers.reduce((sum, member) => sum + member.numberOfGaps, 0) / filteredMembers.length;
     avgGapsPerMember = parseFloat(avgGapsPerMember.toFixed(2));
-    return { id: i + 1, label: p.Provider, value: p.Provider, avgGapsPerMember: avgGapsPerMember, providerGroup: p['Provider Group'] };
+    const starRating = randomIntBetween(0, 5);
+    return {
+      id: i + 1,
+      label: p.Provider,
+      value: p.Provider,
+      avgGapsPerMember: avgGapsPerMember,
+      providerGroup: p['Provider Group'],
+      starRating: starRating
+    };
   });
 
 const distinctCareManagers = careData

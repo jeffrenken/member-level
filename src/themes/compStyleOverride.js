@@ -11,7 +11,8 @@ export default function componentStyleOverrides(theme) {
     MuiCssBaseline: {
       styleOverrides: {
         body: {
-          backgroundColor: theme.background
+          //backgroundColor: theme.background
+          background: theme.background
           //backgroundImage: backgroundGradient
         }
       }

@@ -81,7 +81,6 @@ function ProviderGroupsPage() {
         ...provider,
         providerGroupName: provider.providerGroup,
         numberOfGaps: memberGaps,
-        starRating: randomHalfNumberBetween(0, 10),
         providerUrl: `/providers/${provider.value}`
       };
     });

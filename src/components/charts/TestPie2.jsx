@@ -60,7 +60,7 @@ const PieChart2 = ({ measure, disabled, chart }) => {
   const openPercent = (measure.gaps_open_count / total) * 100;
   const quotient = ((measure.gaps_closed_count / total) * 100).toFixed(0);
 
-  const background = theme.palette.background.semiTransparent;
+  const background = theme.palette.background.paper;
 
   const handleClick = () => {
     if (!disabled) {
