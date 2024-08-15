@@ -18,9 +18,11 @@ import {
 } from '@mui/material';
 import { IconInbox, IconUserHeart } from '@tabler/icons-react';
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useMembers } from '@/api';
-import { Stack } from '@/components/ui';
+import { Button, Stack } from '@/components/ui';
+import { notificationState } from '@/state/notificationState';
+import { useRecoilState } from 'recoil';
 
 function findObjectsWithMentionAndName(data, name) {
   const result = [];
@@ -49,11 +51,6 @@ function findObjectsWithMentionAndName(data, name) {
   return result;
 }
 
-const notifications = [
-  { id: 2, name: 'Dwight', action: 'mentioned', target: 'You', time: '36 mins ago', type: 'members', typeId: 954 },
-  { id: 3, name: 'Jim', action: 'mentioned', target: 'You', time: '3 hours ago', type: 'members', typeId: 954 }
-];
-
 const StyledIconButton = styled(IconButton)(({ theme }) => ({
   padding: '0px'
 }));
@@ -66,8 +63,10 @@ const avatarHexColors = ['#009688', '#00BCD4', '#2196F3', '#3F51B5', '#673AB7', 
 
 export default function NotificationList({ button }) {
   const theme = useTheme();
+  const navigate = useNavigate();
   const [anchorEl, setAnchorEl] = useState(null);
   const [tabValue, setTabValue] = useState(0);
+  const [notifications, setNotifications] = useRecoilState(notificationState);
   console.log('tabValue', tabValue);
   const { data: members } = useMembers();
   const open = Boolean(anchorEl);
@@ -80,14 +79,37 @@ export default function NotificationList({ button }) {
     setAnchorEl(null);
   };
 
+  const handleClickNotification = (i) => {
+    console.log('handleClickNotification', i);
+    setNotifications((prevNotifications) => {
+      const newNotifications = structuredClone(prevNotifications);
+      newNotifications[i].is_read = true;
+      return newNotifications;
+    });
+    handleClose();
+    navigate(`/${notifications[i].type}/${notifications[i].typeId}?notification=${notifications[i].id}`);
+  };
+
   const handleTabChange = (event, newValue) => {
     setTabValue(newValue);
+  };
+
+  const handleMarkAllRead = () => {
+    setNotifications((prevNotifications) => {
+      const newNotifications = structuredClone(prevNotifications);
+      newNotifications.forEach((notification) => (notification.is_read = true));
+      return newNotifications;
+    });
   };
 
   return (
     <>
       <StyledIconButton color="inherit" onClick={handleClick}>
-        <Badge badgeContent={2} color="error" sx={{ '& .MuiBadge-badge': { fontSize: 9, height: 15, minWidth: 15 } }}>
+        <Badge
+          badgeContent={notifications.filter((notification) => !notification.is_read).length}
+          color="error"
+          sx={{ '& .MuiBadge-badge': { fontSize: 9, height: 15, minWidth: 15 } }}
+        >
           <SidebarIcon IconComponent={IconInbox} />
         </Badge>
       </StyledIconButton>
@@ -112,9 +134,9 @@ export default function NotificationList({ button }) {
           <Typography variant="body1" sx={{ fontWeight: 'bold' }}>
             Notifications
           </Typography>
-          <Typography variant="body2" sx={{ color: 'text.secondary', cursor: 'pointer', fontSize: '0.7rem' }}>
+          <Button variant="body2" onClick={handleMarkAllRead} sx={{ color: 'text.secondary', cursor: 'pointer', fontSize: '0.7rem' }}>
             Mark all as read
-          </Typography>
+          </Button>
         </Stack>
 
         <Tabs
@@ -137,12 +159,16 @@ export default function NotificationList({ button }) {
               return (
                 <MenuItem
                   key={notification.id}
-                  onClick={handleClose}
+                  onClick={() => handleClickNotification(i)}
                   disableGutters
-                  component={Link}
-                  to={`/${notification.type}/${notification.typeId}?notification=${notification.id}`}
+                  //component={Link}
+                  //to={`/${notification.type}/${notification.typeId}?notification=${notification.id}`}
                 >
-                  <ListItem dense alignItems="flex-start" secondaryAction={<Badge variant="dot" color="success" />}>
+                  <ListItem
+                    dense
+                    alignItems="flex-start"
+                    secondaryAction={!notification.is_read && <Badge variant="dot" color="success" />}
+                  >
                     <ListItemAvatar>
                       <Avatar sx={{ width: 36, height: 36, bgcolor: avatarHexColors[i], color: 'white' }}>{notification.name[0]}</Avatar>
                     </ListItemAvatar>
