@@ -3,6 +3,7 @@ import { createBrowserRouter } from 'react-router-dom';
 import { AuthGuard } from './AuthGuard';
 import { authRoutes } from './routes';
 import { ErrorFallback } from '../components/ErrorFallback';
+import { IdleLogout } from '../components/IdleLogout';
 
 export const router = createBrowserRouter([
   {
@@ -10,7 +11,9 @@ export const router = createBrowserRouter([
     errorElement: <ErrorFallback />,
     element: (
       <AuthGuard>
-        <MainLayout />
+        <IdleLogout>
+          <MainLayout />
+        </IdleLogout>
       </AuthGuard>
     ),
     children: authRoutes.map((route) => ({
