@@ -66,7 +66,7 @@ function Member() {
     {
       field: 'value',
       headerName: 'Status',
-      maxWidth: 150,
+      maxWidth: 100,
       chartDataType: 'series',
       type: 'numericColumn',
       filter: true,

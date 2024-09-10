@@ -4,11 +4,10 @@ import { ThemeContext } from '@/context/ThemeContextProvider';
 import { contractFilterState } from '@/state/contractFilterState';
 import { measureFilterState } from '@/state/measureFilterState';
 import { measuresFilterState } from '@/state/measuresFilterState';
-
 import { measureStatusFilterState } from '@/state/measureStatusFilterState';
+import { starsYearFilterState } from '@/state/starsYearFilterState';
 import { providerFilterState } from '@/state/providerFilterState';
 import { srfFilterState } from '@/state/srfFilterState';
-
 import { SearchDialog } from '@/components/SearchDialog';
 import { Box, ButtonBase, Stack, TextField, StyledCard } from '@/components/ui';
 import { InputAdornment } from '@mui/material';
@@ -23,6 +22,8 @@ const measureStatusOptions = [
   { id: 2, label: 'Display Measures', value: 'display' }
 ];
 
+const starsYearOptions = [{ id: '2026', label: 'CY24/SY26', value: '2026' }];
+
 export default function Navbar({ filters }) {
   const theme = useTheme();
   const { switchColorMode } = useContext(ThemeContext);
@@ -36,6 +37,8 @@ export default function Navbar({ filters }) {
   const [providerState, setProviderState] = useRecoilState(providerFilterState);
   const [measureStatusState, setMeasureStatusState] = useRecoilState(measureStatusFilterState);
   const [srfState, setSrfState] = useRecoilState(srfFilterState);
+  const [starsYear, setStarsYear] = useRecoilState(starsYearFilterState);
+
   const [searchOpen, setSearchOpen] = useState(false);
 
   /*   const measures = useMemo(() => {
@@ -93,6 +96,21 @@ export default function Navbar({ filters }) {
       <StyledCard px={1} mb={2} data-testid={NAVBAR_SELECTORS.navbar}>
         <Stack direction="row" justifyContent="space-between" alignItems="center" height={40}>
           <Stack direction="row" spacing={2} alignItems="center">
+            <AutocompleteButton
+              id="starsYearFilter"
+              label={starsYear ? (starsYearOptions.find((s) => s.id === starsYear) || {}).label : 'Stars Year'}
+              autocompleteProps={{
+                id: 'starsYearMenuList',
+                options: starsYearOptions,
+                getOptionLabel: (option) => (option.label ? option.label : ''),
+                autoHighlight: true,
+                openOnFocus: true,
+                value: starsYear,
+                onChange: (event, newValue) => setStarsYear(newValue.id),
+                isOptionEqualToValue: (option, value) => option.id === value
+              }}
+            />
+
             {filters.includes('contract') && (
               <AutocompleteButton
                 id="contractFilter"

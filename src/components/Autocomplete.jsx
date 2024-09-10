@@ -180,7 +180,6 @@ function AutocompletePopper({ handleClose, props }) {
               </Option>
             );
           })}
-          ;
         </Listbox>
       )}
       {groupedOptions.length === 0 && Boolean(inputValue) && (
