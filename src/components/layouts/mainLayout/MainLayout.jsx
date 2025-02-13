@@ -79,7 +79,7 @@ const MainLayout = () => {
           </ErrorBoundary>{' '}
           {!location.pathname.includes('map') && (
             <Typography align="center" my={1} sx={{ backgroundColor: 'transparent', fontSize: '0.8rem' }}>
-              © {currentYear} EQO Health. All rights reserved.
+              © {currentYear} Hyperlift. All rights reserved.
             </Typography>
           )}
         </Box>
